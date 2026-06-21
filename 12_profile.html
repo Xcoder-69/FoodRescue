@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Profile - FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4fbf4;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "error": "#ba1a1a",
+                "on-primary-container": "#00422b",
+                "tertiary-fixed": "#dbe1ff",
+                "surface-dim": "#d4dcd5",
+                "on-surface": "#161d19",
+                "on-primary-fixed": "#002113",
+                "on-background": "#161d19",
+                "on-tertiary": "#ffffff",
+                "surface-bright": "#f4fbf4",
+                "on-error": "#ffffff",
+                "tertiary": "#0053db",
+                "outline": "#6c7a71",
+                "surface-container": "#e8f0e9",
+                "primary-fixed-dim": "#4edea3",
+                "primary-container": "#10b981",
+                "on-tertiary-fixed": "#00174b",
+                "surface-container-low": "#eef6ee",
+                "on-secondary-fixed": "#341100",
+                "on-primary": "#ffffff",
+                "tertiary-container": "#7f9fff",
+                "on-secondary": "#ffffff",
+                "inverse-surface": "#2b322d",
+                "surface-variant": "#dde4dd",
+                "surface-container-high": "#e3eae3",
+                "secondary": "#9d4300",
+                "primary-fixed": "#6ffbbe",
+                "inverse-on-surface": "#ebf3eb",
+                "on-tertiary-container": "#00328b",
+                "secondary-fixed": "#ffdbca",
+                "surface-container-highest": "#dde4dd",
+                "on-secondary-fixed-variant": "#783200",
+                "surface-tint": "#006c49",
+                "secondary-container": "#fd761a",
+                "inverse-primary": "#4edea3",
+                "surface": "#f4fbf4",
+                "primary": "#006c49",
+                "on-error-container": "#93000a",
+                "secondary-fixed-dim": "#ffb690",
+                "on-surface-variant": "#3c4a42",
+                "outline-variant": "#bbcabf",
+                "background": "#f4fbf4",
+                "on-tertiary-fixed-variant": "#003ea8",
+                "error-container": "#ffdad6",
+                "on-secondary-container": "#5c2400"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "stack-sm": "8px",
+                "stack-md": "16px",
+                "stack-lg": "32px",
+                "container-padding-mobile": "16px",
+                "unit": "4px",
+                "gutter": "24px",
+                "container-padding-desktop": "32px"
+        },
+        "fontFamily": {
+                "body-lg": ["Inter"],
+                "label-md": ["Inter"],
+                "label-lg": ["Inter"],
+                "display-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "title-lg": ["Inter"],
+                "headline-lg-mobile": ["Inter"],
+                "headline-lg": ["Inter"]
+        },
+        "fontSize": {
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- Top AppBar -->
+<header class="bg-surface dark:bg-background shadow-[0px_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-50">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary">Profile</h1>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-stack-lg pb-32">
+<!-- Profile Hero Section -->
+<section class="mb-stack-lg relative overflow-hidden rounded-3xl p-8 flex flex-col md:flex-row items-center gap-gutter bg-surface shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<div class="relative">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-primary-fixed-dim shadow-lg">
+<img alt="Alex Rivera" class="w-full h-full object-cover" data-alt="A professional and friendly portrait of a young adult male volunteer with a warm smile, set against a blurred background of a modern, eco-friendly community center. The lighting is soft and natural, emphasizing a bright, optimistic atmosphere consistent with a humanitarian food rescue brand. The color palette features soft emerald greens and warm whites, creating a trustworthy and professional aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnz8pYnUxsTNBUts8gVM1vBPfuzRtD8RGiCSi8PZCTEYgrNj1jIPsg-pmHgurJLQ-C5ayb2AXsCfTriFOzWeGpFHFVPzOfluiiAcJQJ-gvDPLuao54UT7loDoDPsgf9aJfdBwaEIHB5F7GqaEiwL1Ft1ZbrROrgRtSr0Fq3X2Dje0rJzxQbk8N7foEkjTNh4Jkg_pHOEhuaKI8W6sDE2Xo4x28KgCPfU73Ea2wg3eLfv7izLV4OBCDSY9roxHxRS-vjwxxiJgpjCM"/>
+</div>
+<div class="absolute bottom-1 right-1 bg-primary text-on-primary p-1.5 rounded-full border-2 border-surface">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex flex-col md:flex-row md:items-center gap-2 mb-2">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Alex Rivera</h2>
+<span class="inline-flex items-center gap-1 px-3 py-1 bg-primary-fixed text-on-primary-fixed rounded-full font-label-lg text-label-lg w-fit mx-auto md:mx-0">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+                        Verified Partner
+                    </span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4">Green Table Bistro • Premium Partner since 2022</p>
+<div class="flex flex-wrap justify-center md:justify-start gap-stack-sm">
+<div class="bg-surface-container-high px-4 py-2 rounded-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">eco</span>
+<span class="font-label-lg text-label-lg">1.2k kg Rescued</span>
+</div>
+<div class="bg-surface-container-high px-4 py-2 rounded-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">volunteer_activism</span>
+<span class="font-label-lg text-label-lg">450 Hearts</span>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Information Grid -->
+<div class="lg:col-span-7 space-y-gutter">
+<section class="bg-surface rounded-3xl p-gutter shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<h3 class="font-title-lg text-title-lg font-bold mb-stack-md text-primary">Personal Details</h3>
+<div class="space-y-stack-lg">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">call</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Mobile Number</p>
+<p class="font-body-lg text-body-lg font-semibold">+1 (555) 234-8901</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">mail</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Email Address</p>
+<p class="font-body-lg text-body-lg font-semibold">alex.rivera@greentable.com</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Primary Address</p>
+<p class="font-body-lg text-body-lg font-semibold leading-relaxed">782 Eco Avenue, Suite 400<br/>Portland, OR 97201</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Verification Status Card -->
+<section class="bg-primary text-on-primary rounded-3xl p-gutter shadow-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-fixed-dim/20 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-500"></div>
+<div class="relative z-10">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-title-lg text-title-lg font-bold">Verification Status</h3>
+<span class="material-symbols-outlined text-3xl">verified</span>
+</div>
+<p class="font-body-md text-body-md opacity-90 mb-6">Your identity and food handling certifications are fully verified. You are eligible for all donation and volunteer activities.</p>
+<div class="bg-on-primary/10 rounded-2xl p-4 flex items-center gap-4">
+<div class="flex-1">
+<div class="flex justify-between font-label-md text-label-md mb-2">
+<span>Profile Strength</span>
+<span>100%</span>
+</div>
+<div class="h-2 bg-on-primary/20 rounded-full overflow-hidden">
+<div class="h-full bg-on-primary w-full"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Action Column -->
+<div class="lg:col-span-5 space-y-gutter">
+<section class="bg-surface rounded-3xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] overflow-hidden">
+<h3 class="font-title-lg text-title-lg font-bold px-4 py-2 mb-2">Account Settings</h3>
+<div class="space-y-1">
+<button class="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-surface-container-low transition-colors group active:scale-[0.98] duration-150">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">edit</span>
+<span class="font-label-lg text-label-lg">Edit Profile</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-surface-container-low transition-colors group active:scale-[0.98] duration-150">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">lock</span>
+<span class="font-label-lg text-label-lg">Change Password</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-surface-container-low transition-colors group active:scale-[0.98] duration-150">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">help</span>
+<span class="font-label-lg text-label-lg">Help &amp; Support</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</button>
+<div class="h-px bg-outline-variant mx-4 my-2"></div>
+<button class="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-error/5 text-error transition-colors group active:scale-[0.98] duration-150">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">logout</span>
+<span class="font-label-lg text-label-lg">Logout</span>
+</div>
+<span class="material-symbols-outlined opacity-50">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Impact Summary -->
+<div class="bg-secondary-container text-on-secondary-container rounded-3xl p-gutter flex items-center gap-gutter shadow-sm">
+<div class="w-16 h-16 bg-on-secondary-container/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-4xl">workspace_premium</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg font-bold">Silver Tier</h4>
+<p class="font-label-md text-label-md opacity-80">120 more points to Gold Tier</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface dark:bg-surface-container-lowest shadow-lg rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-md text-label-md">Donate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md text-label-md font-bold">Profile</span>
+</a>
+</nav>
+<!-- Desktop Navigation Drawer (Conditional) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container dark:bg-surface-container-high w-80 shadow-md">
+<div class="font-headline-lg text-headline-lg font-black text-primary px-gutter py-stack-lg">FoodRescue</div>
+<div class="px-gutter mb-stack-lg">
+<div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-2xl shadow-sm">
+<img alt="User Profile" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwx2ef6PmxU0jr-gUVBydRry6cOgJk6l_PASHTVzYIon5Iegc3-UuBcMqUc3Fxu9fpnhcyGATqCudG81lPysoM7LUtNW5mcaQX_nGfBsf3xfPS-VVRdEahEZV5lThAWKpmdMAmkshq2aSnVHF69Hs3E9syUngTZJelxBRu5QYYqm-oo8zIZOqKl7D8iw0SjmLyOjgfTMAUe2t8Y_dkrZk0vVb3_KrXegJujflSk1hc8ndb_bmN6UNyRH7wApGOEkT3ZWAu6A_L9Xg"/>
+<div>
+<h3 class="font-label-lg text-label-lg font-bold">Restaurant Admin</h3>
+<p class="text-xs text-on-surface-variant">Green Table Bistro</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 rounded-full hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-body-lg text-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 rounded-full hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-lg text-body-lg">Donation History</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 rounded-full hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-body-lg text-body-lg">Impact Analytics</span>
+</a>
+<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 shadow-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-body-lg text-body-lg font-bold">Profile</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 rounded-full hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-lg text-body-lg">Settings</span>
+</a>
+</nav>
+<div class="p-gutter border-t border-outline-variant">
+<button class="flex items-center gap-stack-md text-error w-full px-stack-md py-3 rounded-full hover:bg-error/5 transition-all">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-lg text-body-lg font-bold">Logout</span>
+</button>
+</div>
+</aside>
+<script>
+        // Micro-interaction for feedback elevation
+        document.querySelectorAll('button, .glass-card').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.98)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = 'scale(1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'scale(1)';
+            });
+        });
+
+        // Dynamic header shadow on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 10) {
+                header.classList.add('shadow-md');
+                header.classList.remove('shadow-sm');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.add('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

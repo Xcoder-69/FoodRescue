@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FoodRescue | Admin Verification</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "background": "#f4fbf4",
+                        "inverse-surface": "#2b322d",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#5c2400",
+                        "primary-container": "#10b981",
+                        "tertiary": "#0053db",
+                        "surface-tint": "#006c49",
+                        "surface-dim": "#d4dcd5",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#dde4dd",
+                        "secondary": "#9d4300",
+                        "surface-container": "#e8f0e9",
+                        "on-surface": "#161d19",
+                        "on-primary-fixed-variant": "#005236",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "surface-container-highest": "#dde4dd",
+                        "secondary-fixed": "#ffdbca",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "on-tertiary-fixed": "#00174b",
+                        "secondary-fixed-dim": "#ffb690",
+                        "tertiary-fixed": "#dbe1ff",
+                        "secondary-container": "#fd761a",
+                        "primary-fixed": "#6ffbbe",
+                        "surface-container-low": "#eef6ee",
+                        "outline-variant": "#bbcabf",
+                        "on-error-container": "#93000a",
+                        "outline": "#6c7a71",
+                        "on-tertiary-container": "#00328b",
+                        "on-primary-fixed": "#002113",
+                        "on-secondary-fixed-variant": "#783200",
+                        "primary-fixed-dim": "#4edea3",
+                        "inverse-on-surface": "#ebf3eb",
+                        "surface": "#f4fbf4",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#7f9fff",
+                        "on-primary-container": "#00422b",
+                        "surface-container-high": "#e3eae3",
+                        "surface-bright": "#f4fbf4",
+                        "inverse-primary": "#4edea3",
+                        "on-background": "#161d19",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#006c49",
+                        "on-surface-variant": "#3c4a42",
+                        "on-secondary-fixed": "#341100"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "16px",
+                        "gutter": "24px",
+                        "container-padding-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab {
+            border-bottom: 3px solid #006c49;
+            color: #006c49;
+            font-weight: 600;
+        }
+        /* Custom scrollbar suppression for tab list */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface-container-low dark:bg-surface-container-high shadow-sm flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16 w-full z-50">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 transition-colors active:scale-95 duration-100" data-icon="menu">menu</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">FoodRescue</h1>
+</div>
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 transition-colors active:scale-95 duration-100" data-icon="notifications">notifications</button>
+</header>
+<!-- Main Content Area -->
+<main class="px-container-padding-mobile pt-stack-md">
+<!-- Title & Stats -->
+<div class="mb-stack-md">
+<h2 class="font-title-lg text-title-lg text-on-surface-variant">Pending Verifications</h2>
+<p class="font-label-md text-label-md text-on-surface-variant opacity-70">12 applications awaiting review</p>
+</div>
+<!-- Filter Tabs -->
+<div class="flex border-b border-outline-variant mb-stack-md overflow-x-auto no-scrollbar gap-gutter">
+<button class="pb-stack-sm font-label-lg text-label-lg whitespace-nowrap active-tab">Restaurants</button>
+<button class="pb-stack-sm font-label-lg text-label-lg whitespace-nowrap text-on-surface-variant hover:text-primary transition-colors">NGOs</button>
+<button class="pb-stack-sm font-label-lg text-label-lg whitespace-nowrap text-on-surface-variant hover:text-primary transition-colors">Volunteers</button>
+</div>
+<!-- Verification Cards List -->
+<div class="flex flex-col gap-stack-md">
+<!-- Card 1: Restaurant -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-surface-variant/30">
+<div class="flex justify-between items-start mb-stack-sm">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface">The Green Kitchen</h3>
+<p class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="calendar_today">calendar_today</span>
+                            Submitted: Oct 24, 2023
+                        </p>
+</div>
+<span class="bg-secondary-container/20 text-on-secondary-fixed-variant px-3 py-1 rounded-full font-label-md text-label-md border border-secondary-container">
+                        Pending
+                    </span>
+</div>
+<!-- Document Preview -->
+<div class="mb-stack-md">
+<p class="font-label-md text-label-md text-on-surface-variant mb-stack-sm">Verification Documents (2)</p>
+<div class="flex gap-stack-sm">
+<div class="w-20 h-20 rounded-lg overflow-hidden border border-outline-variant relative group">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of an official government identification document with high security holograms and fine-line printing, presented in a clean professional light mode setting. The document is angled slightly to show texture and paper quality, with soft natural light hitting the surface to emphasize authenticity and legitimacy. The background is a soft-focus office desk in neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCb2ZsNbVmOm03sQ4N-cX47OwR3JyzbXfcLljYKGfGb7K4UoxQggx4YGWWB-Qaw161Qmss_WlB_ohKqvuxfW74cAyY5zeS0xlDuR8_HuGLMrhfp-jcG8hEzND1iFIeicvEU0HCkiYnwBsn_LxuXhHKROPXDS6ay3MwfLxI-ZOlWrrSf8vTza_GTJKpgsfLR5UCFQQgR23gtn_KmrTZFqvFi58mH-FLFwGL1sh68MOE7JpVAFBW6ptMOJ8mjE5CNriZ9jRKtcaPdYxI"/>
+<div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white" data-icon="visibility">visibility</span>
+</div>
+</div>
+<div class="w-20 h-20 rounded-lg overflow-hidden border border-outline-variant relative group">
+<img class="w-full h-full object-cover" data-alt="A professional food safety certificate with a prominent green seal and official certification numbers, displayed in a bright, modern office environment. The lighting is high-key and optimistic, focusing on the clarity of the typography and the professional emerald green color of the logo. The image conveys trust, regulatory compliance, and humanitarian standards in food management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB7aLRlMNen9YKrcheMiiTSO1SH1xkwjY2cCuJRjyDDrFs5iN__-AXKdrPXKtKESZXFss-D0B1TkCeRyZ5zyXPA52Wn-pJd0vC2Tb8wWC9o8Ztihh8Px9Wm9Sp6nETiCQNJkA16oLRi0h1BDkE3-ONhH3w8xrZPXAc279d6Xz3Fos7qEO16BC7tkJS8WR8ZZYNLu11gTV05GCSvt9VmAenwIjbmYkBAXPJYwUg6yh9YdlkRJxIjtjCAuEvb3JpFq7h2pVixwNqBDg"/>
+<div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white" data-icon="visibility">visibility</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="grid grid-cols-2 gap-stack-sm pt-stack-sm border-t border-surface-variant/30">
+<button class="flex items-center justify-center gap-2 bg-primary text-on-primary font-label-lg text-label-lg py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span>
+                        Approve
+                    </button>
+<button class="flex items-center justify-center gap-2 border border-error text-error font-label-lg text-label-lg py-2 rounded-lg hover:bg-error-container/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="cancel">cancel</span>
+                        Reject
+                    </button>
+<button class="col-span-2 mt-2 flex items-center justify-center gap-2 bg-surface-container text-on-surface font-label-lg text-label-lg py-2 rounded-lg hover:bg-surface-variant transition-all">
+                        View Full Dossier
+                    </button>
+</div>
+</div>
+<!-- Card 2: Restaurant -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-surface-variant/30">
+<div class="flex justify-between items-start mb-stack-sm">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface">Urban Bistro &amp; Cafe</h3>
+<p class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="calendar_today">calendar_today</span>
+                            Submitted: Oct 25, 2023
+                        </p>
+</div>
+<span class="bg-secondary-container/20 text-on-secondary-fixed-variant px-3 py-1 rounded-full font-label-md text-label-md border border-secondary-container">
+                        Pending
+                    </span>
+</div>
+<!-- Document Preview -->
+<div class="mb-stack-md">
+<p class="font-label-md text-label-md text-on-surface-variant mb-stack-sm">Verification Documents (1)</p>
+<div class="flex gap-stack-sm">
+<div class="w-20 h-20 rounded-lg overflow-hidden border border-outline-variant relative group">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist close-up of a business license application form on a light wooden surface. The lighting is soft and airy, reflecting a professional and transparent administrative process. The color palette is composed of soft whites, greys, and subtle hints of forest green, creating a calm and efficient mood for document verification." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzIQhwc-TMHgPjNfp2LrWbPMyg5rXWra8n0qrRuFOscBAbUYj0uv4_GovGIme57HqSkRy83RNKPQ1SDe-cplAg10bMoxo12fE3vuJdw05Z8Luo2vZjsZA4r0qQIAyv0U0f9uYOtlVgFSvIedorhw-SiWYADtFe00nSB8nnhqVzbCXCTeOYRlRL-0UFUU7XlSwOy9bQFPNY_dfp-tJIdIzVb3r1z0sa_2m1lhoiZXhSy-mZpQsC6pqZW8EzyeNNs2S_GDzb3uv5-u8"/>
+<div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white" data-icon="visibility">visibility</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="grid grid-cols-2 gap-stack-sm pt-stack-sm border-t border-surface-variant/30">
+<button class="flex items-center justify-center gap-2 bg-primary text-on-primary font-label-lg text-label-lg py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span>
+                        Approve
+                    </button>
+<button class="flex items-center justify-center gap-2 border border-error text-error font-label-lg text-label-lg py-2 rounded-lg hover:bg-error-container/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="cancel">cancel</span>
+                        Reject
+                    </button>
+</div>
+</div>
+<!-- Card 3: NGO (Placeholder visual) -->
+<div class="opacity-50 pointer-events-none bg-surface-container-low rounded-xl p-stack-md border border-dashed border-outline-variant">
+<div class="flex items-center justify-center h-24">
+<p class="text-on-surface-variant font-body-md text-body-md italic text-center">More pending requests loading...</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 pb-safe bg-surface dark:bg-surface-container shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-label-md">Donate</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+<span class="absolute top-1 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</button>
+</nav>
+<script>
+        // Simple Micro-interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.innerText.includes('Approve')) {
+                    const card = this.closest('.bg-surface-container-lowest');
+                    card.style.transform = 'translateX(100px)';
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.remove();
+                    }, 300);
+                }
+            });
+        });
+
+        // Tab Switching Simulation
+        const tabs = document.querySelectorAll('.flex.border-b button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('active-tab');
+                    t.classList.add('text-on-surface-variant');
+                });
+                tab.classList.add('active-tab');
+                tab.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab-indicator {
+            view-transition-name: active-tab;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4fbf4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bbcabf;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #006c49;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-tint": "#006c49",
+                        "surface-container-highest": "#dde4dd",
+                        "secondary-fixed-dim": "#ffb690",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#00328b",
+                        "on-secondary-container": "#5c2400",
+                        "surface": "#f4fbf4",
+                        "on-primary-fixed-variant": "#005236",
+                        "outline-variant": "#bbcabf",
+                        "secondary-fixed": "#ffdbca",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-surface": "#161d19",
+                        "primary-container": "#10b981",
+                        "surface-container-low": "#eef6ee",
+                        "tertiary": "#0053db",
+                        "primary": "#006c49",
+                        "surface-container-high": "#e3eae3",
+                        "on-secondary-fixed-variant": "#783200",
+                        "surface-container": "#e8f0e9",
+                        "on-primary-container": "#00422b",
+                        "background": "#f4fbf4",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#6ffbbe",
+                        "outline": "#6c7a71",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "inverse-on-surface": "#ebf3eb",
+                        "on-surface-variant": "#3c4a42",
+                        "secondary": "#9d4300",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f4fbf4",
+                        "tertiary-container": "#7f9fff",
+                        "on-primary": "#ffffff",
+                        "on-background": "#161d19",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "inverse-surface": "#2b322d",
+                        "surface-variant": "#dde4dd",
+                        "secondary-container": "#fd761a",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d4dcd5",
+                        "on-secondary-fixed": "#341100",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#4edea3",
+                        "on-tertiary-fixed": "#00174b",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "container-padding-mobile": "16px",
+                        "container-padding-desktop": "32px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-lg">
+<!-- TopAppBar from JSON -->
+<header class="bg-surface dark:bg-background shadow-[0px_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-40 w-full">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="Admin Profile" data-alt="A professional headshot of a restaurant administrator for a humanitarian app, styled with soft, cinematic lighting and a warm, inviting atmosphere. The character wears business-casual attire, sitting in a modern, plant-filled office space that reflects the Emerald Green brand palette. The image conveys trust, efficiency, and a commitment to food rescue operations." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5elej9PeSUXlKN3Tzw1B3jJkXq93yW1SbR4AsdlUXXr08_VZN7f94pRn37aOvGZkpA6cebB7pIup9tnf2xD0X6046ICaRzZNRS6N5Hxo1lfY-24pZ6XB1aZxpWIlUTgUXO5-ThNC-P6Sn8A4DCv2iwZy2WnbjoZuyMa5ECy4SZFGXgWA_AgH55QUcZrnC2hHGyFjIfMpXKO-exg0BgLLP-Bk4GJCfRvaKDOn8kGtjCahHIAUnFe2ZNWMRj0608gwXDe3zWP0fO1E"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">FoodRescue</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- NavigationDrawer from JSON (Desktop Only) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 w-80 bg-surface-container dark:bg-surface-container-high shadow-xl border-r border-outline-variant z-50">
+<div class="px-gutter py-stack-lg">
+<h2 class="font-headline-lg text-headline-lg font-black text-primary">FoodRescue</h2>
+</div>
+<div class="flex items-center gap-stack-md px-gutter py-stack-md mb-stack-lg">
+<div class="w-12 h-12 rounded-full bg-primary-container overflow-hidden">
+<img alt="Restaurant Admin" data-alt="A sophisticated circular avatar representing a restaurant manager, featuring a clean and professional aesthetic. The manager is smiling warmly in a bright, modern bistro setting with soft wooden textures and lush green plants in the background. The color scheme is centered around warm emerald and earthy tones to match the FoodRescue brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqVJ02x0R1V4mu3VOYHRw_lWeqL3MM9RDhPCxHwshAbn4Z-xaRdvucKmpOFKgE0GOmmhKNVfD6m8XI9Vay89l3chMNB8C34Q3HnNVUXqVB8Hno1w4JuX8ElOb6_IsAnxxvG48-WnRJ49wSbzEDflD68d-U6HdM3CLB4NcANKNL6hhXyskZpbPVb0UT7is4h_m6ESY9oNsyakyVq_-6pajfZ3_MLyujV6lHWywswmmGiKuGorPuiCYVRq4kA4zZKSdhLLhz1qvEC58"/>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-on-surface">Restaurant Admin</span>
+<span class="text-sm text-on-surface-variant">Green Table Bistro</span>
+<span class="text-xs font-bold text-primary">Premium Partner</span>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-body-lg text-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-lg text-body-lg">Volunteers</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-lg text-body-lg">Donation History</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-body-lg text-body-lg">Impact Analytics</span>
+</a>
+<div class="mt-auto pb-stack-lg">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-lg text-body-lg">Settings</span>
+</a>
+<a class="flex items-center gap-stack-md text-error mx-stack-md px-stack-md py-3 hover:bg-error-container transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-lg text-body-lg">Logout</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 lg:ml-80 pb-32 md:pb-0 min-h-screen">
+<div class="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-stack-lg">
+<!-- Page Header & Search -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-gutter mb-stack-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">User Management</h2>
+<p class="text-on-surface-variant">Oversee and verify community members and partners.</p>
+</div>
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-on-surface transition-all placeholder:text-outline" placeholder="Search by name or location..." type="text"/>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex p-1 bg-surface-container-high rounded-full w-fit mb-stack-lg overflow-x-auto">
+<button class="tab-btn px-6 py-2 rounded-full font-label-lg text-label-lg transition-all bg-primary text-on-primary shadow-sm" id="tab-restaurants" onclick="switchTab('restaurants')">Restaurants</button>
+<button class="tab-btn px-6 py-2 rounded-full font-label-lg text-label-lg transition-all text-on-surface-variant hover:bg-surface-container-highest" id="tab-ngos" onclick="switchTab('ngos')">NGOs</button>
+<button class="tab-btn px-6 py-2 rounded-full font-label-lg text-label-lg transition-all text-on-surface-variant hover:bg-surface-container-highest" id="tab-volunteers" onclick="switchTab('volunteers')">Volunteers</button>
+</div>
+<!-- User Grid / List -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter" id="user-list">
+<!-- Cards will be injected here by JS for demo purposes -->
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar from JSON (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface dark:bg-surface-container-lowest shadow-lg flex justify-around items-center px-2 py-3 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-md text-label-md">Donate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        const usersData = {
+            restaurants: [
+                { id: 1, name: "Sunset Grill & Bar", verified: true, location: "Downtown District", type: "Restaurant", img: "https://openui.fly.dev/openui/100x100.svg?text=SG" },
+                { id: 2, name: "Urban Harvest Kitchen", verified: false, location: "Westside Park", type: "Bistro", img: "https://openui.fly.dev/openui/100x100.svg?text=UH" },
+                { id: 3, name: "Oceanic Seafood", verified: true, location: "Bay Area", type: "Fine Dining", img: "https://openui.fly.dev/openui/100x100.svg?text=OS" }
+            ],
+            ngos: [
+                { id: 4, name: "Community Breadline", verified: true, location: "East End", type: "NGO", img: "https://openui.fly.dev/openui/100x100.svg?text=CB" },
+                { id: 5, name: "Hope Foundation", verified: true, location: "South Hills", type: "NGO", img: "https://openui.fly.dev/openui/100x100.svg?text=HF" }
+            ],
+            volunteers: [
+                { id: 6, name: "Sarah Mitchell", verified: true, location: "Midtown", type: "Premium Driver", img: "https://openui.fly.dev/openui/100x100.svg?text=SM" },
+                { id: 7, name: "James Wilson", verified: false, location: "North Side", type: "Courier", img: "https://openui.fly.dev/openui/100x100.svg?text=JW" },
+                { id: 8, name: "Elena Rodriguez", verified: true, location: "Central City", type: "Coordinator", img: "https://openui.fly.dev/openui/100x100.svg?text=ER" }
+            ]
+        };
+
+        function renderUsers(category) {
+            const container = document.getElementById('user-list');
+            container.innerHTML = '';
+            
+            usersData[category].forEach(user => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-surface-container-high hover:shadow-lg transition-all group flex flex-col justify-between";
+                
+                const verifiedBadge = user.verified 
+                    ? `<span class="flex items-center gap-1 bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                         <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+                       </span>`
+                    : `<span class="flex items-center gap-1 bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                         <span class="material-symbols-outlined text-sm">hourglass_empty</span> Pending
+                       </span>`;
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-stack-md">
+                        <div class="flex items-center gap-stack-md">
+                            <div class="w-16 h-16 rounded-xl bg-surface-container overflow-hidden">
+                                <img src="${user.img}" alt="${user.name}" data-alt="A detailed professional profile portrait of ${user.name}, who is a ${user.type} in the food logistics industry. The photo features natural lighting, a minimalist blurred background of a modern food distribution center, and a clean, high-end editorial look. The color palette follows the Emerald Green and light sand aesthetic of the brand.">
+                            </div>
+                            <div class="flex flex-col">
+                                <h3 class="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors">${user.name}</h3>
+                                <span class="text-on-surface-variant flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">location_on</span>
+                                    ${user.location}
+                                </span>
+                            </div>
+                        </div>
+                        ${verifiedBadge}
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-surface-container flex flex-wrap gap-2">
+                        <button class="flex-1 min-w-[100px] py-2 px-3 bg-primary text-on-primary rounded-lg font-label-lg text-label-lg hover:shadow-md active:scale-95 transition-all">View Dossier</button>
+                        ${!user.verified ? `<button class="flex-1 min-w-[100px] py-2 px-3 bg-primary-container text-on-primary-container rounded-lg font-label-lg text-label-lg hover:opacity-90 active:scale-95 transition-all">Approve</button>` : ''}
+                        <button class="flex-1 min-w-[100px] py-2 px-3 bg-error-container text-error rounded-lg font-label-lg text-label-lg hover:bg-error hover:text-on-error active:scale-95 transition-all">Suspend</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function switchTab(category) {
+            // Update UI buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+                btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container-highest');
+            });
+            
+            const activeBtn = document.getElementById(`tab-${category}`);
+            activeBtn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+            activeBtn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-highest');
+
+            // Render content
+            renderUsers(category);
+        }
+
+        // Initialize
+        switchTab('restaurants');
+    </script>
+</body></html>

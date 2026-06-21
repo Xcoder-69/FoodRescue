@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Volunteer Registration | FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#dde4dd",
+                        "surface-dim": "#d4dcd5",
+                        "surface-tint": "#006c49",
+                        "surface": "#f4fbf4",
+                        "secondary-fixed": "#ffdbca",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#005236",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#fd761a",
+                        "on-background": "#161d19",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#0053db",
+                        "surface-variant": "#dde4dd",
+                        "tertiary-container": "#7f9fff",
+                        "on-secondary-fixed-variant": "#783200",
+                        "on-secondary-container": "#5c2400",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#3c4a42",
+                        "inverse-surface": "#2b322d",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "on-surface": "#161d19",
+                        "outline": "#6c7a71",
+                        "inverse-primary": "#4edea3",
+                        "surface-container": "#e8f0e9",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#eef6ee",
+                        "on-primary-container": "#00422b",
+                        "primary-container": "#10b981",
+                        "on-primary-fixed": "#002113",
+                        "surface-bright": "#f4fbf4",
+                        "primary-fixed-dim": "#4edea3",
+                        "primary": "#006c49",
+                        "background": "#f4fbf4",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-secondary-fixed": "#341100",
+                        "surface-container-high": "#e3eae3",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "primary-fixed": "#6ffbbe",
+                        "outline-variant": "#bbcabf",
+                        "on-tertiary-container": "#00328b",
+                        "secondary": "#9d4300",
+                        "on-tertiary-fixed": "#00174b",
+                        "tertiary-fixed": "#dbe1ff",
+                        "inverse-on-surface": "#ebf3eb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-padding-desktop": "32px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "16px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4fbf4;
+            color: #161d19;
+            margin: 0;
+            padding: 0;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .input-focus-effect:focus-within {
+            border-bottom-width: 2px;
+            border-color: #006c49;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Custom scrollbar for better UI */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4fbf4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bbcabf;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- Top Navigation Anchor (As specified in JSON hierarchy) -->
+<header class="bg-surface dark:bg-background shadow-[0px_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-50">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">arrow_back</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg font-bold text-primary">FoodRescue</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHrEM9kcIiZ3kqTrm0y5LKD34UTW2homx0vNSWAGg26aljBi3xXTE1O8Wn-p4q1S4GH9MIWBPT4keap6fpzrR-LwgVyHlW-U2whQlXJtBs5QZGmaTI9GQDoV4bHs9a6G54Kgg0qH_8McumIchYwubrapRGpg2H9fgoTotI76mgI3U0hKpFKXCQJTK7TlITneK3HKKTYiRqASqMGbUmc1JM_tZpNigCUss61e_qDKIsrzAz0OrBeAW_kTGvnRoShWtvD_hd_Vno86c"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-stack-lg">
+<!-- Hero Intro Section -->
+<div class="mb-stack-lg text-center md:text-left">
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-unit">Join the Mission</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Loom &amp; Harvest: Connect surplus food to those in need. Become a vital link in our community rescue chain.</p>
+</div>
+<form action="#" class="space-y-gutter">
+<!-- Personal Information Card -->
+<div class="bg-surface-container-lowest rounded-xl p-gutter shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="material-symbols-outlined text-primary">person</span>
+<h3 class="font-title-lg text-title-lg">Personal Details</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Full Name</label>
+<input class="bg-[#F3F4F6] border-0 border-b border-outline rounded-t-lg p-stack-md focus:ring-0 focus:border-primary transition-all duration-200" placeholder="Enter your full name" type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Mobile Number</label>
+<input class="bg-[#F3F4F6] border-0 border-b border-outline rounded-t-lg p-stack-md focus:ring-0 focus:border-primary transition-all duration-200" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+<div class="flex flex-col gap-unit md:col-span-2">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Email Address</label>
+<input class="bg-[#F3F4F6] border-0 border-b border-outline rounded-t-lg p-stack-md focus:ring-0 focus:border-primary transition-all duration-200" placeholder="email@example.com" type="email"/>
+</div>
+</div>
+</div>
+<!-- Logistics & Mobility Card -->
+<div class="bg-surface-container-lowest rounded-xl p-gutter shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+<h3 class="font-title-lg text-title-lg">Logistics &amp; Vehicle</h3>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Vehicle Type</label>
+<div class="relative">
+<select class="w-full bg-[#F3F4F6] border-0 border-b border-outline rounded-t-lg p-stack-md focus:ring-0 focus:border-primary appearance-none transition-all duration-200">
+<option disabled="" selected="" value="">Select your primary transport</option>
+<option value="bike">Bike</option>
+<option value="bicycle">Bicycle</option>
+<option value="car">Car</option>
+<option value="walking">Walking</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Address Card -->
+<div class="bg-surface-container-lowest rounded-xl p-gutter shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<h3 class="font-title-lg text-title-lg">Primary Address</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Country</label>
+<input class="bg-[#F3F4F6] border-0 border-b border-outline rounded-t-lg p-stack-md focus:ring-0 focus:border-primary transition-all duration-200" placeholder="e.g. United States" type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">State / Province</label>
+<input class="bg-[#F3F4F6] border-0 border-b border-outline rounded-t-lg p-stack-md focus:ring-0 focus:border-primary transition-all duration-200" placeholder="e.g. California" type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">City</label>
+<input class="bg-[#F3F4F6] border-0 border-b border-outline rounded-t-lg p-stack-md focus:ring-0 focus:border-primary transition-all duration-200" placeholder="e.g. San Francisco" type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Pincode / Zip</label>
+<input class="bg-[#F3F4F6] border-0 border-b border-outline rounded-t-lg p-stack-md focus:ring-0 focus:border-primary transition-all duration-200" placeholder="e.g. 94105" type="text"/>
+</div>
+</div>
+</div>
+<!-- Upload Section -->
+<div class="bg-surface-container-lowest rounded-xl p-gutter shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="material-symbols-outlined text-primary">cloud_upload</span>
+<h3 class="font-title-lg text-title-lg">Document Verification</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md">
+<!-- Profile Photo -->
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-stack-md flex flex-col items-center justify-center text-center hover:border-primary transition-colors group cursor-pointer">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl group-hover:scale-110 duration-200">account_circle</span>
+<p class="font-label-lg text-label-lg mb-1">Profile Photo</p>
+<p class="font-label-md text-label-md text-on-surface-variant">JPG, PNG up to 5MB</p>
+</div>
+<!-- Govt ID -->
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-stack-md flex flex-col items-center justify-center text-center hover:border-primary transition-colors group cursor-pointer">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl group-hover:scale-110 duration-200">badge</span>
+<p class="font-label-lg text-label-lg mb-1">Government ID</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Passport, License, or SSN</p>
+</div>
+<!-- NGO ID (Optional) -->
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-stack-md flex flex-col items-center justify-center text-center hover:border-primary transition-colors group cursor-pointer relative overflow-hidden">
+<div class="absolute top-2 right-2 bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-bold">OPTIONAL</div>
+<span class="material-symbols-outlined text-primary mb-2 text-3xl group-hover:scale-110 duration-200">volunteer_activism</span>
+<p class="font-label-lg text-label-lg mb-1">NGO ID</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Existing Volunteer Cards</p>
+</div>
+</div>
+</div>
+<!-- Impact Visual (Atmospheric) -->
+<div class="relative w-full h-48 rounded-xl overflow-hidden group">
+<img class="w-full h-full object-cover brightness-75 transition-transform duration-700 group-hover:scale-105" data-alt="A heartening cinematic shot of diverse community volunteers working together in a vibrant sun-drenched urban garden. The lighting is warm and golden, reflecting an emerald green and soft white color palette. People are smiling while handling fresh organic produce in a lush modern setting. The atmosphere is optimistic and professional, embodying the core values of a high-trust humanitarian food rescue organization." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPX_ZC-eRk0_0j0iev-fTWmEPQB1SKjyhBG2ynFrM7lWWsxmIIW4vaFWWiU0mrBmx-fWFQmZA3vMDjpnmJL0XwHuN9A-meEyCRxgD4klgHta69xSfq96lHltdsx0fMC5bc5_4PZXsth-8gW4r_vpkbyPpimA2kccrvK4H5N_nNT7pTHVH_Eh7_g9POqae9UO4t79BgLdVBmIyGbuKnb2iVuOAS8zDr17HiwLUalXjl-SKpe6MvL7gt8-9Ic4icz25Jd6aKGRGcH4I"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-gutter">
+<p class="text-white font-title-lg text-title-lg">Your contribution matters.</p>
+<p class="text-primary-fixed font-body-md text-body-md">Every delivery saves a meal and reduces environmental waste.</p>
+</div>
+</div>
+</form>
+</main>
+<!-- Fixed Action Footer -->
+<div class="fixed bottom-0 left-0 w-full bg-surface-container-lowest shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] z-50">
+<div class="max-w-4xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-stack-md flex flex-col md:flex-row items-center justify-between gap-stack-md">
+<div class="hidden md:flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-weight="fill">verified_user</span>
+<span class="font-label-lg text-label-lg">Secure submission encrypted for your privacy.</span>
+</div>
+<button class="w-full md:w-auto bg-primary text-on-primary font-label-lg text-label-lg px-gutter py-stack-md rounded-full hover:bg-primary-container hover:text-on-primary-container active:scale-95 transition-all duration-200 shadow-lg">
+                Submit For Verification
+            </button>
+</div>
+</div>
+<!-- Hidden standard BottomNavBar but keeping code logic reference as per JSON -->
+<!-- (Suppressed as per Relevance Check: This is a Task-Focused Registration page) -->
+<script>
+        // Micro-interaction for form inputs
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('focus', () => {
+                el.parentElement.classList.add('scale-[1.01]');
+                el.parentElement.style.transition = 'transform 0.2s ease';
+            });
+            el.addEventListener('blur', () => {
+                el.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+
+        // Simple validation visualization
+        const submitBtn = document.querySelector('button');
+        submitBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Processing...';
+            setTimeout(() => {
+                submitBtn.innerHTML = 'Registration Sent!';
+                submitBtn.classList.remove('bg-primary');
+                submitBtn.classList.add('bg-tertiary');
+            }, 2000);
+        });
+    </script>
+</body></html>

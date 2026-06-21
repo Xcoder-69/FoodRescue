@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FoodRescue | Admin Complaints Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#10b981",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f4fbf4",
+                        "outline-variant": "#bbcabf",
+                        "on-background": "#161d19",
+                        "on-primary-fixed-variant": "#005236",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#dde4dd",
+                        "primary": "#006c49",
+                        "inverse-primary": "#4edea3",
+                        "surface-bright": "#f4fbf4",
+                        "on-surface": "#161d19",
+                        "secondary": "#9d4300",
+                        "surface-tint": "#006c49",
+                        "inverse-on-surface": "#ebf3eb",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "on-primary-fixed": "#002113",
+                        "on-surface-variant": "#3c4a42",
+                        "surface-container-low": "#eef6ee",
+                        "on-tertiary-container": "#00328b",
+                        "background": "#f4fbf4",
+                        "on-secondary-fixed": "#341100",
+                        "on-primary-container": "#00422b",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#783200",
+                        "on-tertiary-fixed": "#00174b",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "inverse-surface": "#2b322d",
+                        "surface-container-high": "#e3eae3",
+                        "outline": "#6c7a71",
+                        "tertiary": "#0053db",
+                        "surface-dim": "#d4dcd5",
+                        "secondary-fixed": "#ffdbca",
+                        "primary-fixed": "#6ffbbe",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#dde4dd",
+                        "surface-container": "#e8f0e9",
+                        "tertiary-container": "#7f9fff",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#5c2400",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#fd761a",
+                        "primary-fixed-dim": "#4edea3",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "16px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "container-padding-desktop": "32px",
+                        "unit": "4px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-background shadow-sm flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 duration-200" data-icon="menu">menu</span>
+<h1 class="font-display-lg text-title-lg font-bold text-primary dark:text-primary-fixed">FoodRescue</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-full transition-colors cursor-pointer" data-icon="search">search</span>
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary cursor-pointer active:scale-95 duration-200" data-icon="notifications">notifications</span>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-label-md">AD</div>
+</div>
+</header>
+<!-- Side Navigation (Desktop) -->
+<aside class="hidden md:flex fixed left-0 top-16 h-[calc(100vh-64px)] w-72 bg-surface-container-low dark:bg-inverse-surface flex-col p-stack-md shadow-lg z-40 transition-all duration-200 ease-in-out">
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 bg-primary-container text-on-primary-container font-semibold rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="report">report</span>
+<span class="font-body-lg">Partner Sites</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-lg">Impact Reports</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-lg">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-4 flex items-center gap-3 bg-surface-container rounded-xl">
+<div class="h-10 w-10 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged male administrator wearing a clean white shirt and a confident smile, set against a blurred modern office background with soft green accents. The lighting is bright and professional, conveying trust and systematic authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMSmoVLkK6UetfXXXjSmk2mW83HZl_OXJ9Qsb-BVRJZiKIeoPVbxCIiAzD9vz_sCBU3EsZdmnwZ-KG9B47Q3EsLACt_lJRLcFHCtDvq7bQi1OSEV4joTPZ34Jo4cR0UnqFzIQgXaRnOv7ePDOwuLnfxAm29YtO4YEB-CbYQZGkj19f3y0gw-TIUGv30btJCYycES8QJg0nqKhCnG8y1JNxK6YMYQFlt6FlAJcGw746ZYTzkGwmauzt3nbMW7Bk-APWfTL5TOwwzJA"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-on-surface">Rescue Member</span>
+<span class="text-xs text-outline italic">active_volunteer</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-32 md:pl-[304px] px-container-padding-mobile md:px-container-padding-desktop min-h-screen">
+<div class="max-w-7xl mx-auto">
+<!-- Page Header -->
+<div class="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Complaints Management</h2>
+<p class="text-on-surface-variant font-body-md">Oversee and resolve reported issues within the FoodRescue ecosystem.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full font-label-lg text-on-surface-variant hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                        Filter
+                    </button>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-full font-label-lg shadow-md hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+                        Export Report
+                    </button>
+</div>
+</div>
+<!-- Dashboard Overview Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-stack-lg">
+<div class="bg-surface p-6 rounded-xl border border-outline-variant flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-md">Pending Critical</p>
+<h3 class="text-3xl font-bold text-error">12</h3>
+</div>
+<div class="h-12 w-12 bg-error-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-error-container" data-icon="priority_high">priority_high</span>
+</div>
+</div>
+<div class="bg-surface p-6 rounded-xl border border-outline-variant flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-md">Under Investigation</p>
+<h3 class="text-3xl font-bold text-secondary">28</h3>
+</div>
+<div class="h-12 w-12 bg-secondary-fixed rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant" data-icon="search_check">search_check</span>
+</div>
+</div>
+<div class="bg-surface p-6 rounded-xl border border-outline-variant flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-md">Resolved Today</p>
+<h3 class="text-3xl font-bold text-primary">156</h3>
+</div>
+<div class="h-12 w-12 bg-primary-fixed rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed-variant" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Complaints Bento Grid -->
+<div class="bento-grid">
+<!-- Complaint Card: Critical -->
+<div class="glass-card p-6 rounded-xl flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<span class="px-3 py-1 rounded-full bg-error text-on-error text-xs font-bold uppercase tracking-wider">Critical</span>
+<div class="flex flex-col items-end">
+<span class="text-xs text-outline font-label-md">Status</span>
+<span class="text-error font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+                                Pending
+                            </span>
+</div>
+</div>
+<div>
+<h4 class="font-title-lg text-on-surface flex items-center gap-2">
+                            Food Quality Concern
+                            <span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="warning">warning</span>
+</h4>
+<p class="text-xs text-outline font-label-md mt-1 italic">Reported on Oct 24, 14:30</p>
+</div>
+<div class="grid grid-cols-2 gap-4 py-3 border-y border-outline-variant/30">
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Reporter</p>
+<p class="font-body-lg text-on-surface">Hope Shelter NGO</p>
+</div>
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Against</p>
+<p class="font-body-lg text-on-surface">Gourmet Garden</p>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md line-clamp-2">"The received batches of salads appeared wilted and had a strong sour odor. This is the second time this week."</p>
+<div class="flex flex-wrap gap-2 mt-auto pt-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-lg hover:brightness-110 transition-all active:scale-95">Investigate</button>
+<button class="px-3 py-2 border border-outline rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined align-middle" data-icon="mail">mail</span>
+</button>
+<button class="px-3 py-2 border border-error/30 rounded-lg text-error hover:bg-error-container transition-all">
+<span class="material-symbols-outlined align-middle" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Complaint Card: Moderate -->
+<div class="glass-card p-6 rounded-xl flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold uppercase tracking-wider">Moderate</span>
+<div class="flex flex-col items-end">
+<span class="text-xs text-outline font-label-md">Status</span>
+<span class="text-secondary font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                Investigating
+                            </span>
+</div>
+</div>
+<div>
+<h4 class="font-title-lg text-on-surface flex items-center gap-2">Late Pickup</h4>
+<p class="text-xs text-outline font-label-md mt-1 italic">Reported on Oct 24, 11:15</p>
+</div>
+<div class="grid grid-cols-2 gap-4 py-3 border-y border-outline-variant/30">
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Reporter</p>
+<p class="font-body-lg text-on-surface">The Bistro Café</p>
+</div>
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Against</p>
+<p class="font-body-lg text-on-surface">Volunteer Alex P.</p>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md">"The volunteer arrived 45 minutes after the agreed window. We had to close the kitchen and wait."</p>
+<div class="flex flex-wrap gap-2 mt-auto pt-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-lg hover:brightness-110 transition-all active:scale-95">Investigate</button>
+<button class="px-3 py-2 border border-outline rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined align-middle" data-icon="mail">mail</span>
+</button>
+<button class="px-3 py-2 border border-error/30 rounded-lg text-error hover:bg-error-container transition-all">
+<span class="material-symbols-outlined align-middle" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Complaint Card: Low -->
+<div class="glass-card p-6 rounded-xl flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<span class="px-3 py-1 rounded-full bg-primary-container text-on-primary-container text-xs font-bold uppercase tracking-wider">Low</span>
+<div class="flex flex-col items-end">
+<span class="text-xs text-outline font-label-md">Status</span>
+<span class="text-primary font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                                Resolved
+                            </span>
+</div>
+</div>
+<div>
+<h4 class="font-title-lg text-on-surface flex items-center gap-2">Incorrect Packaging</h4>
+<p class="text-xs text-outline font-label-md mt-1 italic">Reported on Oct 23, 16:50</p>
+</div>
+<div class="grid grid-cols-2 gap-4 py-3 border-y border-outline-variant/30">
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Reporter</p>
+<p class="font-body-lg text-on-surface">Community Kitchen</p>
+</div>
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Against</p>
+<p class="font-body-lg text-on-surface">Skyline Deli</p>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md line-clamp-2">"Containers were not labeled with allergen information. This is a recurring minor issue."</p>
+<div class="flex flex-wrap gap-2 mt-auto pt-2">
+<button class="flex-1 border border-outline text-on-surface-variant py-2 rounded-lg font-label-lg bg-surface-container-high transition-all">View Details</button>
+<button class="px-3 py-2 border border-outline rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined align-middle" data-icon="history">history</span>
+</button>
+</div>
+</div>
+<!-- Complaint Card: Critical 2 -->
+<div class="glass-card p-6 rounded-xl flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow border-l-4 border-error">
+<div class="flex justify-between items-start">
+<span class="px-3 py-1 rounded-full bg-error text-on-error text-xs font-bold uppercase tracking-wider">Critical</span>
+<div class="flex flex-col items-end">
+<span class="text-xs text-outline font-label-md">Status</span>
+<span class="text-error font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+                                Pending
+                            </span>
+</div>
+</div>
+<div>
+<h4 class="font-title-lg text-on-surface flex items-center gap-2">Abusive Behavior</h4>
+<p class="text-xs text-outline font-label-md mt-1 italic">Reported on Oct 24, 09:20</p>
+</div>
+<div class="grid grid-cols-2 gap-4 py-3 border-y border-outline-variant/30">
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Reporter</p>
+<p class="font-body-lg text-on-surface">Volunteer Sam K.</p>
+</div>
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Against</p>
+<p class="font-body-lg text-on-surface">Urban Grill</p>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md">"The manager was verbally aggressive during pickup, claiming we were late when I arrived exactly on time."</p>
+<div class="flex flex-wrap gap-2 mt-auto pt-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-lg hover:brightness-110 transition-all active:scale-95">Investigate</button>
+<button class="px-3 py-2 border border-outline rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined align-middle" data-icon="chat">chat</span>
+</button>
+<button class="px-3 py-2 border border-error/30 rounded-lg text-error hover:bg-error-container transition-all">
+<span class="material-symbols-outlined align-middle" data-icon="block">block</span>
+</button>
+</div>
+</div>
+<!-- Complaint Card: Moderate 2 -->
+<div class="glass-card p-6 rounded-xl flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold uppercase tracking-wider">Moderate</span>
+<div class="flex flex-col items-end">
+<span class="text-xs text-outline font-label-md">Status</span>
+<span class="text-secondary font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                Investigating
+                            </span>
+</div>
+</div>
+<div>
+<h4 class="font-title-lg text-on-surface flex items-center gap-2">Incorrect Food Type</h4>
+<p class="text-xs text-outline font-label-md mt-1 italic">Reported on Oct 24, 08:00</p>
+</div>
+<div class="grid grid-cols-2 gap-4 py-3 border-y border-outline-variant/30">
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Reporter</p>
+<p class="font-body-lg text-on-surface">Central Pantry</p>
+</div>
+<div>
+<p class="text-[10px] uppercase text-outline font-bold">Against</p>
+<p class="font-body-lg text-on-surface">Pizza Planet</p>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md line-clamp-2">"Donation listed as 'Prepared Meals' was actually raw dough and sauce. Not suitable for our immediate distribution."</p>
+<div class="flex flex-wrap gap-2 mt-auto pt-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-lg hover:brightness-110 transition-all active:scale-95">Investigate</button>
+<button class="px-3 py-2 border border-outline rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined align-middle" data-icon="info">info</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-4 bg-surface dark:bg-background shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] z-50 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+<span class="font-label-md text-label-md">Donate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</footer>
+<script>
+        // Micro-interactions for buttons and tabs
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                const icon = this.querySelector('.material-symbols-outlined');
+                if(icon) {
+                    icon.classList.add('scale-125');
+                    setTimeout(() => icon.classList.remove('scale-125'), 200);
+                }
+            });
+        });
+
+        // Simple filtering simulation logic can be added here
+    </script>
+</body></html>

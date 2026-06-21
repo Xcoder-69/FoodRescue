@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Terms & Conditions | FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 1000px;
+            padding-bottom: 24px;
+        }
+        .accordion-item.active .chevron-icon {
+            transform: rotate(180deg);
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            background: rgba(244, 251, 244, 0.8);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#3c4a42",
+                    "secondary-container": "#fd761a",
+                    "on-primary-fixed": "#002113",
+                    "surface-dim": "#d4dcd5",
+                    "surface-container-highest": "#dde4dd",
+                    "inverse-primary": "#4edea3",
+                    "on-primary-fixed-variant": "#005236",
+                    "outline": "#6c7a71",
+                    "tertiary-fixed-dim": "#b4c5ff",
+                    "surface-container": "#e8f0e9",
+                    "on-secondary-container": "#5c2400",
+                    "on-tertiary-fixed": "#00174b",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#341100",
+                    "on-tertiary-container": "#00328b",
+                    "surface-container-high": "#e3eae3",
+                    "inverse-on-surface": "#ebf3eb",
+                    "background": "#f4fbf4",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#dde4dd",
+                    "primary": "#006c49",
+                    "on-surface": "#161d19",
+                    "surface": "#f4fbf4",
+                    "primary-fixed-dim": "#4edea3",
+                    "surface-bright": "#f4fbf4",
+                    "outline-variant": "#bbcabf",
+                    "surface-tint": "#006c49",
+                    "on-secondary-fixed-variant": "#783200",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#003ea8",
+                    "tertiary-container": "#7f9fff",
+                    "surface-container-low": "#eef6ee",
+                    "primary-fixed": "#6ffbbe",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#0053db",
+                    "on-primary-container": "#00422b",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#ffdbca",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#2b322d",
+                    "secondary-fixed-dim": "#ffb690",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed": "#dbe1ff",
+                    "on-background": "#161d19",
+                    "secondary": "#9d4300",
+                    "primary-container": "#10b981"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "container-padding-mobile": "16px",
+                    "gutter": "24px",
+                    "stack-md": "16px",
+                    "container-padding-desktop": "32px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-lg min-h-screen pb-24 md:pb-0">
+<!-- Top AppBar (from JSON) -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-background shadow-sm flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16 w-full glass-header">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-all" data-icon="arrow_back" onclick="window.history.back()">arrow_back</span>
+<h1 class="font-display-lg text-[24px] font-bold text-primary dark:text-primary-fixed">FoodRescue</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-full cursor-pointer transition-colors" data-icon="notifications">notifications</span>
+</div>
+</header>
+<main class="pt-24 pb-12 px-container-padding-mobile md:px-container-padding-desktop max-w-4xl mx-auto">
+<!-- Hero Section -->
+<div class="mb-stack-lg">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-2 text-primary">Terms & Conditions</h2>
+<p class="text-on-surface-variant font-body-md">Please read these terms carefully before using the FoodRescue platform. By accessing or using our services, you agree to be bound by these terms.</p>
+</div>
+<!-- Accordion Container -->
+<div class="space-y-4">
+<!-- Introduction -->
+<div class="accordion-item bg-surface-container-lowest shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-xl overflow-hidden active">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleAccordion(this)">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+<span class="font-title-lg text-title-lg">Introduction</span>
+</div>
+<span class="material-symbols-outlined chevron-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="accordion-content px-stack-md">
+<div class="border-t border-outline-variant/30 pt-4 text-on-surface-variant space-y-3">
+<p>FoodRescue is a digital facilitation platform designed to connect food donors (restaurants/caterers) with food recipients (NGOs) via a network of logistics volunteers. Our role is strictly as a technical intermediary to minimize food waste and alleviate hunger.</p>
+<p>We do not produce, handle, or transport food directly. Our platform serves to coordinate logistics and provide a transparent record of contributions and distributions.</p>
+</div>
+</div>
+</div>
+<!-- User Eligibility -->
+<div class="accordion-item bg-surface-container-lowest shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-xl overflow-hidden">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleAccordion(this)">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="person_check">person_check</span>
+<span class="font-title-lg text-title-lg">User Eligibility</span>
+</div>
+<span class="material-symbols-outlined chevron-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="accordion-content px-stack-md">
+<div class="border-t border-outline-variant/30 pt-4 text-on-surface-variant space-y-2">
+<ul class="list-disc ml-5 space-y-2">
+<li>Users must be at least 18 years of age to register as a donor, volunteer, or NGO representative.</li>
+<li>All users must provide valid, verifiable information including government-issued identification where requested.</li>
+<li>Organizations (Restaurants/NGOs) must provide valid operational licenses and tax identification numbers.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Restaurant Responsibilities -->
+<div class="accordion-item bg-surface-container-lowest shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-xl overflow-hidden">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleAccordion(this)">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="restaurant">restaurant</span>
+<span class="font-title-lg text-title-lg">Restaurant Responsibilities</span>
+</div>
+<span class="material-symbols-outlined chevron-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="accordion-content px-stack-md">
+<div class="border-t border-outline-variant/30 pt-4 text-on-surface-variant space-y-3">
+<p>Donors are solely responsible for the safety and quality of the food provided. This includes:</p>
+<ul class="list-disc ml-5 space-y-2">
+<li>Adherence to FSSAI (or local equivalent) food safety standards.</li>
+<li>Ensuring all food items are within their safe consumption period (not expired).</li>
+<li>Accurate labeling of potential allergens and storage requirements.</li>
+<li>Maintaining proper temperature control until the point of volunteer pickup.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- NGO Responsibilities -->
+<div class="accordion-item bg-surface-container-lowest shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-xl overflow-hidden">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleAccordion(this)">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="diversity_3">diversity_3</span>
+<span class="font-title-lg text-title-lg">NGO Responsibilities</span>
+</div>
+<span class="material-symbols-outlined chevron-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="accordion-content px-stack-md">
+<div class="border-t border-outline-variant/30 pt-4 text-on-surface-variant space-y-3">
+<p>Recipients must ensure ethical and safe distribution of received food items:</p>
+<ul class="list-disc ml-5 space-y-2">
+<li>Immediate inspection of food upon arrival.</li>
+<li>Maintain detailed records of distribution beneficiaries for impact reporting.</li>
+<li>Prohibit the resale of donated items; all food must be distributed for free.</li>
+<li>Notification of any safety concerns within 1 hour of receipt.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Volunteer Responsibilities -->
+<div class="accordion-item bg-surface-container-lowest shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-xl overflow-hidden">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleAccordion(this)">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="directions_bike">directions_bike</span>
+<span class="font-title-lg text-title-lg">Volunteer Responsibilities</span>
+</div>
+<span class="material-symbols-outlined chevron-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="accordion-content px-stack-md">
+<div class="border-t border-outline-variant/30 pt-4 text-on-surface-variant space-y-3">
+<p>Volunteers act as independent community members aiding the cause:</p>
+<ul class="list-disc ml-5 space-y-2">
+<li>Adhere to safe driving and traffic laws during transit.</li>
+<li>Verify pickup and delivery using the OTP system provided in the app.</li>
+<li>Notify the platform immediately of any spills, accidents, or delays.</li>
+<li>Treat all donors and recipients with professional courtesy and respect.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Platform Rights -->
+<div class="accordion-item bg-surface-container-lowest shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-xl overflow-hidden">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleAccordion(this)">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="gavel">gavel</span>
+<span class="font-title-lg text-title-lg">Platform Rights</span>
+</div>
+<span class="material-symbols-outlined chevron-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="accordion-content px-stack-md">
+<div class="border-t border-outline-variant/30 pt-4 text-on-surface-variant space-y-3">
+<p>FoodRescue reserves the right to:</p>
+<ul class="list-disc ml-5 space-y-2">
+<li>Suspend or terminate accounts for violation of safety protocols or ethical guidelines.</li>
+<li>Perform random verification checks on FSSAI licenses and NGO registration documents.</li>
+<li>Modify these terms at any time; users will be notified of significant changes.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Liability Disclaimer -->
+<div class="accordion-item bg-surface-container-lowest shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-xl overflow-hidden">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleAccordion(this)">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+<span class="font-title-lg text-title-lg">Liability Disclaimer</span>
+</div>
+<span class="material-symbols-outlined chevron-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="accordion-content px-stack-md">
+<div class="border-t border-outline-variant/30 pt-4 text-on-surface-variant bg-error-container/20 p-4 rounded-lg">
+<p class="font-bold mb-2">LIMITATION OF LIABILITY</p>
+<p>To the maximum extent permitted by law, FoodRescue shall not be liable for any food-borne illnesses, accidents, or injuries resulting from the donation process. The platform is provided "as is" without warranty of any kind. Responsibility for food safety lies solely with the Donor and the Recipient.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-stack-lg pt-stack-lg border-t border-outline-variant text-center pb-8">
+<p class="text-on-surface-variant font-label-md mb-2">Last Updated: October 24, 2023</p>
+<p class="text-on-surface-variant/60 text-label-md">© 2023 FoodRescue Initiative. All rights reserved.</p>
+</footer>
+</main>
+<!-- Bottom Navigation (from JSON) - Hidden on Desktop -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-4 bg-surface dark:bg-background shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] z-50 md:hidden rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant cursor-pointer active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant cursor-pointer active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 cursor-pointer active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+<span class="font-label-md text-label-md">Donate</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant cursor-pointer active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant cursor-pointer active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</div>
+</nav>
+<script>
+        function toggleAccordion(button) {
+            const item = button.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Close all items
+            document.querySelectorAll('.accordion-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Toggle clicked item
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+
+        // Simple Fade-in effect for the page
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('opacity-100');
+        });
+    </script>
+</body></html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CSR &amp; Reporting | FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .certificate-shimmer {
+            background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 200%;
+            animation: shimmer 4s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% -200%; }
+            100% { background-position: 200% 200%; }
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-tint": "#006c49",
+                        "surface-container-highest": "#dde4dd",
+                        "secondary-fixed-dim": "#ffb690",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#00328b",
+                        "on-secondary-container": "#5c2400",
+                        "surface": "#f4fbf4",
+                        "on-primary-fixed-variant": "#005236",
+                        "outline-variant": "#bbcabf",
+                        "secondary-fixed": "#ffdbca",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-surface": "#161d19",
+                        "primary-container": "#10b981",
+                        "surface-container-low": "#eef6ee",
+                        "tertiary": "#0053db",
+                        "primary": "#006c49",
+                        "surface-container-high": "#e3eae3",
+                        "on-secondary-fixed-variant": "#783200",
+                        "surface-container": "#e8f0e9",
+                        "on-primary-container": "#00422b",
+                        "background": "#f4fbf4",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#6ffbbe",
+                        "outline": "#6c7a71",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "inverse-on-surface": "#ebf3eb",
+                        "on-surface-variant": "#3c4a42",
+                        "secondary": "#9d4300",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f4fbf4",
+                        "tertiary-container": "#7f9fff",
+                        "on-primary": "#ffffff",
+                        "on-background": "#161d19",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "inverse-surface": "#2b322d",
+                        "surface-variant": "#dde4dd",
+                        "secondary-container": "#fd761a",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d4dcd5",
+                        "on-secondary-fixed": "#341100",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#4edea3",
+                        "on-tertiary-fixed": "#00174b",
+                        "on-error-container": "#93000a",
+                        "impact-yellow": "#FFD700"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "container-padding-mobile": "16px",
+                        "container-padding-desktop": "32px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-background shadow-[0px_4px_12px_rgba(0,0,0,0.05)] docked full-width top-0 z-50 fixed w-full">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="font-headline-lg-mobile text-headline-lg-mobile md:text-headline-lg font-bold text-primary dark:text-primary-fixed-dim">FoodRescue</span>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full" data-icon="notifications">notifications</button>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold border-2 border-primary">
+                    GT
+                </div>
+</div>
+</div>
+</header>
+<!-- NavigationDrawer (Desktop Only) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container dark:bg-surface-container-high w-80 shadow-md z-40">
+<div class="font-headline-lg text-headline-lg font-black text-primary px-gutter py-stack-lg mt-16">FoodRescue</div>
+<div class="px-gutter py-4 border-b border-outline-variant/30 mb-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional restaurant logo for Green Table Bistro, featuring a stylized green leaf integrated with a minimalist table outline. The style is clean, modern, and high-end, utilizing emerald green tones against a crisp white background to convey a fresh, eco-friendly culinary identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbI1-9ylm-J_IMqcUHtwtH_8Fh0fScnepz9OTMf8UnHIO_eNFXAAwQI-wNmzsIz-_tYjs9dCMsBp_A5qkdQ7j7QAKUPmRzZBrQngvqoAQmqe8GhxNsRtyOOv1CIN8F9VnPemqGAHTeEGkU2zgAoMMiM5u_PyuTelxBkgb8kN9wB5TRFMYesdeLPRKCe2ufoBoDJiGqsEVz10v8CSIXAuHJz0HTeObgJg3iCyQ5HNcr9MPdN1bdacFEDqPTTMl0jPLyLv1F2pVCIdU"/>
+</div>
+<div>
+<h3 class="font-bold text-on-surface">Green Table Bistro</h3>
+<p class="text-xs text-on-surface-variant">Premium Partner</p>
+</div>
+</div>
+</div>
+<nav class="flex-grow space-y-1 overflow-y-auto">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Donation History</span>
+</a>
+<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span>Impact Analytics</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Volunteers</span>
+</a>
+<div class="mt-auto pb-8">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-stack-md text-error mx-stack-md px-stack-md py-3 hover:bg-error-container hover:text-on-error-container transition-all rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="min-h-screen pt-24 pb-32 lg:pb-8 lg:pl-80 px-4 md:px-8">
+<div class="max-w-6xl mx-auto space-y-10">
+<!-- Page Header -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-display-lg text-4xl md:text-display-lg text-primary tracking-tight">CSR &amp; Impact</h1>
+<p class="text-on-surface-variant mt-2 max-w-xl text-body-lg">Review your environmental contribution and community reach. Your efforts drive the mission to eliminate food waste.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-highest text-on-surface px-6 py-3 rounded-full font-label-lg flex items-center gap-2 hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span> Share Success
+                    </button>
+</div>
+</section>
+<!-- Bento Grid Highlights -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Certificate Card (Primary Action) -->
+<div class="md:col-span-2 bg-white rounded-3xl p-8 shadow-[0px_12px_32px_rgba(0,0,0,0.06)] border border-primary/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-8">
+<div class="w-16 h-16 rounded-full bg-impact-yellow flex items-center justify-center shadow-lg text-on-secondary rotate-12 group-hover:rotate-0 transition-transform">
+<span class="material-symbols-outlined text-4xl" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="relative z-10 space-y-6">
+<h2 class="font-headline-lg text-on-surface">Annual CSR Certificate</h2>
+<p class="text-on-surface-variant max-w-md">Your 2023 Gold Status Recognition for outstanding commitment to community food security and sustainability.</p>
+<!-- Certificate Preview Mockup -->
+<div class="w-full max-w-md aspect-[1.414/1] bg-surface-container-low rounded-xl border-4 border-impact-yellow/30 p-8 flex flex-col items-center justify-center text-center relative overflow-hidden group/cert cursor-zoom-in">
+<div class="certificate-shimmer absolute inset-0"></div>
+<div class="border-2 border-impact-yellow/20 w-full h-full flex flex-col items-center justify-center p-4">
+<span class="material-symbols-outlined text-primary text-6xl mb-4" data-icon="workspace_premium" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<p class="font-serif text-sm uppercase tracking-widest text-on-surface-variant mb-1">Certificate of Excellence</p>
+<h3 class="font-serif text-2xl text-on-surface font-bold mb-4">Green Table Bistro</h3>
+<div class="w-24 h-[1px] bg-impact-yellow mb-4"></div>
+<p class="text-[10px] text-on-surface-variant leading-tight">Recognized for rescuing over 1,000kg of food surplus and significantly reducing local methane emissions.</p>
+<div class="absolute bottom-4 right-4 opacity-50">
+<span class="material-symbols-outlined text-4xl text-impact-yellow" data-icon="approval">approval</span>
+</div>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-8 py-4 rounded-full font-label-lg flex items-center gap-3 shadow-lg active:scale-95 transition-all w-fit mt-4">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                            Download CSR Certificate (PDF)
+                        </button>
+</div>
+<!-- Decorative elements -->
+<div class="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+<!-- Carbon Footprint Highlight -->
+<div class="bg-primary-container rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 right-0 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="eco" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div class="relative z-10">
+<span class="material-symbols-outlined text-on-primary-container mb-4" data-icon="cloud_done">cloud_done</span>
+<p class="text-on-primary-container font-medium">Carbon Footprint</p>
+<h2 class="text-5xl font-black text-on-primary-container my-2">Reduced by 15%</h2>
+<p class="text-on-primary-container/80 text-sm">Equivalent to planting 42 mature trees this year alone.</p>
+</div>
+<button class="mt-8 text-on-primary-container font-bold flex items-center gap-1 group">
+                        View Analysis <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Impact Stats & Reports -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Stat Cards -->
+<div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="bg-white rounded-3xl p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] flex items-center gap-6 border border-outline-variant/30">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<p class="text-on-surface-variant text-sm font-medium">Total Food Rescued</p>
+<h3 class="text-3xl font-black text-primary">1,284 kg</h3>
+</div>
+</div>
+<div class="bg-white rounded-3xl p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] flex items-center gap-6 border border-outline-variant/30">
+<div class="w-16 h-16 rounded-2xl bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl" data-icon="family_restroom">family_restroom</span>
+</div>
+<div>
+<p class="text-on-surface-variant text-sm font-medium">Families Supported</p>
+<h3 class="text-3xl font-black text-secondary">40 Families</h3>
+</div>
+</div>
+<!-- Narrative Impact Card -->
+<div class="sm:col-span-2 bg-white rounded-3xl p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 relative overflow-hidden">
+<div class="flex flex-col md:flex-row gap-8 items-center">
+<div class="w-full md:w-1/3 aspect-square rounded-2xl overflow-hidden shadow-inner">
+<img class="w-full h-full object-cover hover:scale-110 transition-transform duration-700" data-alt="A heartwarming, high-quality photograph showing a diverse group of community volunteers and families sharing a fresh, nutritious meal in a sunlit community center. The lighting is warm and golden, emphasizing a sense of belonging and joy. The composition is candid and emotional, reflecting the tangible human impact of food rescue efforts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFm1RD6H6hD9GZGx4fwz3db9qaLONQ9VZ_OkKuVksiUczZIT27MVjS5OwMoLjOJQPGrgB9-mAt4YRz4ftNohacJBNOmUhgUOFAR_yccPdSSw9WmmTx09yCZWhxDltr-NaebLpY-P-Fqon0-GBwS2YzUQpwNyiwDYBZv17DffSoScsaY_7b1sHVf48ErYP66byEtGZuaijLXeel3OXqsxToe3DgHXnncdb6tiklCAC4DRO7tLSLsi2mDccgMEaWs9aYjZDuXK6HS_o"/>
+</div>
+<div class="flex-1 space-y-4">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Spotlight</span>
+<h4 class="text-title-lg font-bold text-on-surface">"Every gram counts towards a smile"</h4>
+<p class="text-on-surface-variant italic">"Green Table Bistro's weekly donations have transformed our Friday community kitchens into a feast of nutritional variety. The quality is exceptional." - Maria S., Community Lead</p>
+<div class="flex gap-4 items-center">
+<div class="flex -space-x-3">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a smiling female volunteer with a kind expression, wearing a simple apron. The lighting is soft and natural, suggesting a community setting. Professional headshot style with shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYxYA45ckSwxLL8qUuxITBeoJ0du8gx6eXoleluvpZkRvj30W0RV02JV5mXaERHU3GWoUPC7MCAyv6BZJW9_1XieBrpjCjAoOOCKBJTzPEgGfs7s1-pY4dLDqkpp6fWjQbIYuqo5dMcP7AQnbIo_tykpTb3qpmpBhAEuDLeNVj9fQvC4he2OrPA6wlzxPpYgJuiqkfvs4brEnZxx2uupaXdz5lVsTrfeFlbcxOt82m2XH_3MNIh26VE_eZgcEMtnMqqISuWs1rm00"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-300 flex items-center justify-center text-[10px] font-bold text-white">+12</div>
+</div>
+<p class="text-xs text-on-surface-variant font-medium">Impact verified by FoodRescue Ethics Board</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Annual Reports List -->
+<div class="md:col-span-4 bg-white rounded-3xl p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 flex flex-col">
+<h3 class="font-title-lg text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="history">history</span>
+                        Annual Reports
+                    </h3>
+<div class="space-y-3 flex-grow">
+<!-- Report Item -->
+<div class="p-4 rounded-2xl hover:bg-surface-container-low transition-colors border border-transparent hover:border-outline-variant/50 flex items-center justify-between group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Impact Report 2023</p>
+<p class="text-xs text-on-surface-variant">Dec 20, 2023 • 4.2MB</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="download">download</button>
+</div>
+<!-- Report Item -->
+<div class="p-4 rounded-2xl hover:bg-surface-container-low transition-colors border border-transparent hover:border-outline-variant/50 flex items-center justify-between group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Annual CSR 2022</p>
+<p class="text-xs text-on-surface-variant">Jan 12, 2023 • 3.8MB</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="download">download</button>
+</div>
+<!-- Report Item -->
+<div class="p-4 rounded-2xl hover:bg-surface-container-low transition-colors border border-transparent hover:border-outline-variant/50 flex items-center justify-between group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Sustainability V1</p>
+<p class="text-xs text-on-surface-variant">Dec 15, 2021 • 5.1MB</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="download">download</button>
+</div>
+</div>
+<button class="w-full mt-6 py-3 text-primary font-bold hover:bg-primary/5 rounded-xl transition-all border border-primary/20">
+                        View All Reports
+                    </button>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface dark:bg-surface-container-lowest shadow-lg md:hidden rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 p-2 rounded-xl transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-[10px] mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 p-2 rounded-xl transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-[10px] mt-1">History</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="add_circle" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-label-md text-[10px] mt-1 font-bold">Donate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 p-2 rounded-xl transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-md text-[10px] mt-1">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 p-2 rounded-xl transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-[10px] mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple Micro-interaction for Download Button
+        document.querySelector('.bg-primary.text-on-primary').addEventListener('click', function() {
+            this.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> Generating...';
+            setTimeout(() => {
+                this.innerHTML = '<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span> Certificate Downloaded';
+                this.classList.remove('bg-primary');
+                this.classList.add('bg-impact-yellow', 'text-on-secondary');
+            }, 1500);
+        });
+
+        // Add active states to sidebar links
+        const navLinks = document.querySelectorAll('aside nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                navLinks.forEach(l => {
+                    l.classList.remove('bg-primary', 'text-on-primary');
+                    l.classList.add('text-on-surface-variant');
+                });
+                link.classList.add('bg-primary', 'text-on-primary');
+                link.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

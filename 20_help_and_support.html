@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FoodRescue | Help Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#10b981",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f4fbf4",
+                        "outline-variant": "#bbcabf",
+                        "on-background": "#161d19",
+                        "on-primary-fixed-variant": "#005236",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#dde4dd",
+                        "primary": "#006c49",
+                        "inverse-primary": "#4edea3",
+                        "surface-bright": "#f4fbf4",
+                        "on-surface": "#161d19",
+                        "secondary": "#9d4300",
+                        "surface-tint": "#006c49",
+                        "inverse-on-surface": "#ebf3eb",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "on-primary-fixed": "#002113",
+                        "on-surface-variant": "#3c4a42",
+                        "surface-container-low": "#eef6ee",
+                        "on-tertiary-container": "#00328b",
+                        "background": "#f4fbf4",
+                        "on-secondary-fixed": "#341100",
+                        "on-primary-container": "#00422b",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#783200",
+                        "on-tertiary-fixed": "#00174b",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "inverse-surface": "#2b322d",
+                        "surface-container-high": "#e3eae3",
+                        "outline": "#6c7a71",
+                        "tertiary": "#0053db",
+                        "surface-dim": "#d4dcd5",
+                        "secondary-fixed": "#ffdbca",
+                        "primary-fixed": "#6ffbbe",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#dde4dd",
+                        "surface-container": "#e8f0e9",
+                        "tertiary-container": "#7f9fff",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#5c2400",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#fd761a",
+                        "primary-fixed-dim": "#4edea3",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "16px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "container-padding-desktop": "32px",
+                        "unit": "4px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-background shadow-sm flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary cursor-pointer active:scale-95 duration-200">arrow_back</button>
+<h1 class="font-display-lg text-display-lg font-bold text-primary dark:text-primary-fixed !text-title-lg">Help Center</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 duration-200">search</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 duration-200">notifications</span>
+</div>
+</header>
+<main class="pt-24 px-container-padding-mobile md:px-container-padding-desktop max-w-5xl mx-auto space-y-stack-lg">
+<!-- Hero Search Section -->
+<section class="relative rounded-xl overflow-hidden min-h-[220px] flex flex-col justify-center items-center p-8 text-center">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-20 filter grayscale" data-alt="A warm and inviting close-up of a diverse group of hands joined together over a rustic wooden table, representing community support and solidarity. The lighting is soft and golden, creating a humanitarian and hopeful atmosphere. The color palette features earthy greens and warm browns, perfectly aligning with a modern Material UI design system for a food rescue organization." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqpL2bcNRwRBWU5l-qowXqC5uSKJYP22mlgI0YGUAxzPtF37s2CUaK9o-d2Xcta1FQ67dTqPR8wZylKgSdC4anLPGQII8S4Kpv--U1KhmO8aVdkQ_79rOoui0iRq5ZJT1MvoUN53LtuDkL78pZcP6qsHU8CEvw6idEOemXKhojmWu1WgW_JXU9roFFMQAimiDBeoWPGsoNnq7DL7YKfA2MeqqZOPu2uwAxrygBddkaiOl_8GcFBZ_WWsOkx8khhoveVn8_2DV7S4o"/>
+</div>
+<div class="relative z-10 w-full max-w-2xl">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-stack-md">How can we help you today?</h2>
+<div class="relative">
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-lowest border-none shadow-md rounded-full focus:ring-2 focus:ring-primary-container font-body-lg text-body-lg" placeholder="Search for FAQs, guides..." type="text"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+</div>
+</div>
+</section>
+<!-- Categories Bento Grid -->
+<section class="space-y-stack-md">
+<h3 class="font-title-lg text-title-lg text-on-surface ml-2">Browse Categories</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Category Card -->
+<div class="bg-surface-container hover:bg-surface-container-high transition-all cursor-pointer p-stack-md rounded-xl flex flex-col items-center text-center group">
+<div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-stack-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface-variant">Getting Started</span>
+</div>
+<!-- Category Card -->
+<div class="bg-surface-container hover:bg-surface-container-high transition-all cursor-pointer p-stack-md rounded-xl flex flex-col items-center text-center group">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center mb-stack-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface-variant">Donation Guidelines</span>
+</div>
+<!-- Category Card -->
+<div class="bg-surface-container hover:bg-surface-container-high transition-all cursor-pointer p-stack-md rounded-xl flex flex-col items-center text-center group">
+<div class="w-12 h-12 rounded-full bg-error-container/20 flex items-center justify-center mb-stack-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">health_and_safety</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface-variant">Volunteer Safety</span>
+</div>
+<!-- Category Card -->
+<div class="bg-surface-container hover:bg-surface-container-high transition-all cursor-pointer p-stack-md rounded-xl flex flex-col items-center text-center group">
+<div class="w-12 h-12 rounded-full bg-tertiary-container/20 flex items-center justify-center mb-stack-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface-variant">App Technical Issues</span>
+</div>
+</div>
+</section>
+<!-- Top FAQs Section -->
+<section class="space-y-stack-md">
+<h3 class="font-title-lg text-title-lg text-on-surface ml-2">Frequently Asked Questions</h3>
+<div class="space-y-4">
+<!-- FAQ Item 1 -->
+<details class="group bg-surface-container-low rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<summary class="flex items-center justify-between p-stack-md cursor-pointer list-none">
+<span class="font-body-lg text-body-lg font-medium text-on-surface">What food items can I donate?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-stack-md pb-stack-md text-on-surface-variant font-body-md leading-relaxed border-t border-outline-variant/30 pt-4">
+                        We accept fresh produce, non-perishable canned goods, and prepared foods from licensed kitchens. Please ensure all items are within their expiration dates and stored at proper temperatures before pickup.
+                    </div>
+</details>
+<!-- FAQ Item 2 -->
+<details class="group bg-surface-container-low rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<summary class="flex items-center justify-between p-stack-md cursor-pointer list-none">
+<span class="font-body-lg text-body-lg font-medium text-on-surface">How do I track my impact?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-stack-md pb-stack-md text-on-surface-variant font-body-md leading-relaxed border-t border-outline-variant/30 pt-4">
+                        You can view your real-time impact metrics, including meals provided and waste diverted, in the 'Impact Reports' section of your profile dashboard.
+                    </div>
+</details>
+<!-- FAQ Item 3 -->
+<details class="group bg-surface-container-low rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<summary class="flex items-center justify-between p-stack-md cursor-pointer list-none">
+<span class="font-body-lg text-body-lg font-medium text-on-surface">What should I do in case of a late pickup?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-stack-md pb-stack-md text-on-surface-variant font-body-md leading-relaxed border-t border-outline-variant/30 pt-4">
+                        If a volunteer is more than 30 minutes late, please use the 'Alerts' tab to notify our dispatch team. We will immediately reassign the route to ensure food safety.
+                    </div>
+</details>
+<!-- FAQ Item 4 -->
+<details class="group bg-surface-container-low rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<summary class="flex items-center justify-between p-stack-md cursor-pointer list-none">
+<span class="font-body-lg text-body-lg font-medium text-on-surface">Is my personal data secure?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-stack-md pb-stack-md text-on-surface-variant font-body-md leading-relaxed border-t border-outline-variant/30 pt-4">
+                        Yes, FoodRescue uses end-to-end encryption for all user communications and adheres strictly to regional data protection regulations to ensure your privacy is maintained.
+                    </div>
+</details>
+</div>
+</section>
+<!-- Ticket CTA Section -->
+<section class="bg-primary text-on-primary rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+<div class="space-y-2 text-center md:text-left">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile font-bold">Still need help?</h3>
+<p class="font-body-lg text-body-lg opacity-90">Our dedicated support team is here to assist you 24/7.</p>
+</div>
+<button class="bg-surface-container-lowest text-primary px-8 py-4 rounded-full font-label-lg text-label-lg shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">support_agent</span>
+                Contact Support
+            </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-4 bg-surface dark:bg-background shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] z-50 rounded-t-xl md:hidden">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high transition-all active:scale-90 transition-transform duration-150 p-2">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high transition-all active:scale-90 transition-transform duration-150 p-2">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high transition-all active:scale-90 transition-transform duration-150 p-2">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="font-label-md text-label-md">Donate</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high transition-all active:scale-90 transition-transform duration-150 p-2">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</div>
+</nav>
+<script>
+        // Micro-interactions for category selection
+        document.querySelectorAll('.grid > div').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.add('ring-2', 'ring-primary-container', 'bg-primary-container/10');
+                setTimeout(() => {
+                    card.classList.remove('ring-2', 'ring-primary-container', 'bg-primary-container/10');
+                }, 300);
+            });
+        });
+
+        // Simple search feedback
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('input', (e) => {
+            if (e.target.value.length > 2) {
+                console.log(`Searching for: ${e.target.value}`);
+                // In a real app, this would filter the FAQ list dynamically
+            }
+        });
+    </script>
+</body></html>

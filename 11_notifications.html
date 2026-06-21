@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifications - FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-mesh {
+            background-color: #f4fbf4;
+            background-image: radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
+                              radial-gradient(at 100% 0%, rgba(253, 118, 26, 0.05) 0px, transparent 50%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#00422b",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface-dim": "#d4dcd5",
+                        "on-surface": "#161d19",
+                        "on-primary-fixed": "#002113",
+                        "on-background": "#161d19",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#f4fbf4",
+                        "on-error": "#ffffff",
+                        "tertiary": "#0053db",
+                        "outline": "#6c7a71",
+                        "surface-container": "#e8f0e9",
+                        "primary-fixed-dim": "#4edea3",
+                        "primary-container": "#10b981",
+                        "on-tertiary-fixed": "#00174b",
+                        "surface-container-low": "#eef6ee",
+                        "on-secondary-fixed": "#341100",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#7f9fff",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2b322d",
+                        "surface-variant": "#dde4dd",
+                        "surface-container-high": "#e3eae3",
+                        "secondary": "#9d4300",
+                        "primary-fixed": "#6ffbbe",
+                        "inverse-on-surface": "#ebf3eb",
+                        "on-tertiary-container": "#00328b",
+                        "secondary-fixed": "#ffdbca",
+                        "surface-container-highest": "#dde4dd",
+                        "on-secondary-fixed-variant": "#783200",
+                        "surface-tint": "#006c49",
+                        "secondary-container": "#fd761a",
+                        "inverse-primary": "#4edea3",
+                        "surface": "#f4fbf4",
+                        "primary": "#006c49",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-surface-variant": "#3c4a42",
+                        "outline-variant": "#bbcabf",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "on-primary-fixed-variant": "#005236",
+                        "background": "#f4fbf4",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#5c2400"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "16px",
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "container-padding-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-lg min-h-screen">
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface dark:bg-background shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer lg:hidden">menu</span>
+<span class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary">FoodRescue</span>
+</div>
+<div class="hidden lg:flex items-center gap-8">
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-3 py-1 rounded-full" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-3 py-1 rounded-full" href="#">Impact</a>
+<a class="text-primary font-bold px-3 py-1 rounded-full" href="#">Alerts</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150">notifications</button>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZh3F5HLHMzsm-JtUUxD9RwoxmzVIs-pHJzByQ6zcLQRnLqlN-K97GFPRl7Lgf5hb79_0WP5ys2xPUrov5Pzh5sdYJl2Vcikg3xZQZXoNG91FDfAJ3wDvnvQYbkSI5jj78bDGDngHk2SYTXtjezoqSMN-VrutKMmzG_USMbTYVdnaBwveyyz6z955M-1CR3Hi29dydSoXVLLSd2G47vIKp3ldpNPpPUCd1R5Edjk_h5VRM0uYaiH2b0S_GRolyNFRY30ylGtO_-z4"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Side Navigation (Desktop Only) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container dark:bg-surface-container-high shadow-md w-80 pt-24 pb-8">
+<div class="px-gutter py-stack-lg mb-4">
+<div class="flex items-center gap-4">
+<img alt="Green Table Bistro Logo" class="w-12 h-12 rounded-lg bg-white p-1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvOG5j7hWkw7g9Ghw-qhZVdD-mkhFNb5Vpb0S3xp7vNqcoKFB3h-KYSiHiDmqoZ9DSPE7T8oPSSrZa0sjXxZva6eL0ng3UmEtRQT1IYLBT7VG4SNPFOtdi4U00jTVugwLLucbgLRPaRTXCiXwe9VRV9a6LdJdlmJXBSV13BWfxGSGcv4F_T_BKPHNVlwF1ESeSiFZ9_x8ZmYtXjppHsZkdkWGuWml0PTL3IJonx2pg8K1UupQ9QtRrxKx_vdAnkknsnKD3lBAwu9w"/>
+<div>
+<p class="font-title-lg text-title-lg font-bold text-primary">Green Table Bistro</p>
+<p class="text-label-md text-on-surface-variant">Premium Partner</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span>Donation History</span>
+</a>
+<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 shadow-md active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span>Alerts &amp; Activity</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span>Impact Analytics</span>
+</a>
+<div class="mt-auto">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-error-container hover:text-on-error-container rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="lg:ml-80 pt-24 pb-32 px-container-padding-mobile md:px-container-padding-desktop min-h-screen bg-mesh">
+<div class="max-w-4xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-stack-lg">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-1">Activity Center</h1>
+<p class="text-body-md text-on-surface-variant">Stay updated with your surplus food journey and volunteer impact.</p>
+</div>
+<button class="flex items-center gap-2 text-primary font-label-lg px-4 py-2 hover:bg-primary-container rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]">done_all</span>
+                    Mark all as read
+                </button>
+</div>
+<!-- Bento Notification Grid -->
+<div class="flex flex-col gap-4">
+<!-- Urgent Alert (Full Width) -->
+<div class="group relative overflow-hidden bg-white border-l-4 border-secondary p-stack-md rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all duration-300">
+<div class="flex gap-4">
+<div class="w-12 h-12 flex-shrink-0 bg-secondary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-label-lg text-secondary font-bold">Urgent: Food Expiring Soon</h3>
+<span class="text-label-md text-on-surface-variant">2m ago</span>
+</div>
+<p class="text-body-md text-on-surface mt-1">Your listing "Fresh Baked Pastries (15kg)" will expire in 2 hours. Would you like to boost this alert to more volunteers?</p>
+<div class="flex gap-stack-md mt-stack-md">
+<button class="bg-secondary text-white px-stack-md py-1.5 rounded-full text-label-md font-bold shadow-sm active:scale-95 transition-transform">Boost Now</button>
+<button class="border border-outline-variant text-on-surface-variant px-stack-md py-1.5 rounded-full text-label-md font-bold hover:bg-surface-container-low transition-colors">Dismiss</button>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Pickup Reminder -->
+<div class="bg-white border-l-4 border-secondary-fixed p-stack-md rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] hover:translate-y-[-2px] transition-transform">
+<div class="flex gap-4">
+<div class="w-10 h-10 flex-shrink-0 bg-secondary-fixed-dim rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-fixed">schedule</span>
+</div>
+<div>
+<div class="flex justify-between">
+<h3 class="font-label-lg text-on-secondary-fixed-variant">Pickup Reminder</h3>
+<span class="text-label-md text-on-surface-variant">45m ago</span>
+</div>
+<p class="text-body-md text-on-surface mt-1">Volunteer Sarah J. is 10 minutes away for your donation #4829.</p>
+</div>
+</div>
+</div>
+<!-- Delivery Success -->
+<div class="bg-white p-stack-md rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-transparent hover:border-primary-container transition-all">
+<div class="flex gap-4">
+<div class="w-10 h-10 flex-shrink-0 bg-primary-fixed-dim rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">check_circle</span>
+</div>
+<div>
+<div class="flex justify-between">
+<h3 class="font-label-lg text-primary">Delivery Success</h3>
+<span class="text-label-md text-on-surface-variant">2h ago</span>
+</div>
+<p class="text-body-md text-on-surface mt-1">Great news! "Organic Produce Box" has been delivered to City Shelter.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Volunteer Assigned -->
+<div class="bg-white p-stack-md rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] flex gap-4 items-center group cursor-pointer">
+<div class="w-12 h-12 flex-shrink-0 relative">
+<img alt="Volunteer Avatar" class="w-full h-full rounded-full bg-tertiary-fixed object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtHgMrdYn9Z0UnyJqnTj0zRNa00WeEgS1or4WMNRz1prd-WtfwsZhBp1HxT4vHCckWp-DNTmAcKtPQRCgjSfb4WbHcy3XqRPfW0g6XK6KbeXjvZcHOPdaq5SbxmPBfIORpvALC2ZqCpnJuJbEKoRC-nhMR5ouWrnfCnwGKrLwCpHijPgmociOZnlmeiSEpbc0-DexyU-iA-bdsJOx1UY4J-auQuMR-iwTuYKA44rt2yhyFIvymA96A4llYmmuTRsEVbt38A-obP20"/>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-tertiary rounded-full flex items-center justify-center border-2 border-white">
+<span class="material-symbols-outlined text-white text-[12px]" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between">
+<h3 class="font-label-lg text-on-surface">Volunteer Assigned</h3>
+<span class="text-label-md text-on-surface-variant">4h ago</span>
+</div>
+<p class="text-body-md text-on-surface">Sarah J. has signed up to transport your "Lunch Surplus" donation.</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+<!-- Donation Accepted -->
+<div class="bg-white p-stack-md rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] flex gap-4 items-center">
+<div class="w-12 h-12 flex-shrink-0 bg-surface-container rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">volunteer_activism</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between">
+<h3 class="font-label-lg text-on-surface">Donation Accepted</h3>
+<span class="text-label-md text-on-surface-variant">Today, 9:15 AM</span>
+</div>
+<p class="text-body-md text-on-surface">Central Community Kitchen has accepted your donation offer of 20 Meals.</p>
+</div>
+</div>
+<!-- Yesterday Divider -->
+<div class="flex items-center gap-4 my-2">
+<div class="h-[1px] flex-grow bg-outline-variant"></div>
+<span class="text-label-md font-bold text-on-surface-variant uppercase tracking-wider">Yesterday</span>
+<div class="h-[1px] flex-grow bg-outline-variant"></div>
+</div>
+<!-- Pickup Success History Item -->
+<div class="bg-surface-container-low opacity-80 p-stack-md rounded-xl flex gap-4 items-center">
+<div class="w-12 h-12 flex-shrink-0 bg-outline-variant/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">local_shipping</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between">
+<h3 class="font-label-lg text-on-surface-variant">Pickup Completed</h3>
+<span class="text-label-md text-on-surface-variant">Yesterday</span>
+</div>
+<p class="text-body-md text-on-surface-variant">Your donation #4827 was picked up by Volunteer Mike R.</p>
+</div>
+</div>
+<!-- Impact Badge Achievement (Atmospheric) -->
+<div class="relative overflow-hidden rounded-2xl p-6 bg-primary text-white shadow-lg">
+<div class="absolute top-0 right-0 -mr-8 -mt-8 w-48 h-48 bg-primary-fixed-dim/20 rounded-full blur-3xl"></div>
+<div class="relative z-10 flex items-center gap-6">
+<div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30 rotate-3">
+<span class="material-symbols-outlined text-[48px] text-white" style="font-variation-settings: 'FILL' 1;">award_star</span>
+</div>
+<div>
+<p class="text-primary-fixed font-bold tracking-widest text-xs uppercase mb-1">Achievement Unlocked</p>
+<h2 class="font-title-lg text-white mb-1">500 Meals Saved!</h2>
+<p class="text-white/80 text-sm">You've reached a major milestone in community impact. Keep up the great work!</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State Suggestion (Hidden by default) -->
+<div class="hidden flex flex-col items-center justify-center py-24 text-center" id="empty-state">
+<div class="w-32 h-32 bg-surface-container rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-[64px] text-outline-variant">notifications_off</span>
+</div>
+<h3 class="font-title-lg text-on-surface">No notifications yet</h3>
+<p class="text-body-md text-on-surface-variant mt-2 max-w-xs">We'll let you know when there's an update on your donations or volunteer activity.</p>
+</div>
+</div>
+</main>
+<!-- Mobile Navigation Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface dark:bg-surface-container-lowest shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200 shadow-md">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</button>
+</nav>
+<!-- Floating Action Button (Only on relevant screens) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-secondary text-white rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl transition-all active:scale-90 z-40 md:hidden">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+<script>
+        // Simple Micro-interactions
+        document.querySelectorAll('.rounded-xl').forEach(card => {
+            card.addEventListener('click', function() {
+                if(this.classList.contains('border-l-4')) {
+                    this.style.opacity = '0.7';
+                    this.classList.remove('border-l-4');
+                    // In a real app, this would trigger an API call to mark as read
+                }
+            });
+        });
+
+        // Mark all as read visual feedback
+        const markAllBtn = document.querySelector('button:contains("Mark all as read")');
+        if(markAllBtn) {
+            markAllBtn.addEventListener('click', () => {
+                document.querySelectorAll('.border-l-4').forEach(card => {
+                    card.classList.remove('border-l-4');
+                    card.classList.add('opacity-80');
+                });
+            });
+        }
+    </script>
+</body></html>

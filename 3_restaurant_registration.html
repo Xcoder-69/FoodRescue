@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FoodRescue - Restaurant Registration</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error": "#ba1a1a",
+                      "on-error-container": "#93000a",
+                      "on-surface-variant": "#3c4a42",
+                      "on-secondary-container": "#5c2400",
+                      "on-primary-container": "#00422b",
+                      "surface-container-high": "#e3eae3",
+                      "on-tertiary-container": "#00328b",
+                      "primary-container": "#10b981",
+                      "secondary": "#9d4300",
+                      "secondary-fixed": "#ffdbca",
+                      "tertiary-fixed": "#dbe1ff",
+                      "surface": "#f4fbf4",
+                      "surface-container": "#e8f0e9",
+                      "primary-fixed": "#6ffbbe",
+                      "surface-bright": "#f4fbf4",
+                      "background": "#f4fbf4",
+                      "surface-tint": "#006c49",
+                      "on-secondary-fixed": "#341100",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed-dim": "#ffb690",
+                      "on-primary-fixed-variant": "#005236",
+                      "surface-variant": "#dde4dd",
+                      "on-surface": "#161d19",
+                      "surface-container-low": "#eef6ee",
+                      "surface-dim": "#d4dcd5",
+                      "primary": "#006c49",
+                      "tertiary-fixed-dim": "#b4c5ff",
+                      "surface-container-highest": "#dde4dd",
+                      "on-background": "#161d19",
+                      "inverse-surface": "#2b322d",
+                      "on-tertiary-fixed-variant": "#003ea8",
+                      "secondary-container": "#fd761a",
+                      "on-secondary": "#ffffff",
+                      "inverse-primary": "#4edea3",
+                      "outline": "#6c7a71",
+                      "inverse-on-surface": "#ebf3eb",
+                      "on-primary-fixed": "#002113",
+                      "tertiary": "#0053db",
+                      "on-tertiary-fixed": "#00174b",
+                      "surface-container-lowest": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#bbcabf",
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed-variant": "#783200",
+                      "tertiary-container": "#7f9fff",
+                      "primary-fixed-dim": "#4edea3"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "stack-sm": "8px",
+                      "gutter": "24px",
+                      "stack-md": "16px",
+                      "container-padding-desktop": "32px",
+                      "stack-lg": "32px",
+                      "container-padding-mobile": "16px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "title-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md text-body-md">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-background shadow-[0px_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-40 w-full">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-stack-sm">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-container-low transition-colors rounded-full">arrow_back</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg font-bold text-primary">FoodRescue</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAadULwvfr47wsqPLB1THHrDBPF2gv455ckaxBi-gZCod7uJ5olPFTegtcmJicaa4FGzOzyyu9SAi4Da-ePJW39JL_2wfxjXHXuL8TEQytQ2Nvymklmt9ubMaxctK2VHDA9YmDq_XhOZB8Y2gjpwegmlYCBmvPUiHPkuA4GG1ENGZhOd_hOUZXrVE3ZceZ47CFY3lnCqEdMufcJN6viHwrseWtrBj4deFmJM_jz2456Jwm9FtCKSrndHE299-IuIWwqhZzST1Rz258"/>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-3xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-stack-lg">
+<!-- Step Indicator -->
+<div class="mb-gutter">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-lg text-label-lg text-primary font-bold uppercase tracking-wider">1 of 2: Business Details</span>
+<span class="font-label-md text-label-md text-on-surface-variant">50% Complete</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/2 transition-all duration-500 ease-out"></div>
+</div>
+</div>
+<form class="space-y-gutter">
+<!-- Basic Information Card -->
+<section class="bg-surface-container-lowest rounded-xl p-gutter shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<h2 class="font-title-lg text-title-lg mb-stack-lg text-primary">Establishment Info</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Business Name</label>
+<input class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg transition-colors py-3 px-4" placeholder="e.g. Green Table Bistro" type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Owner Name</label>
+<input class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg transition-colors py-3 px-4" placeholder="Full name as per ID" type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Mobile Number</label>
+<div class="relative">
+<input class="w-full bg-surface-variant/50 border-0 border-b-2 border-outline-variant text-on-surface-variant cursor-not-allowed rounded-t-lg py-3 px-4" readonly="" type="tel" value="+91 98765 43210"/>
+<span class="material-symbols-outlined absolute right-3 top-3 text-primary text-sm">verified</span>
+</div>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Email Address</label>
+<input class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg transition-colors py-3 px-4" placeholder="contact@business.com" type="email"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Restaurant Type</label>
+<select class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg transition-colors py-3 px-4 appearance-none">
+<option>Restaurant</option>
+<option>Hotel</option>
+<option>Caterer</option>
+<option>Bakery</option>
+<option>Corporate Cafeteria</option>
+</select>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">FSSAI License Number</label>
+<input class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg transition-colors py-3 px-4" maxlength="14" placeholder="14-digit number" type="text"/>
+</div>
+</div>
+</section>
+<!-- Address Section (Collapsible Logic) -->
+<section class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<button class="w-full flex justify-between items-center p-gutter hover:bg-surface-container-low transition-colors text-left" onclick="document.getElementById('address-content').classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('rotate-180')" type="button">
+<div class="flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<h2 class="font-title-lg text-title-lg text-primary">Address &amp; Location</h2>
+</div>
+<span class="material-symbols-outlined arrow transition-transform duration-300">expand_more</span>
+</button>
+<div class="px-gutter pb-gutter space-y-stack-lg" id="address-content">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Street / Building</label>
+<input class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg transition-colors py-3 px-4" type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Area / Landmark</label>
+<input class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg transition-colors py-3 px-4" type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">City</label>
+<input class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg transition-colors py-3 px-4" type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Pincode</label>
+<input class="bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg transition-colors py-3 px-4" type="text"/>
+</div>
+</div>
+<div class="relative rounded-xl overflow-hidden group">
+<img alt="Map Preview" class="w-full h-48 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A high-resolution map interface showing a suburban city layout with subtle green markers indicating food collection points. The aesthetic is clean and modern, using a light-mode color palette with soft shadows and emerald green accents. The lighting is bright and even, conveying a professional and reliable logistical service for a humanitarian mission." data-location="Mumbai, India" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvHOUxJ1zOhQDDYOtaBXmDns3TFFL58oP_QjLjmKu00X0TWwruDwugxLnG4DLn4Xpp_vhUJaRbUcS2DgqdpskLWNye0A3-rsyQ8RbVqIfi46w-zavZ5DB9t_PGkICsTSBA7phzaZEhDnRfiHHezaqPXk2fSVhWnyzJwXbAK9WaAX6vArT_1Gj0OU3cMiki8APUkDU9g8r6GD0oY70UbWgXXsT7nZISU78wL1kQCGG8Fas1tHRd6mTK7UoOomvECGu7LFmmCL8IzLk"/>
+<div class="absolute inset-0 bg-black/10 flex items-center justify-center">
+<button class="bg-surface-container-lowest text-primary font-bold px-6 py-2 rounded-full shadow-lg hover:bg-primary hover:text-on-primary transition-all flex items-center gap-2 scale-95 hover:scale-100" type="button">
+<span class="material-symbols-outlined">my_location</span>
+                                Pick current location
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Document Uploads -->
+<section class="bg-surface-container-lowest rounded-xl p-gutter shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<h2 class="font-title-lg text-title-lg mb-stack-lg text-primary">Verification Documents</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl p-stack-lg hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center mb-stack-sm text-on-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">add_a_photo</span>
+</div>
+<span class="font-label-lg text-label-lg text-primary">Business Photo</span>
+<span class="text-xs text-on-surface-variant mt-1 text-center">Front facade or main dining area</span>
+</div>
+<div class="flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl p-stack-lg hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-12 h-12 bg-secondary-fixed rounded-full flex items-center justify-center mb-stack-sm text-on-secondary-fixed group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">description</span>
+</div>
+<span class="font-label-lg text-label-lg text-secondary">FSSAI Certificate</span>
+<span class="text-xs text-on-surface-variant mt-1 text-center">Clear PDF or JPG upload</span>
+</div>
+</div>
+</section>
+<!-- Bottom Action -->
+<div class="pt-stack-lg pb-gutter">
+<button class="w-full bg-primary text-on-primary font-bold py-4 rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-stack-md" type="submit">
+                    Submit For Verification
+                    <span class="material-symbols-outlined">how_to_reg</span>
+</button>
+<p class="text-center text-on-surface-variant text-xs mt-4">By continuing, you agree to FoodRescue's Partner Terms of Service and Privacy Policy.</p>
+</div>
+</form>
+</main>
+<!-- Bottom Navigation (Mobile Only Context) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface dark:bg-surface-container-lowest shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-md text-label-md">Donate</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</div>
+</nav>
+<script>
+        // Micro-interactions and subtle effects
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('focus', () => {
+                el.parentElement.querySelector('label')?.classList.add('text-primary');
+            });
+            el.addEventListener('blur', () => {
+                el.parentElement.querySelector('label')?.classList.remove('text-primary');
+            });
+        });
+
+        // Toggle FSSAI help text on click
+        document.querySelector('input[placeholder="14-digit number"]')?.addEventListener('focus', () => {
+            console.log('Focus on FSSAI field');
+        });
+    </script>
+</body></html>

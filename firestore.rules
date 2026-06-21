@@ -1,0 +1,97 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helper functions ──────────────────────────────────────────────────────
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return request.auth.uid == uid;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function hasRole(role) {
+      return isAuthenticated() && getUserData().role == role;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isNotSuspended() {
+      return isAuthenticated() && getUserData().isSuspended == false;
+    }
+
+    // ── Users collection ─────────────────────────────────────────────────────
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (isOwner(userId) || isAdmin());
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && (isOwner(userId) || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // ── Restaurants collection ───────────────────────────────────────────────
+    match /restaurants/{restaurantId} {
+      allow read: if isAuthenticated();
+      allow create: if hasRole('restaurant') && isOwner(restaurantId);
+      allow update: if (hasRole('restaurant') && isOwner(restaurantId)) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── NGOs collection ──────────────────────────────────────────────────────
+    match /ngos/{ngoId} {
+      allow read: if isAuthenticated();
+      allow create: if hasRole('ngo') && isOwner(ngoId);
+      allow update: if (hasRole('ngo') && isOwner(ngoId)) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── Volunteers collection ────────────────────────────────────────────────
+    match /volunteers/{volunteerId} {
+      allow read: if isAuthenticated();
+      allow create: if hasRole('volunteer') && isOwner(volunteerId);
+      allow update: if (hasRole('volunteer') && isOwner(volunteerId)) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── Donations collection ─────────────────────────────────────────────────
+    match /donations/{donationId} {
+      allow read: if isAuthenticated();
+      allow create: if hasRole('restaurant') && isNotSuspended();
+      allow update: if isAuthenticated() && isNotSuspended();
+      allow delete: if isAdmin();
+    }
+
+    // ── Volunteer Locations ──────────────────────────────────────────────────
+    match /volunteerLocations/{volunteerId} {
+      allow read: if isAuthenticated();
+      allow write: if hasRole('volunteer') && isOwner(volunteerId);
+    }
+
+    // ── Notifications ────────────────────────────────────────────────────────
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() &&
+        resource.data.recipientId == request.auth.uid;
+      allow create: if isAuthenticated(); // Backend creates via Admin SDK anyway
+      allow update: if isAuthenticated() &&
+        resource.data.recipientId == request.auth.uid;
+      allow delete: if isAdmin();
+    }
+
+    // ── Reports ──────────────────────────────────────────────────────────────
+    match /reports/{reportId} {
+      allow read: if isAdmin() ||
+        (isAuthenticated() && resource.data.reporterId == request.auth.uid);
+      allow create: if isAuthenticated() && isNotSuspended();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

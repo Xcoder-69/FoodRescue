@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Volunteer Dashboard - FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .active-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4fbf4;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#dde4dd",
+                    "surface-dim": "#d4dcd5",
+                    "surface-tint": "#006c49",
+                    "surface": "#f4fbf4",
+                    "secondary-fixed": "#ffdbca",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#005236",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#fd761a",
+                    "on-background": "#161d19",
+                    "on-tertiary": "#ffffff",
+                    "tertiary": "#0053db",
+                    "surface-variant": "#dde4dd",
+                    "tertiary-container": "#7f9fff",
+                    "on-secondary-fixed-variant": "#783200",
+                    "on-secondary-container": "#5c2400",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#3c4a42",
+                    "inverse-surface": "#2b322d",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#003ea8",
+                    "on-surface": "#161d19",
+                    "outline": "#6c7a71",
+                    "inverse-primary": "#4edea3",
+                    "surface-container": "#e8f0e9",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#eef6ee",
+                    "on-primary-container": "#00422b",
+                    "primary-container": "#10b981",
+                    "on-primary-fixed": "#002113",
+                    "surface-bright": "#f4fbf4",
+                    "primary-fixed-dim": "#4edea3",
+                    "primary": "#006c49",
+                    "background": "#f4fbf4",
+                    "secondary-fixed-dim": "#ffb690",
+                    "on-secondary-fixed": "#341100",
+                    "surface-container-high": "#e3eae3",
+                    "tertiary-fixed-dim": "#b4c5ff",
+                    "primary-fixed": "#6ffbbe",
+                    "outline-variant": "#bbcabf",
+                    "on-tertiary-container": "#00328b",
+                    "secondary": "#9d4300",
+                    "on-tertiary-fixed": "#00174b",
+                    "tertiary-fixed": "#dbe1ff",
+                    "inverse-on-surface": "#ebf3eb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-padding-desktop": "32px",
+                    "stack-sm": "8px",
+                    "gutter": "24px",
+                    "stack-lg": "32px",
+                    "container-padding-mobile": "16px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- Top App Bar -->
+<header class="bg-surface dark:bg-background shadow-[0px_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-40">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJcfYKCKEpxTRjmwev7ZjVbk0TtX__O8S9Xu9yi56E2mnxatz90TtyT3NtP6wezk62cWEe3xDMnYNe46AIZ0JvfRZo9LgwKARsXaI3tHxqSeDWGO07_Rmwj6SsQajclehwq8lyQntjUd8XTHvSXXiHQrcRXVQ0IIn79oN0YuEPdrL5rAOz0E-Flr3i0JkDujNIvHbtqoq-z7jWofXCvlzqa-c_sUJSunlCtgR823xflGiJgO6c08XV6zEtXogQaSNu5jXhFUHWXYU"/>
+</div>
+<div class="hidden md:block">
+<p class="font-label-md text-label-md text-on-surface-variant">Active Task</p>
+<p class="font-title-lg text-title-lg font-bold text-primary">FoodRescue</p>
+</div>
+</div>
+<h1 class="md:hidden font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FoodRescue</h1>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</button>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-stack-lg">
+<div class="bento-grid">
+<!-- Map Card: Occupies large space on desktop -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] overflow-hidden relative min-h-[300px] md:min-h-[450px]">
+<div class="absolute inset-0 bg-surface-dim">
+<img class="w-full h-full object-cover opacity-80" data-alt="A clean and professional digital map interface showing a logistics route through a city. The map features subtle emerald green and ocean blue route markers, with a clear path highlighting the journey between a restaurant and a community center. The lighting is bright and modern, emphasizing clarity and navigation efficiency." data-location="San Francisco" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIhjqjRaQ0h3Ki2PqHGpD_z3zhYQEZurKC6mT5YBSjEnzcJ4_ISnuDymRdsYNnGsyTIYFfK3c-H-AGUKy0KCOABO6b8nzKPGhnxi5Di4OiVo4sGP0KBadfjT-xE5PqZyh6lR7IBJnxNm8JSQKbrihExuN4nCMInYj9JfjkvIq1bmwVooTYvVlC8w7ECOMn5Potd549jib9qxVLnH067l0LjpzV9yU-zwmXKMSnTQdWmajHcyPC8pQt_FREDXldjhLNNhW88mmSpRM"/>
+<!-- Route UI Overlay -->
+<div class="absolute inset-0 pointer-events-none flex flex-col justify-between p-stack-md">
+<div class="flex justify-between items-start">
+<div class="bg-white/90 backdrop-blur px-stack-md py-2 rounded-lg shadow-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">near_me</span>
+<span class="font-label-lg text-label-lg text-on-surface">3.2 miles to pickup</span>
+</div>
+</div>
+<!-- ETA Badge -->
+<div class="flex justify-center mb-8">
+<div class="bg-primary text-on-primary px-6 py-3 rounded-full shadow-xl flex items-center gap-3 animate-pulse">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-title-lg text-title-lg font-bold">12 MIN ETA</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Assigned Task Details Card -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-stack-md">
+<div class="bg-white p-gutter rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border-l-4 border-primary">
+<div class="flex justify-between items-start mb-stack-md">
+<h2 class="font-title-lg text-title-lg text-on-surface">Assigned Task</h2>
+<span class="bg-primary-container text-on-primary-container font-label-md text-label-md px-3 py-1 rounded-full uppercase tracking-wider">In Progress</span>
+</div>
+<!-- Pickup Address -->
+<div class="flex gap-stack-md mb-stack-lg">
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<div class="w-0.5 h-12 border-l-2 border-dashed border-outline-variant my-1"></div>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Pickup</p>
+<p class="font-body-lg text-body-lg font-bold">Green Table Bistro</p>
+<p class="font-body-md text-body-md text-on-surface-variant">452 Market St, San Francisco, CA</p>
+</div>
+</div>
+<!-- Delivery Address -->
+<div class="flex gap-stack-md">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Delivery</p>
+<p class="font-body-lg text-body-lg font-bold">City Community Center</p>
+<p class="font-body-md text-body-md text-on-surface-variant">890 Mission Blvd, San Francisco, CA</p>
+</div>
+</div>
+</div>
+<!-- Quick Action Buttons Grid -->
+<div class="grid grid-cols-2 gap-stack-md">
+<button class="flex flex-col items-center justify-center gap-2 bg-tertiary text-on-tertiary p-stack-md rounded-xl shadow-sm hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined">directions</span>
+<span class="font-label-lg text-label-lg">Navigate</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 bg-surface-container-high text-on-surface-variant p-stack-md rounded-xl shadow-sm hover:bg-surface-variant active:scale-95 transition-all">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-lg text-label-lg">Message</span>
+</button>
+</div>
+</div>
+<!-- Call Actions & Summary -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-stack-md">
+<!-- Call Restaurant Card -->
+<div class="bg-white p-stack-md rounded-xl shadow-sm flex items-center gap-stack-md border border-outline-variant/30">
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">call</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Contact Restaurant</p>
+<p class="font-body-lg text-body-lg font-semibold">Green Table Bistro</p>
+</div>
+<button class="ml-auto bg-primary/10 text-primary px-4 py-2 rounded-lg font-label-lg text-label-lg">Call</button>
+</div>
+<!-- Call NGO Card -->
+<div class="bg-white p-stack-md rounded-xl shadow-sm flex items-center gap-stack-md border border-outline-variant/30">
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">support_agent</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Contact NGO</p>
+<p class="font-body-lg text-body-lg font-semibold">HelpHarbor Ops</p>
+</div>
+<button class="ml-auto bg-secondary/10 text-secondary px-4 py-2 rounded-lg font-label-lg text-label-lg">Call</button>
+</div>
+<!-- Summary Info Card -->
+<div class="bg-surface-container text-on-surface-variant p-stack-md rounded-xl shadow-sm flex items-center gap-stack-md border border-outline-variant/30">
+<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">Item Summary</p>
+<p class="font-body-lg text-body-lg font-semibold">12x Mixed Meals (Cold)</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Global CTA: Sticky Start Pickup Button -->
+<div class="fixed bottom-24 left-0 w-full px-container-padding-mobile z-40 pointer-events-none">
+<div class="max-w-7xl mx-auto flex justify-center pointer-events-auto">
+<button class="w-full md:w-auto md:min-w-[400px] bg-primary-container text-on-primary-container py-5 rounded-2xl shadow-xl flex items-center justify-center gap-stack-md hover:scale-[1.02] active:scale-95 transition-transform border-4 border-white">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-black uppercase tracking-tight">Start Pickup</span>
+</button>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface dark:bg-surface-container-lowest shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1" href="#">
+<span class="material-symbols-outlined active-icon">add_circle</span>
+<span class="font-label-md text-label-md font-bold">Donate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for the map area
+        document.querySelector('.min-h-\\[300px\\]').addEventListener('mousedown', function() {
+            this.style.cursor = 'grabbing';
+        });
+        document.querySelector('.min-h-\\[300px\\]').addEventListener('mouseup', function() {
+            this.style.cursor = 'grab';
+        });
+
+        // Toggle Active States for Navigation (Simulated)
+        const navItems = document.querySelectorAll('nav a');
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                navItems.forEach(i => {
+                    i.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-bold');
+                    i.classList.add('text-on-surface-variant');
+                    const icon = i.querySelector('.material-symbols-outlined');
+                    if (icon) icon.classList.remove('active-icon');
+                });
+                item.classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold');
+                item.classList.remove('text-on-surface-variant');
+                const activeIcon = item.querySelector('.material-symbols-outlined');
+                if (activeIcon) activeIcon.classList.add('active-icon');
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FoodRescue | Chat &amp; Coordination</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #dde4dd;
+      border-radius: 10px;
+    }
+    .glass-effect {
+      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.8);
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary": "#ffffff",
+            "error-container": "#ffdad6",
+            "background": "#f4fbf4",
+            "inverse-surface": "#2b322d",
+            "on-primary": "#ffffff",
+            "on-secondary-container": "#5c2400",
+            "primary-container": "#10b981",
+            "tertiary": "#0053db",
+            "surface-tint": "#006c49",
+            "surface-dim": "#d4dcd5",
+            "on-error": "#ffffff",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#dde4dd",
+            "secondary": "#9d4300",
+            "surface-container": "#e8f0e9",
+            "on-surface": "#161d19",
+            "on-primary-fixed-variant": "#005236",
+            "tertiary-fixed-dim": "#b4c5ff",
+            "surface-container-highest": "#dde4dd",
+            "secondary-fixed": "#ffdbca",
+            "on-tertiary-fixed-variant": "#003ea8",
+            "on-tertiary-fixed": "#00174b",
+            "secondary-fixed-dim": "#ffb690",
+            "tertiary-fixed": "#dbe1ff",
+            "secondary-container": "#fd761a",
+            "primary-fixed": "#6ffbbe",
+            "surface-container-low": "#eef6ee",
+            "outline-variant": "#bbcabf",
+            "on-error-container": "#93000a",
+            "outline": "#6c7a71",
+            "on-tertiary-container": "#00328b",
+            "on-primary-fixed": "#002113",
+            "on-secondary-fixed-variant": "#783200",
+            "primary-fixed-dim": "#4edea3",
+            "inverse-on-surface": "#ebf3eb",
+            "surface": "#f4fbf4",
+            "error": "#ba1a1a",
+            "tertiary-container": "#7f9fff",
+            "on-primary-container": "#00422b",
+            "surface-container-high": "#e3eae3",
+            "surface-bright": "#f4fbf4",
+            "inverse-primary": "#4edea3",
+            "on-background": "#161d19",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#006c49",
+            "on-surface-variant": "#3c4a42",
+            "on-secondary-fixed": "#341100"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "unit": "4px",
+            "stack-sm": "8px",
+            "stack-md": "16px",
+            "stack-lg": "32px",
+            "container-padding-mobile": "16px",
+            "gutter": "24px",
+            "container-padding-desktop": "32px"
+          },
+          "fontFamily": {
+            "display-lg": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "label-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "title-lg": ["Inter"],
+            "body-lg": ["Inter"]
+          },
+          "fontSize": {
+            "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+            "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+            "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md text-body-md overflow-hidden">
+<!-- Shared Component: TopAppBar -->
+<header class="bg-surface-container-low dark:bg-surface-container-high shadow-sm w-full top-0 sticky flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16 w-full z-40">
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-variant/50 transition-colors p-2 rounded-full active:scale-95 duration-100">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">menu</span>
+</button>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary dark:text-primary-fixed">FoodRescue</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="hover:bg-surface-variant/50 transition-colors p-2 rounded-full active:scale-95 duration-100">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">notifications</span>
+</button>
+<div class="hidden md:flex items-center gap-4 ml-4">
+<span class="text-primary font-bold">Alerts</span>
+<span class="text-on-surface-variant">Donate</span>
+</div>
+</div>
+</header>
+<main class="flex h-[calc(100vh-64px-80px)] md:h-[calc(100vh-64px)] overflow-hidden">
+<!-- Sidebar: Chat List -->
+<aside class="w-full md:w-96 border-r border-outline-variant bg-surface flex flex-col transition-all duration-300" id="chatListSidebar">
+<div class="p-stack-md flex flex-col gap-stack-sm">
+<div class="relative">
+<input class="w-full bg-surface-container rounded-full py-2 pl-10 pr-4 outline-none focus:ring-2 focus:ring-primary border-none text-on-surface" placeholder="Search coordination chats..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant">search</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Active Chats -->
+<div class="px-2 space-y-1">
+<!-- Chat Item 1 (Active) -->
+<button class="w-full flex items-center gap-4 p-4 rounded-xl bg-primary-container/10 border-l-4 border-primary text-left">
+<img alt="Sarah Jenkins" class="w-12 h-12 rounded-full bg-surface-container" data-alt="A professional and friendly portrait of a female food volunteer, Sarah Jenkins, with a warm smile and approachable demeanor. She is set against a clean, softly lit background with emerald green and white tones, reflecting the FoodRescue brand's identity of trust and humanitarian effort." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc4FEjX08rAIDH2w4WmE3FoJCOkclEeuI-jN5cQ5is0DMph7RlPEGxelK-eLubodFuKTds6qTmBFM2JH3tVwOUkaDRFZs5uc0zgNZfSJWnjwlIHI0ufO6cE1AZNBPLvyb5IDLUyIluAZNbtiAeGUQWAUtnES7ur7teDddcwuIsZejOyAexzu9CFo3qNblKy4Itqz6BpHTf7zew4p6FPB9_hSh75nGcF98VsxmJZ64Evve4FJ6DiXYwdURS-Slb_g60UKUJULmMTXo"/>
+<div class="flex-1 overflow-hidden">
+<div class="flex justify-between items-center">
+<span class="font-title-lg text-title-lg text-primary truncate">Sarah Jenkins</span>
+<span class="font-label-md text-label-md text-on-surface-variant">10:45 AM</span>
+</div>
+<p class="font-label-md text-label-md text-secondary font-semibold">Volunteer</p>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">I'm outside Green Table Bistro now...</p>
+</div>
+</button>
+<!-- Chat Item 2 -->
+<button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-surface-variant/50 transition-colors text-left">
+<img alt="Green Table Bistro" class="w-12 h-12 rounded-full bg-surface-container" data-alt="An abstract but professional logo representation for Green Table Bistro, featuring a stylized green leaf inside a circle. The aesthetic is modern and clean, utilizing the FoodRescue color palette of emerald green and warm whites to evoke a sense of sustainability and high-quality food rescue services." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_F2862VTaqqYNgEoWa-L_Jkc9_esh7NCtrS4vwg36ehMRKpB_02t11c3B5jHAskfIoqtVg9VWwBPAQYReIj01GolP-GeqtySsZp-dXp9cniMFi2gYFa6p_MqI0RLtqRk_3pCLm16TcqVNapYDF6yQOXEgnaUJOld8zn4EUWxLJwGWcXGF0yiSRPkb2CFOPrWPg37T9u7AcFYJYcS3heQprzd1RUIyU_VH_dBs60WQ0jxl3DDITqDjvwDTOsHp-HGVmeYZuEiOvuA"/>
+<div class="flex-1 overflow-hidden">
+<div class="flex justify-between items-center">
+<span class="font-title-lg text-title-lg text-on-surface truncate">Green Table Bistro</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Yesterday</span>
+</div>
+<p class="font-label-md text-label-md text-secondary font-semibold">Restaurant</p>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">The boxes are labeled for pickup.</p>
+</div>
+</button>
+<!-- Chat Item 3 -->
+<button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-surface-variant/50 transition-colors text-left">
+<img alt="Mike Rescuer" class="w-12 h-12 rounded-full bg-surface-container" data-alt="A professional portrait of Mike, a senior volunteer rescuer, showing a reliable and focused expression. The image uses soft studio lighting with a subtle hint of green in the background, maintaining a clean and modern UI look consistent with a humanitarian food distribution application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPG0eB2QX-7kJ7D3drA50hvDoI_XrMhPQ3lXAGt8btRpmbih-mVs4Xj1j843inpL4QNQ8LfZI3ybXoXuW2HYHDrT52DrjqexVnD9o5q0JAnTjYHUHYq1JCnZ7SxINvPLfsQ4PSXN4x1nGTXwT5JpdzYkaCa3SsQxYlnOL1_kZDlaoG2WZZWteEvuY17RckNVSyVSa5nLj68cb0vjgF7LwOz4jlYIGvcNAmEHI5xW_amOhuS9pW86kK05EmXtYvzRtiyvdwq35ZAMk"/>
+<div class="flex-1 overflow-hidden">
+<div class="flex justify-between items-center">
+<span class="font-title-lg text-title-lg text-on-surface truncate">Mike Thompson</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Tues</span>
+</div>
+<p class="font-label-md text-label-md text-secondary font-semibold">Volunteer</p>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Pickup confirmed for tomorrow.</p>
+</div>
+</button>
+</div>
+</div>
+</aside>
+<!-- Chat Area -->
+<section class="flex-1 flex flex-col bg-surface-container-lowest relative">
+<!-- Chat Header -->
+<header class="h-16 flex items-center justify-between px-container-padding-mobile md:px-gutter border-b border-outline-variant glass-effect z-10">
+<div class="flex items-center gap-3">
+<button class="md:hidden p-2 -ml-2" onclick="toggleSidebar()">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<img alt="Sarah Jenkins" class="w-10 h-10 rounded-full bg-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAnBgk2JQ9cyLF3URsFRDQ27F5-pixKOZl4NxxNlHmnZY-iIYNwBC_ZOIYcaTPVNlIrAmFVVobijsgZ5FGohb3YPWvaeR8HCMKURnbEWdf6IMIPNQ9x66UqOQbeKoAEj5CsS0A7gZuLqd18gOCcDpyJC5iVirGpfNqkHasaoaq88o9u5SA5tqMpp7cGKvWaKCNcYes6SThalOPL0hcdXKX1w5KSSE4IOpu50mgRniHWFy6JzhQgLpu8zNllqX9Ai_ToRffodY590M"/>
+<div>
+<h2 class="font-title-lg text-title-lg leading-none">Sarah Jenkins</h2>
+<p class="font-label-md text-label-md text-secondary">Volunteer • Active Now</p>
+</div>
+</div>
+<div class="flex items-center gap-1 md:gap-4">
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined text-primary">call</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Message History -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-stack-md space-y-4">
+<!-- System Message -->
+<div class="flex justify-center my-stack-lg">
+<span class="bg-surface-container-high px-4 py-1 rounded-full text-label-md text-on-surface-variant">Donation #FR-9021 Coordination</span>
+</div>
+<!-- Participant Message -->
+<div class="flex flex-col items-start gap-1 max-w-[85%] md:max-w-[70%]">
+<div class="bg-surface-dim p-4 rounded-2xl rounded-tl-none shadow-sm">
+<p class="text-body-md text-on-surface">Hello! I am on my way to Green Table Bistro for the 5:00 PM pickup. Just wanted to confirm the quantities?</p>
+</div>
+<span class="text-label-md text-on-surface-variant ml-1">10:30 AM</span>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end gap-1 ml-auto max-w-[85%] md:max-w-[70%]">
+<div class="bg-primary-container p-4 rounded-2xl rounded-tr-none text-on-primary-container shadow-sm">
+<p class="text-body-md">Hi Sarah! Yes, it's 3 large crates of perishables and 2 boxes of bread. The staff is aware you're coming.</p>
+</div>
+<div class="flex items-center gap-1 text-label-md text-on-surface-variant">
+<span>10:32 AM</span>
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+</div>
+<!-- Participant Message with Image -->
+<div class="flex flex-col items-start gap-1 max-w-[85%] md:max-w-[70%]">
+<div class="bg-surface-dim p-2 rounded-2xl rounded-tl-none shadow-sm space-y-2">
+<img class="rounded-xl w-full aspect-square object-cover" data-alt="A detailed, vibrant shot of several crates filled with fresh organic vegetables and artisanal bread inside a professional restaurant kitchen environment. The lighting is warm and natural, highlighting the textures of the produce and the clean, high-end feel of the bistro. The color palette emphasizes rich greens and golden browns, aligned with the FoodRescue aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXWYUyMyb_yTtIYt01pO60sV7XAdLnPNVWithv95I1fpkKrXZ5Ac1gYjjLIfgAdz_O8Wan_3MJ6PYw-reJOxUK6YUbr641zdA_xIg7mP_Jz7s4zO0sbL551tx4YDgYE8Pj5JfjiMRW0SVgntRCGcFni_35Bbrcd3ZPZRtZ1FRsI3DgkFZU-8npoBfnUvbEIu_0n57M1izYRBs4tloGJw_gFWix1g5wjocQC6z5PjkoCifhE7fXU3tQQzmw7ER2LT6GNPuycaNn8eU"/>
+<div class="px-2 pb-1">
+<p class="text-body-md text-on-surface">I'm outside now. Here is a photo of the loading zone. Is this the right spot?</p>
+</div>
+</div>
+<span class="text-label-md text-on-surface-variant ml-1">10:45 AM</span>
+</div>
+<!-- Action Card: Quick Pickup Code -->
+<div class="flex justify-center my-stack-md">
+<div class="bg-surface border border-outline-variant p-4 rounded-2xl flex flex-col items-center gap-2 shadow-lg max-w-sm w-full">
+<span class="material-symbols-outlined text-secondary text-4xl">qr_code_2</span>
+<div class="text-center">
+<p class="font-title-lg text-primary font-bold">Pickup Code: 882-941</p>
+<p class="text-label-md text-on-surface-variant">Share this with the bistro manager</p>
+</div>
+<button class="w-full bg-primary py-2 rounded-full text-on-primary font-label-lg active:scale-95 transition-transform">Send to Sarah</button>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="px-container-padding-mobile py-2 flex gap-2 overflow-x-auto no-scrollbar">
+<button class="flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-colors whitespace-nowrap active:scale-95">
+<span class="material-symbols-outlined text-primary text-body-lg">location_on</span>
+<span class="font-label-lg">Share Location</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-colors whitespace-nowrap active:scale-95">
+<span class="material-symbols-outlined text-primary text-body-lg">vpn_key</span>
+<span class="font-label-lg">Send Pickup Code</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-colors whitespace-nowrap active:scale-95">
+<span class="material-symbols-outlined text-primary text-body-lg">photo_camera</span>
+<span class="font-label-lg">Send Photo</span>
+</button>
+</div>
+<!-- Bottom Chat Bar -->
+<div class="p-container-padding-mobile border-t border-outline-variant bg-surface">
+<div class="flex items-end gap-2 md:gap-4">
+<button class="p-3 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">add_circle</span>
+</button>
+<div class="flex-1 relative flex items-center">
+<textarea class="w-full bg-surface-container rounded-3xl py-3 px-5 pr-12 outline-none focus:ring-2 focus:ring-primary border-none text-on-surface resize-none max-h-32 overflow-y-auto custom-scrollbar" placeholder="Type a message..." rows="1"></textarea>
+<button class="absolute right-2 p-2 rounded-full text-primary hover:bg-primary-container/20">
+<span class="material-symbols-outlined">sentiment_satisfied</span>
+</button>
+</div>
+<div class="flex gap-2">
+<button class="p-3 rounded-full bg-primary-container text-on-primary-container shadow-md active:scale-90 transition-transform">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="p-3 rounded-full bg-primary text-on-primary shadow-md active:scale-90 transition-transform">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Shared Component: BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 pb-safe bg-surface dark:bg-surface-container shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-md text-label-md">Donate</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</div>
+</nav>
+<script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('chatListSidebar');
+      if (sidebar.classList.contains('hidden')) {
+        sidebar.classList.remove('hidden');
+        sidebar.classList.add('fixed', 'inset-0', 'z-50', 'w-full');
+      } else {
+        sidebar.classList.add('hidden');
+        sidebar.classList.remove('fixed', 'inset-0', 'z-50', 'w-full');
+      }
+    }
+
+    // Adjust visibility based on screen size
+    function handleResize() {
+      const sidebar = document.getElementById('chatListSidebar');
+      if (window.innerWidth >= 768) {
+        sidebar.classList.remove('hidden', 'fixed', 'inset-0', 'z-50', 'w-full');
+      } else {
+        // Simple logic for mobile initial state: show chat, hide sidebar
+        sidebar.classList.add('hidden');
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    // Auto-expand textarea
+    const tx = document.getElementsByTagName("textarea");
+    for (let i = 0; i < tx.length; i++) {
+      tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
+      tx[i].addEventListener("input", OnInput, false);
+    }
+
+    function OnInput() {
+      this.style.height = 0;
+      this.style.height = (this.scrollHeight) + "px";
+    }
+  </script>
+</body></html>

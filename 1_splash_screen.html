@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FoodRescue - Splash</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFDF7;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .splash-gradient {
+            background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+        }
+        .hero-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#3c4a42",
+                        "on-secondary-container": "#5c2400",
+                        "on-primary-container": "#00422b",
+                        "surface-container-high": "#e3eae3",
+                        "on-tertiary-container": "#00328b",
+                        "primary-container": "#10b981",
+                        "secondary": "#9d4300",
+                        "secondary-fixed": "#ffdbca",
+                        "tertiary-fixed": "#dbe1ff",
+                        "surface": "#f4fbf4",
+                        "surface-container": "#e8f0e9",
+                        "primary-fixed": "#6ffbbe",
+                        "surface-bright": "#f4fbf4",
+                        "background": "#f4fbf4",
+                        "surface-tint": "#006c49",
+                        "on-secondary-fixed": "#341100",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-primary-fixed-variant": "#005236",
+                        "surface-variant": "#dde4dd",
+                        "on-surface": "#161d19",
+                        "surface-container-low": "#eef6ee",
+                        "surface-dim": "#d4dcd5",
+                        "primary": "#006c49",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "surface-container-highest": "#dde4dd",
+                        "on-background": "#161d19",
+                        "inverse-surface": "#2b322d",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "secondary-container": "#fd761a",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#4edea3",
+                        "outline": "#6c7a71",
+                        "inverse-on-surface": "#ebf3eb",
+                        "on-primary-fixed": "#002113",
+                        "tertiary": "#0053db",
+                        "on-tertiary-fixed": "#00174b",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#bbcabf",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#783200",
+                        "tertiary-container": "#7f9fff",
+                        "primary-fixed-dim": "#4edea3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "stack-md": "16px",
+                        "container-padding-desktop": "32px",
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "title-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#FFFDF7] min-h-screen flex flex-col items-center justify-between overflow-hidden">
+<!-- Ambient background effect -->
+<div class="fixed inset-0 splash-gradient pointer-events-none"></div>
+<!-- Main Content Canvas -->
+<main class="relative z-10 w-full max-w-lg mx-auto flex flex-col items-center justify-center min-h-screen px-container-padding-mobile text-center">
+<!-- Header / Logo -->
+<header class="mb-stack-lg">
+<div class="flex items-center justify-center gap-2 mb-stack-sm">
+<span class="material-symbols-outlined text-[48px] text-primary-container" style="font-variation-settings: 'FILL' 1;">eco</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary tracking-tight">FoodRescue</h1>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant opacity-80 italic">"Rescuing Food. Feeding Lives."</p>
+</header>
+<!-- Illustration Section -->
+<div class="relative w-full aspect-square mb-stack-lg flex items-center justify-center">
+<!-- Decorative circle backdrops -->
+<div class="absolute w-64 h-64 bg-primary-container/10 rounded-full blur-3xl"></div>
+<div class="absolute w-48 h-48 bg-secondary-container/5 rounded-full blur-2xl translate-x-12 -translate-y-8"></div>
+<!-- Hero Illustration -->
+<div class="hero-float relative z-20 w-full h-full max-w-[320px]">
+<div class="w-full h-full rounded-[2.5rem] overflow-hidden shadow-2xl ring-8 ring-white/50">
+<img alt="Food donation scene" class="w-full h-full object-cover" data-alt="A modern and high-quality minimalist illustration showing a kind restaurant worker in a clean apron handing a wooden crate filled with vibrant, fresh vegetables and artisan bread to a smiling NGO volunteer wearing a community service vest. The setting is a warm, sun-drenched urban doorway with a soft humanitarian feel. The visual style uses clean lines, organic shapes, and a palette of emerald green, soft terracotta, and warm off-white tones to evoke trust and community vitality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPBYQHFfV0NO6qrQM3QCWGXjQRJmu64SxDUa_1_eq-KijOWc6SGouJPGXz9bKrndj7SBkCZO6GJ09ujXCtHaQznFDKN-00uTHBH1UGqkCOqiH3HEB-xB8KHO4DfqkcnSm_EMIvzEApn4mTTh2E6dSzSQBAgPAYc-HSeiKLv02V6C0DzInqu6WOBAcaAoFqwdOWf9LhyzLLH6gBBReO3aecdqf_31tSeu6fARTlDD2T_WvzfeHBb7fsN0crTaR0oHCKBHxUTHge64A"/>
+</div>
+</div>
+</div>
+<!-- Action Area -->
+<div class="w-full space-y-stack-md px-stack-md">
+<!-- Login Button -->
+<button class="w-full bg-primary-container text-on-primary-container font-label-lg text-label-lg py-4 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+<span>Login</span>
+<span class="material-symbols-outlined text-body-lg">arrow_forward</span>
+</button>
+<!-- Register Button -->
+<button class="w-full bg-transparent border-2 border-outline-variant text-primary font-label-lg text-label-lg py-4 rounded-xl hover:bg-surface-container-low active:scale-95 transition-all duration-200">
+                Register
+            </button>
+</div>
+<!-- Footer Text -->
+<footer class="mt-stack-lg mb-8">
+<p class="font-label-md text-label-md text-outline">
+                Together, we've saved over <span class="font-bold text-primary">2.4M</span> meals.
+            </p>
+</footer>
+</main>
+<!-- Floating Atmosphere Elements -->
+<div class="absolute top-10 left-10 opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-primary text-display-lg">favorite</span>
+</div>
+<div class="absolute bottom-20 right-10 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-secondary text-[120px]">volunteer_activism</span>
+</div>
+<!-- Interaction Script -->
+<script>
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Ripple/Scale effect handled by Tailwind classes, 
+                // but could add specific feedback logic here
+                console.log('Action triggered:', this.innerText);
+            });
+        });
+
+        // Simple parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) / 50;
+            const moveY = (e.clientY - window.innerHeight / 2) / 50;
+            const hero = document.querySelector('.hero-float');
+            if(hero) {
+                hero.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+    </script>
+</body></html>

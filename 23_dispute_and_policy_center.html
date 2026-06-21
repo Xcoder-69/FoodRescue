@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Policy & Dispute Center | FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#3c4a42",
+                        "secondary-container": "#fd761a",
+                        "on-primary-fixed": "#002113",
+                        "surface-dim": "#d4dcd5",
+                        "surface-container-highest": "#dde4dd",
+                        "inverse-primary": "#4edea3",
+                        "on-primary-fixed-variant": "#005236",
+                        "outline": "#6c7a71",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "surface-container": "#e8f0e9",
+                        "on-secondary-container": "#5c2400",
+                        "on-tertiary-fixed": "#00174b",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#341100",
+                        "on-tertiary-container": "#00328b",
+                        "surface-container-high": "#e3eae3",
+                        "inverse-on-surface": "#ebf3eb",
+                        "background": "#f4fbf4",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#dde4dd",
+                        "primary": "#006c49",
+                        "on-surface": "#161d19",
+                        "surface": "#f4fbf4",
+                        "primary-fixed-dim": "#4edea3",
+                        "surface-bright": "#f4fbf4",
+                        "outline-variant": "#bbcabf",
+                        "surface-tint": "#006c49",
+                        "on-secondary-fixed-variant": "#783200",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "tertiary-container": "#7f9fff",
+                        "surface-container-low": "#eef6ee",
+                        "primary-fixed": "#6ffbbe",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#0053db",
+                        "on-primary-container": "#00422b",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#ffdbca",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2b322d",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#dbe1ff",
+                        "on-background": "#161d19",
+                        "secondary": "#9d4300",
+                        "primary-container": "#10b981"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "16px",
+                        "gutter": "24px",
+                        "stack-md": "16px",
+                        "container-padding-desktop": "32px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-pill {
+            background-color: #10b981;
+            color: #00422b;
+        }
+        body {
+            background-color: #f4fbf4;
+            color: #161d19;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="pb-24 md:pb-0 md:pl-72">
+<!-- Top AppBar -->
+<header class="fixed top-0 right-0 left-0 md:left-72 z-50 h-16 bg-surface shadow-sm flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined md:hidden text-primary cursor-pointer">menu</span>
+<h1 class="font-display-lg text-title-lg font-bold text-primary">FoodRescue Center</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 duration-200">notifications</span>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-label-md">RM</div>
+</div>
+</header>
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full w-72 flex-col bg-surface-container-low p-stack-md shadow-lg z-50">
+<div class="mb-stack-lg p-4">
+<span class="font-title-lg text-title-lg text-primary font-bold">FoodRescue</span>
+<p class="text-label-md text-on-surface-variant">Policy & Resolution</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-lg text-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-body-lg text-body-lg">Partner Sites</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container font-semibold rounded-lg" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<span class="font-body-lg text-body-lg">Policy & Disputes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-lg text-body-lg">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-4 flex items-center gap-3 border-t border-outline-variant/30">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">person</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Rescue Member</p>
+<p class="text-label-md text-on-surface-variant">active_volunteer</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="mt-16 p-container-padding-mobile md:p-container-padding-desktop max-w-7xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-stack-lg">
+<div class="relative rounded-xl overflow-hidden h-48 md:h-64 flex items-center p-8 mb-8">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A clean, professionally lit office environment focused on humanitarian logistics. The scene features a modern wooden desk with a digital tablet showing green health icons, surrounded by lush indoor plants and soft morning sunlight. The overall atmosphere is trustworthy, calm, and highly organized, emphasizing a sophisticated light-mode aesthetic with Emerald Green and Ocean Blue accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF-Gv9VpyUSVExj1DFSJdGV2UKhwRW1lxofEh4idPShqiCN6Chk-slddgiGVJhfBxliPdqN2U_9hLp47ZcwSJ3TRf4yLZHJMNuBJ3edPlGmBXT2BFCaCdP3G-4jbzR7Ny9N5gyJPh930tEGas4jbyBA0bF7dSfjn2YEnmG_BQCBwkHfateWdI9_58xsJLBd7xzOgwFGqUgwuXdUN5V7D0K27AOk2bWfq1BBqCgpmQJFUm6un8DffNm6cuFacqhMV8SfYmmIjwt1rU"/>
+<div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent"></div>
+<div class="relative z-10 text-white">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg">Transparency & Trust</h2>
+<p class="font-body-lg text-body-lg opacity-90 max-w-md">Access our safety guidelines, dispute resolution protocols, and track active tickets.</p>
+</div>
+</div>
+<!-- Bento Grid for Policy Quick Access -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Food Expiry Policy Card -->
+<div class="md:col-span-2 glass-card rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-primary/10">
+<div class="flex items-center justify-between mb-stack-md">
+<h3 class="font-title-lg text-title-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+                            Food Expiry Policy
+                        </h3>
+<span class="text-label-md bg-primary/10 text-primary px-3 py-1 rounded-full">Updated 2 days ago</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
+<span class="text-label-lg font-bold text-primary uppercase tracking-wider block mb-1">Safe</span>
+<p class="text-body-md text-on-surface-variant">Items with >48h shelf life. Suitable for all distribution points.</p>
+</div>
+<div class="bg-secondary-fixed/20 p-4 rounded-lg border-l-4 border-secondary">
+<span class="text-label-lg font-bold text-secondary uppercase tracking-wider block mb-1">Expiring</span>
+<p class="text-body-md text-on-surface-variant"><12h shelf life. Requires immediate 'Express Pickup' protocol.</p>
+</div>
+<div class="bg-error-container/30 p-4 rounded-lg border-l-4 border-error">
+<span class="text-label-lg font-bold text-error uppercase tracking-wider block mb-1">Expired</span>
+<p class="text-body-md text-on-surface-variant">Safety threshold passed. Divert to composting partners only.</p>
+</div>
+</div>
+</div>
+<!-- Refund & Cancellation -->
+<div class="glass-card rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] bg-surface-container-low">
+<h3 class="font-title-lg text-title-lg mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">assignment_return</span>
+                        Refund Rules
+                    </h3>
+<ul class="space-y-3">
+<li class="flex gap-3 text-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                            Cancellations >2h: Full credit
+                        </li>
+<li class="flex gap-3 text-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                            Quality Issues: Instant re-match
+                        </li>
+<li class="flex gap-3 text-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                            No-show: 24h block penalty
+                        </li>
+</ul>
+<button class="mt-6 w-full py-2 border border-primary text-primary rounded-lg font-label-lg hover:bg-primary/5 transition-colors">Full Document</button>
+</div>
+</div>
+</section>
+<!-- Dispute Resolution Interface -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Ticket Submission -->
+<div class="lg:col-span-8 glass-card rounded-xl p-stack-lg shadow-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-stack-lg gap-4">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Report an Issue</h2>
+<p class="text-body-md text-on-surface-variant">Resolution time is currently <span class="font-bold text-primary">~14 minutes</span>.</p>
+</div>
+<button class="bg-primary text-white px-6 py-3 rounded-xl font-label-lg flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
+<span class="material-symbols-outlined">add</span>
+                        Create New Ticket
+                    </button>
+</div>
+<div class="space-y-6">
+<p class="font-label-lg text-on-surface">Select a Category</p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<button class="p-4 rounded-xl border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center gap-2 group text-center">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">restaurant</span>
+<span class="text-label-md">Food Quality</span>
+</button>
+<button class="p-4 rounded-xl border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center gap-2 group text-center">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">group</span>
+<span class="text-label-md">Volunteer Misconduct</span>
+</button>
+<button class="p-4 rounded-xl border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center gap-2 group text-center">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">schedule</span>
+<span class="text-label-md">Late Pickup</span>
+</button>
+<button class="p-4 rounded-xl border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center gap-2 group text-center">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">help</span>
+<span class="text-label-md">Other</span>
+</button>
+</div>
+<div class="bg-surface-container rounded-xl p-4">
+<label class="block text-label-md font-semibold text-on-surface-variant mb-2">Issue Description</label>
+<textarea class="w-full bg-white border-none rounded-lg focus:ring-2 focus:ring-primary h-32 p-3 text-body-md" placeholder="Provide details about the occurrence..."></textarea>
+</div>
+</div>
+</div>
+<!-- Ticket Status System -->
+<div class="lg:col-span-4 space-y-gutter">
+<div class="glass-card rounded-xl p-stack-md shadow-sm">
+<h3 class="font-title-lg text-title-lg mb-stack-md">My Active Tickets</h3>
+<div class="space-y-4">
+<!-- Ticket Item -->
+<div class="p-3 bg-white rounded-lg border border-outline-variant/30 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-2 h-10 bg-secondary rounded-full"></div>
+<div>
+<p class="font-label-lg text-on-surface">#T-8942: Cold Storage...</p>
+<p class="text-label-md text-on-surface-variant">Reviewing evidence</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+<!-- Ticket Item -->
+<div class="p-3 bg-white rounded-lg border border-outline-variant/30 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-2 h-10 bg-primary rounded-full"></div>
+<div>
+<p class="font-label-lg text-on-surface">#T-8810: Pickup Delay</p>
+<p class="text-label-md text-on-surface-variant text-primary font-semibold">Resolved</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Support Banner -->
+<div class="relative rounded-xl overflow-hidden p-6 bg-tertiary-container text-on-tertiary-container">
+<span class="material-symbols-outlined text-4xl mb-4">support_agent</span>
+<h4 class="font-title-lg text-title-lg font-bold mb-2">Need direct help?</h4>
+<p class="text-body-md mb-4">Our community safety leads are available 24/7 for urgent escalations.</p>
+<a class="font-label-lg underline decoration-2" href="tel:+">Contact Emergency Support</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] flex justify-around items-center py-2 px-4 z-50 rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined">gavel</span>
+<span class="font-label-md text-label-md">Support</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for ticket category selection
+        const categoryButtons = document.querySelectorAll('.grid.sm\\:grid-cols-4 button');
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryButtons.forEach(b => {
+                    b.classList.remove('border-primary', 'bg-primary/5', 'ring-2', 'ring-primary/20');
+                    b.querySelector('span:first-child').classList.remove('text-primary');
+                });
+                btn.classList.add('border-primary', 'bg-primary/5', 'ring-2', 'ring-primary/20');
+                btn.querySelector('span:first-child').classList.add('text-primary');
+            });
+        });
+    </script>
+</body></html>

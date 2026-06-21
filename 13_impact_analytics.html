@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FoodRescue | Impact Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "background": "#f4fbf4",
+                        "inverse-surface": "#2b322d",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#5c2400",
+                        "primary-container": "#10b981",
+                        "tertiary": "#0053db",
+                        "surface-tint": "#006c49",
+                        "surface-dim": "#d4dcd5",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#dde4dd",
+                        "secondary": "#9d4300",
+                        "surface-container": "#e8f0e9",
+                        "on-surface": "#161d19",
+                        "on-primary-fixed-variant": "#005236",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "surface-container-highest": "#dde4dd",
+                        "secondary-fixed": "#ffdbca",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "on-tertiary-fixed": "#00174b",
+                        "secondary-fixed-dim": "#ffb690",
+                        "tertiary-fixed": "#dbe1ff",
+                        "secondary-container": "#fd761a",
+                        "primary-fixed": "#6ffbbe",
+                        "surface-container-low": "#eef6ee",
+                        "outline-variant": "#bbcabf",
+                        "on-error-container": "#93000a",
+                        "outline": "#6c7a71",
+                        "on-tertiary-container": "#00328b",
+                        "on-primary-fixed": "#002113",
+                        "on-secondary-fixed-variant": "#783200",
+                        "primary-fixed-dim": "#4edea3",
+                        "inverse-on-surface": "#ebf3eb",
+                        "surface": "#f4fbf4",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#7f9fff",
+                        "on-primary-container": "#00422b",
+                        "surface-container-high": "#e3eae3",
+                        "surface-bright": "#f4fbf4",
+                        "inverse-primary": "#4edea3",
+                        "on-background": "#161d19",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#006c49",
+                        "on-surface-variant": "#3c4a42",
+                        "on-secondary-fixed": "#341100"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "24px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "16px",
+                        "gutter": "24px",
+                        "container-padding-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4fbf4; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .chart-bar { transition: height 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gauge-svg { transform: rotate(-90deg); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="w-full top-0 sticky bg-surface-container-low dark:bg-surface-container-high shadow-sm flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16 w-full z-40">
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-primary hover:bg-surface-variant/50 transition-colors p-2 rounded-full active:scale-95 duration-100" data-icon="menu">menu</button>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">FoodRescue</h1>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-primary hover:bg-surface-variant/50 transition-colors p-2 rounded-full active:scale-95 duration-100" data-icon="notifications">notifications</button>
+<div class="h-10 w-10 rounded-full bg-secondary-fixed overflow-hidden border-2 border-primary-container">
+<img alt="Alex Volunteer" class="w-full h-full object-cover" data-alt="A professional headshot of a diverse male volunteer in his late 20s smiling warmly. He is outdoors in a bright, sunny community garden setting with soft green foliage in the background. The lighting is high-key and natural, emphasizing a trustworthy and helpful brand personality. The overall color palette is warm with subtle emerald green accents to match the FoodRescue brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8EUmOhUQOe6CKD4F_MCMZpfxddp-k1-Y7jAF_sFU7EuT_gH0e47kYBjshxLllTz0fQaDgS2dzZPhY3TpRmOG0cP4tNFg5rTEWKwiZ0rOERCL85n7Ndi3ZJUvv-7hsiz2OQaC_1sX0SwDOGAsW2xQg50Ux-6DA5SzYATgnGW13dkTU90u3H1UVZLmd1p9j_Hf5pKGKIYNu8i1vgwJbqOBrfCNusvBwNRdniqSky2CLU5dTLOD6BvTKk9O6EcvR9f4BihD8erOwlQA"/>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-stack-lg pb-32">
+<!-- Dashboard Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md mb-stack-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Impact Analytics</h2>
+<p class="font-body-md text-on-surface-variant">Real-time visualization of community nourishment and waste reduction.</p>
+</div>
+<div class="flex items-center gap-stack-sm bg-surface-container-lowest p-unit rounded-xl shadow-sm border border-outline-variant">
+<button class="px-4 py-2 font-label-lg text-label-lg text-primary bg-primary-container/20 rounded-lg">Last 30 Days</button>
+<button class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors">Quarterly</button>
+<button class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                    Custom
+                </button>
+</div>
+</div>
+<!-- Summary Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-stack-lg">
+<!-- Meals Rescued -->
+<div class="bg-surface-container-lowest p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 group">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="p-3 bg-primary-container/10 rounded-xl text-primary material-symbols-outlined" data-icon="restaurant">restaurant</span>
+<span class="font-label-md text-label-md text-primary bg-primary-fixed/30 px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12%
+                    </span>
+</div>
+<h3 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Meals Rescued</h3>
+<div class="flex items-baseline gap-2 mt-unit">
+<span class="font-display-lg text-display-lg text-primary">12,482</span>
+<span class="font-body-md text-body-md text-on-surface-variant">plates</span>
+</div>
+<div class="mt-stack-md h-12 w-full flex items-end gap-1">
+<div class="w-full bg-primary/20 h-4 rounded-t-sm group-hover:h-6 transition-all duration-500"></div>
+<div class="w-full bg-primary/20 h-6 rounded-t-sm group-hover:h-10 transition-all duration-500"></div>
+<div class="w-full bg-primary/20 h-5 rounded-t-sm group-hover:h-8 transition-all duration-500"></div>
+<div class="w-full bg-primary/20 h-8 rounded-t-sm group-hover:h-12 transition-all duration-500"></div>
+<div class="w-full bg-primary h-10 rounded-t-sm group-hover:h-12 transition-all duration-500"></div>
+</div>
+</div>
+<!-- Carbon Footprint -->
+<div class="bg-surface-container-lowest p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="p-3 bg-yellow-100 rounded-xl text-yellow-600 material-symbols-outlined" data-icon="eco">eco</span>
+<span class="font-label-md text-label-md text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">Reduced Waste</span>
+</div>
+<h3 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Carbon Saved</h3>
+<div class="flex items-baseline gap-2 mt-unit">
+<span class="font-display-lg text-display-lg text-[#FACC15]">4.2</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Metric Tons CO2</span>
+</div>
+<p class="mt-stack-md font-body-md text-body-md text-on-surface-variant italic">Equivalent to planting 192 trees this month.</p>
+</div>
+<!-- Lives Touched -->
+<div class="bg-surface-container-lowest p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="p-3 bg-emerald-100 rounded-xl text-emerald-600 material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-md text-label-md text-emerald-700 bg-emerald-100 px-2 py-1 rounded-full">Community Growth</span>
+</div>
+<h3 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Lives Touched</h3>
+<div class="flex items-baseline gap-2 mt-unit">
+<span class="font-display-lg text-display-lg text-[#10B981]">3,150</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Individuals</span>
+</div>
+<div class="flex -space-x-2 mt-stack-md">
+<img alt="user" class="h-8 w-8 rounded-full border-2 border-white" data-alt="Close up face of a smiling woman in a bright urban park setting, soft sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtVo4KbTyX2MhH7f3hzXZErVLimuLElLz1VFqt4Lv2cXmluRnqsI2Qy2EC_1Akt9Mh6bxpMy3jFDVjd7AQJUnCayajGfYkV9wgQ_tbJiqJmqT-GDMlVOt97fUVAXwCCuELj1wnKDnYp-R_Xyj9G7rjhYbXjfM8gvr7tAt0VDvvjqZUbmHfY_8nV1UjvpcCip340Oeh5l1VHKbThoLImwb3znVG1g_9dpeU3y8dwFLsiPQe2D6T67yU05QPgBxiS8nLm8iwB24U_1c"/>
+<img alt="user" class="h-8 w-8 rounded-full border-2 border-white" data-alt="Close up face of a smiling man in a modern office with warm wooden textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcu0vUBOaEJzluMKbkvshSkXJSavKjdd4KrkmsRE9cSswH05YL7JiM672ATCURzT5U5F2dWiPETORWFglzgz5gTMjRBVIPUaqSD2BS9MYJO9JgmzXqF5yMWZFfWA5QCoJby3jZnFTAAkYUUNYFj40qRUvOXwQJerf1J4wIc3XjrfTapOEB5m7uJNGDi-CAU_XoRaJyZ_X2FI8ceRiEP4XfSLFfDYr0pQon4uSke9T7oa0NEQXPQ3cy4Ytlo7wqzGv8ehVv_btPxEk"/>
+<img alt="user" class="h-8 w-8 rounded-full border-2 border-white" data-alt="Portrait of a friendly young woman with a vibrant city background in soft focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDADeIln2ufd5x4DqWiaIuOIB0J1GWSx9tRn4PvqmW8bY1iz_-dGBlB7poNGuCZ_l5FRp1PrDcX9aN0PfCCHHw1woZpMnq3BszhsW-W9JfLmFQZhCMPUgSJQKuDWs3959nPxNAt168Uk7ZzYttWUlF7TbWc_hXP17FOMp1etVamJalFnF7Q7DuTmDcrZc_w-xOGkGZd9VOZU92TX7q2V_u29S39lR0eI_GVezmkf8UEVckpAEoWdux6ColUMSsnvD0GrZSzbwa1SLE"/>
+<div class="h-8 w-8 rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center text-[10px] text-white font-bold">+3k</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Bento Style -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Weekly Donation Trends Bar Chart -->
+<div class="lg:col-span-8 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 h-[400px] flex flex-col">
+<div class="flex justify-between items-center mb-stack-lg">
+<h3 class="font-title-lg text-title-lg text-on-surface">Weekly Donation Trends</h3>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Rescued</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary-container"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Donated</span>
+</div>
+</div>
+</div>
+<div class="flex-grow flex items-end justify-between px-stack-md gap-4">
+<!-- Monday -->
+<div class="flex-grow flex flex-col items-center gap-2">
+<div class="w-full flex gap-1 items-end h-full">
+<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 45%;"></div>
+<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 30%;"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Mon</span>
+</div>
+<!-- Tuesday -->
+<div class="flex-grow flex flex-col items-center gap-2">
+<div class="w-full flex gap-1 items-end h-full">
+<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 65%;"></div>
+<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 55%;"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Tue</span>
+</div>
+<!-- Wednesday -->
+<div class="flex-grow flex flex-col items-center gap-2">
+<div class="w-full flex gap-1 items-end h-full">
+<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 85%;"></div>
+<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 70%;"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Wed</span>
+</div>
+<!-- Thursday -->
+<div class="flex-grow flex flex-col items-center gap-2">
+<div class="w-full flex gap-1 items-end h-full">
+<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 55%;"></div>
+<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 40%;"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Thu</span>
+</div>
+<!-- Friday -->
+<div class="flex-grow flex flex-col items-center gap-2">
+<div class="w-full flex gap-1 items-end h-full">
+<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 95%;"></div>
+<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 80%;"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Fri</span>
+</div>
+<!-- Saturday -->
+<div class="flex-grow flex flex-col items-center gap-2">
+<div class="w-full flex gap-1 items-end h-full">
+<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 40%;"></div>
+<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 35%;"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Sat</span>
+</div>
+<!-- Sunday -->
+<div class="flex-grow flex flex-col items-center gap-2">
+<div class="w-full flex gap-1 items-end h-full">
+<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 30%;"></div>
+<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 25%;"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Sun</span>
+</div>
+</div>
+</div>
+<!-- Monthly Goal Gauge -->
+<div class="lg:col-span-4 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 flex flex-col items-center justify-center text-center">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-stack-md">Monthly Impact Goal</h3>
+<div class="relative w-48 h-48 mb-stack-md">
+<svg class="gauge-svg w-full h-full" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#e2e8f0" stroke-width="8"></circle>
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#006c49" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg text-[32px] font-bold text-on-surface">75%</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Achieved</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">9,375 / 12,500 meals target reached for September.</p>
+<button class="mt-stack-md w-full bg-primary hover:bg-on-primary-fixed-variant text-white font-label-lg py-3 rounded-xl shadow-md transition-all active:scale-95 duration-200">Boost Outreach</button>
+</div>
+<!-- Top Partners -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
+<div class="flex justify-between items-center mb-stack-lg">
+<h3 class="font-title-lg text-title-lg text-on-surface">Top Contributing Partners</h3>
+<button class="text-primary font-label-lg hover:underline">View All</button>
+</div>
+<div class="space-y-stack-md">
+<!-- Partner 1 -->
+<div class="flex items-center justify-between p-stack-md bg-surface-container-low rounded-xl hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary">lunch_dining</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface">Green Garden Bistro</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">Restaurant • 5km away</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-label-lg text-label-lg text-primary">1,240kg Rescued</span>
+<span class="inline-block mt-1 px-2 py-0.5 bg-primary-container text-on-primary-container rounded text-[10px] font-bold uppercase">Platinum Hero</span>
+</div>
+</div>
+<!-- Partner 2 -->
+<div class="flex items-center justify-between p-stack-md bg-surface-container-low rounded-xl hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-secondary">foundation</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface">St. Jude Community Kitchen</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">NGO • Local Hub</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-label-lg text-label-lg text-primary">980kg Distributed</span>
+<span class="inline-block mt-1 px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed rounded text-[10px] font-bold uppercase">Gold Member</span>
+</div>
+</div>
+<!-- Partner 3 -->
+<div class="flex items-center justify-between p-stack-md bg-surface-container-low rounded-xl hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-tertiary">storefront</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface">Organic Mart &amp; Co.</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">Retail • 12 locations</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-label-lg text-label-lg text-primary">750kg Rescued</span>
+<span class="inline-block mt-1 px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded text-[10px] font-bold uppercase">Active Partner</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CSR Report Action -->
+<div class="lg:col-span-5 relative overflow-hidden bg-primary p-stack-lg rounded-2xl shadow-[0px_12px_32px_rgba(0,108,73,0.2)] text-white flex flex-col justify-between">
+<div class="relative z-10">
+<h3 class="font-headline-lg text-headline-lg text-white mb-stack-sm">Download Impact Report</h3>
+<p class="font-body-md text-primary-fixed leading-relaxed">Generate a comprehensive CSR and Sustainability report for your stakeholders. Includes verified carbon data and community testimonials.</p>
+</div>
+<div class="relative z-10 mt-stack-lg flex flex-col gap-stack-sm">
+<div class="flex items-center gap-3 bg-white/10 p-stack-sm rounded-xl border border-white/20">
+<span class="material-symbols-outlined text-white">description</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md">impact_report_q3_2024.pdf</span>
+<span class="text-[10px] opacity-70">Ready to download • 4.2 MB</span>
+</div>
+</div>
+<button class="w-full bg-white text-primary font-bold font-label-lg py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-primary-fixed transition-colors active:scale-95">
+<span class="material-symbols-outlined">download</span>
+                        Download Full Report
+                    </button>
+</div>
+<!-- Background Pattern -->
+<div class="absolute -right-16 -bottom-16 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute -left-16 -top-16 w-48 h-48 bg-primary-fixed/20 rounded-full blur-2xl"></div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 pb-safe bg-surface dark:bg-surface-container rounded-t-xl shadow-[0px_-4px_12px_rgba(0,0,0,0.05)]">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-md text-label-md mt-1">Impact</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined text-primary text-[32px]" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-label-md mt-1">Donate</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md mt-1">History</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md mt-1">Profile</span>
+</button>
+</nav>
+<script>
+        // Micro-interactions and Chart animations
+        window.addEventListener('DOMContentLoaded', () => {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach((bar, index) => {
+                const finalHeight = bar.style.height;
+                bar.style.height = '0%';
+                setTimeout(() => {
+                    bar.style.height = finalHeight;
+                }, 200 + (index * 50));
+            });
+        });
+    </script>
+</body></html>

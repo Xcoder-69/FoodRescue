@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FoodRescue - Choose Account Type</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error": "#ba1a1a",
+                      "on-error-container": "#93000a",
+                      "on-surface-variant": "#3c4a42",
+                      "on-secondary-container": "#5c2400",
+                      "on-primary-container": "#00422b",
+                      "surface-container-high": "#e3eae3",
+                      "on-tertiary-container": "#00328b",
+                      "primary-container": "#10b981",
+                      "secondary": "#9d4300",
+                      "secondary-fixed": "#ffdbca",
+                      "tertiary-fixed": "#dbe1ff",
+                      "surface": "#f4fbf4",
+                      "surface-container": "#e8f0e9",
+                      "primary-fixed": "#6ffbbe",
+                      "surface-bright": "#f4fbf4",
+                      "background": "#f4fbf4",
+                      "surface-tint": "#006c49",
+                      "on-secondary-fixed": "#341100",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed-dim": "#ffb690",
+                      "on-primary-fixed-variant": "#005236",
+                      "surface-variant": "#dde4dd",
+                      "on-surface": "#161d19",
+                      "surface-container-low": "#eef6ee",
+                      "surface-dim": "#d4dcd5",
+                      "primary": "#006c49",
+                      "tertiary-fixed-dim": "#b4c5ff",
+                      "surface-container-highest": "#dde4dd",
+                      "on-background": "#161d19",
+                      "inverse-surface": "#2b322d",
+                      "on-tertiary-fixed-variant": "#003ea8",
+                      "secondary-container": "#fd761a",
+                      "on-secondary": "#ffffff",
+                      "inverse-primary": "#4edea3",
+                      "outline": "#6c7a71",
+                      "inverse-on-surface": "#ebf3eb",
+                      "on-primary-fixed": "#002113",
+                      "tertiary": "#0053db",
+                      "on-tertiary-fixed": "#00174b",
+                      "surface-container-lowest": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#bbcabf",
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed-variant": "#783200",
+                      "tertiary-container": "#7f9fff",
+                      "primary-fixed-dim": "#4edea3"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "stack-sm": "8px",
+                      "gutter": "24px",
+                      "stack-md": "16px",
+                      "container-padding-desktop": "32px",
+                      "stack-lg": "32px",
+                      "container-padding-mobile": "16px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "title-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .card-selected {
+            border-color: #10b981 !important; /* primary-container fallback or primary */
+            background-color: #f4fbf4; /* surface */
+        }
+        .card-selected .check-icon {
+            display: flex !important;
+        }
+        .btn-disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-[#FFFDF7] text-on-surface min-h-screen flex flex-col font-body-md">
+<!-- Header Section -->
+<header class="w-full flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-lg max-w-7xl mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="food_bank">food_bank</span>
+<span class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary">FoodRescue</span>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex flex-col items-center justify-center px-container-padding-mobile py-stack-lg max-w-4xl mx-auto w-full">
+<div class="text-center mb-stack-lg">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary mb-2">Choose Account Type</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">How would you like to join the mission?</p>
+</div>
+<!-- Role Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter w-full">
+<!-- Restaurant / Hotel -->
+<button class="role-card relative flex flex-col items-center text-center p-gutter bg-surface-container-lowest border-2 border-transparent rounded-[24px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] transition-all hover:scale-[1.02] active:scale-95 group" onclick="selectRole(this)">
+<div class="absolute top-4 right-4 hidden check-icon w-6 h-6 bg-primary-container rounded-full items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center mb-stack-md group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="restaurant">restaurant</span>
+</div>
+<h3 class="font-title-lg text-title-lg font-bold text-on-surface mb-2">Restaurant / Hotel</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Donate surplus food</p>
+<div class="mt-stack-md w-full h-32 rounded-xl overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all" data-alt="A professional restaurant kitchen with clean stainless steel surfaces and a warm amber glow. Chefs in white uniforms are carefully preparing high-quality ingredients. The lighting is soft and focused, creating a sense of trust, efficiency, and premium food handling within the modern Emerald Green and off-white brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvXSW-lkfL-HcThmjqI8pOI5xG9zJvXjven7cWpIp938WPT6M_3c98ZLl39GIvzlPl-6MzJeFgldjxKMyuf_tlD8crz60-hmP85C_d8H1sVjY113M-asAHNVvh78m062rqA0L7CV-psRqmzTdYlq34RaFTaeptzH23Xs6ImJxI6S1p0V-n9T0xyg26qVqJ3UUDjtZfkmHLaGRqp2fB1IrFvRtS8Pcd84wywdUCl7zbKb1ZKP-CmBJkAWZkRSZz6JH8UkVdDL5IIXo"/>
+</div>
+</button>
+<!-- NGO -->
+<button class="role-card relative flex flex-col items-center text-center p-gutter bg-surface-container-lowest border-2 border-transparent rounded-[24px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] transition-all hover:scale-[1.02] active:scale-95 group" onclick="selectRole(this)">
+<div class="absolute top-4 right-4 hidden check-icon w-6 h-6 bg-primary-container rounded-full items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-16 h-16 rounded-full bg-tertiary-container/10 flex items-center justify-center mb-stack-md group-hover:bg-tertiary-container/20 transition-colors">
+<span class="material-symbols-outlined text-tertiary text-4xl" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+<h3 class="font-title-lg text-title-lg font-bold text-on-surface mb-2">NGO</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Receive and distribute food</p>
+<div class="mt-stack-md w-full h-32 rounded-xl overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all" data-alt="A heartening scene of community volunteers at a distribution center, sharing freshly packed boxes of healthy food with smiling local residents. The atmosphere is warm, humanitarian, and bright, filled with natural daylight and the soft Emerald Green and Ocean Blue colors of the FoodRescue brand. The mood is optimistic and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBntI_mnmYeiPj8jMaBjeunMGay_TDjSAgD5MqlaaMIbvSQJjdz_gh9b2_e2iwBhzCFvs40fg96PCLbxc1oywdZaN1T8s-mUq9z45-IV8Gcxyzsw3YJ8Jpd0U4N3V-zfZrEZ-Z4fKvmUlkIBdbPv0QSIeRA09UV2oh25p9aZuPHVYKU7A5t5Cp4zBpcw36fC3VRHspM8RlfVp5CybGD4xB0y7-mcoEEwIWXPTfbwsU0N1XwQDXnPKCrhufic1WtNAgjEYrsnSZK4Kc"/>
+</div>
+</button>
+<!-- Volunteer -->
+<button class="role-card relative flex flex-col items-center text-center p-gutter bg-surface-container-lowest border-2 border-transparent rounded-[24px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] transition-all hover:scale-[1.02] active:scale-95 group" onclick="selectRole(this)">
+<div class="absolute top-4 right-4 hidden check-icon w-6 h-6 bg-primary-container rounded-full items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="w-16 h-16 rounded-full bg-secondary-container/10 flex items-center justify-center mb-stack-md group-hover:bg-secondary-container/20 transition-colors">
+<span class="material-symbols-outlined text-secondary text-4xl" data-icon="delivery_dining">delivery_dining</span>
+</div>
+<h3 class="font-title-lg text-title-lg font-bold text-on-surface mb-2">Volunteer</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Help collect and deliver food</p>
+<div class="mt-stack-md w-full h-32 rounded-xl overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all" data-alt="A focused volunteer on an electric moped or bike, carrying a professional insulated food delivery bag featuring a modern minimalist logo. The urban background is softly blurred with a warm sunset lighting. The visual style uses sharp details and a clean palette of Emerald Greens and warm neutrals to convey a reliable and active community service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZCUpwkLY8R6aETX9XTfA-LnCQQk_f8CDc8ZQxbW7MdIrFgiOo2EkyjMKSMYR0sJCpZUjKjaF-ecjffVvbvGEq9-46oi5Lw3NT_oLPybaFVYyO-X8qyFJUQDDGXEHiSvERJuWOBBFuDih2OhZkkZt1amCZ3hzWYAlE5oDAnmQk_BYOk4lrUPSxfPY3BbxGtiV3Z4ki5DnNf_ycJN9nshmP8_3hGBmhbHKEA3vFVCp0H0ufUzdLD_5rgwWeEBqkuw18jYSBExwq3s0"/>
+</div>
+</button>
+</div>
+<!-- Action Footer -->
+<div class="mt-gutter w-full max-w-sm">
+<button class="btn-disabled w-full py-4 bg-primary text-on-primary rounded-full font-label-lg text-label-lg shadow-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2" id="continue-btn">
+                Continue
+                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<p class="text-center mt-4 font-label-md text-label-md text-on-surface-variant">
+                Already have an account? <a class="text-primary font-bold hover:underline" href="#">Log in</a>
+</p>
+</div>
+</main>
+<!-- Decorative Background Animation -->
+<div class="fixed inset-0 -z-10 pointer-events-none opacity-20">
+
+</div>
+<script>
+        function selectRole(element) {
+            // Remove selection from all cards
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('card-selected');
+                card.classList.remove('ring-4');
+                card.classList.remove('ring-primary-container/20');
+            });
+
+            // Add selection to clicked card
+            element.classList.add('card-selected');
+            element.classList.add('ring-4');
+            element.classList.add('ring-primary-container/20');
+
+            // Enable the continue button
+            const btn = document.getElementById('continue-btn');
+            btn.classList.remove('btn-disabled');
+            
+            // Add subtle haptic feedback feeling with scale
+            element.classList.add('scale-95');
+            setTimeout(() => {
+                element.classList.remove('scale-95');
+            }, 100);
+        }
+    </script>
+</body></html>

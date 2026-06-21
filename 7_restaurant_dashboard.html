@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Restaurant Dashboard - FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#dde4dd",
+                    "surface-dim": "#d4dcd5",
+                    "surface-tint": "#006c49",
+                    "surface": "#f4fbf4",
+                    "secondary-fixed": "#ffdbca",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#005236",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#fd761a",
+                    "on-background": "#161d19",
+                    "on-tertiary": "#ffffff",
+                    "tertiary": "#0053db",
+                    "surface-variant": "#dde4dd",
+                    "tertiary-container": "#7f9fff",
+                    "on-secondary-fixed-variant": "#783200",
+                    "on-secondary-container": "#5c2400",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#3c4a42",
+                    "inverse-surface": "#2b322d",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#003ea8",
+                    "on-surface": "#161d19",
+                    "outline": "#6c7a71",
+                    "inverse-primary": "#4edea3",
+                    "surface-container": "#e8f0e9",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#eef6ee",
+                    "on-primary-container": "#00422b",
+                    "primary-container": "#10b981",
+                    "on-primary-fixed": "#002113",
+                    "surface-bright": "#f4fbf4",
+                    "primary-fixed-dim": "#4edea3",
+                    "primary": "#006c49",
+                    "background": "#f4fbf4",
+                    "secondary-fixed-dim": "#ffb690",
+                    "on-secondary-fixed": "#341100",
+                    "surface-container-high": "#e3eae3",
+                    "tertiary-fixed-dim": "#b4c5ff",
+                    "primary-fixed": "#6ffbbe",
+                    "outline-variant": "#bbcabf",
+                    "on-tertiary-container": "#00328b",
+                    "secondary": "#9d4300",
+                    "on-tertiary-fixed": "#00174b",
+                    "tertiary-fixed": "#dbe1ff",
+                    "inverse-on-surface": "#ebf3eb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-padding-desktop": "32px",
+                    "stack-sm": "8px",
+                    "gutter": "24px",
+                    "stack-lg": "32px",
+                    "container-padding-mobile": "16px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24 lg:pb-0 lg:pl-80">
+<!-- Navigation Drawer (Desktop Only) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container shadow-md w-80 rounded-r-xl z-50" id="nav-drawer">
+<div class="px-gutter py-stack-lg">
+<h1 class="font-headline-lg text-headline-lg font-black text-primary">FoodRescue</h1>
+</div>
+<div class="px-stack-md py-stack-md flex items-center gap-stack-md mb-stack-lg">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary">
+<img alt="Restaurant Admin" data-alt="A professional headshot of a restaurant owner in a clean chef uniform, smiling warmly against a blurred kitchen background. The lighting is soft and natural, emphasizing a trustworthy and professional persona. The color palette is warm with subtle greens and earthy tones, maintaining a modern humanitarian aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsiEPwb6K7ZH-WAcp9aKEljSsVPMVe775TznMjxjp2bb2RNtDr6QatRqs4fA1YViudsOot_oXxdOzJBGpU2R2zZ_BWVPXSWKG8SO6z9ENjM2lg1W-et17dgjwhcK2D1zjxX9RobCJheOZHzs9QiW4e0y4PmvoNI1R-PvOWw-1g5Agwq5i0DAdtjHksepo1m5913nhB3EOvKZjggK6FGE00zgUUVKS6HviaHriZmUzq03eNWqQNyjylVsDzc3UL7YWiWLfrEkv_Oy4"/>
+</div>
+<div>
+<p class="font-title-lg text-title-lg text-on-surface leading-tight">Green Table Bistro</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Premium Partner</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active Item -->
+<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 transition-all hover:bg-primary/90" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-body-lg text-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 transition-all hover:bg-primary-container hover:text-on-primary-container rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-body-lg text-body-lg">Donation History</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 transition-all hover:bg-primary-container hover:text-on-primary-container rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-body-lg text-body-lg">Impact Analytics</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 transition-all hover:bg-primary-container hover:text-on-primary-container rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-lg text-body-lg">Volunteers</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 transition-all hover:bg-primary-container hover:text-on-primary-container rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-lg text-body-lg">Settings</span>
+</a>
+</nav>
+<div class="p-stack-md border-t border-outline-variant">
+<a class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 transition-all hover:text-error" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-lg text-body-lg">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Top AppBar (Mobile/Desktop Header) -->
+<header class="bg-surface dark:bg-background shadow-[0px_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-40 w-full">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto h-16">
+<div class="flex items-center gap-3">
+<div class="lg:hidden w-10 h-10 rounded-full overflow-hidden border border-primary">
+<img alt="User Profile" data-alt="A close-up profile picture of a restaurant manager in a vibrant bistro setting. The lighting is warm and inviting, featuring soft golden hour sunlight. The style is professional and humanitarian, using a color palette of fresh greens and warm neutrals to convey trustworthiness and activity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsOtqyJ0q8-mfSfz2Xjj3s8XBuldg1N5Rjb10O9icjgiXLH0V0zKzZz47qpS0vfc1_ZRGlaR_6MGBFNP4M0q6a_V7gaZ_CuoZYEg1dDxWIVJpgu5hi6xhNCOLsjvBW9Ylm-qk5fx3vM31EP_-ZC5E0yPlNSRID0hP7_8ViOh5fcXsbqzlmONrNNUKKwmgOuZczyqW0agEwC0MAsig1QCh0D6LzTHuvzHKINjpcJI1rIx9RJ1zgnGTVOakVnvCFgJBGMAmR-lrPH8Y"/>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary lg:hidden">FoodRescue</h2>
+<h2 class="hidden lg:block font-title-lg text-title-lg text-on-surface">Overview</h2>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150" data-icon="notifications">notifications</button>
+<button class="hidden md:flex material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150" data-icon="search">search</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-gutter">
+<!-- Welcome Section -->
+<section class="mb-stack-lg">
+<h3 class="font-display-lg text-2xl md:text-4xl text-on-background mb-2">Good morning, Chef.</h3>
+<p class="font-body-lg text-on-surface-variant">Here's how Green Table Bistro is impacting the community today.</p>
+</section>
+<!-- Quick Actions -->
+<section class="grid grid-cols-1 sm:grid-cols-3 gap-stack-md mb-gutter">
+<button class="flex items-center justify-center gap-stack-sm bg-secondary-container text-on-secondary px-gutter py-4 rounded-xl shadow-lg hover:brightness-110 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[24px]" data-icon="add_circle" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-label-lg text-label-lg">Donate Food</span>
+</button>
+<button class="flex items-center justify-center gap-stack-sm bg-surface-container-high text-on-surface px-gutter py-4 rounded-xl border border-outline-variant hover:bg-surface-variant transition-all active:scale-95">
+<span class="material-symbols-outlined text-[24px]" data-icon="local_shipping">local_shipping</span>
+<span class="font-label-lg text-label-lg">Track Pickup</span>
+</button>
+<button class="flex items-center justify-center gap-stack-sm bg-surface-container-high text-on-surface px-gutter py-4 rounded-xl border border-outline-variant hover:bg-surface-variant transition-all active:scale-95">
+<span class="material-symbols-outlined text-[24px]" data-icon="history">history</span>
+<span class="font-label-lg text-label-lg">History</span>
+</button>
+</section>
+<!-- Statistics Bento Grid -->
+<section class="grid grid-cols-2 lg:grid-cols-4 gap-stack-md mb-gutter">
+<div class="glass-card p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-white/50">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="volunteer_activism">volunteer_activism</span>
+<span class="text-xs font-bold text-primary-container bg-primary/10 px-2 py-0.5 rounded-full">+12%</span>
+</div>
+<p class="font-label-md text-on-surface-variant uppercase tracking-wider">Meals Donated</p>
+<h4 class="font-headline-lg text-3xl text-on-surface mt-1">1,284</h4>
+</div>
+<div class="glass-card p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-white/50">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="eco">eco</span>
+<span class="text-xs font-bold text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-full">85kg</span>
+</div>
+<p class="font-label-md text-on-surface-variant uppercase tracking-wider">Food Saved</p>
+<h4 class="font-headline-lg text-3xl text-on-surface mt-1">452<span class="text-lg ml-1 font-normal text-on-surface-variant">kg</span></h4>
+</div>
+<div class="glass-card p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-white/50">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-secondary" data-icon="pending_actions">pending_actions</span>
+<span class="flex h-2 w-2 rounded-full bg-secondary-container animate-pulse"></span>
+</div>
+<p class="font-label-md text-on-surface-variant uppercase tracking-wider">Active</p>
+<h4 class="font-headline-lg text-3xl text-on-surface mt-1">08</h4>
+</div>
+<div class="glass-card p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-white/50">
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="task_alt">task_alt</span>
+<span class="text-xs font-bold text-on-surface-variant opacity-60">Total</span>
+</div>
+<p class="font-label-md text-on-surface-variant uppercase tracking-wider">Completed</p>
+<h4 class="font-headline-lg text-3xl text-on-surface mt-1">156</h4>
+</div>
+</section>
+<!-- Recent Donations Section -->
+<section class="glass-card rounded-3xl shadow-xl border border-white overflow-hidden">
+<div class="px-gutter py-stack-md flex items-center justify-between border-b border-outline-variant bg-surface-container-low/50">
+<h3 class="font-title-lg text-title-lg text-on-surface">Recent Donations</h3>
+<button class="text-primary font-label-lg hover:underline transition-all">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest">
+<th class="px-gutter py-4 font-label-lg text-on-surface-variant border-b border-outline-variant">Food Item</th>
+<th class="px-gutter py-4 font-label-lg text-on-surface-variant border-b border-outline-variant">Quantity</th>
+<th class="px-gutter py-4 font-label-lg text-on-surface-variant border-b border-outline-variant">Time</th>
+<th class="px-gutter py-4 font-label-lg text-on-surface-variant border-b border-outline-variant">Status</th>
+<th class="px-gutter py-4 font-label-lg text-on-surface-variant border-b border-outline-variant">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-gutter py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="bakery_dining">bakery_dining</span>
+</div>
+<div>
+<p class="font-body-lg font-medium text-on-surface">Artisan Bread Mix</p>
+<p class="text-xs text-on-surface-variant">Perishable</p>
+</div>
+</div>
+</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">15 Units</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">20 mins ago</td>
+<td class="px-gutter py-5">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Available</span>
+</td>
+<td class="px-gutter py-5">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-gutter py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="soup_kitchen">soup_kitchen</span>
+</div>
+<div>
+<p class="font-body-lg font-medium text-on-surface">Lentil Soup (Bulk)</p>
+<p class="text-xs text-on-surface-variant">Prepared Food</p>
+</div>
+</div>
+</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">10 Liters</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">1 hour ago</td>
+<td class="px-gutter py-5">
+<span class="bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Accepted</span>
+</td>
+<td class="px-gutter py-5">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-gutter py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="nutrition">nutrition</span>
+</div>
+<div>
+<p class="font-body-lg font-medium text-on-surface">Organic Salad Trays</p>
+<p class="text-xs text-on-surface-variant">Fresh Produce</p>
+</div>
+</div>
+</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">8 Trays</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">3 hours ago</td>
+<td class="px-gutter py-5">
+<span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Picked Up</span>
+</td>
+<td class="px-gutter py-5">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-gutter py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="inventory_2">inventory_2</span>
+</div>
+<div>
+<p class="font-body-lg font-medium text-on-surface">Mixed Canned Goods</p>
+<p class="text-xs text-on-surface-variant">Non-Perishable</p>
+</div>
+</div>
+</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">25 Items</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">Yesterday</td>
+<td class="px-gutter py-5">
+<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Delivered</span>
+</td>
+<td class="px-gutter py-5">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-gutter py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-error-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-error" data-icon="event_busy">event_busy</span>
+</div>
+<div>
+<p class="font-body-lg font-medium text-on-surface">Fresh Dairy Pack</p>
+<p class="text-xs text-on-surface-variant">Perishable</p>
+</div>
+</div>
+</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">5 Liters</td>
+<td class="px-gutter py-5 font-body-md text-on-surface-variant">2 days ago</td>
+<td class="px-gutter py-5">
+<span class="bg-error/10 text-error px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Expired</span>
+</td>
+<td class="px-gutter py-5">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Insights / Illustration Overlay -->
+<section class="mt-gutter grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="relative h-64 rounded-3xl overflow-hidden shadow-lg group">
+<img alt="Food Impact" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A beautifully arranged spread of fresh, healthy ingredients on a rustic wooden table. The lighting is soft and cinematic, with warm highlights reflecting off fresh vegetables and artisan grains. The mood is abundant and wholesome, celebrating the beauty of surplus food transformed into community nourishment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrPLC3r9nOSBzHgjdl7p5W200C1-nkNZMzRfnfL1YL-HAbhlMMf_-reHKGxd912C_mVnlfpL6p1pi5xg8oOhi0jYz7ddqespbpTExcReEOZo8ArAye5J9N99pAfkVsamv39xUdSADt_7RzvSbqzDgZ5PUEQ6Mu1E84wub9o3eh_EiN65Y5tXkQiTLl3SYLOdYYO0ocjnuCW066yetD3O6NR13bnZpjUevc1DedERdd8JjrZlWgvukMDLKbG_FEQy6tBuHfL1crx1Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-gutter">
+<h5 class="text-white font-headline-lg-mobile">Impact Spotlight</h5>
+<p class="text-white/90 font-body-md">Your recent donation reached 40 families in the Downtown Shelter.</p>
+</div>
+</div>
+<div class="bg-tertiary-container/10 border border-tertiary-container/30 rounded-3xl p-gutter flex flex-col justify-center">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 bg-tertiary rounded-2xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+</div>
+<h5 class="font-title-lg text-tertiary">Weekly Insight</h5>
+</div>
+<p class="font-body-lg text-on-surface-variant">You've reduced kitchen waste by <span class="font-bold text-tertiary">22%</span> this week compared to last month. Great job on optimizing your inventory!</p>
+<button class="mt-stack-md text-tertiary font-label-lg flex items-center gap-1 hover:gap-2 transition-all">
+                    View analytics <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface dark:bg-surface-container-lowest shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 active:scale-90 duration-200 p-2 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 active:scale-90 duration-200 p-2 rounded-xl" href="#">
+<span class="material-symbols-outlined text-[32px] text-primary" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-label-md">Donate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 active:scale-90 duration-200 p-2 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 active:scale-90 duration-200 p-2 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button (Optional Contextual) -->
+<button class="fixed bottom-28 right-6 lg:bottom-10 lg:right-10 bg-secondary-container text-on-secondary w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined text-[28px]" data-icon="add">add</span>
+</button>
+<script>
+        // Micro-interaction for statistic cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+                card.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Simple notification toast logic simulation
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                console.log("Dashboard Loaded - Monitoring live donations...");
+            }, 1000);
+        });
+    </script>
+</body></html>

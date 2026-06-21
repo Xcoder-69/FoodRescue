@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create Food Donation | FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#dde4dd",
+                    "surface-dim": "#d4dcd5",
+                    "surface-tint": "#006c49",
+                    "surface": "#f4fbf4",
+                    "secondary-fixed": "#ffdbca",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#005236",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#fd761a",
+                    "on-background": "#161d19",
+                    "on-tertiary": "#ffffff",
+                    "tertiary": "#0053db",
+                    "surface-variant": "#dde4dd",
+                    "tertiary-container": "#7f9fff",
+                    "on-secondary-fixed-variant": "#783200",
+                    "on-secondary-container": "#5c2400",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#3c4a42",
+                    "inverse-surface": "#2b322d",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#003ea8",
+                    "on-surface": "#161d19",
+                    "outline": "#6c7a71",
+                    "inverse-primary": "#4edea3",
+                    "surface-container": "#e8f0e9",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#eef6ee",
+                    "on-primary-container": "#00422b",
+                    "primary-container": "#10b981",
+                    "on-primary-fixed": "#002113",
+                    "surface-bright": "#f4fbf4",
+                    "primary-fixed-dim": "#4edea3",
+                    "primary": "#006c49",
+                    "background": "#f4fbf4",
+                    "secondary-fixed-dim": "#ffb690",
+                    "on-secondary-fixed": "#341100",
+                    "surface-container-high": "#e3eae3",
+                    "tertiary-fixed-dim": "#b4c5ff",
+                    "primary-fixed": "#6ffbbe",
+                    "outline-variant": "#bbcabf",
+                    "on-tertiary-container": "#00328b",
+                    "secondary": "#9d4300",
+                    "on-tertiary-fixed": "#00174b",
+                    "tertiary-fixed": "#dbe1ff",
+                    "inverse-on-surface": "#ebf3eb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-padding-desktop": "32px",
+                    "stack-sm": "8px",
+                    "gutter": "24px",
+                    "stack-lg": "32px",
+                    "container-padding-mobile": "16px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab {
+            font-variation-settings: 'FILL' 1;
+        }
+        .bento-inner-shadow {
+            box-shadow: inset 0px 2px 4px rgba(0,0,0,0.02);
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-bottom-width: 2px !important;
+            border-color: #006c49 !important;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24 md:pb-0 md:pl-80">
+<!-- Navigation Drawer (Desktop) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container shadow-md w-80 rounded-r-xl z-40">
+<div class="font-headline-lg text-headline-lg font-black text-primary px-gutter py-stack-lg">
+            FoodRescue
+        </div>
+<div class="flex items-center gap-stack-md px-stack-md py-6 mb-4">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container overflow-hidden">
+<img alt="Green Table Bistro" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5Jfv-lB2d5kTWJ5RIE50aKj3a_fB17gzevSOBZXCwsiHYZpSjTeyCMSSOv4Rh8KM1axi60ULiP5EOr0p-duCNOdNQRaWdcJdTHiu78rBwyj9_crckUCIjMO7kAd5kPaY_2kaB2YE4E-AW3_U5C_4k5Um4KZ-Nf5byGGDmzEuLgiODDEoJz6J7imFTyR-g0saTQn-ggPM1tvPWRlOwdfPAM0PZlLT6p-5WbjUL2zUXty4nad-o8Y6KQv_Z4U47H_CEi24tkYqf6_U"/>
+</div>
+<div>
+<p class="font-title-lg text-title-lg text-on-surface leading-tight">Restaurant Admin</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Green Table Bistro</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-body-lg text-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-body-lg text-body-lg">Donate Food</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-lg text-body-lg">Donation History</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-body-lg text-body-lg">Impact Analytics</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-lg text-body-lg">Settings</span>
+</a>
+</nav>
+<div class="p-gutter">
+<button class="flex items-center gap-stack-md text-error w-full px-stack-md py-3 hover:bg-error-container/20 rounded-full transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-lg text-body-lg">Logout</span>
+</button>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="bg-surface shadow-sm sticky top-0 z-30 w-full">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="lg:hidden p-2 text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary">Post Donation</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden md:flex hidden">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a restaurant manager in a clean, brightly lit modern kitchen. The lighting is soft and natural, emphasizing a high-trust, professional humanitarian atmosphere. The style is crisp and modern, featuring the brand's emerald green tones in the background accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMlcNjXP1Eh7jbq8QkoNE-BdJ722TjEJPrlSWnpBkW_-VsBmH7wzDaJaFiyZz1KAKupZnG4_chOiuw9xX0AkU9keOwwAXylWbd4RajZj1LF_b8Vwu_nFLZrXAqSYzLGArepXZZZf_lbehFZcoCHRj3dkmybBxr9daQMATaojCDZWaoF0XDz6_B6S7Syc9ipXDYIeXbPUpTHazs3EhhLkfr2g5iVeOQEGQISMPkS4nP8VXlTSJP1RjOb_RrlSnWa3Edn-aJElYzrX8"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto p-container-padding-mobile md:p-container-padding-desktop">
+<!-- Form Container -->
+<div class="space-y-gutter">
+<!-- Section: Image Upload (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md">
+<div class="md:col-span-2 relative group cursor-pointer overflow-hidden rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant hover:border-primary transition-all aspect-video flex flex-col items-center justify-center text-on-surface-variant">
+<div class="absolute inset-0 opacity-0 group-hover:opacity-10 bg-primary transition-opacity"></div>
+<span class="material-symbols-outlined text-4xl mb-2 text-primary">add_a_photo</span>
+<p class="font-label-lg text-label-lg">Upload Food Photo</p>
+<p class="text-xs mt-1">PNG, JPG up to 10MB</p>
+</div>
+<div class="hidden md:flex flex-col gap-stack-md">
+<div class="flex-1 rounded-xl bg-surface-container overflow-hidden border border-outline-variant">
+<img alt="Sample Food" class="w-full h-full object-cover opacity-50 grayscale" data-alt="A top-down view of a colorful salad in a clean white bowl placed on a rustic wooden table. The lighting is warm and appetizing, featuring soft highlights. The overall aesthetic is professional, conveying fresh, high-quality surplus food ready for donation in an emerald green-themed environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI7-nZ4FQNa1GnBL7V1u7unkyAfs6uoItM3C99oKdk-P8-JzbBhsEViIjbc6IPkX55dZ0vr_0qxdVvSJ5t_bCrTiys34ER_er5436SoLeI1CWFu6OttnrONUPy716WzXvuV4HXetSckhOe3JZC-NQGwF1F4i0hjJXvemP9ma5MKfMv1pWSMgkd4-LxVUs9VStN8oaQk19TeAvt7_m_GwwxTkG7KkQXq7-28_62OLIAnzuZJn0yFZ2hmPH8Qp9v22pGn5UsS_-ZT9c"/>
+</div>
+<div class="flex-1 rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">add</span>
+</div>
+</div>
+</div>
+<!-- Main Form Card -->
+<form class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-gutter space-y-gutter">
+<!-- Row 1: Name and Category -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-1">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Food Name</label>
+<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-stack-sm py-3 font-body-lg text-body-lg rounded-t-lg transition-all" placeholder="e.g. Fresh Garden Salad Tray" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Food Category</label>
+<div class="flex gap-2 mt-1">
+<button class="flex-1 flex items-center justify-center gap-2 py-3 rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="font-label-md text-label-md">Veg</span>
+</button>
+<button class="flex-1 flex items-center justify-center gap-2 py-3 rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">egg_alt</span>
+<span class="font-label-md text-label-md">Non-Veg</span>
+</button>
+<button class="flex-1 flex items-center justify-center gap-2 py-3 rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">energy_savings_leaf</span>
+<span class="font-label-md text-label-md">Vegan</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Row 2: Quantity and Preparation -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="flex gap-4">
+<div class="flex-1 space-y-1">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Quantity</label>
+<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-stack-sm py-3 font-body-lg text-body-lg rounded-t-lg transition-all" placeholder="10" type="number"/>
+</div>
+<div class="w-1/3 space-y-1">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Unit</label>
+<select class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-stack-sm py-3 font-body-lg text-body-lg rounded-t-lg transition-all appearance-none">
+<option>Servings</option>
+<option>Kg</option>
+<option>Boxes</option>
+</select>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Preparation Time</label>
+<div class="relative">
+<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-stack-sm py-3 font-body-lg text-body-lg rounded-t-lg transition-all" type="datetime-local"/>
+</div>
+</div>
+</div>
+<!-- Row 3: Expiry and Pickup -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-1">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Best Before (Expiry)</label>
+<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-stack-sm py-3 font-body-lg text-body-lg rounded-t-lg transition-all" type="datetime-local"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Pickup Window</label>
+<select class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-stack-sm py-3 font-body-lg text-body-lg rounded-t-lg transition-all appearance-none">
+<option>ASAP (Next 1 hour)</option>
+<option>Evening (18:00 - 21:00)</option>
+<option>Night (After 22:00)</option>
+</select>
+</div>
+</div>
+<!-- Section: Address -->
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Pickup Address</label>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-sm">edit</span> Edit Address
+                        </button>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1">location_on</span>
+<div>
+<p class="font-body-lg text-body-lg font-semibold">Green Table Bistro</p>
+<p class="text-on-surface-variant text-sm">123 Culinary Lane, Downtown District, Metropolis, NY 10001</p>
+</div>
+</div>
+</div>
+<!-- Section: Instructions -->
+<div class="space-y-1">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Special Instructions</label>
+<textarea class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-stack-sm py-3 font-body-lg text-body-lg rounded-t-lg transition-all resize-none" placeholder="e.g. Please enter through the back kitchen door. Donated food is packed in stackable crates." rows="3"></textarea>
+</div>
+<!-- Submit Button -->
+<div class="pt-4">
+<button class="w-full py-4 bg-secondary-container hover:bg-[#EA580C] text-white font-bold text-lg rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 group" type="submit">
+<span class="material-symbols-outlined group-hover:animate-bounce">volunteer_activism</span>
+                        Submit Donation
+                    </button>
+<p class="text-center text-xs text-on-surface-variant mt-4">By submitting, you agree that the food is prepared under hygienic conditions and is safe for consumption.</p>
+</div>
+</form>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-label-md text-label-md font-bold">Donate</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</button>
+</nav>
+<script>
+        // Category selection logic
+        const categoryButtons = document.querySelectorAll('button[type="button"].flex-1');
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryButtons.forEach(b => {
+                    b.classList.remove('bg-primary-container', 'text-on-primary-container', 'border-primary');
+                    b.classList.add('border-outline-variant', 'text-on-surface-variant');
+                });
+                btn.classList.add('bg-primary-container', 'text-on-primary-container', 'border-primary');
+                btn.classList.remove('border-outline-variant', 'text-on-surface-variant');
+            });
+        });
+
+        // Micro-interaction for form focus
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('label').classList.replace('text-on-surface-variant', 'text-primary');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('label').classList.replace('text-primary', 'text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

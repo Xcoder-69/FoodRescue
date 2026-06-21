@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>FoodRescue | Live Monitoring</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bottom-sheet-transition {
+            transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+        .pulse-green {
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "background": "#f4fbf4",
+                      "inverse-surface": "#2b322d",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#5c2400",
+                      "primary-container": "#10b981",
+                      "tertiary": "#0053db",
+                      "surface-tint": "#006c49",
+                      "surface-dim": "#d4dcd5",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "surface-variant": "#dde4dd",
+                      "secondary": "#9d4300",
+                      "surface-container": "#e8f0e9",
+                      "on-surface": "#161d19",
+                      "on-primary-fixed-variant": "#005236",
+                      "tertiary-fixed-dim": "#b4c5ff",
+                      "surface-container-highest": "#dde4dd",
+                      "secondary-fixed": "#ffdbca",
+                      "on-tertiary-fixed-variant": "#003ea8",
+                      "on-tertiary-fixed": "#00174b",
+                      "secondary-fixed-dim": "#ffb690",
+                      "tertiary-fixed": "#dbe1ff",
+                      "secondary-container": "#fd761a",
+                      "primary-fixed": "#6ffbbe",
+                      "surface-container-low": "#eef6ee",
+                      "outline-variant": "#bbcabf",
+                      "on-error-container": "#93000a",
+                      "outline": "#6c7a71",
+                      "on-tertiary-container": "#00328b",
+                      "on-primary-fixed": "#002113",
+                      "on-secondary-fixed-variant": "#783200",
+                      "primary-fixed-dim": "#4edea3",
+                      "inverse-on-surface": "#ebf3eb",
+                      "surface": "#f4fbf4",
+                      "error": "#ba1a1a",
+                      "tertiary-container": "#7f9fff",
+                      "on-primary-container": "#00422b",
+                      "surface-container-high": "#e3eae3",
+                      "surface-bright": "#f4fbf4",
+                      "inverse-primary": "#4edea3",
+                      "on-background": "#161d19",
+                      "surface-container-lowest": "#ffffff",
+                      "primary": "#006c49",
+                      "on-surface-variant": "#3c4a42",
+                      "on-secondary-fixed": "#341100"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "stack-sm": "8px",
+                      "stack-md": "16px",
+                      "stack-lg": "32px",
+                      "container-padding-mobile": "16px",
+                      "gutter": "24px",
+                      "container-padding-desktop": "32px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "label-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- Top AppBar Component -->
+<header class="w-full top-0 sticky bg-surface-container-low z-40 shadow-sm flex items-center justify-between px-container-padding-mobile h-16">
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 transition-colors active:scale-95 duration-100" data-icon="menu">menu</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FoodRescue</h1>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative">
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span>
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 transition-colors active:scale-95 duration-100" data-icon="notifications">notifications</button>
+</div>
+</div>
+</header>
+<!-- Main Live Map Canvas -->
+<main class="flex-grow relative overflow-hidden">
+<!-- Full-screen Map Background (Placeholder) -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist high-detail bird's eye view map of a modern urban city district. The map features soft greys, emerald greens for parks, and subtle ocean blue for water bodies. The aesthetic is professional and clean, using Material Design principles with high-key lighting and sophisticated tonal transitions that match a humanitarian tech brand." data-location="Seattle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB9V7izgL5QlRTAqPrzKdO-R6NVkslp4JQn2j1A7M829KJjW2awsD-KgVMni2g5UL4K9yOkMnEZ-zaa4BQxqU7qdKTRqEtUkWvUCTA5gR5AidvkKjgvyYq4UGR_HuiWrKPCNpRZhrjZ1XWD8Zx7KvKZnud-6e_lBR2q5KPQrZZ7EOYRJoskJy2YyEc3PBECGHDPwg3FkCZZSijmu6nuiJzxQaOST4lvK698aVve-BOSf_6A7NE5TvdvWDYOgiwAd1P-9duG3eMAA8"/>
+<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+</div>
+<!-- Floating Search Bar -->
+<div class="absolute top-4 left-4 right-4 z-30">
+<div class="glass-panel flex items-center px-4 py-3 rounded-full shadow-lg border border-white/20">
+<span class="material-symbols-outlined text-on-surface-variant mr-3" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-body-md text-on-surface placeholder-on-surface-variant/60" placeholder="Search orders, volunteers, or locations..." type="text"/>
+<span class="material-symbols-outlined text-on-surface-variant ml-2" data-icon="filter_list">filter_list</span>
+</div>
+</div>
+<!-- Real-time Map Pins -->
+<!-- Available (Green) -->
+<div class="absolute top-[30%] left-[45%] z-20 group">
+<div class="pulse-green bg-primary-container text-on-primary-container p-2 rounded-full flex items-center justify-center shadow-xl cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="restaurant" data-weight="fill" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<div class="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 glass-panel p-3 rounded-xl shadow-2xl min-w-[160px] border border-primary/20">
+<p class="font-label-lg text-primary">Fresh Bakery Surplus</p>
+<p class="text-[10px] text-on-surface-variant">Available • 2.4kg</p>
+</div>
+</div>
+<!-- Picked Up (Blue) -->
+<div class="absolute top-[55%] left-[20%] z-20">
+<div class="bg-tertiary text-on-tertiary p-2 rounded-full flex items-center justify-center shadow-xl ring-4 ring-tertiary/20">
+<span class="material-symbols-outlined text-[20px]" data-icon="local_shipping" data-weight="fill" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+</div>
+</div>
+<!-- Expiring (Orange) -->
+<div class="absolute top-[40%] right-[25%] z-20">
+<div class="bg-secondary-container text-on-secondary-container p-2 rounded-full flex items-center justify-center shadow-xl ring-4 ring-secondary-container/20">
+<span class="material-symbols-outlined text-[20px]" data-icon="warning" data-weight="fill" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+</div>
+<!-- Legend -->
+<div class="absolute bottom-24 right-4 z-30 glass-panel p-3 rounded-2xl border border-white/30 shadow-md flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary-container"></span>
+<span class="text-[10px] font-label-md text-on-surface-variant">Available</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-tertiary"></span>
+<span class="text-[10px] font-label-md text-on-surface-variant">Picked Up</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary-container"></span>
+<span class="text-[10px] font-label-md text-on-surface-variant">Expiring</span>
+</div>
+</div>
+</main>
+<!-- Bottom Sheet: Active Deliveries -->
+<section class="fixed bottom-0 left-0 w-full z-50 glass-panel shadow-[0px_-8px_24px_rgba(0,0,0,0.1)] rounded-t-[32px] bottom-sheet-transition translate-y-[calc(100%-80px)] h-[60%] flex flex-col" id="bottom-sheet">
+<!-- Handle & Header -->
+<div class="flex flex-col items-center py-4 cursor-pointer" onclick="toggleBottomSheet()">
+<div class="w-12 h-1.5 bg-outline-variant rounded-full mb-4"></div>
+<div class="w-full px-6 flex justify-between items-center">
+<h2 class="font-title-lg text-title-lg text-on-surface">Active Deliveries</h2>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-label-md font-bold">4 Live</span>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-grow overflow-y-auto px-6 pb-24 flex flex-col gap-4">
+<!-- Delivery Card 1 -->
+<div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 hover:border-primary/50 transition-colors">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Close up professional portrait of a smiling delivery volunteer in a clean green t-shirt. High-key soft lighting, minimalist background, expressing warmth and reliability. Emerald green and white color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApnFBqIbqfyUaay34ZOyfcttup2aw5hnPJhxZZK1_RIRM5Fj-rb8znTsHBnRV2-BRA-dF6aN-vQaOK-BqKZuafq99eQeEVb9qUlINzHQo97qy79YrLjdEQXrvNWDNXvmzfHIp6ZAqO7jmR9wfwqtrRSVNueNO4FYH9qu01ejsyNV3fmqHH6iVEMp0VGWRuPcW_sxvF29gAWPB1Iy6KY6UeDrffW_PalN1SbxaOhMuZGbRJn5HTmwN0FXykrCZ189DKqjQcpvHhXq0"/>
+</div>
+<div>
+<h3 class="font-label-lg text-on-surface">Alex Mercer</h3>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="electric_car">electric_car</span>
+<span class="text-[12px]">EV Hatchback</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-tertiary font-bold text-label-lg">8 mins ETA</p>
+<p class="text-[10px] text-on-surface-variant">To: Community Hub A</p>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-label-md uppercase tracking-wider text-on-surface-variant">
+<span>In Transit</span>
+<span>75%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+<!-- Delivery Card 2 -->
+<div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female NGO volunteer with a friendly and focused expression. The lighting is studio-quality, soft and bright, reflecting a clean and modern humanitarian interface aesthetic. Color palette dominated by soft greys and emerald green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxEzhXDYnOeGvRn_cw1JV_ZItu4hYfxxE6aaHrBKNW2H__xcGCE7LhA68fNhM8HTCY5JBH50HRqKk6CYYyH7cymZCh6WfzT9lUsjzYIXhA33_NWlwgDxmP3pvk-ITJr4bUAWjdo1ylQL7rmc8E9xmfTC2ezSgUmxJ1638HtfOFZ2n7J4Bb8G1_cmNq3NwRSzdNRPE5HSMCnLfpjaU7RUIv6M7EFJ9ZCCypUbwZfLIpO_h2Ac3hDQvfhrx2amKSQkFj7yVdac_nrMM"/>
+</div>
+<div>
+<h3 class="font-label-lg text-on-surface">Sarah Chen</h3>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="pedal_bike">pedal_bike</span>
+<span class="text-[12px]">E-Bike</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-secondary-container font-bold text-label-lg">Delayed</p>
+<p class="text-[10px] text-on-surface-variant">Traffic Incident</p>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-label-md uppercase tracking-wider text-on-surface-variant">
+<span>Stationary</span>
+<span>40%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full" style="width: 40%"></div>
+</div>
+</div>
+</div>
+<!-- Delivery Card 3 -->
+<div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Profile photo of a volunteer in his 40s with a confident and helpful demeanor. He is wearing a professional-looking utility vest. The background is a clean, neutral white. Soft shadows and high-key illumination typical of modern Material UI design styles." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBzwYz09YmtcVPDjOTj0o_9ObFvo3qFt60OEhvss8PVb_x5SaTY3yRfTTK_40aaPeL-gBCkSSYpEmgCCyxgxO6BodEzPFmAEbfeb54Qruqan_DneDgvPTx8N_pBwxRcnLap67OLUi3dYwdWCXbflExsBO7u12PFg2gMwTjr5GHRohXLADwegixX5PeJ4Vc6HMA_pCWFmooh1d_ikjiq6v32Gm1plC6mVl8qo4KYQ1n_oWa5a73KNiPpd3YbZL5Lh6yllKZoZaDJuE"/>
+</div>
+<div>
+<h3 class="font-label-lg text-on-surface">Marcus Thorne</h3>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="local_shipping">local_shipping</span>
+<span class="text-[12px]">Refrigerated Van</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="text-tertiary font-bold text-label-lg">15 mins ETA</p>
+<p class="text-[10px] text-on-surface-variant">To: Shelter Northwest</p>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-label-md uppercase tracking-wider text-on-surface-variant">
+<span>In Transit</span>
+<span>15%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Navigation Bar Component -->
+<nav class="fixed bottom-0 left-0 w-full z-[60] flex justify-around items-center h-20 px-2 pb-safe bg-surface-container-lowest shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md mt-1">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md mt-1">History</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-label-md mt-1 font-bold">Donate</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications" data-weight="fill" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-label-md text-label-md mt-1">Alerts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md mt-1">Profile</span>
+</div>
+</nav>
+<script>
+        let isExpanded = false;
+        const sheet = document.getElementById('bottom-sheet');
+        
+        function toggleBottomSheet() {
+            isExpanded = !isExpanded;
+            if (isExpanded) {
+                sheet.style.transform = 'translateY(0)';
+            } else {
+                sheet.style.transform = 'translateY(calc(100% - 100px))';
+            }
+        }
+
+        // Initialize state
+        sheet.style.transform = 'translateY(calc(100% - 100px))';
+        
+        // Slight delay for entrance animation
+        window.addEventListener('load', () => {
+           sheet.classList.add('bottom-sheet-transition');
+        });
+    </script>
+</body></html>

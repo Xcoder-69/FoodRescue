@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#3c4a42",
+                    "secondary-container": "#fd761a",
+                    "on-primary-fixed": "#002113",
+                    "surface-dim": "#d4dcd5",
+                    "surface-container-highest": "#dde4dd",
+                    "inverse-primary": "#4edea3",
+                    "on-primary-fixed-variant": "#005236",
+                    "outline": "#6c7a71",
+                    "tertiary-fixed-dim": "#b4c5ff",
+                    "surface-container": "#e8f0e9",
+                    "on-secondary-container": "#5c2400",
+                    "on-tertiary-fixed": "#00174b",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#341100",
+                    "on-tertiary-container": "#00328b",
+                    "surface-container-high": "#e3eae3",
+                    "inverse-on-surface": "#ebf3eb",
+                    "background": "#f4fbf4",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#dde4dd",
+                    "primary": "#006c49",
+                    "on-surface": "#161d19",
+                    "surface": "#f4fbf4",
+                    "primary-fixed-dim": "#4edea3",
+                    "surface-bright": "#f4fbf4",
+                    "outline-variant": "#bbcabf",
+                    "surface-tint": "#006c49",
+                    "on-secondary-fixed-variant": "#783200",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#003ea8",
+                    "tertiary-container": "#7f9fff",
+                    "surface-container-low": "#eef6ee",
+                    "primary-fixed": "#6ffbbe",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#0053db",
+                    "on-primary-container": "#00422b",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#ffdbca",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#2b322d",
+                    "secondary-fixed-dim": "#ffb690",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed": "#dbe1ff",
+                    "on-background": "#161d19",
+                    "secondary": "#9d4300",
+                    "primary-container": "#10b981"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "container-padding-mobile": "16px",
+                    "gutter": "24px",
+                    "stack-md": "16px",
+                    "container-padding-desktop": "32px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4fbf4; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-header { backdrop-filter: blur(8px); background-color: rgba(244, 251, 244, 0.85); }
+        .doc-section { transition: transform 0.2s ease-in-out; }
+        .doc-section:hover { transform: translateY(-2px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="text-on-surface">
+<!-- Top Navigation Bar (JSON Guided) -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-background shadow-sm flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16 w-full glass-header">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary cursor-pointer active:scale-95 duration-200 p-2 hover:bg-surface-variant/50 rounded-full" onclick="history.back()">arrow_back</button>
+<h1 class="font-title-lg text-title-lg font-bold text-primary">FoodRescue</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant p-2 cursor-pointer hover:bg-surface-variant/50 rounded-full">search</span>
+<span class="material-symbols-outlined text-on-surface-variant p-2 cursor-pointer hover:bg-surface-variant/50 rounded-full">share</span>
+</div>
+</header>
+<main class="pt-24 pb-12 px-container-padding-mobile md:px-container-padding-desktop max-w-4xl mx-auto space-y-8">
+<!-- Hero Title -->
+<section class="space-y-2 mb-10">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Legal &amp; Community</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Transparency and safety are the core of FoodRescue. Please review our latest policies updated March 2024.</p>
+</section>
+<!-- Tabs Switcher (Custom Logic) -->
+<div class="flex gap-4 border-b border-outline-variant/30 mb-8 overflow-x-auto no-scrollbar">
+<button class="pb-3 px-2 border-b-2 border-primary text-primary font-label-lg text-label-lg whitespace-nowrap">Privacy Policy</button>
+<button class="pb-3 px-2 border-b-2 border-transparent text-on-surface-variant font-label-lg text-label-lg hover:text-primary transition-colors whitespace-nowrap">Community Guidelines</button>
+</div>
+<!-- Bento Layout for Policies -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Main Content Area (8 Columns) -->
+<div class="md:col-span-8 space-y-8">
+<!-- Section: Data Collection -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] doc-section border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary text-3xl">fingerprint</span>
+<h3 class="font-title-lg text-title-lg text-on-surface">Data Collection</h3>
+</div>
+<div class="space-y-4 font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+<p>To ensure the safety of our distribution points and volunteers, FoodRescue collects specific information during account creation.</p>
+<ul class="space-y-3 mt-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-1">check_circle</span>
+<span><strong>Verification Documents:</strong> We require government ID or organization registration for donors and partners to prevent fraud.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-1">check_circle</span>
+<span><strong>Location Data:</strong> Real-time GPS is used during active rescue missions to coordinate pickups and optimize delivery routes.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-1">check_circle</span>
+<span><strong>Communication Logs:</strong> Chat logs between donors and volunteers are stored for 90 days to ensure safety and resolve disputes.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Section: Prohibited Activities -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] doc-section border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl">gavel</span>
+<h3 class="font-title-lg text-title-lg text-on-surface">Community Guidelines</h3>
+</div>
+<div class="space-y-6">
+<div class="p-4 bg-error-container/30 rounded-lg border-l-4 border-error">
+<h4 class="font-label-lg text-label-lg text-on-error-container mb-2">Zero Tolerance Policy</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">We strictly prohibit the following behaviors to maintain a safe and productive environment for all members.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-secondary mb-2">person_off</span>
+<h5 class="font-label-lg text-label-lg">Fake Accounts</h5>
+<p class="text-label-md font-label-md text-on-surface-variant mt-1">Misrepresenting your identity or organization status.</p>
+</div>
+<div class="p-4 bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-secondary mb-2">monetization_on</span>
+<h5 class="font-label-lg text-label-lg">Fraud &amp; Resale</h5>
+<p class="text-label-md font-label-md text-on-surface-variant mt-1">Selling food items received through donations.</p>
+</div>
+<div class="p-4 bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-secondary mb-2">campaign</span>
+<h5 class="font-label-lg text-label-lg">Harassment</h5>
+<p class="text-label-md font-label-md text-on-surface-variant mt-1">Hostile communication toward volunteers or staff.</p>
+</div>
+<div class="p-4 bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-secondary mb-2">report_problem</span>
+<h5 class="font-label-lg text-label-lg">Misinformation</h5>
+<p class="text-label-md font-label-md text-on-surface-variant mt-1">Providing false food quality or quantity reports.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Enforcement -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] doc-section border border-outline-variant/10">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-6">Enforcement Actions</h3>
+<div class="relative pl-8 border-l-2 border-outline-variant space-y-8">
+<div class="relative">
+<div class="absolute -left-10 top-0 w-4 h-4 rounded-full bg-secondary-container ring-4 ring-surface"></div>
+<h4 class="font-label-lg text-label-lg text-on-surface">1. Formal Warning</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">In-app and email notification regarding the specific violation and steps to rectify behavior.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-10 top-0 w-4 h-4 rounded-full bg-secondary ring-4 ring-surface"></div>
+<h4 class="font-label-lg text-label-lg text-on-surface">2. Temporary Suspension</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">7-30 day removal of access to the platform's core matching and pickup features.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-10 top-0 w-4 h-4 rounded-full bg-error ring-4 ring-surface"></div>
+<h4 class="font-label-lg text-label-lg text-on-surface">3. Permanent Ban</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Irrevocable termination of the account and blacklisting of associated verification documents.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar (4 Columns) -->
+<div class="md:col-span-4 space-y-6">
+<!-- Quick Help Card -->
+<div class="bg-primary text-on-primary rounded-xl p-6 shadow-md">
+<h4 class="font-title-lg text-title-lg mb-4">Questions?</h4>
+<p class="font-body-md text-body-md opacity-90 mb-6">Our compliance team is here to help clarify any policy details.</p>
+<button class="w-full bg-on-primary text-primary py-3 rounded-lg font-label-lg text-label-lg hover:bg-primary-fixed-dim transition-colors active:scale-95">Contact Compliance</button>
+</div>
+<!-- Related Documents -->
+<div class="bg-surface-container-low rounded-xl p-6 space-y-4">
+<h4 class="font-label-lg text-label-lg text-on-surface">Related Docs</h4>
+<div class="space-y-2">
+<a class="flex items-center justify-between p-3 bg-surface rounded-lg hover:bg-surface-variant transition-colors group" href="#">
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-primary">Terms of Service</span>
+<span class="material-symbols-outlined text-label-md">open_in_new</span>
+</a>
+<a class="flex items-center justify-between p-3 bg-surface rounded-lg hover:bg-surface-variant transition-colors group" href="#">
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-primary">Food Safety Protocol</span>
+<span class="material-symbols-outlined text-label-md">open_in_new</span>
+</a>
+<a class="flex items-center justify-between p-3 bg-surface rounded-lg hover:bg-surface-variant transition-colors group" href="#">
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-primary">Volunteer Handbook</span>
+<span class="material-symbols-outlined text-label-md">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Interactive Visualization Placeholder -->
+<div class="rounded-xl overflow-hidden h-48 relative shadow-inner">
+
+<div class="absolute inset-0 bg-black/20 flex items-center justify-center p-4">
+<p class="text-white text-center font-label-md text-label-md font-medium">Protecting the cycle of growth and community through trust.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (JSON Guided) -->
+<!-- Prohibiting Bottom Nav if we consider this a sub-page, but per prompt instruction "render if top-level", legal is often top-level in mobile profile flows. Let's include for mobile reach. -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-4 bg-surface dark:bg-background shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] z-50 rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant cursor-pointer active:scale-90 transition-transform">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant cursor-pointer active:scale-90 transition-transform">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant cursor-pointer active:scale-90 transition-transform">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="font-label-md text-label-md">Donate</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant cursor-pointer active:scale-90 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</div>
+<!-- Setting Profile as Active since Legal usually resides under Profile/Account -->
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction for tabs
+        const buttons = document.querySelectorAll('.flex.gap-4.border-b button');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => {
+                    b.classList.remove('border-primary', 'text-primary');
+                    b.classList.add('border-transparent', 'text-on-surface-variant');
+                });
+                btn.classList.remove('border-transparent', 'text-on-surface-variant');
+                btn.classList.add('border-primary', 'text-primary');
+            });
+        });
+    </script>
+</body></html>

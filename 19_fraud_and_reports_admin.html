@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fraud Detection &amp; Reports | FoodRescue Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#002113",
+                    "tertiary-fixed": "#dbe1ff",
+                    "surface-tint": "#006c49",
+                    "surface-container-highest": "#dde4dd",
+                    "secondary-fixed-dim": "#ffb690",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#00328b",
+                    "on-secondary-container": "#5c2400",
+                    "surface": "#f4fbf4",
+                    "on-primary-fixed-variant": "#005236",
+                    "outline-variant": "#bbcabf",
+                    "secondary-fixed": "#ffdbca",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-surface": "#161d19",
+                    "primary-container": "#10b981",
+                    "surface-container-low": "#eef6ee",
+                    "tertiary": "#0053db",
+                    "primary": "#006c49",
+                    "surface-container-high": "#e3eae3",
+                    "on-secondary-fixed-variant": "#783200",
+                    "surface-container": "#e8f0e9",
+                    "on-primary-container": "#00422b",
+                    "background": "#f4fbf4",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#6ffbbe",
+                    "outline": "#6c7a71",
+                    "on-tertiary-fixed-variant": "#003ea8",
+                    "inverse-on-surface": "#ebf3eb",
+                    "on-surface-variant": "#3c4a42",
+                    "secondary": "#9d4300",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f4fbf4",
+                    "tertiary-container": "#7f9fff",
+                    "on-primary": "#ffffff",
+                    "on-background": "#161d19",
+                    "tertiary-fixed-dim": "#b4c5ff",
+                    "inverse-surface": "#2b322d",
+                    "surface-variant": "#dde4dd",
+                    "secondary-container": "#fd761a",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#d4dcd5",
+                    "on-secondary-fixed": "#341100",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#4edea3",
+                    "on-tertiary-fixed": "#00174b",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "container-padding-mobile": "16px",
+                    "container-padding-desktop": "32px",
+                    "stack-sm": "8px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .card-shadow {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- Top Navigation Anchor -->
+<header class="bg-surface dark:bg-background shadow-sm fixed top-0 left-0 w-full z-40">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">FoodRescue</span>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant">notifications</button>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold shadow-sm">
+                    JD
+                </div>
+</div>
+</div>
+</header>
+<!-- Navigation Drawer (Desktop) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container dark:bg-surface-container-high w-80 z-30">
+<div class="font-headline-lg text-headline-lg font-black text-primary px-gutter py-stack-lg">FoodRescue</div>
+<div class="px-gutter mb-stack-lg">
+<div class="flex items-center gap-stack-md p-stack-sm">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed-dim overflow-hidden">
+<img alt="Admin" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlz5huGl2RPJHHHq_gne3shbm_uvrc4YRZyagpOrQ32VSQ7KjXW5ieT7-qE5prXyScjn2KWBO-lBjK8nzE3wW8pCsujEttVnOmn3T58L_cEft3Zoombq0WB-LoJG9G30NJ1GOaEYplayLhG-lMqEVqEk3G8-7x5bdRJ-YxS2DnuEYOH6irBKE_3Iuxg3OqSJLucqAFZ-6LFf9arsXU30psVJqSIOAmFnxDljhZ8bT5EDzyaBcTzW062sjEYtQz-Q-aM0E1utyc0To"/>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Restaurant Admin</p>
+<p class="text-xs text-on-surface-variant">Green Table Bistro</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-body-lg text-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 shadow-md" href="#">
+<span class="material-symbols-outlined">report</span>
+<span class="font-body-lg text-body-lg">Fraud Reports</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-lg text-body-lg">Donation History</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-body-lg text-body-lg">Impact Analytics</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-lg text-body-lg">Volunteers</span>
+</a>
+<div class="mt-auto border-t border-outline-variant pt-4 mb-4">
+<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-lg text-body-lg">Settings</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-80 pt-24 pb-24 px-container-padding-mobile md:px-container-padding-desktop">
+<div class="max-w-6xl mx-auto">
+<!-- Header Section -->
+<div class="mb-stack-lg">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Fraud Detection &amp; Security</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Monitoring real-time activities for system integrity and safety.</p>
+</div>
+<!-- Dashboard Stats Summary -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-stack-lg">
+<div class="bg-white p-gutter rounded-xl card-shadow flex flex-col gap-2 border-l-4 border-error">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Critical Alerts</span>
+<span class="text-display-lg font-display-lg text-error">12</span>
+<p class="text-sm text-on-surface-variant">Immediate action required</p>
+</div>
+<div class="bg-white p-gutter rounded-xl card-shadow flex flex-col gap-2 border-l-4 border-secondary-container">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Pending Investigations</span>
+<span class="text-display-lg font-display-lg text-secondary">34</span>
+<p class="text-sm text-on-surface-variant">Moderate risk flagged</p>
+</div>
+<div class="bg-white p-gutter rounded-xl card-shadow flex flex-col gap-2 border-l-4 border-primary">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Resolved Today</span>
+<span class="text-display-lg font-display-lg text-primary">89</span>
+<p class="text-sm text-on-surface-variant">Systems performing optimally</p>
+</div>
+</div>
+<!-- Flagged Activities List -->
+<section class="space-y-stack-md">
+<div class="flex items-center justify-between mb-stack-md">
+<h2 class="font-title-lg text-title-lg text-on-surface">Flagged Activities</h2>
+<div class="flex gap-stack-sm">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full text-label-lg font-label-lg hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                            Filter
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full text-label-lg font-label-lg hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-sm">sort</span>
+                            Sort by Date
+                        </button>
+</div>
+</div>
+<!-- Report Card 1: High Severity -->
+<div class="bg-white rounded-xl card-shadow p-gutter relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-error"></div>
+<div class="flex flex-col md:flex-row gap-6">
+<div class="flex-1">
+<div class="flex items-center gap-stack-md mb-2">
+<span class="bg-error-container text-on-error-container px-3 py-1 rounded-full text-xs font-bold uppercase">Critical</span>
+<span class="text-on-surface-variant text-sm">ID: #FR-9982 • 12 mins ago</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Suspicious Pickup Pattern</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4">
+                                User <span class="font-bold text-on-surface">@v_marcus92</span> has attempted to claim 8 "Emergency Perishable" packages across 4 different districts within 35 minutes. Travel distance logic indicates high probability of proxy-collection or automation scripts.
+                            </p>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-low px-3 py-1 rounded-full text-xs text-on-surface-variant border border-outline-variant">Location: Bronx Cluster</span>
+<span class="bg-surface-container-low px-3 py-1 rounded-full text-xs text-on-surface-variant border border-outline-variant">Type: High-Volume Extraction</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row md:flex-col gap-stack-sm justify-center min-w-[160px]">
+<button class="w-full px-6 py-3 bg-primary text-on-primary rounded-xl font-label-lg hover:shadow-lg transition-all active:scale-95">Investigate</button>
+<button class="w-full px-6 py-3 bg-error text-on-error rounded-xl font-label-lg hover:shadow-lg transition-all active:scale-95">Restrict Account</button>
+<button class="w-full px-6 py-3 bg-surface-container text-on-surface-variant rounded-xl font-label-lg hover:bg-surface-container-high transition-all active:scale-95">Dismiss</button>
+</div>
+</div>
+</div>
+<!-- Report Card 2: Medium Severity (Orange) -->
+<div class="bg-white rounded-xl card-shadow p-gutter relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-secondary-container"></div>
+<div class="flex flex-col md:flex-row gap-6">
+<div class="flex-1">
+<div class="flex items-center gap-stack-md mb-2">
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full text-xs font-bold uppercase">Moderate</span>
+<span class="text-on-surface-variant text-sm">ID: #FR-9975 • 4 hours ago</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Expired Food Listing</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4">
+                                Partner <span class="font-bold text-on-surface">Urban Greens Market</span> listed 15 units of "Fresh Poultry Mix" with a timestamp indicating it expired 48 hours prior to the listing. Multiple automated safety checks triggered.
+                            </p>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-low px-3 py-1 rounded-full text-xs text-on-surface-variant border border-outline-variant">Compliance: Food Safety</span>
+<span class="bg-surface-container-low px-3 py-1 rounded-full text-xs text-on-surface-variant border border-outline-variant">Partner: Tier 2</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row md:flex-col gap-stack-sm justify-center min-w-[160px]">
+<button class="w-full px-6 py-3 bg-primary text-on-primary rounded-xl font-label-lg hover:shadow-lg transition-all">Investigate</button>
+<button class="w-full px-6 py-3 bg-surface-container text-on-surface-variant rounded-xl font-label-lg hover:bg-surface-container-high transition-all">Dismiss</button>
+</div>
+</div>
+</div>
+<!-- Report Card 3: Moderate/Warning (Warm Orange) -->
+<div class="bg-white rounded-xl card-shadow p-gutter relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-secondary-container"></div>
+<div class="flex flex-col md:flex-row gap-6">
+<div class="flex-1">
+<div class="flex items-center gap-stack-md mb-2">
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full text-xs font-bold uppercase">Urgent Warning</span>
+<span class="text-on-surface-variant text-sm">ID: #FR-9961 • 6 hours ago</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2">Reported Volunteer</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4">
+                                3 Community Partners reported volunteer <span class="font-bold text-on-surface">Sarah K.</span> for unprofessional conduct and failure to use temperature-controlled bags during transport of dairy products. 
+                            </p>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-low px-3 py-1 rounded-full text-xs text-on-surface-variant border border-outline-variant">Conduct</span>
+<span class="bg-surface-container-low px-3 py-1 rounded-full text-xs text-on-surface-variant border border-outline-variant">Sanitation</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row md:flex-col gap-stack-sm justify-center min-w-[160px]">
+<button class="w-full px-6 py-3 bg-primary text-on-primary rounded-xl font-label-lg hover:shadow-lg transition-all">Investigate</button>
+<button class="w-full px-6 py-3 bg-error text-on-error rounded-xl font-label-lg hover:shadow-lg transition-all">Suspend</button>
+<button class="w-full px-6 py-3 bg-surface-container text-on-surface-variant rounded-xl font-label-lg hover:bg-surface-container-high transition-all">Dismiss</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Risk Map / Visualization Section -->
+<section class="mt-stack-lg">
+<div class="bg-surface-container rounded-3xl p-gutter card-shadow min-h-[400px] flex flex-col md:flex-row gap-gutter">
+<div class="flex-1 space-y-4">
+<h2 class="font-title-lg text-title-lg text-on-surface">Regional Fraud Density</h2>
+<p class="text-on-surface-variant font-body-md text-body-md">Heatmap visualizing flagged activities across service regions. High density areas are prioritized for automated auditing.</p>
+<ul class="space-y-3">
+<li class="flex items-center justify-between p-3 bg-white/50 rounded-xl">
+<span class="font-label-lg text-label-lg">Queens Central</span>
+<span class="text-error font-bold">+12% High Risk</span>
+</li>
+<li class="flex items-center justify-between p-3 bg-white/50 rounded-xl">
+<span class="font-label-lg text-label-lg">Brooklyn West</span>
+<span class="text-primary font-bold">-5% Low Risk</span>
+</li>
+<li class="flex items-center justify-between p-3 bg-white/50 rounded-xl">
+<span class="font-label-lg text-label-lg">Manhattan North</span>
+<span class="text-secondary font-bold">+2% Moderate</span>
+</li>
+</ul>
+</div>
+<div class="flex-[2] rounded-2xl overflow-hidden shadow-inner relative min-h-[300px]">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="A sophisticated data visualization map showing a metropolitan city grid at night. Overlaid on the map are semi-transparent glowing heat-map clusters in shades of emerald green and warning orange, representing activity density. The aesthetic is clean, professional, and data-driven, with a focus on modern administrative surveillance and logistical efficiency in a smart city context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1G6Y26HGUib0r4pR_8oPQun5CrTNBvKAGMfZStdb9YaElWnIH7M1n8LHig4bzWJ2pPr7RnOft0fLKMRDxs3atShN0fKf89gtGHTmaWmZebFf6DhAAzkXi14opNRzMI6TeTMN1BTlbJHZ8owMtkx1nHrFSpU6p2syUO6SQLNVxQAlTk0TLyZwaWaLg0eiLk4_GToPLz5TExiM9oTyjaXfEirPiISY39dUPKcRRo5zXv6imtITiWOAB2LGYjQJCtawqlWmUxmwkVpQ"/>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent pointer-events-none"></div>
+<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-xl shadow-lg flex items-center gap-3">
+<span class="w-3 h-3 rounded-full bg-error animate-pulse"></span>
+<span class="text-xs font-bold text-on-surface">Live Monitoring Active</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface dark:bg-surface-container-lowest shadow-lg rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined">report</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction: Scale down buttons on click
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.classList.add('scale-95');
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.classList.remove('scale-95');
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.classList.remove('scale-95');
+            });
+        });
+
+        // Simulating interactive dismiss
+        document.querySelectorAll('button').forEach(btn => {
+            if(btn.textContent.trim() === 'Dismiss') {
+                btn.addEventListener('click', (e) => {
+                    const card = e.target.closest('.card-shadow');
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateX(20px)';
+                    card.style.transition = 'all 0.3s ease';
+                    setTimeout(() => {
+                        card.remove();
+                    }, 300);
+                });
+            }
+        });
+    </script>
+</body></html>
