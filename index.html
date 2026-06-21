@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FoodRescue — App Navigator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #006c49;
+      --primary-light: #10b981;
+      --secondary: #9d4300;
+      --bg: #f4fbf4;
+      --surface: #ffffff;
+      --surface2: #eef6ee;
+      --text: #161d19;
+      --text-muted: #3c4a42;
+      --border: #bbcabf;
+      --shadow: 0 4px 24px rgba(0,108,73,0.10);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ─── Header ─────────────────────────────── */
+    header {
+      background: var(--primary);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,108,73,0.25);
+    }
+    header .logo-icon {
+      font-size: 36px;
+      color: #10b981;
+      font-variation-settings: 'FILL' 1;
+    }
+    header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    header span.tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      margin-left: 4px;
+      font-style: italic;
+    }
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    /* ─── Filter bar ─────────────────────────── */
+    .filter-bar {
+      padding: 20px 32px 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 7px 18px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: 'Inter', sans-serif;
+    }
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* ─── Grid ───────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+      padding: 24px 32px 48px;
+    }
+
+    /* ─── Card ───────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1.5px solid rgba(187,202,191,0.4);
+      cursor: pointer;
+      transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.012);
+      box-shadow: 0 12px 40px rgba(0,108,73,0.18);
+    }
+    .card-preview {
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      background: var(--surface2);
+      position: relative;
+    }
+    .card-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      transition: transform 0.4s ease;
+    }
+    .card:hover .card-preview img {
+      transform: scale(1.06);
+    }
+    .card-body {
+      padding: 14px 16px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .card-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 2px;
+      width: fit-content;
+    }
+    .tag-auth    { background: #e0f7ed; color: #006c49; }
+    .tag-rest    { background: #fff3e0; color: #9d4300; }
+    .tag-ngo     { background: #e3f2fd; color: #1565c0; }
+    .tag-vol     { background: #f3e5f5; color: #7b1fa2; }
+    .tag-admin   { background: #fce4ec; color: #c62828; }
+    .tag-shared  { background: #f1f8e9; color: #33691e; }
+
+    .open-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.92);
+      border: none;
+      border-radius: 999px;
+      padding: 5px 13px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0;
+      transition: opacity 0.18s;
+      font-family: 'Inter', sans-serif;
+    }
+    .card:hover .open-btn { opacity: 1; }
+
+    /* ─── Viewer overlay ─────────────────────── */
+    .viewer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(6px);
+    }
+    .viewer-overlay.active { display: flex; }
+    .viewer-box {
+      background: #fff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 430px;
+      height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+    }
+    .viewer-header {
+      padding: 14px 18px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+    }
+    .viewer-title {
+      font-size: 15px;
+      font-weight: 700;
+      flex: 1;
+    }
+    .viewer-nav {
+      display: flex;
+      gap: 8px;
+    }
+    .viewer-nav button {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Material Symbols Outlined';
+      font-size: 20px;
+      transition: background 0.15s;
+    }
+    .viewer-nav button:hover { background: rgba(255,255,255,0.28); }
+    .viewer-iframe {
+      flex: 1;
+      border: none;
+      width: 100%;
+    }
+    .close-btn {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Material Symbols Outlined';
+      font-size: 22px;
+    }
+    .close-btn:hover { background: rgba(255,255,255,0.28); }
+
+    /* ─── Empty state ────────────────────────── */
+    .empty { text-align: center; padding: 60px; color: var(--text-muted); grid-column: 1/-1; }
+
+    @media (max-width: 600px) {
+      header { padding: 14px 16px; }
+      .filter-bar, .grid { padding-left: 16px; padding-right: 16px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <span class="material-symbols-outlined logo-icon">eco</span>
+  <div>
+    <h1>FoodRescue <span class="tagline">— Rescuing Food. Feeding Lives.</span></h1>
+  </div>
+  <div class="header-right">
+    <span class="badge">40 Screens</span>
+  </div>
+</header>
+
+<!-- Filter Bar -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all">All Screens</button>
+  <button class="filter-btn" data-filter="auth">Auth & Onboarding</button>
+  <button class="filter-btn" data-filter="rest">Restaurant</button>
+  <button class="filter-btn" data-filter="ngo">NGO</button>
+  <button class="filter-btn" data-filter="vol">Volunteer</button>
+  <button class="filter-btn" data-filter="admin">Admin</button>
+  <button class="filter-btn" data-filter="shared">Shared</button>
+</div>
+
+<!-- Grid -->
+<div class="grid" id="screenGrid"></div>
+
+<!-- Viewer Overlay -->
+<div class="viewer-overlay" id="viewerOverlay">
+  <div class="viewer-box">
+    <div class="viewer-header">
+      <div class="viewer-title" id="viewerTitle">Screen</div>
+      <div class="viewer-nav">
+        <button id="prevBtn" title="Previous">chevron_left</button>
+        <button id="nextBtn" title="Next">chevron_right</button>
+      </div>
+      <button class="close-btn" id="closeBtn" title="Close">close</button>
+    </div>
+    <iframe class="viewer-iframe" id="viewerFrame" src="" title="Screen Preview"></iframe>
+  </div>
+</div>
+
+<script>
+  const screens = [
+    { num: 1,  file: '1_splash_screen.html',            title: 'Splash Screen',              tag: 'auth',   tagLabel: 'Auth' },
+    { num: 2,  file: '2_role_selection.html',           title: 'Role Selection',             tag: 'auth',   tagLabel: 'Auth' },
+    { num: 3,  file: '3_restaurant_registration.html',  title: 'Restaurant Registration',    tag: 'rest',   tagLabel: 'Restaurant' },
+    { num: 4,  file: '4_login_and_verification.html',   title: 'Login & Verification',       tag: 'auth',   tagLabel: 'Auth' },
+    { num: 5,  file: '5_ngo_registration.html',         title: 'NGO Registration',           tag: 'ngo',    tagLabel: 'NGO' },
+    { num: 6,  file: '6_volunteer_registration.html',   title: 'Volunteer Registration',     tag: 'vol',    tagLabel: 'Volunteer' },
+    { num: 7,  file: '7_restaurant_dashboard.html',     title: 'Restaurant Dashboard',       tag: 'rest',   tagLabel: 'Restaurant' },
+    { num: 8,  file: '8_create_food_donation.html',     title: 'Create Food Donation',       tag: 'rest',   tagLabel: 'Restaurant' },
+    { num: 9,  file: '9_volunteer_dashboard.html',      title: 'Volunteer Dashboard',        tag: 'vol',    tagLabel: 'Volunteer' },
+    { num: 10, file: '10_ngo_dashboard.html',           title: 'NGO Dashboard',              tag: 'ngo',    tagLabel: 'NGO' },
+    { num: 11, file: '11_notifications.html',           title: 'Notifications',              tag: 'shared', tagLabel: 'Shared' },
+    { num: 12, file: '12_profile.html',                 title: 'Profile',                    tag: 'shared', tagLabel: 'Shared' },
+    { num: 13, file: '13_impact_analytics.html',        title: 'Impact Analytics',           tag: 'shared', tagLabel: 'Shared' },
+    { num: 14, file: '14_chat_and_coordination.html',   title: 'Chat & Coordination',        tag: 'shared', tagLabel: 'Shared' },
+    { num: 15, file: '15_verification_management.html', title: 'Verification Management',    tag: 'admin',  tagLabel: 'Admin' },
+    { num: 16, file: '16_donation_monitoring.html',     title: 'Donation Monitoring',        tag: 'admin',  tagLabel: 'Admin' },
+    { num: 17, file: '17_user_management_admin.html',   title: 'User Management (Admin)',    tag: 'admin',  tagLabel: 'Admin' },
+    { num: 18, file: '18_csr_and_reporting.html',       title: 'CSR & Reporting',            tag: 'admin',  tagLabel: 'Admin' },
+    { num: 19, file: '19_fraud_and_reports_admin.html', title: 'Fraud & Reports (Admin)',    tag: 'admin',  tagLabel: 'Admin' },
+    { num: 20, file: '20_help_and_support.html',        title: 'Help & Support',             tag: 'shared', tagLabel: 'Shared' },
+    { num: 21, file: '21_complaints_management.html',   title: 'Complaints Management',      tag: 'admin',  tagLabel: 'Admin' },
+    { num: 22, file: '22_food_safety_and_compliance.html', title: 'Food Safety & Compliance', tag: 'admin', tagLabel: 'Admin' },
+    { num: 23, file: '23_dispute_and_policy_center.html',  title: 'Dispute & Policy Center', tag: 'admin', tagLabel: 'Admin' },
+    { num: 24, file: '24_terms_and_conditions.html',    title: 'Terms & Conditions',         tag: 'shared', tagLabel: 'Shared' },
+    { num: 25, file: '25_privacy_and_guidelines.html',  title: 'Privacy & Guidelines',       tag: 'shared', tagLabel: 'Shared' },
+    { num: 26, file: '26_declarations_and_consent.html', title: 'Declarations & Consent',   tag: 'shared', tagLabel: 'Shared' },
+    { num: 27, file: '27_admin_login_command_center.html', title: 'Admin Login - Command Center', tag: 'admin', tagLabel: 'Admin' },
+    { num: 28, file: '28_2fa_verification.html', title: '2FA Verification', tag: 'admin', tagLabel: 'Admin' },
+    { num: 29, file: '29_secret_security_key.html', title: 'Secret Security Key', tag: 'admin', tagLabel: 'Admin' },
+    { num: 30, file: '30_command_center_gateway.html', title: 'Command Center Gateway', tag: 'admin', tagLabel: 'Admin' },
+    { num: 31, file: '31_mission_control_dashboard.html', title: 'Mission Control Dashboard', tag: 'admin', tagLabel: 'Admin' },
+    { num: 32, file: '32_security_operations_center.html', title: 'Security Operations Center', tag: 'admin', tagLabel: 'Admin' },
+    { num: 33, file: '33_fraud_intelligence_center.html', title: 'Fraud Intelligence Center', tag: 'admin', tagLabel: 'Admin' },
+    { num: 34, file: '34_immutable_audit_ledger.html', title: 'Immutable Audit Ledger', tag: 'admin', tagLabel: 'Admin' },
+    { num: 35, file: '35_session_device_management.html', title: 'Session & Device Management', tag: 'admin', tagLabel: 'Admin' },
+    { num: 36, file: '36_account_recovery_system.html', title: 'Account Recovery System', tag: 'admin', tagLabel: 'Admin' },
+    { num: 37, file: '37_security_vector_scan.html', title: 'Security Vector Scan', tag: 'admin', tagLabel: 'Admin' },
+    { num: 38, file: '38_security_alert_access_blocked.html', title: 'Security Alert - Access Blocked', tag: 'admin', tagLabel: 'Admin' },
+    { num: 39, file: '39_cyber_humanitarian_background.html', title: 'Cyber Humanitarian Background', tag: 'admin', tagLabel: 'Admin' },
+    { num: 40, file: '40_shader.html', title: 'Shader', tag: 'shared', tagLabel: 'Shared' },
+  ];
+
+  const tagColors = {
+    auth: 'tag-auth', rest: 'tag-rest', ngo: 'tag-ngo',
+    vol: 'tag-vol', admin: 'tag-admin', shared: 'tag-shared'
+  };
+
+  const tagIcons = {
+    auth: 'lock', rest: 'restaurant', ngo: 'volunteer_activism',
+    vol: 'directions_bike', admin: 'admin_panel_settings', shared: 'hub'
+  };
+
+  let currentIndex = 0;
+  let filteredScreens = [...screens];
+
+  const grid = document.getElementById('screenGrid');
+  const overlay = document.getElementById('viewerOverlay');
+  const frame = document.getElementById('viewerFrame');
+  const viewerTitle = document.getElementById('viewerTitle');
+
+  function getPngName(file) {
+    return file.replace('.html', '.png');
+  }
+
+  function renderCards(list) {
+    grid.innerHTML = '';
+    if (list.length === 0) {
+      grid.innerHTML = '<div class="empty"><span class="material-symbols-outlined" style="font-size:48px;opacity:0.3">search_off</span><p style="margin-top:12px;font-size:15px;">No screens found</p></div>';
+      return;
+    }
+    list.forEach((s, i) => {
+      const card = document.createElement('a');
+      card.className = 'card';
+      card.href = '#';
+      card.innerHTML = `
+        <div class="card-preview">
+          <img src="${getPngName(s.file)}" alt="${s.title}" loading="lazy" onerror="this.style.display='none'"/>
+          <button class="open-btn">
+            <span class="material-symbols-outlined" style="font-size:15px">open_in_new</span>
+            Open
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Screen ${s.num}</div>
+          <div class="card-title">${s.title}</div>
+          <div class="card-tag ${tagColors[s.tag]}">
+            <span class="material-symbols-outlined" style="font-size:13px;font-variation-settings:'FILL' 1">${tagIcons[s.tag]}</span>
+            ${s.tagLabel}
+          </div>
+        </div>
+      `;
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentIndex = i;
+        openViewer(list[i]);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function openViewer(screen) {
+    frame.src = screen.file;
+    viewerTitle.textContent = `${screen.num}. ${screen.title}`;
+    overlay.classList.add('active');
+  }
+
+  document.getElementById('closeBtn').addEventListener('click', () => {
+    overlay.classList.remove('active');
+    frame.src = '';
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove('active');
+      frame.src = '';
+    }
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + filteredScreens.length) % filteredScreens.length;
+    openViewer(filteredScreens[currentIndex]);
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % filteredScreens.length;
+    openViewer(filteredScreens[currentIndex]);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!overlay.classList.contains('active')) return;
+    if (e.key === 'Escape') { overlay.classList.remove('active'); frame.src = ''; }
+    if (e.key === 'ArrowLeft') document.getElementById('prevBtn').click();
+    if (e.key === 'ArrowRight') document.getElementById('nextBtn').click();
+  });
+
+  // Filter buttons
+  document.getElementById('filterBar').addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    filteredScreens = filter === 'all' ? [...screens] : screens.filter(s => s.tag === filter);
+    renderCards(filteredScreens);
+  });
+
+  renderCards(screens);
+</script>
+</body>
+</html>

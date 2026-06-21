@@ -1,128 +1,115 @@
-const authService = require('./auth.service');
-const {
-  sendSuccess,
-  sendCreated,
-  sendError,
-  sendBadRequest,
-} = require('../../utils/apiResponse');
+const AuthService = require('./auth.service');
+const { successResponse, errorResponse } = require('../../utils/apiResponse');
 
-/**
- * POST /api/auth/register
- * Register new user with email/password
- * Body: { email, password, displayName, role, fcmToken? }
- */
-const register = async (req, res) => {
-  const { email, password, displayName, role, fcmToken } = req.body;
+class AuthController {
+  
+  static async register(req, res) {
+    try {
+      const { email, password, role, adminSecretCode, deviceId } = req.body;
+      const ipAddress = req.ip || req.connection.remoteAddress;
+      
+      const result = await AuthService.register(email, password, role, adminSecretCode, ipAddress, deviceId);
+      return successResponse(res, 201, 'Registration successful', result);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-  const result = await authService.registerWithEmail({
-    email,
-    password,
-    displayName,
-    role,
-    fcmToken,
-  });
+  static async login(req, res) {
+    try {
+      const { email, password, deviceId } = req.body;
+      const ipAddress = req.ip || req.connection.remoteAddress;
 
-  return sendCreated(res, {
-    message: 'Account created successfully. Please login with your credentials.',
-    data: result,
-  });
-};
+      const result = await AuthService.login(email, password, ipAddress, deviceId);
+      return successResponse(res, 200, 'Login successful', result);
+    } catch (error) {
+      return errorResponse(res, 401, error.message);
+    }
+  }
 
-/**
- * POST /api/auth/google
- * Verify Google Sign-In ID token from Android
- * Body: { idToken, role?, fcmToken? }
- * - idToken: Firebase ID token received after Google Sign-In on Android
- * - role: Required only for first-time sign-in
- */
-const googleSignIn = async (req, res) => {
-  const { idToken, role, fcmToken } = req.body;
+  static async googleLogin(req, res) {
+    try {
+      const { idToken, role, deviceId } = req.body;
+      const ipAddress = req.ip || req.connection.remoteAddress;
 
-  const result = await authService.verifyGoogleToken({ idToken, role, fcmToken });
+      const result = await AuthService.googleLogin(idToken, role, ipAddress, deviceId);
+      return successResponse(res, 200, 'Google Login successful', result);
+    } catch (error) {
+      return errorResponse(res, 401, error.message);
+    }
+  }
 
-  return sendSuccess(res, {
-    message: result.isNewUser ? 'Account created via Google.' : 'Google Sign-In successful.',
-    data: result,
-  });
-};
+  static async setup2FA(req, res) {
+    try {
+      const uid = req.user.uid;
+      const result = await AuthService.setup2FA(uid);
+      return successResponse(res, 200, '2FA setup initiated', result);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * GET /api/auth/me
- * Get current authenticated user's profile
- * Requires: Authorization Bearer token
- */
-const getMe = async (req, res) => {
-  const profile = await authService.getUserProfile(req.user.uid);
+  static async verify2FASetup(req, res) {
+    try {
+      const { token } = req.body;
+      const uid = req.user.uid;
+      await AuthService.verify2FASetup(uid, token);
+      return successResponse(res, 200, '2FA successfully enabled');
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-  return sendSuccess(res, {
-    message: 'Profile fetched successfully.',
-    data: profile,
-  });
-};
+  static async verify2FALogin(req, res) {
+    try {
+      const { token } = req.body;
+      const { uid, sessionId } = req.user; // User already authenticated via JWT but needs 2FA clearance
+      
+      const tokens = await AuthService.verify2FALogin(uid, sessionId, token);
+      return successResponse(res, 200, '2FA verified successfully', { tokens });
+    } catch (error) {
+      return errorResponse(res, 401, error.message);
+    }
+  }
 
-/**
- * PUT /api/auth/me
- * Update current user's profile
- * Body: { displayName?, photoURL?, fcmToken? }
- */
-const updateMe = async (req, res) => {
-  const updated = await authService.updateUserProfile(req.user.uid, req.body);
+  static async refresh(req, res) {
+    try {
+      const { refreshToken } = req.body;
+      const tokens = await AuthService.refreshToken(refreshToken);
+      return successResponse(res, 200, 'Tokens refreshed', { tokens });
+    } catch (error) {
+      return errorResponse(res, 401, error.message);
+    }
+  }
 
-  return sendSuccess(res, {
-    message: 'Profile updated successfully.',
-    data: updated,
-  });
-};
+  static async logout(req, res) {
+    try {
+      const { sessionId } = req.user;
+      await AuthService.logout(sessionId);
+      return successResponse(res, 200, 'Logged out successfully');
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * POST /api/auth/reset-password
- * Send password reset email
- * Body: { email }
- */
-const resetPassword = async (req, res) => {
-  const { email } = req.body;
+  static async getSessions(req, res) {
+      try {
+          const sessions = await AuthService.getActiveSessions(req.user.uid);
+          return successResponse(res, 200, 'Active sessions retrieved', { sessions });
+      } catch (error) {
+          return errorResponse(res, 400, error.message);
+      }
+  }
 
-  await authService.sendPasswordResetEmail(email);
+  static async revokeSession(req, res) {
+      try {
+          const { sessionId } = req.params;
+          await AuthService.revokeSession(req.user.uid, sessionId);
+          return successResponse(res, 200, 'Session revoked');
+      } catch (error) {
+          return errorResponse(res, 400, error.message);
+      }
+  }
+}
 
-  // Always return success to prevent email enumeration
-  return sendSuccess(res, {
-    message: 'If this email is registered, a password reset link has been sent.',
-  });
-};
-
-/**
- * PUT /api/auth/fcm-token
- * Update FCM token for push notifications
- * Body: { fcmToken }
- */
-const updateFcmToken = async (req, res) => {
-  const { fcmToken } = req.body;
-
-  await authService.updateFcmToken(req.user.uid, fcmToken);
-
-  return sendSuccess(res, {
-    message: 'FCM token updated successfully.',
-  });
-};
-
-/**
- * POST /api/auth/logout
- * Revoke all refresh tokens
- */
-const logout = async (req, res) => {
-  await authService.revokeTokens(req.user.uid);
-
-  return sendSuccess(res, {
-    message: 'Logged out successfully.',
-  });
-};
-
-module.exports = {
-  register,
-  googleSignIn,
-  getMe,
-  updateMe,
-  resetPassword,
-  updateFcmToken,
-  logout,
-};
+module.exports = AuthController;

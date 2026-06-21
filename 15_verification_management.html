@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -290,4 +290,4 @@
             });
         });
     </script>
-</body></html>
+<script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/approvals/restaurant").then(d=>console.log("Verification loaded:",d?.data)).catch(e=>console.warn("Verification",e.message));});</script><script src="nav.js"></script><script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/approvals/restaurant").then(d=>console.log("Verification loaded:",d?.data)).catch(e=>console.warn("Verification",e.message));});</script></body></html>

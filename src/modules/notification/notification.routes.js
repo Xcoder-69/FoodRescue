@@ -3,7 +3,7 @@ const router = express.Router();
 const Joi = require('joi');
 
 const controller = require('./notification.controller');
-const { verifyToken, requireRole } = require('../../middleware/auth');
+const { requireAuth, requireRole } = require('../../middleware/auth');
 const { validate } = require('../../middleware/validate');
 
 // ─── Validation Schemas ──────────────────────────────────────────────────────
@@ -41,7 +41,7 @@ const broadcastSchema = Joi.object({
  * @access  Authenticated
  * @note    Must be before /:id route
  */
-router.get('/unread-count', verifyToken, controller.getUnreadCount);
+router.get('/unread-count', requireAuth, controller.getUnreadCount);
 
 /**
  * @route   PATCH /api/notifications/read-all
@@ -49,7 +49,7 @@ router.get('/unread-count', verifyToken, controller.getUnreadCount);
  * @access  Authenticated
  * @note    Must be before /:id route
  */
-router.patch('/read-all', verifyToken, controller.markAllAsRead);
+router.patch('/read-all', requireAuth, controller.markAllAsRead);
 
 /**
  * @route   POST /api/notifications/send
@@ -58,7 +58,7 @@ router.patch('/read-all', verifyToken, controller.markAllAsRead);
  */
 router.post(
   '/send',
-  verifyToken,
+  requireAuth,
   requireRole('admin'),
   validate(sendManualSchema),
   controller.sendManualNotification
@@ -71,7 +71,7 @@ router.post(
  */
 router.post(
   '/broadcast',
-  verifyToken,
+  requireAuth,
   requireRole('admin'),
   validate(broadcastSchema),
   controller.broadcastToRole
@@ -84,7 +84,7 @@ router.post(
  */
 router.get(
   '/',
-  verifyToken,
+  requireAuth,
   validate(listSchema, 'query'),
   controller.getMyNotifications
 );
@@ -94,13 +94,13 @@ router.get(
  * @desc    Mark a single notification as read
  * @access  Authenticated (owner only)
  */
-router.patch('/:id/read', verifyToken, controller.markAsRead);
+router.patch('/:id/read', requireAuth, controller.markAsRead);
 
 /**
  * @route   DELETE /api/notifications/:id
  * @desc    Delete a notification
  * @access  Authenticated (owner only)
  */
-router.delete('/:id', verifyToken, controller.deleteNotification);
+router.delete('/:id', requireAuth, controller.deleteNotification);
 
 module.exports = router;

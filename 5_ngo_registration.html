@@ -171,7 +171,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
 <div class="space-y-1">
 <label class="font-label-md text-label-md text-on-surface-variant">NGO Name</label>
-<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="Legal name as per registry" type="text"/>
+<input id="ngo-name" class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="Legal name as per registry" type="text" required/>
 </div>
 <div class="space-y-1">
 <label class="font-label-md text-label-md text-on-surface-variant">Registration Number</label>
@@ -203,7 +203,11 @@
 </div>
 <div class="space-y-1">
 <label class="font-label-md text-label-md text-on-surface-variant">Email Address</label>
-<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="contact@ngo.org" type="email"/>
+<input id="ngo-email" class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="contact@ngo.org" type="email" required/>
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Password</label>
+<input id="ngo-password" class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="Min. 8 characters" type="password" required minlength="8"/>
 </div>
 </div>
 </section>
@@ -222,46 +226,7 @@
 <span class="material-symbols-outlined text-primary" data-icon="location_on">location_on</span>
 <h3 class="font-title-lg text-title-lg text-on-surface">Address & Location</h3>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-gutter">
-<div class="space-y-1">
-<label class="font-label-md text-label-md text-on-surface-variant">Country</label>
-<select class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0">
-<option>India</option>
-</select>
-</div>
-<div class="space-y-1">
-<label class="font-label-md text-label-md text-on-surface-variant">State</label>
-<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="e.g. Maharashtra" type="text"/>
-</div>
-<div class="space-y-1">
-<label class="font-label-md text-label-md text-on-surface-variant">City</label>
-<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="e.g. Mumbai" type="text"/>
-</div>
-<div class="space-y-1">
-<label class="font-label-md text-label-md text-on-surface-variant">Area</label>
-<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="e.g. Bandra West" type="text"/>
-</div>
-<div class="space-y-1">
-<label class="font-label-md text-label-md text-on-surface-variant">Pincode</label>
-<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="400050" type="text"/>
-</div>
-<div class="space-y-1 md:col-span-3">
-<label class="font-label-md text-label-md text-on-surface-variant">Street Address</label>
-<input class="w-full bg-[#F3F4F6] border-0 border-b border-outline p-3 rounded-t-lg transition-all focus:ring-0" placeholder="Flat No, Building Name, Street" type="text"/>
-</div>
-</div>
-<div class="space-y-2">
-<label class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
-                            Map Picker 
-                            <span class="text-[10px] bg-secondary-container text-on-secondary-container px-2 rounded-full">Pin Location</span>
-</label>
-<div class="relative w-full h-48 rounded-xl overflow-hidden border border-outline-variant">
-<img class="w-full h-full object-cover" data-alt="A detailed digital map interface showing a city grid layout with soft green and blue accents. A bright emerald green pin is dropped in the center of the frame, marking a precise humanitarian pickup point. The aesthetic is clean, professional, and optimized for a modern mobile application interface with a soft-functional humanitarian theme." data-location="Mumbai" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOjEaiZcU_9H04FZEkEOGEnss_ukuuGLZUd0D0-CYXBuFAAt_bPgXNZJNpwbHk4BBvJn0q8A-bPBVwfNoySmQ-3eS5ZIqdDZRj-LENdzZHtOkDhwL1ep_utTEsj8SNilImJ1jnyUAlRwgXxqMVbIElXekyRimaU69gKS_RtgGzY8NzybGe6B4LkBiTphgAWNK9OOv0Xc7kXfga8POI3q96qCz_nBBbGYYPWMSvA8gajlbRpIUvYFyDU08BCbCoBnf75qq9S3r4n18"/>
-<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-<span class="material-symbols-outlined text-primary text-5xl drop-shadow-lg" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
-</div>
-</div>
-</div>
+<div id="ngo-addr-container"></div>
 </section>
 <!-- Document Upload Section -->
 <section class="bg-surface-container-lowest rounded-xl p-gutter shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
@@ -335,6 +300,7 @@
 <span class="text-on-surface-variant font-label-md text-label-md">Data Encrypted</span>
 </div>
 </div>
+<script src="js/api.js"></script>
 <script>
         const step1 = document.getElementById('step-1');
         const step2 = document.getElementById('step-2');
@@ -364,9 +330,31 @@
             }, 300);
         }
 
-        document.getElementById('registrationForm').addEventListener('submit', (e) => {
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('Your NGO application has been submitted successfully for verification!');
+            const btn = document.querySelector('[type="submit"]');
+            try {
+              btn.textContent = 'Submitting...';
+              btn.disabled = true;
+              const response = await ApiClient.post('/auth/register', {
+                email: document.getElementById('ngo-email').value,
+                password: document.getElementById('ngo-password').value,
+                role: 'ngo',
+                deviceId: navigator.userAgent
+              });
+              ApiClient.setToken(response.data.accessToken);
+              localStorage.setItem('foodRescueUser', JSON.stringify(response.data.user));
+              await ApiClient.post('/ngo/profile', {
+                ngoName: document.getElementById('ngo-name').value,
+                status: 'PENDING'
+              });
+              alert('✅ NGO Application submitted! Awaiting admin verification.');
+              window.location.href = '10_ngo_dashboard.html';
+            } catch(error) {
+              alert('Registration failed: ' + error.message);
+              btn.textContent = 'Submit For Verification';
+              btn.disabled = false;
+            }
         });
     </script>
-</body></html>
+<script src="map-picker.js"></script><script>document.addEventListener("DOMContentLoaded",function(){var c=document.getElementById("ngo-addr-container");if(c)c.innerHTML=buildAddressHTML("ngo");initCountryDropdown("ngo");});</script><script src="nav.js"></script></body></html>

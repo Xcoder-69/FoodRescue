@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -365,4 +365,19 @@
             });
         }
     </script>
-</body></html>
+<script src="js/api.js"></script><script>
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!localStorage.getItem("foodRescueToken")) { window.location.href = "4_login_and_verification.html"; return; }
+  try {
+    const data = await ApiClient.get("/notifications");
+    const notifications = data?.data || [];
+    const container = document.querySelector("[id*=notif], .notification-list, main ul, main .space-y");
+    if (container && notifications.length > 0) {
+      const html = notifications.map(n => `<div class="p-4 bg-surface-container rounded-xl mb-2"><p class="font-body-md text-on-surface">${n.message}</p><p class="text-xs text-on-surface-variant">${new Date(n.createdAt?.seconds * 1000).toLocaleDateString()}</p></div>`).join("");
+      const apiSection = document.createElement("div");
+      apiSection.innerHTML = html;
+      container.prepend(apiSection);
+    }
+  } catch(e) { console.warn("Notifications:", e.message); }
+});
+</script><script src="nav.js"></script></body></html>

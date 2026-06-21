@@ -1,130 +1,122 @@
-const service = require('./admin.service');
-const { sendSuccess, sendCreated } = require('../../utils/apiResponse');
+const AdminService = require('./admin.service');
+const { successResponse, errorResponse } = require('../../utils/apiResponse');
 
-/**
- * GET /api/admin/users
- * Query: ?role=ngo&search=foodbank&limit=10
- */
-const getAllUsers = async (req, res) => {
-  const result = await service.getAllUsers(req.query);
-  return sendSuccess(res, {
-    data: result.data,
-    meta: { count: result.count, hasMore: result.hasMore, nextCursor: result.nextCursor },
-  });
-};
+class AdminController {
+  
+  // 1. User Management
+  static async getApprovals(req, res) {
+    try {
+      const { role } = req.params; // 'restaurant', 'ngo', 'volunteer'
+      const data = await AdminService.getApprovals(role);
+      return successResponse(res, 200, 'Pending approvals fetched', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * GET /api/admin/users/:uid
- */
-const getUserDetails = async (req, res) => {
-  const result = await service.getUserDetails(req.params.uid);
-  return sendSuccess(res, { data: result });
-};
+  static async updateUserStatus(req, res) {
+    try {
+      const { uid } = req.params;
+      const { status } = req.body; // 'APPROVED', 'REJECTED', 'SUSPENDED', 'BANNED'
+      const adminUid = req.user.uid;
+      const ipAddress = req.ip || req.connection.remoteAddress;
 
-/**
- * PATCH /api/admin/users/:uid/verify
- */
-const verifyAccount = async (req, res) => {
-  const result = await service.verifyAccount(req.params.uid, req.user.uid);
-  return sendSuccess(res, { message: 'Account verified successfully.', data: result });
-};
+      const data = await AdminService.updateUserStatus(adminUid, uid, status, ipAddress);
+      return successResponse(res, 200, `User status updated to ${status}`, data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * PATCH /api/admin/users/:uid/suspend
- * Body: { reason }
- */
-const suspendUser = async (req, res) => {
-  const result = await service.suspendUser(req.params.uid, req.body.reason, req.user.uid);
-  return sendSuccess(res, { message: 'User suspended and logged out.', data: result });
-};
+  // 2. Fraud & Security
+  static async getFraudReports(req, res) {
+    try {
+      const data = await AdminService.getFraudReports();
+      return successResponse(res, 200, 'Fraud reports fetched', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * PATCH /api/admin/users/:uid/unsuspend
- */
-const unsuspendUser = async (req, res) => {
-  const result = await service.unsuspendUser(req.params.uid);
-  return sendSuccess(res, { message: 'User reinstated.', data: result });
-};
+  static async resolveFraudReport(req, res) {
+    try {
+      const { reportId } = req.params;
+      const adminUid = req.user.uid;
+      const ipAddress = req.ip || req.connection.remoteAddress;
 
-/**
- * DELETE /api/admin/users/:uid
- */
-const deleteUser = async (req, res) => {
-  const result = await service.deleteUser(req.params.uid, req.user.uid);
-  return sendSuccess(res, { message: 'User permanently deleted.', data: result });
-};
+      const data = await AdminService.resolveFraudReport(adminUid, reportId, ipAddress);
+      return successResponse(res, 200, 'Fraud report resolved', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * PATCH /api/admin/users/:uid/promote
- */
-const promoteToAdmin = async (req, res) => {
-  const result = await service.promoteToAdmin(req.params.uid);
-  return sendSuccess(res, { message: 'User promoted to admin.', data: result });
-};
+  static async getSystemStatus(req, res) {
+    try {
+      const data = await AdminService.getSystemStatus();
+      return successResponse(res, 200, 'System status fetched', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * GET /api/admin/stats
- */
-const getPlatformStats = async (req, res) => {
-  const stats = await service.getPlatformStats();
-  return sendSuccess(res, { data: stats });
-};
+  // 3. Audit Ledger
+  static async getAuditLogs(req, res) {
+    try {
+      const { limit } = req.query;
+      const data = await AdminService.getAuditLogs(Number(limit) || 100);
+      return successResponse(res, 200, 'Audit logs fetched', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * GET /api/admin/reports
- * Query: ?status=pending&limit=10
- */
-const getAllReports = async (req, res) => {
-  const result = await service.getAllReports(req.query);
-  return sendSuccess(res, {
-    data: result.data,
-    meta: { count: result.count, hasMore: result.hasMore, nextCursor: result.nextCursor },
-  });
-};
+  // 4. Complaints
+  static async getComplaints(req, res) {
+    try {
+      const data = await AdminService.getComplaints();
+      return successResponse(res, 200, 'Complaints fetched', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * PATCH /api/admin/reports/:id/resolve
- * Body: { adminNote, action }
- */
-const resolveReport = async (req, res) => {
-  const result = await service.resolveReport(req.params.id, req.body.adminNote, req.body.action);
-  return sendSuccess(res, { message: 'Report resolved.', data: result });
-};
+  static async updateComplaintStatus(req, res) {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const adminUid = req.user.uid;
+      const ipAddress = req.ip || req.connection.remoteAddress;
 
-/**
- * GET /api/admin/verifications/pending
- * Query: ?role=ngo (or restaurant)
- */
-const getPendingVerifications = async (req, res) => {
-  const { role } = req.query;
-  const result = await service.getPendingVerifications(role || 'ngo');
-  return sendSuccess(res, {
-    data: result,
-    meta: { count: result.length },
-  });
-};
+      const data = await AdminService.updateComplaintStatus(adminUid, id, status, ipAddress);
+      return successResponse(res, 200, 'Complaint status updated', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * POST /api/admin/reports
- * Any user can submit a report
- * Body: { reportedEntityId, entityType, reason, description }
- */
-const submitReport = async (req, res) => {
-  const result = await service.submitReport(req.user.uid, req.body);
-  return sendCreated(res, { message: 'Report submitted. Admin will review shortly.', data: result });
-};
+  // 5. Global Sessions
+  static async getAllSessions(req, res) {
+    try {
+      const data = await AdminService.getAllSessions();
+      return successResponse(res, 200, 'All sessions fetched', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-module.exports = {
-  getAllUsers,
-  getUserDetails,
-  verifyAccount,
-  suspendUser,
-  unsuspendUser,
-  deleteUser,
-  promoteToAdmin,
-  getPlatformStats,
-  getAllReports,
-  resolveReport,
-  getPendingVerifications,
-  submitReport,
-};
+  static async revokeUserSessions(req, res) {
+    try {
+      const { targetUid } = req.params;
+      const adminUid = req.user.uid;
+      const ipAddress = req.ip || req.connection.remoteAddress;
+
+      const data = await AdminService.revokeAllUserSessions(adminUid, targetUid, ipAddress);
+      return successResponse(res, 200, 'All sessions for user revoked', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
+}
+
+module.exports = AdminController;

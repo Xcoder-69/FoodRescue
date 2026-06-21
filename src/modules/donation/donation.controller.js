@@ -1,100 +1,55 @@
-const service = require('./donation.service');
-const { sendSuccess } = require('../../utils/apiResponse');
+const DonationService = require('./donation.service');
+const { successResponse, errorResponse } = require('../../utils/apiResponse');
 
-/**
- * GET /api/donations/:id
- */
-const getDonationById = async (req, res) => {
-  const donation = await service.getDonationById(req.params.id);
-  return sendSuccess(res, { data: donation });
-};
+class DonationController {
+  static async createDonation(req, res) {
+    try {
+      const result = await DonationService.createDonation(req.user.uid, req.body);
+      return successResponse(res, 201, 'Donation created', result);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * GET /api/donations
- * Query: ?status=pending&city=Mumbai&limit=10&cursor=xxx
- */
-const getAllDonations = async (req, res) => {
-  const result = await service.getAllDonations(req.query);
-  return sendSuccess(res, {
-    data: result.data,
-    meta: { count: result.count, hasMore: result.hasMore, nextCursor: result.nextCursor },
-  });
-};
+  static async getDonationById(req, res) {
+    try {
+      const data = await DonationService.getDonationById(req.params.id);
+      return successResponse(res, 200, 'Donation fetched', data);
+    } catch (error) {
+      return errorResponse(res, 404, error.message);
+    }
+  }
 
-/**
- * POST /api/donations/:id/assign-volunteer
- * Auto-assigns nearest available volunteer
- */
-const assignVolunteer = async (req, res) => {
-  const result = await service.assignVolunteer(
-    req.params.id,
-    req.user.uid,
-    req.user.role
-  );
-  return sendSuccess(res, {
-    message: `Volunteer ${result.volunteer.name} assigned (${result.volunteer.distance} away).`,
-    data: result,
-  });
-};
+  static async getActiveDonations(req, res) {
+    try {
+      // Build filters based on role
+      const filters = {};
+      if (req.user.role === 'restaurant') filters.restaurantId = req.user.uid;
+      if (req.user.role === 'ngo') filters.status = 'AVAILABLE';
+      
+      const data = await DonationService.getActiveDonations(filters);
+      return successResponse(res, 200, 'Donations fetched', data);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * POST /api/donations/:id/assign-volunteer/:volunteerId
- * Manually assign a specific volunteer
- */
-const assignSpecificVolunteer = async (req, res) => {
-  const result = await service.assignSpecificVolunteer(
-    req.params.id,
-    req.params.volunteerId,
-    req.user.uid,
-    req.user.role
-  );
-  return sendSuccess(res, {
-    message: `Volunteer ${result.volunteer.name} manually assigned.`,
-    data: result,
-  });
-};
+  static async claimDonation(req, res) {
+    try {
+      const result = await DonationService.claimDonation(req.params.id, req.user.uid);
+      return successResponse(res, 200, 'Donation claimed successfully', result);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 
-/**
- * GET /api/donations/:id/track
- * Live tracking for a donation (restaurant, NGO, volunteer, admin)
- */
-const getDonationTracking = async (req, res) => {
-  const result = await service.getDonationTracking(
-    req.params.id,
-    req.user.uid,
-    req.user.role
-  );
-  return sendSuccess(res, { data: result });
-};
-
-/**
- * POST /api/donations/expire
- * Admin only — mark overdue pending donations as expired
- */
-const expireOldDonations = async (req, res) => {
-  const result = await service.expireOldDonations();
-  return sendSuccess(res, {
-    message: `${result.expired} donation(s) marked as expired.`,
-    data: result,
-  });
-};
-
-/**
- * GET /api/donations/stats
- * Query: ?restaurantId=xxx OR ?ngoId=xxx
- */
-const getDonationStats = async (req, res) => {
-  const { restaurantId, ngoId } = req.query;
-  const stats = await service.getDonationStats(restaurantId || null, ngoId || null);
-  return sendSuccess(res, { data: stats });
-};
-
-module.exports = {
-  getDonationById,
-  getAllDonations,
-  assignVolunteer,
-  assignSpecificVolunteer,
-  getDonationTracking,
-  expireOldDonations,
-  getDonationStats,
-};
+  static async cancelDonation(req, res) {
+    try {
+      const result = await DonationService.cancelDonation(req.params.id, req.user.uid);
+      return successResponse(res, 200, 'Donation cancelled', result);
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
+}
+module.exports = DonationController;

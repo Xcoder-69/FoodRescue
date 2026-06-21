@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head>
+﻿<!DOCTYPE html><html lang="en"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>FoodRescue | NGO Dashboard</title>
@@ -147,14 +147,14 @@
 <span class="material-symbols-outlined text-4xl mb-2">restaurant</span>
 <p class="font-label-lg text-label-lg opacity-90">Meals Received</p>
 </div>
-<p class="font-display-lg text-display-lg font-bold">12,480</p>
+<p class="font-display-lg text-display-lg font-bold"><span id="stat-total">12,480</span></p>
 </div>
 <div class="bg-tertiary text-on-tertiary p-gutter rounded-xl shadow-lg flex flex-col justify-between aspect-square md:aspect-auto">
 <div>
 <span class="material-symbols-outlined text-4xl mb-2">groups</span>
 <p class="font-label-lg text-label-lg opacity-90">People Served</p>
 </div>
-<p class="font-display-lg text-display-lg font-bold">8,922</p>
+<p class="font-display-lg text-display-lg font-bold"><span id="stat-people">8,922</span></p>
 </div>
 </div>
 <div class="md:col-span-4 bg-surface-container-high rounded-xl p-gutter flex flex-col justify-center relative overflow-hidden">
@@ -394,4 +394,4 @@
     </script>
 
 
-</body></html>
+<script src="js/api.js"></script><script src="js/dashboard.js"></script><script>document.addEventListener("DOMContentLoaded", () => { DashboardLoader.requireAuth() && DashboardLoader.loadNgo(); });</script><script src="nav.js"></script></body></html>

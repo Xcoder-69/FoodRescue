@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en"><head>
 <meta charset="utf-8"/>
@@ -141,32 +141,33 @@
 <div class="bg-surface-container-lowest p-stack-lg rounded-xl shadow-[0px_12px_32px_rgba(0,0,0,0.05)] transition-all duration-500" id="login-section">
 <div class="mb-stack-lg text-center">
 <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-container/20 rounded-full mb-stack-md">
-<span class="material-symbols-outlined text-primary text-4xl">restaurant</span>
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings:'FILL' 1">mark_email_read</span>
 </div>
 <h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-2">Welcome Back</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Enter your mobile number to continue</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Enter your secure credentials to log in.</p>
 </div>
-<form class="space-y-stack-lg" id="login-form" onsubmit="event.preventDefault(); showOtpOverlay();">
-<div class="flex gap-stack-sm">
-<!-- Country Code -->
-<div class="w-24">
-<label class="block font-label-lg text-label-lg text-on-surface-variant mb-1 ml-1">Code</label>
-<div class="relative">
-<input class="w-full bg-surface-container border-b border-outline p-4 rounded-t-lg font-body-lg text-body-lg focus:outline-none" disabled="" type="text" value="+91"/>
+<form class="space-y-stack-lg" id="login-form" onsubmit="event.preventDefault(); performLogin();">
+<div class="flex flex-col gap-1">
+<label class="block font-label-lg text-label-lg text-on-surface-variant mb-1 ml-1">Email Address</label>
+<input
+  id="email-input"
+  class="w-full bg-surface-container border-b-2 border-outline p-4 rounded-t-lg font-body-lg text-body-lg focus:outline-none focus:border-primary transition-all"
+  type="email" placeholder="you@example.com" required autocomplete="email"/>
 </div>
+<div class="flex flex-col gap-1">
+<label class="block font-label-lg text-label-lg text-on-surface-variant mb-1 ml-1">Password</label>
+<input
+  id="password-input"
+  class="w-full bg-surface-container border-b-2 border-outline p-4 rounded-t-lg font-body-lg text-body-lg focus:outline-none focus:border-primary transition-all"
+  type="password" placeholder="••••••••" required autocomplete="current-password"/>
 </div>
-<!-- Mobile Number -->
-<div class="flex-1">
-<label class="block font-label-lg text-label-lg text-on-surface-variant mb-1 ml-1">Mobile Number</label>
-<input class="w-full bg-surface-container border-b border-outline p-4 rounded-t-lg font-body-lg text-body-lg focus:outline-none focus:border-primary focus:border-b-2 transition-all" pattern="[0-9]{10}" placeholder="98765 43210" required="" type="tel"/>
-</div>
-</div>
-<button class="w-full bg-primary text-on-primary font-label-lg text-label-lg py-4 rounded-full shadow-lg hover:bg-primary-fixed-variant active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
-                    Send OTP
-                    <span class="material-symbols-outlined">arrow_forward</span>
+<div id="login-error" class="text-error font-body-md hidden"></div>
+<button class="w-full bg-primary text-on-primary font-label-lg text-label-lg py-4 rounded-full shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit" id="login-btn">
+  Secure Login
+  <span class="material-symbols-outlined">login</span>
 </button>
-<p class="text-center font-body-md text-body-md text-on-surface-variant pt-4">
-                    By continuing, you agree to our <a class="text-primary font-semibold underline decoration-primary/30" href="#">Terms of Service</a>
+<p class="text-center font-body-md text-body-md text-on-surface-variant pt-2">
+  By continuing, you agree to our <a class="text-primary font-semibold underline decoration-primary/30" href="24_terms_and_conditions.html">Terms of Service</a>
 </p>
 </form>
 </div>
@@ -228,60 +229,119 @@
 </div>
 </div>
 <script>
-        function showOtpOverlay() {
-            const loginSection = document.getElementById('login-section');
-            const otpSection = document.getElementById('otp-section');
-            
-            loginSection.classList.add('blur-sm', 'opacity-50', 'pointer-events-none', 'scale-95');
-            otpSection.classList.remove('hidden');
-            
-            // Auto-focus first input
-            setTimeout(() => {
-                const firstInput = document.querySelector('.otp-input');
-                if (firstInput) firstInput.focus();
-            }, 100);
-        }
+  const API = 'http://localhost:3000/api';
 
-        function hideOtpOverlay() {
-            const loginSection = document.getElementById('login-section');
-            const otpSection = document.getElementById('otp-section');
-            
-            loginSection.classList.remove('blur-sm', 'opacity-50', 'pointer-events-none', 'scale-95');
-            otpSection.classList.add('hidden');
-        }
+  // ─── Toast notification ───────────────────────────────────
+  function showToast(msg, type = 'success') {
+    const t = document.createElement('div');
+    t.textContent = msg;
+    t.style.cssText = `
+      position:fixed;top:20px;left:50%;transform:translateX(-50%);
+      background:${type==='error'?'#ba1a1a':'#006c49'};
+      color:#fff;padding:12px 24px;border-radius:999px;
+      font-family:Inter,sans-serif;font-size:14px;font-weight:600;
+      box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:99999;
+      transition:opacity 0.4s;`;
+    document.body.appendChild(t);
+    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 3500);
+  }
 
-        // OTP Input Auto-Tab Logic
-        const inputs = document.querySelectorAll('#otp-inputs input');
-        inputs.forEach((input, index) => {
-            input.addEventListener('keyup', (e) => {
-                if (e.key >= 0 && e.key <= 9) {
-                    if (index < inputs.length - 1) {
-                        inputs[index + 1].focus();
-                    }
-                } else if (e.key === 'Backspace') {
-                    if (index > 0) {
-                        inputs[index - 1].focus();
-                    }
-                }
-            });
-        });
+  // ─── Send OTP ────────────────────────────────────────
+  async function sendOtp() {
+    const email = document.getElementById('email-input').value.trim();
+    const btn = document.getElementById('send-otp-btn');
+    if (!email) return showToast('Please enter your email address.', 'error');
 
-        function handleVerify() {
-            // Mock verification
-            const btn = event.currentTarget;
-            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Verifying...';
-            btn.disabled = true;
-            
-            setTimeout(() => {
-                btn.classList.replace('bg-primary', 'bg-primary-container');
-                btn.classList.add('text-on-primary-container');
-                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Success';
-                
-                // Redirect logic would go here
-                setTimeout(() => {
-                    alert('Login Successful! Redirecting to Dashboard...');
-                }, 800);
-            }, 1500);
-        }
-    </script>
-</body></html>
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Sending...';
+
+    try {
+      const res = await fetch(`${API}/auth/login-otp/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to send OTP');
+
+      showToast(`✅ OTP sent to ${email}! Check your inbox.`);
+      localStorage.setItem('fr_login_email', email);
+      showOtpOverlay();
+    } catch (e) {
+      showToast(e.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Send OTP <span class="material-symbols-outlined">send</span>';
+    }
+  }
+
+  // ─── Show OTP overlay ───────────────────────────────
+  function showOtpOverlay() {
+    const loginSection = document.getElementById('login-section');
+    const otpSection = document.getElementById('otp-section');
+    loginSection.classList.add('blur-sm', 'opacity-50', 'pointer-events-none', 'scale-95');
+    otpSection.classList.remove('hidden');
+    setTimeout(() => { const f = document.querySelector('.otp-input'); if (f) f.focus(); }, 100);
+  }
+
+  function hideOtpOverlay() {
+    const loginSection = document.getElementById('login-section');
+    const otpSection = document.getElementById('otp-section');
+    loginSection.classList.remove('blur-sm', 'opacity-50', 'pointer-events-none', 'scale-95');
+    otpSection.classList.add('hidden');
+  }
+
+  // OTP Input Auto-Tab
+  const inputs = document.querySelectorAll('#otp-inputs input');
+  inputs.forEach((input, index) => {
+    input.addEventListener('keyup', (e) => {
+      if (e.key >= 0 && e.key <= 9) { if (index < inputs.length - 1) inputs[index + 1].focus(); }
+      else if (e.key === 'Backspace') { if (index > 0) inputs[index - 1].focus(); }
+    });
+  });
+
+  // ─── Verify OTP ────────────────────────────────────
+  async function handleVerify() {
+    const email = localStorage.getItem('fr_login_email');
+    const code = Array.from(inputs).map(i => i.value).join('');
+    const btn = event.currentTarget;
+
+    if (code.length < 6) return showToast('Please enter the full 6-digit OTP.', 'error');
+    if (!email) return showToast('Email not found. Please go back and enter your email.', 'error');
+
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Verifying...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${API}/auth/login-otp/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Verification failed');
+
+      btn.classList.replace('bg-primary', 'bg-primary-container');
+      btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Verified!';
+      showToast('✅ Login successful! Redirecting...');
+
+      // Navigate to dashboard based on saved role
+      const role = localStorage.getItem('fr_role') || 'restaurant';
+      const dashboards = {
+        restaurant: '7_restaurant_dashboard.html',
+        ngo: '10_ngo_dashboard.html',
+        volunteer: '9_volunteer_dashboard.html',
+        admin: '17_user_management_admin.html'
+      };
+      setTimeout(() => {
+        document.body.style.opacity = '0';
+        setTimeout(() => window.location.href = dashboards[role] || '7_restaurant_dashboard.html', 300);
+      }, 1000);
+    } catch (e) {
+      showToast(e.message, 'error');
+      btn.innerHTML = 'Verify';
+      btn.disabled = false;
+    }
+  }
+</script>
+<script src="nav.js"></script></body></html>

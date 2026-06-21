@@ -341,6 +341,47 @@ const templates = {
   }),
 };
 
+// ─── Nearby NGO Notification (used by restaurant on donation creation) ────────
+
+/**
+ * Notify all verified NGOs within radius of a new donation
+ * @param {object} donation - The newly created donation document
+ * @param {number} radiusKm - Search radius (default: 20km from env or hardcoded)
+ */
+const notifyNearbyNgos = async (donation, radiusKm = 20) => {
+  const { filterByRadius } = require('../../utils/distance');
+
+  if (!donation.restaurantLocation) return;
+
+  // Fetch all verified NGOs (Firestore doesn't support geo-queries natively)
+  const snapshot = await db.collection('ngos')
+    .where('isVerified', '==', true)
+    .limit(200)
+    .get();
+
+  if (snapshot.empty) return;
+
+  const ngos = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    location: doc.data().location,
+  }));
+
+  // Filter by distance from restaurant
+  const nearbyNgos = filterByRadius(
+    ngos,
+    donation.restaurantLocation.lat,
+    donation.restaurantLocation.lng,
+    radiusKm
+  );
+
+  if (nearbyNgos.length === 0) return;
+
+  const recipientIds = nearbyNgos.map((n) => n.id);
+  const notifPayload = templates.donationCreated(donation);
+
+  await createBulkNotifications(recipientIds, notifPayload);
+};
+
 module.exports = {
   sendToDevice,
   sendToMultipleDevices,
@@ -352,5 +393,7 @@ module.exports = {
   markAsRead,
   markAllAsRead,
   deleteNotification,
+  notifyNearbyNgos,
   templates,
 };
+

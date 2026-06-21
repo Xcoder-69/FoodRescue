@@ -3,7 +3,7 @@ const router = express.Router();
 const Joi = require('joi');
 
 const controller = require('./location.controller');
-const { verifyToken } = require('../../middleware/auth');
+const { requireAuth } = require('../../middleware/auth');
 const { validate } = require('../../middleware/validate');
 
 // ─── Validation Schemas ──────────────────────────────────────────────────────
@@ -71,7 +71,7 @@ const matrixSchema = Joi.object({
  */
 router.get(
   '/geocode',
-  verifyToken,
+  requireAuth,
   validate(geocodeSchema, 'query'),
   controller.geocodeAddress
 );
@@ -83,7 +83,7 @@ router.get(
  */
 router.get(
   '/reverse',
-  verifyToken,
+  requireAuth,
   validate(reverseSchema, 'query'),
   controller.reverseGeocode
 );
@@ -95,7 +95,7 @@ router.get(
  */
 router.get(
   '/route',
-  verifyToken,
+  requireAuth,
   validate(routeSchema, 'query'),
   controller.getRoute
 );
@@ -107,7 +107,7 @@ router.get(
  */
 router.get(
   '/distance',
-  verifyToken,
+  requireAuth,
   validate(routeSchema, 'query'),
   controller.getDistance
 );
@@ -119,7 +119,7 @@ router.get(
  */
 router.post(
   '/matrix',
-  verifyToken,
+  requireAuth,
   validate(matrixSchema),
   controller.getDistanceMatrix
 );
@@ -131,7 +131,7 @@ router.post(
  */
 router.get(
   '/search',
-  verifyToken,
+  requireAuth,
   validate(searchSchema, 'query'),
   controller.searchPlaces
 );

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -371,4 +371,25 @@
             }
         });
     </script>
-</body></html>
+<script src="js/api.js"></script><script>
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!localStorage.getItem("foodRescueToken")) { window.location.href = "4_login_and_verification.html"; return; }
+  const user = JSON.parse(localStorage.getItem("foodRescueUser") || "{}");
+  const nameEls = document.querySelectorAll("[id*=profile-name], h2, h3");
+  if (nameEls[0] && user.email) { /* Could inject email */ }
+  try {
+    const role = user.role;
+    let endpoint = role === "restaurant" ? "/restaurant/profile" : role === "ngo" ? "/ngo/profile" : "/volunteer/profile";
+    const data = await ApiClient.get(endpoint);
+    console.log("Profile loaded:", data?.data);
+  } catch(e) { console.warn("Profile:", e.message); }
+  
+  // Logout handler
+  const logoutBtns = document.querySelectorAll("[id*=logout], button");
+  logoutBtns.forEach(btn => {
+    if (btn.textContent.toLowerCase().includes("logout") || btn.textContent.toLowerCase().includes("sign out")) {
+      btn.addEventListener("click", () => ApiClient.clearSession());
+    }
+  });
+});
+</script><script src="nav.js"></script></body></html>

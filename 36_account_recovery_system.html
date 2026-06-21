@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Account Recovery | Mission Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#31394d",
+                    "on-secondary-fixed-variant": "#004f58",
+                    "inverse-surface": "#dae2fd",
+                    "tertiary": "#fabd00",
+                    "primary-container": "#ff544c",
+                    "surface-container-high": "#222a3d",
+                    "tertiary-fixed": "#ffdf9e",
+                    "background": "#0b1326",
+                    "surface-container-low": "#131b2e",
+                    "on-primary-fixed": "#410002",
+                    "on-surface": "#dae2fd",
+                    "on-error": "#690005",
+                    "on-primary": "#690006",
+                    "on-tertiary-fixed-variant": "#5b4300",
+                    "outline-variant": "#5b403d",
+                    "surface-tint": "#ffb4ac",
+                    "inverse-primary": "#bb171c",
+                    "tertiary-fixed-dim": "#fabd00",
+                    "surface-container-highest": "#2d3449",
+                    "secondary-fixed-dim": "#00daf3",
+                    "secondary": "#bdf4ff",
+                    "on-tertiary-container": "#372700",
+                    "on-tertiary": "#3f2e00",
+                    "outline": "#ab8985",
+                    "on-surface-variant": "#e4beb9",
+                    "inverse-on-surface": "#283044",
+                    "surface-container": "#171f33",
+                    "on-primary-fixed-variant": "#93000d",
+                    "on-secondary-fixed": "#001f24",
+                    "secondary-fixed": "#9cf0ff",
+                    "primary-fixed-dim": "#ffb4ac",
+                    "on-secondary": "#00363d",
+                    "secondary-container": "#00e3fd",
+                    "primary-fixed": "#ffdad6",
+                    "error-container": "#93000a",
+                    "surface-container-lowest": "#060e20",
+                    "surface-variant": "#2d3449",
+                    "surface": "#0b1326",
+                    "error": "#ffb4ab",
+                    "tertiary-container": "#b78a00",
+                    "on-tertiary-fixed": "#261a00",
+                    "on-primary-container": "#5c0005",
+                    "on-error-container": "#ffdad6",
+                    "surface-dim": "#0b1326",
+                    "primary": "#ffb4ac",
+                    "on-secondary-container": "#00616d",
+                    "on-background": "#dae2fd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Poppins"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Poppins"],
+                    "body-md": ["Inter"],
+                    "headline-sm": ["Poppins"],
+                    "headline-lg": ["Poppins"],
+                    "body-lg": ["Inter"],
+                    "mono-data": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "mono-data": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+            overflow-x: hidden;
+        }
+        .cyber-glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 227, 253, 0.3);
+        }
+        .glow-red {
+            box-shadow: 0 0 15px rgba(229, 57, 53, 0.3);
+        }
+        .step-line {
+            background: linear-gradient(90deg, #00e3fd 50%, #334155 50%);
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .scanner-line {
+            height: 2px;
+            background: #00e3fd;
+            box-shadow: 0 0 10px #00e3fd;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 3s infinite ease-in-out;
+        }
+        @keyframes scan {
+            0%, 100% { top: 0; }
+            50% { top: 100%; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-body-md min-h-screen flex flex-col items-center justify-center p-4">
+<!-- Background Shader -->
+
+<!-- Main Container -->
+<main class="w-full max-w-4xl z-10 space-y-8 py-10">
+<!-- Header Section -->
+<header class="text-center space-y-2">
+<div class="inline-flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary-container text-4xl animate-pulse">security</span>
+<h1 class="font-display-lg text-display-lg text-on-surface uppercase tracking-tighter">
+                    Mission Control
+                </h1>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary uppercase">Admin Account Recovery</h2>
+<div class="flex justify-center items-center gap-2 text-on-surface-variant font-mono-data">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span>
+                LIVE STATUS: SECURE VERIFICATION PROTOCOL ACTIVE
+            </div>
+</header>
+<!-- Step Visualization -->
+<div class="relative flex justify-between px-4 sm:px-12">
+<!-- Background Line -->
+<div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-variant -translate-y-1/2 -z-10"></div>
+<!-- Progress Line (Fills to 75%) -->
+<div class="absolute top-1/2 left-0 w-[66%] h-0.5 bg-secondary-container -translate-y-1/2 -z-10 shadow-[0_0_10px_#00e3fd]"></div>
+<!-- Steps -->
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold shadow-[0_0_15px_rgba(0,227,253,0.5)]">
+<span class="material-symbols-outlined text-xl">check</span>
+</div>
+<span class="font-label-md text-label-md text-secondary-container">Email</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold shadow-[0_0_15px_rgba(0,227,253,0.5)]">
+<span class="material-symbols-outlined text-xl">check</span>
+</div>
+<span class="font-label-md text-label-md text-secondary-container">Recovery Code</span>
+</div>
+<div class="flex flex-col items-center gap-2 group scale-110">
+<div class="w-12 h-12 rounded-full bg-background border-2 border-secondary-container text-secondary-container flex items-center justify-center font-bold shadow-[0_0_20px_rgba(0,227,253,0.4)] relative">
+<div class="absolute inset-0 rounded-full animate-ping bg-secondary-container opacity-20"></div>
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">badge</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Identity Verification</span>
+</div>
+<div class="flex flex-col items-center gap-2 group opacity-40">
+<div class="w-10 h-10 rounded-full bg-surface-variant border border-outline-variant text-on-surface-variant flex items-center justify-center font-bold">
+                    4
+                </div>
+<span class="font-label-md text-label-md text-on-surface-variant">Reset</span>
+</div>
+</div>
+<!-- Identity Verification Canvas -->
+<section class="cyber-glass rounded-xl p-8 space-y-8 overflow-hidden relative">
+<div class="shimmer absolute inset-0 pointer-events-none"></div>
+<div class="space-y-2 relative z-10">
+<h3 class="font-headline-md text-headline-md text-secondary flex items-center gap-3">
+<span class="material-symbols-outlined">fingerprint</span>
+                    Identity Verification
+                </h3>
+<p class="text-on-surface-variant font-body-lg text-body-lg max-w-2xl border-l-2 border-primary-container pl-4 py-1">
+                    Upload your government-issued ID and a live selfie to verify your identity. This process is encrypted and audited by global security compliance.
+                </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- ID Upload Box -->
+<div class="group relative bg-surface-container-low border border-outline-variant/30 rounded-xl p-6 transition-all hover:border-secondary-container/50 hover:bg-surface-container cursor-pointer overflow-hidden">
+<div class="scanner-line opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col items-center text-center space-y-4">
+<div class="w-16 h-16 rounded-full bg-surface-variant flex items-center justify-center text-secondary group-hover:text-secondary-container transition-colors">
+<span class="material-symbols-outlined text-4xl">contact_page</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Official ID Card</h4>
+<p class="text-on-surface-variant font-body-sm text-body-sm mt-1">Passport, Driver's License or National ID (Front &amp; Back)</p>
+</div>
+<button class="px-6 py-2 bg-surface-container-highest text-on-surface rounded-lg font-label-lg border border-outline transition-all active:scale-95">
+                            Select Files
+                        </button>
+<div class="mt-4 flex flex-wrap gap-2 justify-center">
+<span class="text-[10px] uppercase font-bold tracking-widest text-outline bg-surface-variant px-2 py-1 rounded">JPG</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-outline bg-surface-variant px-2 py-1 rounded">PNG</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-outline bg-surface-variant px-2 py-1 rounded">MAX 10MB</span>
+</div>
+</div>
+</div>
+<!-- Selfie Upload Box -->
+<div class="group relative bg-surface-container-low border border-outline-variant/30 rounded-xl p-6 transition-all hover:border-secondary-container/50 hover:bg-surface-container cursor-pointer overflow-hidden">
+<div class="scanner-line opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex flex-col items-center text-center space-y-4">
+<div class="w-16 h-16 rounded-full bg-surface-variant flex items-center justify-center text-secondary group-hover:text-secondary-container transition-colors">
+<span class="material-symbols-outlined text-4xl">face</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Live Selfie</h4>
+<p class="text-on-surface-variant font-body-sm text-body-sm mt-1">Real-time facial capture with neutral expression</p>
+</div>
+<button class="px-6 py-2 bg-surface-container-highest text-on-surface rounded-lg font-label-lg border border-outline transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">videocam</span>
+                            Launch Camera
+                        </button>
+<div class="mt-4 flex flex-wrap gap-2 justify-center">
+<span class="text-[10px] uppercase font-bold tracking-widest text-secondary-container bg-secondary-container/10 px-2 py-1 rounded flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-pulse"></span>
+                                BIOMETRIC READY
+                            </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="flex flex-col items-center space-y-6 pt-4">
+<button class="w-full sm:w-80 h-14 bg-secondary-container text-on-secondary-container rounded-lg font-headline-sm text-headline-sm uppercase tracking-widest shadow-[0_0_20px_rgba(0,227,253,0.4)] transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,227,253,0.6)] active:scale-95 flex items-center justify-center gap-3">
+                    Submit for Verification
+                    <span class="material-symbols-outlined">send</span>
+</button>
+<div class="flex items-center gap-8 text-on-surface-variant">
+<a class="flex items-center gap-2 hover:text-secondary-container transition-colors font-label-lg text-label-lg border-b border-transparent hover:border-secondary-container" href="#">
+<span class="material-symbols-outlined text-lg">support_agent</span>
+                        Contact System Security
+                    </a>
+<div class="h-4 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-2 font-mono-data text-body-sm">
+<span class="material-symbols-outlined text-lg text-tertiary">lock</span>
+                        AES-256 ENCRYPTED
+                    </div>
+</div>
+</div>
+</section>
+<!-- Footer / Meta Data -->
+<footer class="flex flex-col md:flex-row justify-between items-center text-on-surface-variant/60 font-mono-data text-label-md px-4">
+<p>© 2024 COMMAND CENTER RECOVERY HUB. ALL ATTEMPTS LOGGED.</p>
+<div class="flex gap-4 mt-4 md:mt-0">
+<span>NODE_ID: 0X4F_RR82</span>
+<span>LATENCY: 14MS</span>
+<span class="text-secondary-container/80">VERIFIED ADMIN ACCESS ONLY</span>
+</div>
+</footer>
+</main>
+<!-- Custom Interaction Logic -->
+<script>
+        // Simple hover effect for upload cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Potential for adding subtle sound effects or haptic feedback triggers
+            });
+        });
+
+        // Trigger pulse on button press
+        const mainBtn = document.querySelector('button.bg-secondary-container');
+        mainBtn.addEventListener('mousedown', () => {
+            mainBtn.classList.add('brightness-125');
+        });
+        mainBtn.addEventListener('mouseup', () => {
+            mainBtn.classList.remove('brightness-125');
+        });
+    </script>
+<script src="nav.js"></script></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -358,4 +358,27 @@
             });
         });
     </script>
-</body></html>
+<script src="js/api.js"></script><script>
+document.addEventListener("DOMContentLoaded", () => {
+  if (!localStorage.getItem("foodRescueToken")) { window.location.href = "4_login_and_verification.html"; return; }
+  const form = document.querySelector("form");
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector("[type=submit]") || form.querySelector("button");
+      if (!btn) return;
+      const origText = btn.innerHTML;
+      btn.innerHTML = "Submitting..."; btn.disabled = true;
+      try {
+        const inputs = form.querySelectorAll("input, select, textarea");
+        const payload = { foodName: inputs[0]?.value, quantity: inputs[1]?.value, expiresAt: inputs[2]?.value };
+        await ApiClient.post("/donations", payload);
+        alert("✅ Food donation listed successfully!");
+        window.location.href = "7_restaurant_dashboard.html";
+      } catch(err) {
+        alert("Failed: " + err.message);
+      } finally { btn.innerHTML = origText; btn.disabled = false; }
+    });
+  }
+});
+</script><script src="nav.js"></script></body></html>

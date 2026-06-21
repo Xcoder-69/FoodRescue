@@ -1,0 +1,424 @@
+﻿<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mission Control | Active Session Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(51, 65, 85, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 227, 253, 0.4);
+            box-shadow: 0 0 20px rgba(0, 227, 253, 0.1);
+        }
+        .cyber-border-cyan {
+            border-left: 4px solid #00e3fd;
+        }
+        .cyber-border-red {
+            border-left: 4px solid #ff544c;
+        }
+        .pulse-cyan {
+            animation: pulse-cyan 2s infinite;
+        }
+        @keyframes pulse-cyan {
+            0% { box-shadow: 0 0 0 0 rgba(0, 227, 253, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 227, 253, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 227, 253, 0); }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#31394d",
+                      "on-secondary-fixed-variant": "#004f58",
+                      "inverse-surface": "#dae2fd",
+                      "tertiary": "#fabd00",
+                      "primary-container": "#ff544c",
+                      "surface-container-high": "#222a3d",
+                      "tertiary-fixed": "#ffdf9e",
+                      "background": "#0b1326",
+                      "surface-container-low": "#131b2e",
+                      "on-primary-fixed": "#410002",
+                      "on-surface": "#dae2fd",
+                      "on-error": "#690005",
+                      "on-primary": "#690006",
+                      "on-tertiary-fixed-variant": "#5b4300",
+                      "outline-variant": "#5b403d",
+                      "surface-tint": "#ffb4ac",
+                      "inverse-primary": "#bb171c",
+                      "tertiary-fixed-dim": "#fabd00",
+                      "surface-container-highest": "#2d3449",
+                      "secondary-fixed-dim": "#00daf3",
+                      "secondary": "#bdf4ff",
+                      "on-tertiary-container": "#372700",
+                      "on-tertiary": "#3f2e00",
+                      "outline": "#ab8985",
+                      "on-surface-variant": "#e4beb9",
+                      "inverse-on-surface": "#283044",
+                      "surface-container": "#171f33",
+                      "on-primary-fixed-variant": "#93000d",
+                      "on-secondary-fixed": "#001f24",
+                      "secondary-fixed": "#9cf0ff",
+                      "primary-fixed-dim": "#ffb4ac",
+                      "on-secondary": "#00363d",
+                      "secondary-container": "#00e3fd",
+                      "primary-fixed": "#ffdad6",
+                      "error-container": "#93000a",
+                      "surface-container-lowest": "#060e20",
+                      "surface-variant": "#2d3449",
+                      "surface": "#0b1326",
+                      "error": "#ffb4ab",
+                      "tertiary-container": "#b78a00",
+                      "on-tertiary-fixed": "#261a00",
+                      "on-primary-container": "#5c0005",
+                      "on-error-container": "#ffdad6",
+                      "surface-dim": "#0b1326",
+                      "primary": "#ffb4ac",
+                      "on-secondary-container": "#00616d",
+                      "on-background": "#dae2fd"
+              },
+              "fontFamily": {
+                      "headline-md": ["Poppins"],
+                      "body-sm": ["Inter"],
+                      "display-lg": ["Poppins"],
+                      "body-md": ["Inter"],
+                      "headline-sm": ["Poppins"],
+                      "headline-lg": ["Poppins"],
+                      "body-lg": ["Inter"],
+                      "mono-data": ["Inter"],
+                      "label-lg": ["Inter"],
+                      "label-md": ["Inter"]
+              },
+            }
+          }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-container/30">
+<!-- Background Shader -->
+<div class="fixed inset-0 z-0">
+
+<div class="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background"></div>
+</div>
+<!-- Navigation Drawer (SideNav) -->
+<nav class="w-[280px] h-screen fixed left-0 top-0 border-r border-outline-variant/30 backdrop-blur-xl bg-surface-container-low/90 z-50 flex flex-col py-8 shadow-2xl">
+<div class="px-8 mb-10">
+<h1 class="font-headline-md text-headline-md font-bold text-secondary-container">Mission Control</h1>
+<p class="text-on-surface-variant text-label-md mt-1 uppercase tracking-widest">Command Center</p>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Active state logic: Security Center is active -->
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 transition-all duration-300 hover:bg-surface-variant/50 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="text-secondary-container font-bold border-l-4 border-secondary-container bg-secondary-container/10 shadow-[0_0_15px_rgba(0,227,253,0.2)] flex items-center gap-4 px-6 py-3" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+<span class="font-label-lg text-label-lg">Security Center</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 transition-all duration-300 hover:bg-surface-variant/50 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-lg text-label-lg">Approvals</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 transition-all duration-300 hover:bg-surface-variant/50 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">gpp_maybe</span>
+<span class="font-label-lg text-label-lg">Fraud Center</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 transition-all duration-300 hover:bg-surface-variant/50 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-lg text-label-lg">Analytics</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 transition-all duration-300 hover:bg-surface-variant/50 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-lg text-label-lg">Audit Logs</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 transition-all duration-300 hover:bg-surface-variant/50 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+</div>
+<div class="px-6 mt-auto pt-8 border-t border-outline-variant/10">
+<div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-high/50">
+<div class="w-10 h-10 rounded-full border border-secondary-container/50 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female logistics administrator with a stern yet focused expression, wearing futuristic tactical glasses that reflect digital data streams. The lighting is cool cyan and deep navy, highlighting high-tech fabric textures. The background shows blurred server racks with pulsing blue lights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbqmGL1HsA8pRMCQ1OzBUOeqXjYP8m846XcX4Bg-iqruK18vDTHXtVvynsJ1Rwc6oImMqc82oZbpNoOoBlTba8TyaXtbErKp5SrefqCfLFkg8zxKjwyVzk8pqEInVr6lJe6IMjJ2o-YBMu3-F6LwdV_PRmAO8IkYVdElP9plxYjGqTf072ITM-zrPc1fojKke4tRM5V2shhULIWD1kPtDpaOSrs-ASM50crpCFI6Mxsq5S3P785z7ywGnMt6xqaktSigP4CO3nSrI"/>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Admin Alpha</p>
+<p class="text-label-md text-secondary-fixed-dim">Level 4 Access</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-280px)] z-40 bg-surface-container/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center px-10 h-20 shadow-sm">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:bg-surface-variant/30 p-2 rounded-full transition-all">menu_open</span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Active Session Manager</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary-container/10 border border-secondary-container/20">
+<div class="w-2 h-2 rounded-full bg-secondary-container pulse-cyan"></div>
+<span class="text-label-md font-semibold text-secondary-container">Live Status: Operational</span>
+</div>
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface transition-colors">help_outline</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] pt-32 px-10 pb-20 relative z-10">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Section 1: Active Admin Sessions -->
+<section class="col-span-12 lg:col-span-7">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Active Admin Sessions</h3>
+<p class="text-body-sm text-on-surface-variant">Real-time monitoring of all authenticated access points.</p>
+</div>
+<span class="px-3 py-1 bg-primary-container/10 text-primary-fixed font-mono-data text-[12px] border border-primary-container/20 rounded">ENCRYPTED TUNNEL</span>
+</div>
+<div class="space-y-4">
+<!-- Session Card 1 -->
+<div class="glass-card cyber-border-cyan rounded-xl p-6 flex items-center justify-between group">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface-container-highest text-secondary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'opsz' 40;">laptop_mac</span>
+</div>
+<div class="grid grid-cols-2 gap-x-8 gap-y-1">
+<div>
+<p class="text-label-md text-on-surface-variant uppercase">Device</p>
+<p class="font-mono-data text-on-surface">MacBook Pro 16"</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase">Browser</p>
+<p class="font-mono-data text-on-surface">Chrome v121.0</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase">IP Address</p>
+<p class="font-mono-data text-on-surface">192.168.1.45</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase">Location</p>
+<p class="font-mono-data text-on-surface" data-location="Geneva, Switzerland">Geneva, Switzerland</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-3">
+<span class="text-label-md text-secondary-container flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-pulse"></span> CURRENT SESSION
+                            </span>
+<button class="px-4 py-2 bg-on-primary-fixed-variant/20 border border-on-primary-fixed-variant/40 text-primary hover:bg-on-primary-fixed-variant/40 transition-all rounded-lg font-label-lg">Revoke</button>
+</div>
+</div>
+<!-- Session Card 2 -->
+<div class="glass-card rounded-xl p-6 flex items-center justify-between group">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface-container-highest text-on-surface-variant">
+<span class="material-symbols-outlined">smartphone</span>
+</div>
+<div class="grid grid-cols-2 gap-x-8 gap-y-1">
+<div>
+<p class="text-label-md text-on-surface-variant uppercase">Device</p>
+<p class="font-mono-data text-on-surface">iPhone 15 Pro</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase">Browser</p>
+<p class="font-mono-data text-on-surface">Safari Mobile</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase">IP Address</p>
+<p class="font-mono-data text-on-surface">82.14.23.109</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase">Location</p>
+<p class="font-mono-data text-on-surface" data-location="New York, USA">New York, USA</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-3">
+<span class="text-label-md text-on-surface-variant">Last active 2h ago</span>
+<button class="px-4 py-2 bg-primary-container text-on-primary hover:shadow-[0_0_15px_rgba(255,84,76,0.4)] transition-all rounded-lg font-label-lg">Revoke</button>
+</div>
+</div>
+<!-- Session Card 3 (Suspicious style) -->
+<div class="glass-card cyber-border-red rounded-xl p-6 flex items-center justify-between group bg-on-primary-fixed-variant/10">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 flex items-center justify-center rounded-lg bg-error-container/20 text-error">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<div class="grid grid-cols-2 gap-x-8 gap-y-1">
+<div>
+<p class="text-label-md text-on-error-container uppercase">Device</p>
+<p class="font-mono-data text-on-surface">Unknown Linux</p>
+</div>
+<div>
+<p class="text-label-md text-on-error-container uppercase">Browser</p>
+<p class="font-mono-data text-on-surface">CLI Utility</p>
+</div>
+<div>
+<p class="text-label-md text-on-error-container uppercase">IP Address</p>
+<p class="font-mono-data text-on-surface">45.92.122.3</p>
+</div>
+<div>
+<p class="text-label-md text-on-error-container uppercase">Location</p>
+<p class="font-mono-data text-on-surface" data-location="Reykjavik, Iceland">Reykjavik, Iceland</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-3">
+<span class="text-label-md text-error flex items-center gap-1 font-bold">
+<span class="material-symbols-outlined text-[14px]">warning</span> UNRECOGNIZED
+                            </span>
+<button class="px-4 py-2 bg-primary-container text-on-primary hover:shadow-[0_0_15px_rgba(255,84,76,0.6)] transition-all rounded-lg font-label-lg">Revoke</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Trusted Devices -->
+<section class="col-span-12 lg:col-span-5">
+<div class="mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Trusted Devices</h3>
+<p class="text-body-sm text-on-surface-variant">Permanently authorized hardware for system override.</p>
+</div>
+<div class="glass-card rounded-2xl overflow-hidden border border-outline-variant/30">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-highest/30 border-b border-outline-variant/30">
+<th class="px-6 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider">Name</th>
+<th class="px-6 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider">Browser</th>
+<th class="px-6 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider">Date Added</th>
+<th class="px-6 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-container">laptop</span>
+<span class="font-mono-data">Mainframe-01</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">Chrome</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">2024-03-12</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary-container transition-colors font-label-md uppercase">Remove</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-container">tablet_mac</span>
+<span class="font-mono-data">Tactical-Pad</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">Safari</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">2024-05-20</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary-container transition-colors font-label-md uppercase">Remove</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-container">desktop_windows</span>
+<span class="font-mono-data">Ops-Center-04</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">Edge</td>
+<td class="px-6 py-4 font-mono-data text-on-surface-variant">2024-06-01</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary-container transition-colors font-label-md uppercase">Remove</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-6 bg-surface-container-low/50">
+<div class="flex items-start gap-4 p-4 rounded-xl border border-secondary-container/20 bg-secondary-container/5">
+<span class="material-symbols-outlined text-secondary-container">info</span>
+<p class="text-body-sm text-secondary-fixed-dim italic leading-relaxed">
+                                Trusted devices bypass 2FA requirements when logging in from known operational coordinates. Exercise caution when authorizing new hardware.
+                            </p>
+</div>
+</div>
+</div>
+<div class="mt-8 p-6 glass-card rounded-2xl border-dashed border-2 border-outline-variant/30 flex flex-col items-center justify-center text-center">
+<div class="w-24 h-24 bg-cover bg-center rounded-full mb-4 opacity-60" data-alt="A clean, minimalist 3D rendering of a futuristic security token or hardware key floating in a void of deep cyan light. The key has glowing blue circuits and is surrounded by floating binary code. The aesthetic is high-tech, clinical, and reassuring, representing physical security in a digital world." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDwGfiY7qdoi7fMSAWMuuL51dy3ZLP2ovO_A83OnwptnQzUBCB0BW_iR7yNpSkC1P4EVVtgtGmMT_adi5vy2y3RncOIVFLIZ_nrKb49iziYOgnyY51d06Hbz56W2VMPPKtRe-lfS53im6j62jA_86ZL9oREJC-vog66uhJDoDIGgg8I9OL06yJszZ1vB6wjUR8yo6Ad1eKHqC2WyUCmmJEad891sQ8Bs-0MUfiGnGMMsVF8G5JKErwG7DPuj39OS5LupLIvXBR2cAA')"></div>
+<p class="font-headline-sm text-headline-sm text-on-surface mb-2">Secure Your Access</p>
+<p class="text-body-sm text-on-surface-variant max-w-xs">Register your physical security keys or trusted hardware for biometric authentication.</p>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action: Add New Trusted Device -->
+<div class="fixed bottom-10 right-10 z-50 flex items-center gap-4">
+<div class="bg-surface-container-highest px-4 py-2 rounded-lg border border-outline-variant text-label-md font-bold text-on-surface-variant opacity-0 transition-all duration-300 transform translate-x-4 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0" id="fab-tooltip">
+            SECURE REGISTRATION
+        </div>
+<button class="group w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-[0_0_30px_rgba(0,227,253,0.4)] hover:shadow-[0_0_50px_rgba(0,227,253,0.6)] hover:scale-110 active:scale-95 transition-all duration-300" onmouseout="document.getElementById('fab-tooltip').style.opacity = '0'; document.getElementById('fab-tooltip').style.transform = 'translateX(1rem)'" onmouseover="document.getElementById('fab-tooltip').style.opacity = '1'; document.getElementById('fab-tooltip').style.transform = 'translateX(0)'">
+<span class="material-symbols-outlined text-[32px] font-bold">add</span>
+</button>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple session revoke simulation
+        document.querySelectorAll('button').forEach(btn => {
+            if(btn.innerText === 'Revoke' || btn.innerText === 'Remove') {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('.glass-card') || this.closest('tr');
+                    card.style.opacity = '0.5';
+                    card.style.filter = 'grayscale(1)';
+                    this.innerText = 'Processing...';
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        card.style.transform = 'scale(0.95)';
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            if(card.tagName === 'TR') card.remove();
+                            else card.remove();
+                        }, 300);
+                    }, 800);
+                });
+            }
+        });
+
+        // Background shader interaction (mouse awareness)
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            // Shaders typically respond to uniforms, but we can modulate the overlay opacity
+            const opacity = 0.4 + (y * 0.1);
+            document.querySelector('webgl-shader').style.opacity = opacity;
+        });
+    </script>
+<script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/sessions/all").then(d=>console.log("Session Manager loaded:",d?.data)).catch(e=>console.warn("Session Manager",e.message));});</script><script src="nav.js"></script><script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/sessions/all").then(d=>console.log("Session Manager loaded:",d?.data)).catch(e=>console.warn("Session Manager",e.message));});</script></body></html>

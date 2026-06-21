@@ -1,11 +1,23 @@
 require('dotenv').config();
 require('express-async-errors');
 
+const http = require('http');
+require('./src/config/firebase'); // Initialize Firebase before loading routes
 const app = require('./src/app');
+const initSocket = require('./src/socket');
 
 const PORT = process.env.PORT || 3000;
+const server = http.createServer(app);
 
-const server = app.listen(PORT, () => {
+// Initialize Socket.io
+const io = initSocket(server);
+app.set('io', io); // Make socket available inside express routes if needed
+
+// Start Nightly Analytics Cron
+const startAggregator = require('./src/cron/analyticsAggregator');
+startAggregator();
+
+server.listen(PORT, () => {
   console.log(`\n🚀 FoodRescue API Server running on port ${PORT}`);
   console.log(`📌 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Base URL: http://localhost:${PORT}/api\n`);

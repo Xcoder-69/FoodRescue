@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -187,7 +187,7 @@
 <main class="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-gutter">
 <!-- Welcome Section -->
 <section class="mb-stack-lg">
-<h3 class="font-display-lg text-2xl md:text-4xl text-on-background mb-2">Good morning, Chef.</h3>
+<h3 class="font-display-lg text-2xl md:text-4xl text-on-background mb-2"><span id="dash-greeting">Good morning, Chef.</span></h3>
 <p class="font-body-lg text-on-surface-variant">Here's how Green Table Bistro is impacting the community today.</p>
 </section>
 <!-- Quick Actions -->
@@ -213,7 +213,7 @@
 <span class="text-xs font-bold text-primary-container bg-primary/10 px-2 py-0.5 rounded-full">+12%</span>
 </div>
 <p class="font-label-md text-on-surface-variant uppercase tracking-wider">Meals Donated</p>
-<h4 class="font-headline-lg text-3xl text-on-surface mt-1">1,284</h4>
+<h4 class="font-headline-lg text-3xl text-on-surface mt-1"><span id="stat-total">1,284</span></h4>
 </div>
 <div class="glass-card p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-white/50">
 <div class="flex items-center justify-between mb-2">
@@ -221,7 +221,7 @@
 <span class="text-xs font-bold text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-full">85kg</span>
 </div>
 <p class="font-label-md text-on-surface-variant uppercase tracking-wider">Food Saved</p>
-<h4 class="font-headline-lg text-3xl text-on-surface mt-1">452<span class="text-lg ml-1 font-normal text-on-surface-variant">kg</span></h4>
+<h4 class="font-headline-lg text-3xl text-on-surface mt-1"><span id="stat-food">452</span><span class="text-lg ml-1 font-normal text-on-surface-variant">kg</span></h4>
 </div>
 <div class="glass-card p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-white/50">
 <div class="flex items-center justify-between mb-2">
@@ -229,7 +229,7 @@
 <span class="flex h-2 w-2 rounded-full bg-secondary-container animate-pulse"></span>
 </div>
 <p class="font-label-md text-on-surface-variant uppercase tracking-wider">Active</p>
-<h4 class="font-headline-lg text-3xl text-on-surface mt-1">08</h4>
+<h4 class="font-headline-lg text-3xl text-on-surface mt-1"><span id="stat-active">08</span></h4>
 </div>
 <div class="glass-card p-stack-md rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-white/50">
 <div class="flex items-center justify-between mb-2">
@@ -237,7 +237,7 @@
 <span class="text-xs font-bold text-on-surface-variant opacity-60">Total</span>
 </div>
 <p class="font-label-md text-on-surface-variant uppercase tracking-wider">Completed</p>
-<h4 class="font-headline-lg text-3xl text-on-surface mt-1">156</h4>
+<h4 class="font-headline-lg text-3xl text-on-surface mt-1"><span id="stat-completed">156</span></h4>
 </div>
 </section>
 <!-- Recent Donations Section -->
@@ -436,4 +436,4 @@
             }, 1000);
         });
     </script>
-</body></html>
+<script src="js/api.js"></script><script src="js/dashboard.js"></script><script>document.addEventListener("DOMContentLoaded", () => { DashboardLoader.requireAuth() && DashboardLoader.loadRestaurant(); });</script><script src="nav.js"></script></body></html>

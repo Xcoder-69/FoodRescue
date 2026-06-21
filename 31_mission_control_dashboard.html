@@ -1,0 +1,504 @@
+﻿<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mission Control - Cyber-Humanitarian Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#0b1326",
+                    "on-tertiary-container": "#372700",
+                    "inverse-surface": "#dae2fd",
+                    "on-tertiary-fixed": "#261a00",
+                    "on-tertiary": "#3f2e00",
+                    "tertiary-fixed": "#ffdf9e",
+                    "on-error-container": "#ffdad6",
+                    "outline-variant": "#5b403d",
+                    "on-secondary-fixed": "#001f24",
+                    "tertiary": "#fabd00",
+                    "on-surface": "#dae2fd",
+                    "on-background": "#dae2fd",
+                    "on-secondary": "#00363d",
+                    "on-secondary-container": "#00616d",
+                    "secondary-container": "#00e3fd",
+                    "on-primary-fixed": "#410002",
+                    "secondary": "#bdf4ff",
+                    "outline": "#ab8985",
+                    "surface-tint": "#ffb4ac",
+                    "tertiary-fixed-dim": "#fabd00",
+                    "inverse-primary": "#bb171c",
+                    "inverse-on-surface": "#283044",
+                    "error": "#ffb4ab",
+                    "surface": "#0b1326",
+                    "surface-bright": "#31394d",
+                    "primary-fixed": "#ffdad6",
+                    "on-error": "#690005",
+                    "surface-variant": "#2d3449",
+                    "secondary-fixed-dim": "#00daf3",
+                    "surface-container-highest": "#2d3449",
+                    "surface-dim": "#0b1326",
+                    "on-primary-fixed-variant": "#93000d",
+                    "surface-container-high": "#222a3d",
+                    "surface-container-low": "#131b2e",
+                    "surface-container": "#171f33",
+                    "on-surface-variant": "#e4beb9",
+                    "primary": "#ffb4ac",
+                    "on-tertiary-fixed-variant": "#5b4300",
+                    "surface-container-lowest": "#060e20",
+                    "primary-container": "#ff544c",
+                    "on-primary": "#690006",
+                    "tertiary-container": "#b78a00",
+                    "secondary-fixed": "#9cf0ff",
+                    "error-container": "#93000a",
+                    "on-primary-container": "#5c0005",
+                    "primary-fixed-dim": "#ffb4ac",
+                    "on-secondary-fixed-variant": "#004f58"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "container-max": "1440px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "display-lg": ["Poppins"],
+                    "headline-lg": ["Poppins"],
+                    "label-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "mono-data": ["Inter"],
+                    "headline-sm": ["Poppins"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Poppins"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "mono-data": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(23, 31, 51, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+        }
+        .cyber-glow-cyan { box-shadow: 0 0 15px rgba(0, 227, 253, 0.2); }
+        .cyber-glow-red { box-shadow: 0 0 15px rgba(255, 84, 76, 0.2); }
+        .cyber-glow-green { box-shadow: 0 0 15px rgba(0, 200, 83, 0.2); }
+        
+        .pulse-cyan { animation: pulse-cyan 2s infinite; }
+        @keyframes pulse-cyan {
+            0% { box-shadow: 0 0 0 0 rgba(0, 227, 253, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 227, 253, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 227, 253, 0); }
+        }
+
+        .scanning-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00e3fd, transparent);
+            position: absolute;
+            width: 100%;
+            top: 0;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container selection:text-on-secondary-container overflow-hidden">
+<!-- Global Background Animation -->
+
+<!-- Navigation Drawer (Mission Control) -->
+<nav class="w-[280px] h-screen fixed left-0 top-0 bg-surface-container-low/90 border-r border-outline-variant/30 backdrop-blur-xl shadow-2xl z-[100] flex flex-col py-8 overflow-y-auto">
+<div class="px-8 mb-10">
+<h1 class="font-headline-md text-headline-md font-bold text-secondary-container">COMMAND CENTER</h1>
+<p class="text-label-md font-label-md text-on-surface-variant opacity-60">Global Ops Admin • L4</p>
+</div>
+<div class="flex-1 space-y-1">
+<!-- Active State: Dashboard -->
+<a class="text-secondary-container font-bold border-l-4 border-secondary-container bg-secondary-container/10 shadow-[0_0_15px_rgba(0,227,253,0.2)] flex items-center gap-4 px-6 py-3 transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-lg text-label-lg">Approvals</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">restaurant</span>
+<span class="font-label-lg text-label-lg">Restaurants</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">domain</span>
+<span class="font-label-lg text-label-lg">NGOs</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-lg text-label-lg">Volunteers</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-lg text-label-lg">Deliveries</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">gpp_maybe</span>
+<span class="font-label-lg text-label-lg">Fraud Center</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-lg text-label-lg">Analytics</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+</div>
+<div class="px-6 mt-8 pt-8 border-t border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center border border-secondary-container/50">
+<span class="material-symbols-outlined text-secondary-container">admin_panel_settings</span>
+</div>
+<div>
+<p class="text-label-lg font-label-lg text-on-surface">Admin_042</p>
+<p class="text-[10px] text-secondary-container tracking-widest font-bold">SYSTEM ACTIVE</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-280px)] z-50 flex justify-between items-center px-10 h-20 bg-surface-container/80 backdrop-blur-md border-b border-outline-variant/30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary cursor-pointer transition-transform active:scale-90">menu_open</span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Mission Control</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-secondary-container/10 px-4 py-1.5 rounded-full border border-secondary-container/20">
+<span class="w-2 h-2 rounded-full bg-secondary-container pulse-cyan"></span>
+<span class="text-label-md font-label-md text-secondary-container uppercase tracking-wider">Live Status: Operational</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-on-surface transition-all cursor-pointer">search</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-on-surface transition-all cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-on-surface transition-all cursor-pointer">help_outline</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] mt-20 p-10 h-[calc(100vh-80px)] overflow-y-auto relative z-10 scroll-smooth">
+<!-- Hero Metrics Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-10">
+<!-- Total Food Saved (Primary Red) -->
+<div class="glass-panel p-6 rounded-xl relative overflow-hidden group hover:border-primary/50 transition-all">
+<div class="scanning-line opacity-20"></div>
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="text-[10px] font-bold text-primary px-2 py-0.5 rounded bg-primary/10 uppercase tracking-tighter">+12.4%</span>
+</div>
+<h3 class="text-label-lg font-label-lg text-on-surface-variant/80">Total Food Saved</h3>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="text-display-lg font-display-lg text-primary tracking-tighter">482.1</span>
+<span class="text-headline-sm font-headline-sm text-primary/70">TONS</span>
+</div>
+<div class="mt-4 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary-container cyber-glow-red w-3/4"></div>
+</div>
+</div>
+<!-- Meals Delivered (Green/Secondary-ish variant) -->
+<div class="glass-panel p-6 rounded-xl relative overflow-hidden group hover:border-tertiary/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
+<span class="text-[10px] font-bold text-tertiary px-2 py-0.5 rounded bg-tertiary/10 uppercase tracking-tighter">Stable</span>
+</div>
+<h3 class="text-label-lg font-label-lg text-on-surface-variant/80">Meals Delivered</h3>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="text-display-lg font-display-lg text-tertiary tracking-tighter">1.2M</span>
+</div>
+<div class="mt-4 flex gap-1">
+<div class="h-8 flex-1 bg-tertiary/10 rounded-sm flex items-end">
+<div class="w-full bg-tertiary/40 h-2/3"></div>
+</div>
+<div class="h-8 flex-1 bg-tertiary/10 rounded-sm flex items-end">
+<div class="w-full bg-tertiary/60 h-1/2"></div>
+</div>
+<div class="h-8 flex-1 bg-tertiary/10 rounded-sm flex items-end">
+<div class="w-full bg-tertiary/80 h-3/4"></div>
+</div>
+<div class="h-8 flex-1 bg-tertiary/10 rounded-sm flex items-end">
+<div class="w-full bg-tertiary cyber-glow-green h-full"></div>
+</div>
+</div>
+</div>
+<!-- Active Deliveries (Cyber Cyan) -->
+<div class="glass-panel p-6 rounded-xl relative overflow-hidden group hover:border-secondary-container/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<span class="flex items-center gap-1 text-[10px] font-bold text-secondary-container px-2 py-0.5 rounded bg-secondary-container/10 uppercase tracking-tighter pulse-cyan">Live</span>
+</div>
+<h3 class="text-label-lg font-label-lg text-on-surface-variant/80">Active Deliveries</h3>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="text-display-lg font-display-lg text-secondary-container tracking-tighter">247</span>
+<span class="text-headline-sm font-headline-sm text-secondary-container/70">UNITS</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant/60 mt-4 italic">Estimated 45 min clear time</p>
+</div>
+<!-- Pending Approvals (Yellow/Warning) -->
+<div class="glass-panel p-6 rounded-xl relative overflow-hidden group hover:border-error/50 transition-all">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">assignment_late</span>
+<span class="text-[10px] font-bold text-error px-2 py-0.5 rounded bg-error/10 uppercase tracking-tighter">Action Required</span>
+</div>
+<h3 class="text-label-lg font-label-lg text-on-surface-variant/80">Pending Approvals</h3>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="text-display-lg font-display-lg text-error tracking-tighter">18</span>
+<span class="text-headline-sm font-headline-sm text-error/70">CRITICAL</span>
+</div>
+<button class="mt-4 w-full py-2 bg-error/10 hover:bg-error/20 border border-error/30 text-error font-label-lg text-label-lg rounded-lg transition-all">
+                    Process Queue
+                </button>
+</div>
+</section>
+<!-- Secondary Layout: Global Impact Heatmap & Real-time System Telemetry -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Global Impact Heatmap -->
+<section class="lg:col-span-2 space-y-gutter">
+<div class="glass-panel rounded-xl p-6 relative min-h-[400px]">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Global Impact Radar</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant/60">Live satellite rescue density mapping</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-surface-variant/50 rounded text-label-md font-label-md border border-outline-variant">24H</button>
+<button class="px-3 py-1 bg-secondary-container/20 text-secondary-container rounded text-label-md font-label-md border border-secondary-container/30">REALTIME</button>
+</div>
+</div>
+<div class="w-full h-80 relative rounded-lg overflow-hidden border border-outline-variant/30 bg-surface-container-lowest">
+<div class="absolute inset-0 opacity-40 grayscale contrast-125" data-alt="A futuristic dark-mode digital map of the world with glowing cyan and red light trails indicating high activity regions. The map style is schematic and tech-oriented, with subtle grid lines and coordinates visible. The mood is high-stakes mission control, illuminated with cold blue and urgent red tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCdU_624zvbi1i7f3JwdUsiZs9eZvoevnBwBqFWXYUykqxV407hUiwg1vvNjBpaVoRj7ZtUTfL28RmT77Bih-rIIH2FGsMdqFWSNqsE0ZspgoDggSw6G1t44Cxv6cYH8HJIb1sYWcH4NhUVnBDIQMad1mL8Y6KCOB3EAO5MaQChsTRjVl0_XUen8O0XO2DORz5GscYsIp1cw-q3CTd9nvckfS6Izoh8Nsv2QQXd02vhtrXvNEz96pxlYtIWmKW-l22_mvI8Tv-ISHA')"></div>
+<!-- Simulated Radar Sweep -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border border-secondary-container/10 rounded-full"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] border border-secondary-container/20 rounded-full"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100px] h-[100px] border border-secondary-container/40 rounded-full pulse-cyan"></div>
+<!-- Map Data Points -->
+<div class="absolute top-1/4 left-1/3 w-2 h-2 bg-primary cyber-glow-red rounded-full animate-ping"></div>
+<div class="absolute top-2/3 left-1/2 w-2 h-2 bg-secondary-container cyber-glow-cyan rounded-full animate-ping"></div>
+<div class="absolute top-1/2 left-3/4 w-2 h-2 bg-tertiary cyber-glow-green rounded-full animate-ping" style="animation-delay: 1s"></div>
+<!-- Overlay Legend -->
+<div class="absolute bottom-4 left-4 glass-panel p-3 rounded-lg border-secondary-container/30">
+<div class="flex items-center gap-4 text-[10px] font-bold text-on-surface tracking-widest">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> RESCUE</span>
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-secondary-container rounded-full"></span> TRANSIT</span>
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-tertiary rounded-full"></span> STORAGE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Rescue Feeds -->
+<div class="glass-panel rounded-xl p-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">Active Rescue Streams</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-surface-container-high/50 rounded-lg border-l-4 border-primary shadow-sm hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded bg-background border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">sensors</span>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg text-on-surface">Central Bakery • Bulk Salvage</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant/60">ID: #RESC-9904 • Dispatching Volunteer</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-mono-data text-primary">T-MINUS 12:44</span>
+<div class="text-[10px] text-on-surface-variant mt-1">EST. 450 lbs</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-high/50 rounded-lg border-l-4 border-secondary-container shadow-sm hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded bg-background border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-container">navigation</span>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg text-on-surface">Volunteer 042 • Route Active</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant/60">Transit to 'Green Harvest NGO'</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-mono-data text-secondary-container">IN TRANSIT</span>
+<div class="text-[10px] text-on-surface-variant mt-1">Arrival: 4 mins</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-high/50 rounded-lg border-l-4 border-tertiary shadow-sm hover:bg-surface-container-high transition-all cursor-pointer opacity-80">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded bg-background border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg text-on-surface">Drop-off Confirmed</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant/60">Community Kitchen • Batch 44A</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-mono-data text-tertiary">COMPLETED</span>
+<div class="text-[10px] text-on-surface-variant mt-1">Verified: Admin_02</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Real-time System Telemetry -->
+<section class="space-y-gutter">
+<div class="glass-panel rounded-xl p-6 h-full">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">System Telemetry</h3>
+<!-- Network Load -->
+<div class="mb-8">
+<div class="flex justify-between items-end mb-2">
+<label class="text-label-md font-label-md text-on-surface-variant">Network Throughput</label>
+<span class="text-label-md font-mono-data text-secondary-container">82% Capacity</span>
+</div>
+<div class="h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container cyber-glow-cyan" style="width: 82%"></div>
+</div>
+</div>
+<!-- AI Optimization Status -->
+<div class="mb-8 p-4 bg-secondary-container/5 rounded-lg border border-secondary-container/20">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-secondary-container">psychology</span>
+<h4 class="text-label-lg font-label-lg text-secondary-container">AI Logi-Core Active</h4>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant/80 leading-relaxed">
+                            Logistics engine is optimizing 1,440 routes per second. System latency: 12ms.
+                        </p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-[10px] font-bold text-on-surface-variant">Auto-Correct: Enabled</span>
+<div class="w-10 h-5 bg-secondary-container rounded-full relative">
+<div class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Terminal Log -->
+<div class="bg-black/40 rounded-lg p-4 font-mono text-[11px] leading-tight text-secondary border border-outline-variant/30 h-64 overflow-y-auto">
+<div class="text-primary mb-1">[ALERT] NGO-992 Capacity Warning at 08:44:12</div>
+<div class="opacity-60 mb-1">[INFO] Recalculating perimeter for Sector-7</div>
+<div class="opacity-60 mb-1">[INFO] User_Admin_02 logged in from IP 192.0.2.1</div>
+<div class="opacity-60 mb-1">[INFO] Batch_772 verified via Blockchain</div>
+<div class="text-secondary-container mb-1">[PROCESS] Syncing global food waste indexes...</div>
+<div class="opacity-60 mb-1">[INFO] Backup sequence initiated successfully</div>
+<div class="opacity-40 mb-1">[SYSTEM] Pinging satellites: 104/104 active</div>
+<div class="opacity-40 mb-1">[SYSTEM] Memory usage: 4.2GB / 32GB</div>
+<div class="opacity-40 mb-1">[SYSTEM] CPU Load: 12% across 64 cores</div>
+<div class="text-secondary-container animate-pulse mt-2">_ awaiting command...</div>
+</div>
+<!-- Quick Actions -->
+<div class="mt-8 space-y-3">
+<button class="w-full flex items-center justify-between p-3 border border-outline-variant hover:border-secondary-container hover:bg-secondary-container/5 transition-all rounded-lg group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary-container">terminal</span>
+<span class="text-label-lg font-label-lg">System Audit</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all rounded-lg group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">emergency</span>
+<span class="text-label-lg font-label-lg">Emergency Override</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Live Ticker Footer -->
+<footer class="fixed bottom-0 right-0 w-[calc(100%-280px)] h-8 bg-surface-container-lowest/80 backdrop-blur-sm border-t border-outline-variant/20 z-50 flex items-center px-10 overflow-hidden">
+<div class="flex gap-12 animate-[scroll_30s_linear_infinite] whitespace-nowrap">
+<span class="text-[10px] font-mono-data text-on-surface-variant uppercase flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> 
+                New Restaurant Approved: "Green Bistro" • LAT: 40.7128 LON: -74.0060
+            </span>
+<span class="text-[10px] font-mono-data text-on-surface-variant uppercase flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 
+                Surplus Spike Detected: District 9 • Deploying mobile units
+            </span>
+<span class="text-[10px] font-mono-data text-on-surface-variant uppercase flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 
+                NGO "Feed All" reached 100k meals milestone
+            </span>
+<span class="text-[10px] font-mono-data text-on-surface-variant uppercase flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> 
+                System Kernel Update v4.2 Deployment Complete
+            </span>
+</div>
+</footer>
+<style>
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+<script>
+        // Micro-interactions for terminal and metrics
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminal = document.querySelector('.overflow-y-auto.h-64');
+            const logMessages = [
+                "[INFO] Optimized route for Courier_992",
+                "[ALERT] Cold storage failure at Site_B - Rerouting...",
+                "[INFO] 400kg surplus salvaged from Hotel_Metropolitan",
+                "[SYSTEM] Health check: All nodes healthy",
+                "[PROCESS] Generating impact report for NGO_Alpha"
+            ];
+
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.className = 'opacity-60 mb-1';
+                p.textContent = logMessages[Math.floor(Math.random() * logMessages.length)];
+                terminal.insertBefore(p, terminal.lastElementChild);
+                if(terminal.children.length > 20) terminal.removeChild(terminal.children[0]);
+                terminal.scrollTop = terminal.scrollHeight;
+            }, 5000);
+
+            // Pulse effect for some elements
+            setInterval(() => {
+                const metric = document.querySelector('.text-display-lg');
+                if(metric) {
+                    metric.classList.add('scale-105');
+                    setTimeout(() => metric.classList.remove('scale-105'), 200);
+                }
+            }, 10000);
+        });
+    </script>
+<script src="js/api.js"></script><script src="js/dashboard.js"></script><script>document.addEventListener("DOMContentLoaded", () => { if (!DashboardLoader.requireAuth()) return; ApiClient.get("/admin/security/system-status").then(d => { if (d && d.data) { const el = (id) => document.getElementById(id); if (el("stat-fraud")) el("stat-fraud").textContent = d.data.openFraudReports ?? 0; if (el("stat-banned")) el("stat-banned").textContent = d.data.totalBannedUsers ?? 0; } }).catch(e => console.warn(e)); });</script><script src="nav.js"></script></body></html>

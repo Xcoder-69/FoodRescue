@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
+const xss = require('xss-clean');
 
 const { generalLimiter } = require('./middleware/rateLimiter');
 const errorHandler = require('./middleware/errorHandler');
@@ -16,6 +17,9 @@ const donationRoutes = require('./modules/donation/donation.routes');
 const locationRoutes = require('./modules/location/location.routes');
 const notificationRoutes = require('./modules/notification/notification.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
+const analyticsRoutes = require('./modules/analytics/analytics.routes');
+const complaintRoutes = require('./modules/complaint/complaint.routes');
+const deliveryRoutes = require('./modules/delivery/delivery.routes');
 
 const app = express();
 
@@ -30,6 +34,7 @@ app.use(cors({
 // ─── Request Parsing ────────────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(xss()); // Deeply scrub req.body, req.query, and req.params of malicious scripts
 app.use(compression());
 
 // ─── Logging ────────────────────────────────────────────────────────────────
@@ -59,6 +64,9 @@ app.use('/api/donations', donationRoutes);
 app.use('/api/location', locationRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/complaints', complaintRoutes);
+app.use('/api/delivery', deliveryRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────────────────────────
 app.use('*', (req, res) => {

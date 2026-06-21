@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mission Control | Security Scanning</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        @keyframes scan-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes scan-rotate-reverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        @keyframes pulse-cyan {
+            0%, 100% { opacity: 1; box-shadow: 0 0 20px rgba(0, 227, 253, 0.4); }
+            50% { opacity: 0.6; box-shadow: 0 0 40px rgba(0, 227, 253, 0.8); }
+        }
+
+        .scanner-ring-1 { animation: scan-rotate 8s linear infinite; }
+        .scanner-ring-2 { animation: scan-rotate-reverse 12s linear infinite; }
+        .scanner-ring-3 { animation: scan-rotate 20s linear infinite; }
+        
+        .cyber-pulse {
+            animation: pulse-cyan 2s ease-in-out infinite;
+        }
+
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(19, 27, 46, 0.8);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .scanning-active {
+            background-color: #00e3fd;
+            box-shadow: 0 0 8px #00e3fd;
+            animation: pulse-cyan 1s infinite;
+        }
+
+        .scan-complete {
+            background-color: #4ade80;
+            box-shadow: 0 0 8px #4ade80;
+        }
+
+        /* Hide scrollbars for a cleaner UI */
+        ::-webkit-scrollbar { display: none; }
+    </style>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#31394d",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "inverse-surface": "#dae2fd",
+                        "tertiary": "#fabd00",
+                        "primary-container": "#ff544c",
+                        "surface-container-high": "#222a3d",
+                        "tertiary-fixed": "#ffdf9e",
+                        "background": "#0b1326",
+                        "surface-container-low": "#131b2e",
+                        "on-primary-fixed": "#410002",
+                        "on-surface": "#dae2fd",
+                        "on-error": "#690005",
+                        "on-primary": "#690006",
+                        "on-tertiary-fixed-variant": "#5b4300",
+                        "outline-variant": "#5b403d",
+                        "surface-tint": "#ffb4ac",
+                        "inverse-primary": "#bb171c",
+                        "tertiary-fixed-dim": "#fabd00",
+                        "surface-container-highest": "#2d3449",
+                        "secondary-fixed-dim": "#00daf3",
+                        "secondary": "#bdf4ff",
+                        "on-tertiary-container": "#372700",
+                        "on-tertiary": "#3f2e00",
+                        "outline": "#ab8985",
+                        "on-surface-variant": "#e4beb9",
+                        "inverse-on-surface": "#283044",
+                        "surface-container": "#171f33",
+                        "on-primary-fixed-variant": "#93000d",
+                        "on-secondary-fixed": "#001f24",
+                        "secondary-fixed": "#9cf0ff",
+                        "primary-fixed-dim": "#ffb4ac",
+                        "on-secondary": "#00363d",
+                        "secondary-container": "#00e3fd",
+                        "primary-fixed": "#ffdad6",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#060e20",
+                        "surface-variant": "#2d3449",
+                        "surface": "#0b1326",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#b78a00",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-primary-container": "#5c0005",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#0b1326",
+                        "primary": "#ffb4ac",
+                        "on-secondary-container": "#00616d",
+                        "on-background": "#dae2fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Poppins"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Poppins"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Poppins"],
+                        "headline-lg": ["Poppins"],
+                        "body-lg": ["Inter"],
+                        "mono-data": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "mono-data": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- Global Background Shader -->
+
+<!-- Navigation Drawer (SideNav) - Integrated from JSON -->
+<aside class="w-[280px] h-screen fixed left-0 top-0 bg-surface-container-low/90 border-r border-outline-variant/30 backdrop-blur-xl shadow-2xl flex flex-col h-full py-8 z-50 transition-all duration-300 transform -translate-x-full md:translate-x-0">
+<div class="px-8 mb-10">
+<h1 class="font-headline-md text-headline-md font-bold text-secondary-container">Command Center</h1>
+<p class="text-on-surface-variant text-label-md mt-1">GLOBAL OPS ADMIN</p>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto px-4">
+<div class="text-on-surface-variant flex items-center gap-4 px-6 py-3 transition-colors hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300 active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</div>
+<div class="text-on-surface-variant flex items-center gap-4 px-6 py-3 transition-colors hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300 active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-label-lg text-label-lg">Approvals</span>
+</div>
+<div class="text-secondary-container font-bold border-l-4 border-secondary-container bg-secondary-container/10 shadow-[0_0_15px_rgba(0,227,253,0.2)] flex items-center gap-4 px-6 py-3 active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-lg text-label-lg">Security Center</span>
+</div>
+<!-- Additional items suppressed for focus on the scanning flow -->
+</nav>
+<div class="mt-auto px-8 py-6 border-t border-outline-variant/20 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center border border-secondary-container/30 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a high-tech security operations officer wearing tactical glass HUD gear, reflecting blue and red data streams. Deep cinematic shadows, cold neon lighting, and high-fidelity cyber-humanitarian aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz2bv9W6N661dsUNUF2UQwLslvHi94bSH82BOpI6mZAZRGBwV0IAOB3ZYFhoNI2g5u65AGIP5FuXXbH4HqEOKtmcKi1jX0xaOEtHrpltTz54X6UTLECdWItxq0vVfmzpNN4iG3hK_EBp2eGMY6trj-F0l7-ml-xzw8i_NUERTyfv_BzEchN1rYFO6dv3WOPFm4K2njGwSClkqfFx7Z1GpHgGdFm_jO1QmNI4BQRr8EdKRkhKTb8Ns0_t4cjF-7JOLUyH2G7ca3L4E"/>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Level 4 Access</p>
+<p class="text-xs text-on-surface-variant uppercase tracking-wider">Operational</p>
+</div>
+</div>
+</aside>
+<!-- Top App Bar - Integrated from JSON -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-280px)] z-40 bg-surface-container/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center px-10 h-20">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:bg-surface-variant/30 rounded-full p-2 transition-all" data-icon="menu_open">menu_open</span>
+<h2 class="font-headline-lg text-headline-lg font-black text-secondary-container">Mission Control</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-highest border border-outline-variant/30">
+<span class="status-dot scanning-active"></span>
+<span class="text-body-sm font-mono-data text-secondary">Live Status: Operational</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-variant/30 p-2 rounded-full" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-variant/30 p-2 rounded-full" data-icon="settings">settings</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 pt-20 md:ml-[280px] relative z-10 overflow-hidden">
+<div class="h-full w-full max-w-7xl mx-auto px-margin-desktop py-12 flex flex-col items-center justify-center">
+<!-- Central Scanner Visual -->
+<div class="relative flex items-center justify-center w-full max-w-2xl aspect-square mb-12">
+<!-- Glowing Pulse Background -->
+<div class="absolute inset-0 bg-secondary-container/5 rounded-full blur-[100px] cyber-pulse"></div>
+<!-- Rotating Rings -->
+<div class="scanner-ring-1 absolute w-full h-full rounded-full border-2 border-dashed border-secondary-container/20"></div>
+<div class="scanner-ring-2 absolute w-[85%] h-[85%] rounded-full border border-primary-container/30 border-t-4 border-t-primary-container"></div>
+<div class="scanner-ring-3 absolute w-[70%] h-[70%] rounded-full border-2 border-secondary-container/40 border-l-4 border-l-secondary-container"></div>
+<div class="absolute w-[60%] h-[60%] rounded-full border border-outline-variant/50 flex items-center justify-center">
+<div class="text-center">
+<span class="font-display-lg text-display-lg text-secondary-container block" id="scan-percentage">0%</span>
+<span class="font-label-lg text-label-lg text-on-surface-variant tracking-widest uppercase" id="scan-status-text">Initializing...</span>
+</div>
+</div>
+<!-- Floating Data Points (Atmospheric) -->
+<div class="absolute top-[15%] left-[20%] glass-panel px-3 py-1 rounded-full text-[10px] font-mono-data text-secondary-container border border-secondary-container/20">TRX_HASH: 0x9f2...</div>
+<div class="absolute bottom-[25%] right-[10%] glass-panel px-3 py-1 rounded-full text-[10px] font-mono-data text-primary-container border border-primary-container/20">LATENCY: 14ms</div>
+<div class="absolute top-[40%] right-[5%] glass-panel px-3 py-1 rounded-full text-[10px] font-mono-data text-secondary-container border border-secondary-container/20">AES-256_ACTIVE</div>
+</div>
+<!-- Progress & Checklist Section -->
+<div class="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+<!-- Status Info -->
+<div class="glass-panel p-8 rounded-xl space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Security Vector</h3>
+<span class="material-symbols-outlined text-secondary-container" data-icon="security" data-weight="fill">security</span>
+</div>
+<div class="space-y-4">
+<p class="text-body-md text-on-surface-variant" id="main-status-label">Analyzing Security Vector...</p>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container cyber-pulse w-0 transition-all duration-500 ease-out" id="main-progress-bar"></div>
+</div>
+<div class="flex justify-between text-xs font-mono-data text-on-surface-variant">
+<span>VULNERABILITY SCAN</span>
+<span>ENCRYPTION: VERIFIED</span>
+</div>
+</div>
+</div>
+<!-- Vertical Checklist -->
+<div class="glass-panel p-8 rounded-xl">
+<ul class="space-y-4" id="checklist">
+<li class="flex items-center justify-between group" data-step="0">
+<span class="text-body-md text-on-surface-variant group-[.active]:text-on-surface group-[.complete]:text-secondary-container transition-colors">Device Verification</span>
+<div class="flex items-center gap-2">
+<span class="status-indicator text-xs font-mono-data italic text-on-surface-variant">Pending</span>
+<span class="material-symbols-outlined text-sm status-icon text-on-surface-variant" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+</li>
+<li class="flex items-center justify-between group" data-step="1">
+<span class="text-body-md text-on-surface-variant group-[.active]:text-on-surface group-[.complete]:text-secondary-container transition-colors">Session Validation</span>
+<div class="flex items-center gap-2">
+<span class="status-indicator text-xs font-mono-data italic text-on-surface-variant">Pending</span>
+<span class="material-symbols-outlined text-sm status-icon text-on-surface-variant" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+</li>
+<li class="flex items-center justify-between group" data-step="2">
+<span class="text-body-md text-on-surface-variant group-[.active]:text-on-surface group-[.complete]:text-secondary-container transition-colors">Permission Validation</span>
+<div class="flex items-center gap-2">
+<span class="status-indicator text-xs font-mono-data italic text-on-surface-variant">Pending</span>
+<span class="material-symbols-outlined text-sm status-icon text-on-surface-variant" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+</li>
+<li class="flex items-center justify-between group" data-step="3">
+<span class="text-body-md text-on-surface-variant group-[.active]:text-on-surface group-[.complete]:text-secondary-container transition-colors">Risk Analysis</span>
+<div class="flex items-center gap-2">
+<span class="status-indicator text-xs font-mono-data italic text-on-surface-variant">Pending</span>
+<span class="material-symbols-outlined text-sm status-icon text-on-surface-variant" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+</li>
+<li class="flex items-center justify-between group" data-step="4">
+<span class="text-body-md text-on-surface-variant group-[.active]:text-on-surface group-[.complete]:text-secondary-container transition-colors">IP Reputation</span>
+<div class="flex items-center gap-2">
+<span class="status-indicator text-xs font-mono-data italic text-on-surface-variant">Pending</span>
+<span class="material-symbols-outlined text-sm status-icon text-on-surface-variant" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+</li>
+<li class="flex items-center justify-between group" data-step="5">
+<span class="text-body-md text-on-surface-variant group-[.active]:text-on-surface group-[.complete]:text-secondary-container transition-colors">Fraud Check</span>
+<div class="flex items-center gap-2">
+<span class="status-indicator text-xs font-mono-data italic text-on-surface-variant">Pending</span>
+<span class="material-symbols-outlined text-sm status-icon text-on-surface-variant" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Footer Message -->
+<div class="mt-12 text-center">
+<p class="text-on-surface-variant text-label-md tracking-widest font-bold opacity-50">ADMIN ACCESS: ENCRYPTED TUNNEL ACTIVE</p>
+<p class="text-xs text-on-surface-variant mt-2 font-mono-data">ROUTE: /admin-access/security-check</p>
+</div>
+</div>
+</main>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checklistItems = document.querySelectorAll('#checklist li');
+            const mainProgressBar = document.getElementById('main-progress-bar');
+            const scanPercentage = document.getElementById('scan-percentage');
+            const scanStatusText = document.getElementById('scan-status-text');
+            const mainStatusLabel = document.getElementById('main-status-label');
+
+            let currentStep = 0;
+            let totalSteps = checklistItems.length;
+            let progress = 0;
+
+            const updateScan = () => {
+                if (currentStep < totalSteps) {
+                    const item = checklistItems[currentStep];
+                    const indicator = item.querySelector('.status-indicator');
+                    const icon = item.querySelector('.status-icon');
+
+                    // Set Active State
+                    item.classList.add('active');
+                    indicator.textContent = 'Scanning...';
+                    indicator.classList.add('text-secondary-container');
+                    scanStatusText.textContent = item.querySelector('span').textContent;
+
+                    // Progress simulation for each step
+                    let stepProgress = 0;
+                    const stepInterval = setInterval(() => {
+                        stepProgress += Math.random() * 15;
+                        if (stepProgress >= 100) {
+                            clearInterval(stepInterval);
+                            
+                            // Set Complete State
+                            item.classList.remove('active');
+                            item.classList.add('complete');
+                            indicator.textContent = '✓';
+                            indicator.classList.replace('text-secondary-container', 'text-green-400');
+                            icon.textContent = 'check_circle';
+                            icon.classList.replace('text-on-surface-variant', 'text-green-400');
+                            
+                            currentStep++;
+                            
+                            // Overall Progress
+                            progress = Math.round((currentStep / totalSteps) * 100);
+                            mainProgressBar.style.width = `${progress}%`;
+                            scanPercentage.textContent = `${progress}%`;
+
+                            if (currentStep === totalSteps) {
+                                scanStatusText.textContent = 'System Secured';
+                                scanStatusText.classList.replace('text-on-surface-variant', 'text-green-400');
+                                mainStatusLabel.textContent = 'Security Clear. Redirecting...';
+                                setTimeout(() => {
+                                    alert('Access Granted. Entering Command Center.');
+                                }, 1000);
+                            } else {
+                                updateScan();
+                            }
+                        }
+                    }, 400);
+                }
+            };
+
+            // Start Initial Sequence
+            setTimeout(updateScan, 1000);
+        });
+    </script>
+<script src="nav.js"></script></body></html>
