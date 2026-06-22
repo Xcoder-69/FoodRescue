@@ -49,41 +49,49 @@ class AuthService {
       }
     }
 
-    const usersRef = db.collection('users');
-    const existingUser = await usersRef.where('email', '==', email.toLowerCase()).get();
-    
-    if (!existingUser.empty) {
-      throw new Error('Email already registered');
-    }
+    const normEmail = email.toLowerCase().trim();
+    const usersRef  = db.collection('users');
+    const existing  = await usersRef.where('email', '==', normEmail).limit(1).get();
+    if (!existing.empty) throw new Error('Email already registered');
 
-    // 🚨 Run Fraud Detection Engine
-    await FraudEngine.analyzeRegistration(email, null, ipAddress, deviceId);
+    // Fraud detection
+    await FraudEngine.analyzeRegistration(normEmail, null, ipAddress, deviceId);
 
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
-
-    const newUserRef = usersRef.doc();
-    const uid = newUserRef.id;
+    const passwordHash = await bcrypt.hash(password, 12);
+    const newUserRef   = usersRef.doc();
+    const uid          = newUserRef.id;
 
     await newUserRef.set({
       uid,
-      email: email.toLowerCase(),
+      email:              normEmail,
       passwordHash,
-      role: role || 'volunteer',
-      status: 'PENDING',
-      authProvider: 'email',
-      isPhoneVerified: false,
-      isEmailVerified: false,
+      role:               role || 'volunteer',
+      status:             'PENDING',
+      authProvider:       'email',
+      isEmailVerified:    false,
       isTwoFactorEnabled: false,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      createdAt:          new Date(),
+      updatedAt:          new Date(),
     });
 
     const sessionId = await createSession(uid, ipAddress, deviceId);
-    const tokens = await generateTokens(uid, role || 'volunteer', sessionId);
+    const tokens    = await generateTokens(uid, role || 'volunteer', sessionId);
 
-    return { user: { uid, email, role: role || 'volunteer' }, tokens };
+    // Send email verification OTP (non-blocking)
+    try {
+      const OTPService = require('./otp.service');
+      await OTPService.sendVerifyOTP(normEmail);
+    } catch (e) {
+      console.warn('Verification email failed (non-fatal):', e.message);
+    }
+
+    return {
+      user:    { uid, email: normEmail, role: role || 'volunteer' },
+      tokens,
+      message: 'Registration successful! Check your email to verify your account.',
+    };
   }
+
 
   static async login(email, password, ipAddress, deviceId) {
     const usersRef = db.collection('users');
