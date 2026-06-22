@@ -7,19 +7,19 @@ let transporter;
 const getTransporter = () => {
   if (transporter) return transporter;
 
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.warn('⚠️  EMAIL_USER / EMAIL_PASS not set — email sending is disabled.');
+  const user = process.env.SMTP_USER || process.env.EMAIL_USER;
+  const pass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
+
+  if (!user || !pass) {
+    console.warn('⚠️  SMTP_USER / SMTP_PASS not set — email sending is disabled.');
     return null;
   }
 
   transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.EMAIL_PORT) || 587,
-    secure: false, // true for port 465, false for 587 (STARTTLS)
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
+    host: process.env.SMTP_HOST || process.env.EMAIL_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT || process.env.EMAIL_PORT) || 587,
+    secure: false,
+    auth: { user, pass },
   });
 
   return transporter;
@@ -45,8 +45,9 @@ const sendEmail = async (to, subject, html, text = '') => {
   }
 
   try {
+    const emailUser = process.env.SMTP_USER || process.env.EMAIL_USER;
     const info = await transport.sendMail({
-      from: process.env.EMAIL_FROM || `FoodRescue <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_FROM || `FoodRescue <${emailUser}>`,
       to,
       subject,
       html,
