@@ -3,570 +3,500 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>FoodRescue – Login & Verification</title>
+<title>FoodRescue — Login</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
   tailwind.config = {
-    darkMode: "class",
     theme: {
       extend: {
         colors: {
-          "error":"#ba1a1a","on-error-container":"#93000a","on-surface-variant":"#3c4a42",
-          "on-secondary-container":"#5c2400","on-primary-container":"#00422b",
-          "surface-container-high":"#e3eae3","on-tertiary-container":"#00328b",
-          "primary-container":"#10b981","secondary":"#9d4300","secondary-fixed":"#ffdbca",
-          "tertiary-fixed":"#dbe1ff","surface":"#f4fbf4","surface-container":"#e8f0e9",
-          "primary-fixed":"#6ffbbe","surface-bright":"#f4fbf4","background":"#f4fbf4",
-          "surface-tint":"#006c49","on-secondary-fixed":"#341100","on-tertiary":"#ffffff",
-          "secondary-fixed-dim":"#ffb690","on-primary-fixed-variant":"#005236",
-          "surface-variant":"#dde4dd","on-surface":"#161d19","surface-container-low":"#eef6ee",
-          "surface-dim":"#d4dcd5","primary":"#006c49","tertiary-fixed-dim":"#b4c5ff",
-          "surface-container-highest":"#dde4dd","on-background":"#161d19",
-          "inverse-surface":"#2b322d","on-tertiary-fixed-variant":"#003ea8",
-          "secondary-container":"#fd761a","on-secondary":"#ffffff","inverse-primary":"#4edea3",
-          "outline":"#6c7a71","inverse-on-surface":"#ebf3eb","on-primary-fixed":"#002113",
-          "tertiary":"#0053db","on-tertiary-fixed":"#00174b","surface-container-lowest":"#ffffff",
-          "error-container":"#ffdad6","outline-variant":"#bbcabf","on-primary":"#ffffff",
-          "on-error":"#ffffff","on-secondary-fixed-variant":"#783200",
-          "tertiary-container":"#7f9fff","primary-fixed-dim":"#4edea3"
+          primary:                  '#006c49',
+          'primary-container':      '#10b981',
+          'on-primary':             '#ffffff',
+          'on-primary-container':   '#00422b',
+          background:               '#f4fbf4',
+          surface:                  '#f4fbf4',
+          'surface-container':      '#e8f0e9',
+          'surface-container-low':  '#eef6ee',
+          'surface-container-lowest':'#ffffff',
+          'on-surface':             '#161d19',
+          'on-surface-variant':     '#3c4a42',
+          outline:                  '#6c7a71',
+          'outline-variant':        '#bbcabf',
+          error:                    '#ba1a1a',
+          'error-container':        '#ffdad6',
+          secondary:                '#9d4300',
+          'secondary-container':    '#fd761a',
         },
-        borderRadius: { DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px" },
-        spacing: {
-          "unit":"4px","stack-sm":"8px","gutter":"24px","stack-md":"16px",
-          "container-padding-desktop":"32px","stack-lg":"32px","container-padding-mobile":"16px"
-        },
-        fontFamily: {
-          "body-md":["Inter"],"display-lg":["Inter"],"body-lg":["Inter"],
-          "label-lg":["Inter"],"headline-lg-mobile":["Inter"],"headline-lg":["Inter"],
-          "label-md":["Inter"],"title-lg":["Inter"]
-        },
-        fontSize: {
-          "body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],
-          "display-lg":["57px",{"lineHeight":"64px","letterSpacing":"-0.25px","fontWeight":"700"}],
-          "body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],
-          "label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.1px","fontWeight":"600"}],
-          "headline-lg-mobile":["28px",{"lineHeight":"36px","fontWeight":"600"}],
-          "headline-lg":["32px",{"lineHeight":"40px","fontWeight":"600"}],
-          "label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.5px","fontWeight":"500"}],
-          "title-lg":["22px",{"lineHeight":"28px","fontWeight":"500"}]
-        }
+        fontFamily: { sans: ['Inter', 'sans-serif'] },
+        borderRadius: { xl: '0.75rem', '2xl': '1rem', '3xl': '1.5rem', full: '9999px' },
       }
     }
   }
 </script>
 <style>
-  body { min-height: max(884px, 100dvh); }
-  .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
-  .otp-input:focus { outline: none; border-bottom-width: 2px; border-color: #006c49; background-color: #e8f0e9; }
-  @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  .animate-slide-up { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  *  { box-sizing: border-box; }
+  body { min-height: 100dvh; font-family: 'Inter', sans-serif; }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-size: 20px;
+  }
+
+  /* OTP boxes */
+  .otp-box { transition: border-color 0.2s, background 0.2s; }
+  .otp-box:focus { outline: none; border-color: #006c49; border-bottom-width: 2px; background: #e8f0e9; }
+
+  /* Slide-up animation for OTP overlay */
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .slide-up { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+  /* Spinner */
   @keyframes spin { to { transform: rotate(360deg); } }
-  .animate-spin-icon { animation: spin 1s linear infinite; display: inline-block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .fade-in { animation: fadeIn 0.3s ease forwards; }
+  .spin { animation: spin 0.8s linear infinite; display: inline-block; }
+
+  /* Input icon wrapper */
+  .field-wrap { position: relative; }
+  .field-wrap .icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #6c7a71; pointer-events: none; }
+  .field-wrap input { padding-left: 42px; }
+  .field-wrap .right-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
 </style>
 </head>
-<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
 
-<!-- Background gradient -->
-<div class="fixed bottom-0 left-0 w-full h-1/2 pointer-events-none z-0">
-  <div class="w-full h-full bg-gradient-to-t from-primary/10 to-transparent"></div>
-</div>
+<body class="bg-background flex items-center justify-center min-h-screen relative overflow-hidden">
 
-<!-- Decorative cards (desktop only) -->
-<div class="hidden lg:block absolute left-gutter top-1/2 -translate-y-1/2 w-80 space-y-gutter pointer-events-none opacity-40">
-  <div class="bg-surface p-stack-md rounded-xl shadow-sm border border-outline-variant rotate-[-2deg]">
-    <div class="w-full h-40 bg-surface-container rounded-lg mb-stack-sm overflow-hidden">
-      <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrtziPEv5X1c_MWqVBUVt-R5NNKahXxL19j5e9rqlN4uxmsr7SrjiTa-pwSrfkxWDY1BtBh5A4uQRnvGxZlsIiBLqtMvgdhhqXb40oKQDndHxhl8gXNVv4ZTGLmdbNfz3PbP9Tj8N9-sr_cLTXCoP0hyw57MlZfxu53Ue1Qk_sjpcznrjiYy3-vAid2ujpZofT2oVzXhBvrftwXzP1h4N3jRGnUq8kx1IIJ9wM2elwt7eRPx7h1R4m6r_EQSpvYBjrwUiuFcVeFtk" alt="Community meal"/>
-    </div>
-    <p class="font-label-md text-label-md text-primary uppercase tracking-widest">Impact</p>
-    <h3 class="font-title-lg text-title-lg text-on-surface">12k Meals Rescued</h3>
+  <!-- Soft green gradient background -->
+  <div class="fixed inset-0 z-0 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-primary/8"></div>
+    <div class="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-primary/10 to-transparent"></div>
   </div>
-</div>
-<div class="hidden lg:block absolute right-gutter top-1/3 -translate-y-1/2 w-64 space-y-gutter pointer-events-none opacity-40">
-  <div class="bg-surface p-stack-md rounded-xl shadow-sm border border-outline-variant rotate-[3deg]">
-    <div class="flex items-center gap-3 mb-2">
-      <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">volunteer_activism</span>
-      <span class="font-label-lg text-label-lg font-bold">New Volunteer</span>
-    </div>
-    <p class="font-body-md text-body-md text-on-surface-variant italic">"Joined yesterday and already helped deliver 50kg of fruit!"</p>
-  </div>
-</div>
 
-<!-- Main Container -->
-<main class="relative z-10 w-full max-w-md px-container-padding-mobile md:px-0">
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  STEP 1 — Login Card                                       -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <main id="login-card" class="relative z-10 w-full max-w-sm mx-auto px-4">
+    <div class="bg-surface-container-lowest rounded-2xl shadow-[0_8px_40px_rgba(0,108,73,0.12)] p-8">
 
-  <!-- ══ PART A: Login Form ════════════════════════════════════════════════ -->
-  <div class="bg-surface-container-lowest p-stack-lg rounded-xl shadow-[0px_12px_32px_rgba(0,0,0,0.08)] transition-all duration-500" id="login-section">
-
-    <!-- Header -->
-    <div class="mb-stack-lg text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-stack-md">
-        <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings:'FILL' 1">restaurant</span>
-      </div>
-      <h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-2">Welcome Back</h1>
-      <p class="font-body-lg text-body-lg text-on-surface-variant">Login to your account</p>
-    </div>
-
-    <!-- Login Tabs -->
-    <div class="flex gap-1 bg-surface-container rounded-full p-1 mb-stack-lg">
-      <button id="tab-password" onclick="switchTab('password')"
-        class="flex-1 py-2 rounded-full font-label-lg text-label-lg transition-all bg-primary text-on-primary shadow-sm">
-        Password
-      </button>
-      <button id="tab-otp" onclick="switchTab('otp')"
-        class="flex-1 py-2 rounded-full font-label-lg text-label-lg transition-all text-on-surface-variant hover:text-on-surface">
-        Email OTP
-      </button>
-    </div>
-
-    <form id="login-form" onsubmit="event.preventDefault(); performLogin();" class="space-y-stack-md">
-
-      <!-- Email field -->
-      <div>
-        <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1 ml-1">Email Address</label>
-        <div class="relative">
-          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">mail</span>
-          <input id="email-input" type="email" placeholder="name@example.com" required autocomplete="email"
-            class="w-full bg-surface-container border-b border-outline pl-12 p-4 rounded-t-lg font-body-lg text-body-lg focus:outline-none focus:border-primary focus:border-b-2 transition-all"/>
+      <!-- Icon -->
+      <div class="flex justify-center mb-5">
+        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary" style="font-size:28px;font-variation-settings:'FILL' 1">restaurant</span>
         </div>
       </div>
 
-      <!-- Password panel -->
-      <div id="panel-password">
+      <!-- Heading -->
+      <div class="text-center mb-7">
+        <h1 class="text-[26px] font-bold text-on-surface leading-tight">Welcome Back</h1>
+        <p class="text-secondary text-sm font-medium mt-1">Login to your account</p>
+      </div>
+
+      <!-- Form -->
+      <form id="login-form" onsubmit="event.preventDefault(); handleContinue();" class="space-y-4">
+
+        <!-- Email -->
         <div>
-          <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1 ml-1">Password</label>
-          <div class="relative">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">lock</span>
-            <input id="password-input" type="password" placeholder="••••••••" autocomplete="current-password"
-              class="w-full bg-surface-container border-b border-outline pl-12 pr-12 p-4 rounded-t-lg font-body-lg text-body-lg focus:outline-none focus:border-primary focus:border-b-2 transition-all"/>
-            <button type="button" onclick="togglePwd()" class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors">
+          <label class="block text-[13px] font-semibold text-on-surface-variant mb-1.5">Email Address</label>
+          <div class="field-wrap">
+            <span class="material-symbols-outlined icon">mail</span>
+            <input id="email-input" type="email" placeholder="name@example.com" required autocomplete="email"
+              class="w-full bg-surface-container border border-outline-variant rounded-xl px-3 py-3 text-[15px] text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"/>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-[13px] font-semibold text-on-surface-variant mb-1.5">Password</label>
+          <div class="field-wrap">
+            <span class="material-symbols-outlined icon">lock</span>
+            <input id="password-input" type="password" placeholder="••••••••" required autocomplete="current-password"
+              class="w-full bg-surface-container border border-outline-variant rounded-xl px-3 py-3 text-[15px] text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all pr-12"/>
+            <button type="button" onclick="togglePwd()" class="right-icon text-outline hover:text-primary transition-colors">
               <span class="material-symbols-outlined" id="pwd-eye">visibility</span>
             </button>
           </div>
-          <div class="flex justify-end mt-2">
+          <!-- Forgot password -->
+          <div class="flex justify-end mt-1.5">
             <button type="button" onclick="showForgotModal()"
-              class="font-label-md text-label-md text-primary font-semibold hover:underline focus:outline-none">
+              class="text-[13px] font-semibold text-primary hover:underline focus:outline-none">
               Forgot Password?
             </button>
           </div>
         </div>
-      </div>
 
-      <!-- OTP tab panel -->
-      <div id="panel-otp" class="hidden fade-in">
-        <button type="button" id="send-otp-btn" onclick="sendEmailOTP()"
-          class="w-full border-2 border-primary text-primary font-label-lg text-label-lg py-3 rounded-full hover:bg-primary/5 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined">send</span> Send OTP to My Email
+        <!-- Error -->
+        <div id="login-error" class="hidden text-error text-[13px] bg-error-container rounded-xl px-4 py-2.5"></div>
+
+        <!-- Continue button -->
+        <button id="continue-btn" type="submit"
+          class="w-full bg-primary text-white font-semibold text-[15px] py-3.5 rounded-full shadow-md hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2">
+          Continue
+          <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
         </button>
-        <p class="text-center font-body-md text-body-md text-on-surface-variant mt-2 text-sm">
-          A 6-digit code will be sent to your registered email
-        </p>
-      </div>
+      </form>
 
-      <!-- Error message -->
-      <div id="login-error" class="hidden text-error font-body-md text-sm bg-error-container rounded-lg px-4 py-3"></div>
+      <!-- Bottom link -->
+      <p class="text-center text-[13px] text-secondary font-medium mt-5">
+        Don't have an account?
+        <a href="2_role_selection.html" class="text-primary font-semibold hover:underline">Join free</a>
+      </p>
+    </div>
+  </main>
 
-      <!-- Submit button -->
-      <button id="login-btn" type="submit"
-        class="w-full bg-primary text-on-primary font-label-lg text-label-lg py-4 rounded-full shadow-lg hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-        Continue <span class="material-symbols-outlined">arrow_forward</span>
-      </button>
-    </form>
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  STEP 2 — Email OTP Verification Overlay (slide up)        -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="otp-overlay" class="hidden fixed inset-0 z-40 flex items-end">
+    <!-- Dark backdrop -->
+    <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="hideOtpOverlay()"></div>
 
-    <p class="text-center font-body-md text-body-md text-on-surface-variant pt-4">
-      Don't have an account?
-      <a href="2_role_selection.html" class="text-primary font-semibold hover:underline">Join Free</a>
-    </p>
-  </div>
+    <div class="relative w-full bg-surface-container-lowest rounded-t-3xl shadow-2xl p-8 slide-up">
 
-  <!-- ══ PART B: OTP Verification Overlay ════════════════════════════════ -->
-  <div class="hidden absolute inset-0 z-20 flex items-end md:items-center" id="otp-section">
-    <div class="w-full bg-surface-container-lowest p-stack-lg rounded-t-3xl md:rounded-xl shadow-2xl animate-slide-up border-t border-outline-variant md:border">
+      <!-- Handle bar -->
+      <div class="w-12 h-1 bg-outline-variant rounded-full mx-auto mb-6"></div>
 
-      <div class="flex justify-between items-start mb-stack-lg">
+      <!-- Header -->
+      <div class="flex justify-between items-start mb-6">
         <div>
-          <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-1">Verify Identity</h2>
-          <p id="otp-subtitle" class="font-body-md text-body-md text-on-surface-variant">Enter the 6-digit code sent to your email</p>
+          <h2 class="text-[22px] font-bold text-on-surface">Verify Identity</h2>
+          <p id="otp-sub" class="text-[13px] text-on-surface-variant mt-0.5">6-digit code sent to your email</p>
         </div>
-        <button onclick="hideOtpOverlay()" class="p-2 hover:bg-surface-container rounded-full transition-colors">
-          <span class="material-symbols-outlined text-on-surface-variant">close</span>
+        <button onclick="hideOtpOverlay()" class="p-1.5 rounded-full hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-outline" style="font-size:22px">close</span>
         </button>
       </div>
 
       <!-- 6 OTP boxes -->
-      <div class="flex justify-between gap-2 mb-stack-lg" id="otp-inputs">
-        <input class="otp-input flex-1 h-16 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg transition-all" maxlength="1" type="text" inputmode="numeric"/>
-        <input class="otp-input flex-1 h-16 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg transition-all" maxlength="1" type="text" inputmode="numeric"/>
-        <input class="otp-input flex-1 h-16 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg transition-all" maxlength="1" type="text" inputmode="numeric"/>
-        <input class="otp-input flex-1 h-16 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg transition-all" maxlength="1" type="text" inputmode="numeric"/>
-        <input class="otp-input flex-1 h-16 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg transition-all" maxlength="1" type="text" inputmode="numeric"/>
-        <input class="otp-input flex-1 h-16 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg transition-all" maxlength="1" type="text" inputmode="numeric"/>
+      <div class="flex gap-2 mb-6" id="otp-inputs">
+        <input class="otp-box flex-1 h-14 bg-surface-container border-b-2 border-outline text-center text-[22px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+        <input class="otp-box flex-1 h-14 bg-surface-container border-b-2 border-outline text-center text-[22px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+        <input class="otp-box flex-1 h-14 bg-surface-container border-b-2 border-outline text-center text-[22px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+        <input class="otp-box flex-1 h-14 bg-surface-container border-b-2 border-outline text-center text-[22px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+        <input class="otp-box flex-1 h-14 bg-surface-container border-b-2 border-outline text-center text-[22px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+        <input class="otp-box flex-1 h-14 bg-surface-container border-b-2 border-outline text-center text-[22px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
       </div>
 
-      <button id="verify-btn" onclick="handleVerify()"
-        class="w-full bg-primary text-on-primary font-label-lg text-label-lg py-4 rounded-full shadow-lg hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined">verified</span> Verify &amp; Login
+      <!-- Verify button -->
+      <button id="verify-btn" onclick="verifyOTP()"
+        class="w-full bg-primary text-white font-semibold text-[15px] py-3.5 rounded-full shadow-md hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined" style="font-size:18px">verified</span>
+        Verify &amp; Login
       </button>
 
-      <div class="flex items-center justify-center gap-2 mt-3">
-        <p class="font-body-md text-body-md text-on-surface-variant">Didn't receive code?</p>
-        <button id="resend-btn" onclick="resendOTP()" class="hidden text-primary font-label-lg text-label-lg hover:underline">Resend OTP</button>
-        <span id="resend-timer" class="text-on-surface-variant font-body-md text-sm">Resend in <span id="timer-count">60</span>s</span>
+      <!-- Resend -->
+      <div class="flex items-center justify-center gap-2 mt-4">
+        <span class="text-[13px] text-on-surface-variant">Didn't receive it?</span>
+        <button id="resend-btn" onclick="resendOTP()" class="hidden text-primary text-[13px] font-semibold hover:underline">Resend</button>
+        <span id="resend-timer" class="text-[13px] text-on-surface-variant">Resend in <span id="timer-count">60</span>s</span>
       </div>
     </div>
   </div>
 
-  <!-- ══ FORGOT PASSWORD Modal ════════════════════════════════════════════ -->
-  <div id="forgot-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-surface-container-lowest rounded-2xl shadow-2xl w-full max-w-sm p-8 fade-in">
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  Forgot Password Modal                                      -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="forgot-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeForgotModal()"></div>
+    <div class="relative bg-surface-container-lowest rounded-2xl shadow-2xl w-full max-w-sm p-8">
 
-      <!-- Step 1: Enter Email -->
-      <div id="forgot-step-1">
+      <!-- Step 1: Enter email -->
+      <div id="forgot-s1">
         <div class="text-center mb-6">
-          <div class="inline-flex items-center justify-center w-14 h-14 bg-primary/10 rounded-full mb-3">
-            <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1">lock_reset</span>
+          <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+            <span class="material-symbols-outlined text-primary" style="font-size:26px;font-variation-settings:'FILL' 1">lock_reset</span>
           </div>
-          <h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface">Forgot Password?</h2>
-          <p class="font-body-md text-body-md text-on-surface-variant mt-1">Enter your registered email and we'll send a reset OTP</p>
+          <h2 class="text-[20px] font-bold text-on-surface">Forgot Password?</h2>
+          <p class="text-[13px] text-on-surface-variant mt-1">Enter your registered email — we'll send a reset code</p>
         </div>
-        <div class="relative mb-4">
-          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">mail</span>
+        <div class="field-wrap mb-4">
+          <span class="material-symbols-outlined icon">mail</span>
           <input id="forgot-email" type="email" placeholder="name@example.com"
-            class="w-full bg-surface-container border-b border-outline pl-12 p-4 rounded-t-lg font-body-lg text-body-lg focus:outline-none focus:border-primary focus:border-b-2 transition-all"/>
+            class="w-full bg-surface-container border border-outline-variant rounded-xl px-3 py-3 text-[15px] focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"/>
         </div>
         <button id="forgot-send-btn" onclick="sendResetOTP()"
-          class="w-full bg-primary text-on-primary font-label-lg text-label-lg py-3 rounded-full shadow hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined">send</span> Send Reset OTP
+          class="w-full bg-primary text-white font-semibold py-3 rounded-full hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined" style="font-size:17px">send</span> Send Reset Code
         </button>
       </div>
 
-      <!-- Step 2: Enter OTP + New Password -->
-      <div id="forgot-step-2" class="hidden">
+      <!-- Step 2: OTP + new password -->
+      <div id="forgot-s2" class="hidden">
         <div class="text-center mb-5">
-          <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1">mark_email_read</span>
-          <h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface mt-2">Check Your Email</h2>
-          <p id="forgot-sent-to" class="font-body-md text-body-md text-on-surface-variant mt-1">OTP sent to your email</p>
+          <span class="material-symbols-outlined text-primary" style="font-size:34px;font-variation-settings:'FILL' 1">mark_email_read</span>
+          <h2 class="text-[20px] font-bold text-on-surface mt-2">Check Your Email</h2>
+          <p id="forgot-sent-to" class="text-[13px] text-on-surface-variant mt-1">OTP sent to your email</p>
         </div>
 
         <!-- Reset OTP boxes -->
-        <div class="flex justify-between gap-1 mb-4" id="reset-otp-inputs">
-          <input class="reset-otp flex-1 h-12 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg otp-input transition-all" maxlength="1" type="text" inputmode="numeric"/>
-          <input class="reset-otp flex-1 h-12 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg otp-input transition-all" maxlength="1" type="text" inputmode="numeric"/>
-          <input class="reset-otp flex-1 h-12 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg otp-input transition-all" maxlength="1" type="text" inputmode="numeric"/>
-          <input class="reset-otp flex-1 h-12 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg otp-input transition-all" maxlength="1" type="text" inputmode="numeric"/>
-          <input class="reset-otp flex-1 h-12 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg otp-input transition-all" maxlength="1" type="text" inputmode="numeric"/>
-          <input class="reset-otp flex-1 h-12 bg-surface-container border-b border-outline text-center font-title-lg text-title-lg rounded-t-lg otp-input transition-all" maxlength="1" type="text" inputmode="numeric"/>
+        <div class="flex gap-1.5 mb-4" id="reset-otp-inputs">
+          <input class="otp-box flex-1 h-12 bg-surface-container border-b-2 border-outline text-center text-[20px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+          <input class="otp-box flex-1 h-12 bg-surface-container border-b-2 border-outline text-center text-[20px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+          <input class="otp-box flex-1 h-12 bg-surface-container border-b-2 border-outline text-center text-[20px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+          <input class="otp-box flex-1 h-12 bg-surface-container border-b-2 border-outline text-center text-[20px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+          <input class="otp-box flex-1 h-12 bg-surface-container border-b-2 border-outline text-center text-[20px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
+          <input class="otp-box flex-1 h-12 bg-surface-container border-b-2 border-outline text-center text-[20px] font-bold text-on-surface rounded-t-lg" maxlength="1" type="text" inputmode="numeric"/>
         </div>
 
-        <div class="relative mb-4">
-          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">lock</span>
-          <input id="new-password" type="password" placeholder="New password (min 8 chars)"
-            class="w-full bg-surface-container border-b border-outline pl-12 p-4 rounded-t-lg font-body-lg text-body-lg focus:outline-none focus:border-primary focus:border-b-2 transition-all"/>
+        <div class="field-wrap mb-4">
+          <span class="material-symbols-outlined icon">lock</span>
+          <input id="new-pwd" type="password" placeholder="New password (min 8 chars)"
+            class="w-full bg-surface-container border border-outline-variant rounded-xl px-3 py-3 text-[15px] focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"/>
         </div>
 
         <button id="reset-btn" onclick="confirmReset()"
-          class="w-full bg-primary text-on-primary font-label-lg text-label-lg py-3 rounded-full shadow hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined">lock_reset</span> Reset Password
+          class="w-full bg-primary text-white font-semibold py-3 rounded-full hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined" style="font-size:17px">lock_reset</span> Reset Password
         </button>
       </div>
 
       <button onclick="closeForgotModal()"
-        class="w-full mt-3 text-on-surface-variant font-label-lg text-label-lg py-2 rounded-full hover:bg-surface-container transition-all">
+        class="w-full mt-3 py-2 text-[13px] text-on-surface-variant font-medium rounded-full hover:bg-surface-container transition-all">
         Cancel
       </button>
     </div>
   </div>
 
-</main>
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!--  Scripts                                                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <script>
+    const API        = 'https://foodrescue-jhyr.onrender.com/api';
+    const DASHBOARDS = { restaurant:'7_restaurant_dashboard.html', ngo:'10_ngo_dashboard.html', volunteer:'9_volunteer_dashboard.html', admin:'31_mission_control_dashboard.html' };
 
-<script>
-  const API = 'https://foodrescue-jhyr.onrender.com/api';
-  const DASHBOARDS = { restaurant:'7_restaurant_dashboard.html', ngo:'10_ngo_dashboard.html', volunteer:'9_volunteer_dashboard.html', admin:'31_mission_control_dashboard.html' };
-
-  // ── Toast notification ──────────────────────────────────────────────────────
-  function showToast(msg, type = 'success') {
-    const t = document.createElement('div');
-    t.textContent = msg;
-    t.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:${type==='error'?'#ba1a1a':'#006c49'};color:#fff;padding:12px 28px;border-radius:999px;font-family:Inter,sans-serif;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:99999;opacity:1;transition:opacity 0.4s;white-space:nowrap;`;
-    document.body.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 3500);
-  }
-
-  // ── Tab switching ───────────────────────────────────────────────────────────
-  function switchTab(tab) {
-    const pwPanel  = document.getElementById('panel-password');
-    const otpPanel = document.getElementById('panel-otp');
-    const loginBtn = document.getElementById('login-btn');
-    const tabPw    = document.getElementById('tab-password');
-    const tabOtp   = document.getElementById('tab-otp');
-    const pwInput  = document.getElementById('password-input');
-
-    if (tab === 'password') {
-      pwPanel.classList.remove('hidden');
-      otpPanel.classList.add('hidden');
-      loginBtn.classList.remove('hidden');
-      loginBtn.innerHTML = 'Continue <span class="material-symbols-outlined">arrow_forward</span>';
-      tabPw.classList.add('bg-primary','text-on-primary','shadow-sm');
-      tabPw.classList.remove('text-on-surface-variant');
-      tabOtp.classList.remove('bg-primary','text-on-primary','shadow-sm');
-      tabOtp.classList.add('text-on-surface-variant');
-      pwInput.required = true;
-    } else {
-      pwPanel.classList.add('hidden');
-      otpPanel.classList.remove('hidden');
-      loginBtn.classList.add('hidden');
-      tabOtp.classList.add('bg-primary','text-on-primary','shadow-sm');
-      tabOtp.classList.remove('text-on-surface-variant');
-      tabPw.classList.remove('bg-primary','text-on-primary','shadow-sm');
-      tabPw.classList.add('text-on-surface-variant');
-      pwInput.required = false;
+    // ── Toast ──────────────────────────────────────────────────────────────────
+    function toast(msg, type = 'ok') {
+      const el = document.createElement('div');
+      el.textContent = msg;
+      const bg = type === 'err' ? '#ba1a1a' : '#006c49';
+      el.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:${bg};color:#fff;padding:11px 26px;border-radius:999px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:99999;white-space:nowrap;transition:opacity .35s`;
+      document.body.appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 350); }, 3200);
     }
-  }
 
-  // ── Password visibility toggle ──────────────────────────────────────────────
-  function togglePwd() {
-    const inp = document.getElementById('password-input');
-    const eye = document.getElementById('pwd-eye');
-    if (inp.type === 'password') { inp.type = 'text'; eye.textContent = 'visibility_off'; }
-    else { inp.type = 'password'; eye.textContent = 'visibility'; }
-  }
+    // ── Show/hide password ─────────────────────────────────────────────────────
+    function togglePwd() {
+      const i = document.getElementById('password-input');
+      const e = document.getElementById('pwd-eye');
+      i.type = i.type === 'password' ? 'text' : 'password';
+      e.textContent = i.type === 'password' ? 'visibility' : 'visibility_off';
+    }
 
-  // ── OTP input auto-advance ──────────────────────────────────────────────────
-  function wireOtpInputs(selector, onDone) {
-    document.querySelectorAll(selector).forEach((inp, i, all) => {
-      inp.addEventListener('input', () => {
-        inp.value = inp.value.replace(/\D/, '');
-        if (inp.value && i < all.length - 1) all[i+1].focus();
-        if (i === all.length - 1 && inp.value) onDone && onDone();
+    // ── Wire OTP input boxes (auto-advance) ────────────────────────────────────
+    function wireBoxes(selector, onDone) {
+      const boxes = [...document.querySelectorAll(selector)];
+      boxes.forEach((b, i) => {
+        b.addEventListener('input', () => {
+          b.value = b.value.replace(/\D/, '');
+          if (b.value && i < boxes.length - 1) boxes[i + 1].focus();
+          if (i === boxes.length - 1 && b.value) onDone?.();
+        });
+        b.addEventListener('keydown', e => {
+          if (e.key === 'Backspace' && !b.value && i > 0) boxes[i - 1].focus();
+          if (e.key === 'Enter') onDone?.();
+        });
       });
-      inp.addEventListener('keydown', e => {
-        if (e.key === 'Backspace' && !inp.value && i > 0) all[i-1].focus();
-        if (e.key === 'Enter') onDone && onDone();
-      });
-    });
-  }
+    }
 
-  // ── OTP Overlay show/hide ───────────────────────────────────────────────────
-  function showOtpOverlay(subtitle) {
-    document.getElementById('login-section').classList.add('blur-sm','opacity-40','pointer-events-none','scale-95');
-    const sec = document.getElementById('otp-section');
-    sec.classList.remove('hidden');
-    if (subtitle) document.getElementById('otp-subtitle').textContent = subtitle;
-    setTimeout(() => document.querySelector('#otp-inputs input')?.focus(), 150);
-    startResendTimer();
-  }
+    function getOTP(selector) {
+      return [...document.querySelectorAll(selector)].map(b => b.value).join('');
+    }
 
-  function hideOtpOverlay() {
-    document.getElementById('login-section').classList.remove('blur-sm','opacity-40','pointer-events-none','scale-95');
-    document.getElementById('otp-section').classList.add('hidden');
-    document.querySelectorAll('#otp-inputs input').forEach(i => i.value = '');
-  }
+    // ── OTP Overlay ────────────────────────────────────────────────────────────
+    function showOtpOverlay(subtitle) {
+      const ov = document.getElementById('otp-overlay');
+      ov.classList.remove('hidden');
+      // re-trigger animation
+      const panel = ov.querySelector('div.relative');
+      panel.classList.remove('slide-up');
+      void panel.offsetWidth;
+      panel.classList.add('slide-up');
+      if (subtitle) document.getElementById('otp-sub').textContent = subtitle;
+      setTimeout(() => document.querySelector('#otp-inputs input')?.focus(), 200);
+      startTimer();
+    }
+    function hideOtpOverlay() {
+      document.getElementById('otp-overlay').classList.add('hidden');
+      document.querySelectorAll('#otp-inputs input').forEach(b => b.value = '');
+      clearInterval(timerInterval);
+    }
 
-  // ── Resend timer ────────────────────────────────────────────────────────────
-  let resendInterval;
-  function startResendTimer(secs = 60) {
-    const resendBtn   = document.getElementById('resend-btn');
-    const timerEl     = document.getElementById('resend-timer');
-    const countEl     = document.getElementById('timer-count');
-    resendBtn.classList.add('hidden');
-    timerEl.classList.remove('hidden');
-    let s = secs;
-    clearInterval(resendInterval);
-    resendInterval = setInterval(() => {
-      countEl.textContent = --s;
-      if (s <= 0) {
-        clearInterval(resendInterval);
-        timerEl.classList.add('hidden');
-        resendBtn.classList.remove('hidden');
+    // ── Resend timer ───────────────────────────────────────────────────────────
+    let timerInterval;
+    function startTimer(secs = 60) {
+      const cnt     = document.getElementById('timer-count');
+      const timerEl = document.getElementById('resend-timer');
+      const resBtn  = document.getElementById('resend-btn');
+      resBtn.classList.add('hidden');
+      timerEl.classList.remove('hidden');
+      let s = secs;
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        cnt.textContent = --s;
+        if (s <= 0) {
+          clearInterval(timerInterval);
+          timerEl.classList.add('hidden');
+          resBtn.classList.remove('hidden');
+        }
+      }, 1000);
+    }
+
+    async function resendOTP() {
+      const email = localStorage.getItem('fr_otp_email');
+      if (!email) return toast('Email not found', 'err');
+      try {
+        await fetch(`${API}/auth/otp/send`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        toast('New OTP sent!');
+        startTimer();
+      } catch { toast('Failed to resend. Try again.', 'err'); }
+    }
+
+    // ── CONTINUE: Verify password, then send OTP ────────────────────────────────
+    async function handleContinue() {
+      const email    = document.getElementById('email-input').value.trim();
+      const password = document.getElementById('password-input').value;
+      const btn      = document.getElementById('continue-btn');
+      const errEl    = document.getElementById('login-error');
+
+      if (!email || !password) return toast('Please fill all fields.', 'err');
+
+      btn.innerHTML = '<span class="material-symbols-outlined spin" style="font-size:18px">sync</span> Checking...';
+      btn.disabled  = true;
+      errEl.classList.add('hidden');
+
+      try {
+        // Step 1: validate credentials
+        const res  = await fetch(`${API}/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, deviceId: navigator.userAgent.substring(0, 60) }) });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message || 'Incorrect email or password.');
+
+        // Credentials valid — save token temporarily and redirect directly
+        // (For 2-step: first verify password, then send OTP)
+        // Since login already returns tokens, save session and go to dashboard
+        saveSession(data);
+
+      } catch (e) {
+        errEl.textContent = '⚠ ' + e.message;
+        errEl.classList.remove('hidden');
+        btn.innerHTML = 'Continue <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>';
+        btn.disabled  = false;
       }
-    }, 1000);
-  }
-
-  async function resendOTP() {
-    const email = localStorage.getItem('fr_login_email');
-    if (!email) return showToast('Email not found', 'error');
-    try {
-      await fetch(`${API}/auth/otp/send`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) });
-      showToast('New OTP sent to your email!');
-      startResendTimer();
-    } catch { showToast('Failed to resend. Try again.', 'error'); }
-  }
-
-  // ── Password Login ──────────────────────────────────────────────────────────
-  async function performLogin() {
-    const email    = document.getElementById('email-input').value.trim();
-    const password = document.getElementById('password-input').value;
-    const btn      = document.getElementById('login-btn');
-    const errEl    = document.getElementById('login-error');
-
-    if (!email || !password) return showToast('Please fill all fields.', 'error');
-
-    btn.innerHTML = '<span class="material-symbols-outlined animate-spin-icon">sync</span> Signing in...';
-    btn.disabled = true;
-    errEl.classList.add('hidden');
-
-    try {
-      const res  = await fetch(`${API}/auth/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, password, deviceId: navigator.userAgent.substring(0,50)}) });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Login failed');
-      saveSession(data);
-    } catch(e) {
-      errEl.textContent = '⚠ ' + e.message;
-      errEl.classList.remove('hidden');
-      btn.innerHTML = 'Continue <span class="material-symbols-outlined">arrow_forward</span>';
-      btn.disabled = false;
     }
-  }
 
-  // ── Email OTP login ─────────────────────────────────────────────────────────
-  async function sendEmailOTP() {
-    const email = document.getElementById('email-input').value.trim();
-    if (!email) return showToast('Please enter your email address first.', 'error');
-
-    const btn = document.getElementById('send-otp-btn');
-    btn.innerHTML = '<span class="material-symbols-outlined animate-spin-icon">sync</span> Sending...';
-    btn.disabled = true;
-
-    try {
-      const res  = await fetch(`${API}/auth/otp/send`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to send OTP');
-      localStorage.setItem('fr_login_email', email);
-      showToast(`✓ OTP sent to ${email}`);
-      showOtpOverlay(`6-digit code sent to ${email}`);
-    } catch(e) {
-      showToast(e.message, 'error');
-    } finally {
-      btn.innerHTML = '<span class="material-symbols-outlined">send</span> Send OTP to My Email';
-      btn.disabled = false;
+    // ── Save session and redirect ──────────────────────────────────────────────
+    function saveSession(data) {
+      const tokens = data.data?.tokens || {};
+      const user   = data.data?.user   || {};
+      localStorage.setItem('foodRescueToken',        tokens.accessToken  || '');
+      localStorage.setItem('foodRescueRefreshToken', tokens.refreshToken || '');
+      localStorage.setItem('foodRescueUser',         JSON.stringify(user));
+      localStorage.setItem('fr_role',                user.role || 'restaurant');
+      toast('Login successful! Redirecting...');
+      document.body.style.transition = 'opacity 0.3s';
+      document.body.style.opacity    = '0';
+      setTimeout(() => { window.location.href = DASHBOARDS[user.role] || '7_restaurant_dashboard.html'; }, 500);
     }
-  }
 
-  // ── Verify OTP ──────────────────────────────────────────────────────────────
-  async function handleVerify() {
-    const email = localStorage.getItem('fr_login_email');
-    const otp   = Array.from(document.querySelectorAll('#otp-inputs input')).map(i => i.value).join('');
-    const btn   = document.getElementById('verify-btn');
+    // ── Verify OTP (email OTP login path) ──────────────────────────────────────
+    async function verifyOTP() {
+      const email = localStorage.getItem('fr_otp_email');
+      const otp   = getOTP('#otp-inputs input');
+      const btn   = document.getElementById('verify-btn');
 
-    if (!email) return showToast('Email not found. Close and try again.', 'error');
-    if (otp.length < 6) return showToast('Please enter all 6 digits.', 'error');
+      if (!email) return toast('Session expired. Please start again.', 'err');
+      if (otp.length < 6) return toast('Enter all 6 digits.', 'err');
 
-    btn.innerHTML = '<span class="material-symbols-outlined animate-spin-icon">sync</span> Verifying...';
-    btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined spin" style="font-size:18px">sync</span> Verifying...';
+      btn.disabled  = true;
 
-    try {
-      const res  = await fetch(`${API}/auth/otp/verify`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, otp, deviceId: navigator.userAgent.substring(0,50)}) });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Verification failed');
-      showToast('✓ OTP verified! Signing in...');
-      saveSession(data);
-    } catch(e) {
-      showToast(e.message, 'error');
-      btn.innerHTML = '<span class="material-symbols-outlined">verified</span> Verify &amp; Login';
-      btn.disabled = false;
+      try {
+        const res  = await fetch(`${API}/auth/otp/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, otp, deviceId: navigator.userAgent.substring(0, 60) }) });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'OTP verification failed.');
+        saveSession(data);
+      } catch (e) {
+        toast(e.message, 'err');
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">verified</span> Verify &amp; Login';
+        btn.disabled  = false;
+      }
     }
-  }
 
-  // ── Save session + redirect ─────────────────────────────────────────────────
-  function saveSession(data) {
-    const tokens = data.data?.tokens || {};
-    const user   = data.data?.user   || {};
-    localStorage.setItem('foodRescueToken',        tokens.accessToken  || '');
-    localStorage.setItem('foodRescueRefreshToken', tokens.refreshToken || '');
-    localStorage.setItem('foodRescueUser',         JSON.stringify(user));
-    localStorage.setItem('fr_role',                user.role || 'restaurant');
-    showToast('Login successful! Redirecting...');
-    document.body.style.transition = 'opacity 0.3s';
-    document.body.style.opacity = '0';
-    setTimeout(() => { window.location.href = DASHBOARDS[user.role] || '7_restaurant_dashboard.html'; }, 500);
-  }
-
-  // ── Forgot Password modal ────────────────────────────────────────────────────
-  function showForgotModal() {
-    document.getElementById('forgot-modal').classList.remove('hidden');
-    document.getElementById('forgot-step-1').classList.remove('hidden');
-    document.getElementById('forgot-step-2').classList.add('hidden');
-    document.getElementById('forgot-email').value = '';
-  }
-  function closeForgotModal() {
-    document.getElementById('forgot-modal').classList.add('hidden');
-  }
-
-  async function sendResetOTP() {
-    const email = document.getElementById('forgot-email').value.trim();
-    if (!email) return showToast('Please enter your email.', 'error');
-
-    const btn = document.getElementById('forgot-send-btn');
-    btn.innerHTML = '<span class="material-symbols-outlined animate-spin-icon">sync</span> Sending...';
-    btn.disabled = true;
-
-    try {
-      await fetch(`${API}/auth/forgot-password`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) });
-      localStorage.setItem('fr_reset_email', email);
-      showToast(`✓ OTP sent to ${email}`);
-      document.getElementById('forgot-step-1').classList.add('hidden');
-      document.getElementById('forgot-step-2').classList.remove('hidden');
-      document.getElementById('forgot-sent-to').textContent = `OTP sent to ${email}`;
-      setTimeout(() => document.querySelector('.reset-otp')?.focus(), 100);
-    } catch(e) {
-      showToast(e.message, 'error');
-    } finally {
-      btn.innerHTML = '<span class="material-symbols-outlined">send</span> Send Reset OTP';
-      btn.disabled = false;
+    // ── Forgot Password ────────────────────────────────────────────────────────
+    function showForgotModal() {
+      document.getElementById('forgot-modal').classList.remove('hidden');
+      document.getElementById('forgot-s1').classList.remove('hidden');
+      document.getElementById('forgot-s2').classList.add('hidden');
+      document.getElementById('forgot-email').value = document.getElementById('email-input').value;
     }
-  }
-
-  async function confirmReset() {
-    const email       = localStorage.getItem('fr_reset_email');
-    const otp         = Array.from(document.querySelectorAll('.reset-otp')).map(i => i.value).join('');
-    const newPassword = document.getElementById('new-password').value;
-    const btn         = document.getElementById('reset-btn');
-
-    if (!email) return showToast('Email not found.', 'error');
-    if (otp.length < 6) return showToast('Enter all 6 OTP digits.', 'error');
-    if (!newPassword || newPassword.length < 8) return showToast('Password must be at least 8 characters.', 'error');
-
-    btn.innerHTML = '<span class="material-symbols-outlined animate-spin-icon">sync</span> Resetting...';
-    btn.disabled = true;
-
-    try {
-      const res  = await fetch(`${API}/auth/reset-password`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, otp, newPassword}) });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Reset failed');
-      showToast('✓ Password reset! Please log in.');
-      closeForgotModal();
-      document.getElementById('email-input').value = email;
-      switchTab('password');
-    } catch(e) {
-      showToast(e.message, 'error');
-      btn.innerHTML = '<span class="material-symbols-outlined">lock_reset</span> Reset Password';
-      btn.disabled = false;
+    function closeForgotModal() {
+      document.getElementById('forgot-modal').classList.add('hidden');
     }
-  }
 
-  // ── Init on load ────────────────────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', () => {
-    wireOtpInputs('#otp-inputs input', handleVerify);
-    wireOtpInputs('.reset-otp');
-
-    // Page fade-in
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.4s ease';
-    requestAnimationFrame(() => { document.body.style.opacity = '1'; });
-
-    // Handle reset token from URL (if redirected from email link)
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('reset')) {
-      showForgotModal();
-      document.getElementById('forgot-step-1').classList.add('hidden');
-      document.getElementById('forgot-step-2').classList.remove('hidden');
+    async function sendResetOTP() {
+      const email = document.getElementById('forgot-email').value.trim();
+      if (!email) return toast('Enter your email.', 'err');
+      const btn = document.getElementById('forgot-send-btn');
+      btn.innerHTML = '<span class="material-symbols-outlined spin" style="font-size:17px">sync</span> Sending...';
+      btn.disabled  = true;
+      try {
+        await fetch(`${API}/auth/forgot-password`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        localStorage.setItem('fr_reset_email', email);
+        toast(`Reset code sent to ${email}`);
+        document.getElementById('forgot-s1').classList.add('hidden');
+        document.getElementById('forgot-s2').classList.remove('hidden');
+        document.getElementById('forgot-sent-to').textContent = `Reset code sent to ${email}`;
+        setTimeout(() => document.querySelector('.reset-otp')?.focus(), 100);
+      } catch (e) {
+        toast(e.message, 'err');
+      } finally {
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:17px">send</span> Send Reset Code';
+        btn.disabled  = false;
+      }
     }
-  });
-</script>
-<script src="js/api.js"></script>
-<script src="js/nav.js"></script>
+
+    async function confirmReset() {
+      const email    = localStorage.getItem('fr_reset_email');
+      const otp      = getOTP('#reset-otp-inputs input');
+      const newPwd   = document.getElementById('new-pwd').value;
+      const btn      = document.getElementById('reset-btn');
+
+      if (!email)         return toast('Email not found.', 'err');
+      if (otp.length < 6) return toast('Enter all 6 OTP digits.', 'err');
+      if (!newPwd || newPwd.length < 8) return toast('Password must be at least 8 characters.', 'err');
+
+      btn.innerHTML = '<span class="material-symbols-outlined spin" style="font-size:17px">sync</span> Resetting...';
+      btn.disabled  = true;
+
+      try {
+        const res  = await fetch(`${API}/auth/reset-password`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, otp, newPassword: newPwd }) });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Reset failed.');
+        toast('Password reset! Please log in.');
+        closeForgotModal();
+        document.getElementById('email-input').value    = email;
+        document.getElementById('password-input').value = '';
+      } catch (e) {
+        toast(e.message, 'err');
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:17px">lock_reset</span> Reset Password';
+        btn.disabled  = false;
+      }
+    }
+
+    // ── Init ───────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      wireBoxes('#otp-inputs input',       verifyOTP);
+      wireBoxes('#reset-otp-inputs input');
+
+      // Fade in
+      document.body.style.opacity    = '0';
+      document.body.style.transition = 'opacity 0.3s ease';
+      requestAnimationFrame(() => { document.body.style.opacity = '1'; });
+    });
+  </script>
+
 </body>
 </html>
