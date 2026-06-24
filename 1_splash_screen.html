@@ -199,5 +199,19 @@
                 hero.style.transform = `translate(${moveX}px, ${moveY}px)`;
             }
         });
+
+        // Automatic redirection
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (localStorage.getItem('foodRescueToken')) {
+                    const role = localStorage.getItem('fr_role') || 'volunteer';
+                    if (role === 'restaurant') window.location.href = '11_restaurant_dashboard.html';
+                    else if (role === 'ngo') window.location.href = '13_ngo_dashboard.html';
+                    else window.location.href = '9_volunteer_dashboard.html';
+                } else {
+                    window.location.href = '2_role_selection.html';
+                }
+            }, 3000); // 3 seconds splash
+        });
     </script>
 <script src="nav.js"></script><script src="js/api.js"></script><script src="js/nav.js"></script></body></html>

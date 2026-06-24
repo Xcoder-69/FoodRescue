@@ -3,6 +3,13 @@ const { test, expect } = require('@playwright/test');
 test.describe('Restaurant Registration QA', () => {
   test('Complete Registration Flow Testing', async ({ page }) => {
     // Navigate to Step 1
+    await page.route('**/api/auth/register', async route => {
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 200, json: { message: 'Success', data: { tokens: { accessToken: 'fake' }, user: {} } }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
+    });
     await page.goto('/1_Restaurant_Registration_Step_1.html');
 
     // 1. All required fields (Submit with empty fields)
@@ -25,7 +32,8 @@ test.describe('Restaurant Registration QA', () => {
     // but the API will reject it later.
 
     // 3. Email OTP verification
-    await page.fill('#emailInput', 'testowner@restaurant.com');
+    const randomEmail = `testowner_${Date.now()}@restaurant.com`;
+    await page.fill('#emailInput', randomEmail);
     
     // We expect the Verify Email button to exist, but currently it's hidden by default in the HTML!
     // Let's unhide it if it is hidden, as per current UI state
@@ -65,9 +73,9 @@ test.describe('Restaurant Registration QA', () => {
 
     // Fill Step 2
     await page.fill('#restName', 'Test Restaurant');
-    await page.selectOption('#cuisineType', 'Italian');
-    await page.fill('#fssaiNumber', '12345678901234');
-    await page.fill('#gstin', '22AAAAA0000A1Z5');
+    await page.selectOption('#restType', 'Cafe / Bistro');
+    await page.fill('#restFSSAI', '12345678901234');
+    await page.fill('#restGST', '22AAAAA0000A1Z5');
     await page.click('text=Continue to Location');
 
     // Wait for Step 3

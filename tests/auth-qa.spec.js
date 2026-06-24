@@ -21,10 +21,18 @@ test.describe('Auth QA - Login, OTP, Password Reset', () => {
   test('Password Reset Flow', async ({ page }) => {
     // Mock API responses
     await page.route('**/api/auth/forgot-password', async route => {
-      await route.fulfill({ status: 200, json: { message: 'Reset code sent' } });
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 200, json: { message: 'Reset code sent' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
     });
     await page.route('**/api/auth/reset-password', async route => {
-      await route.fulfill({ status: 200, json: { message: 'Password reset' } });
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 200, json: { message: 'Password reset' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
     });
 
     await page.goto('/4_login_and_verification.html');

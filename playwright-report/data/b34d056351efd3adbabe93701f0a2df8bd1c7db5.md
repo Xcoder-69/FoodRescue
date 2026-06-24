@@ -150,72 +150,75 @@ Call log:
   72  |     await page.route('**/api/auth/verify/send', async route => {
   73  |       await route.fulfill({ status: 200, json: { message: 'OTP sent' } });
   74  |     });
-  75  |     // Mock the confirm OTP endpoint to FAIL
-  76  |     await page.route('**/api/auth/verify/confirm', async route => {
-  77  |       await route.fulfill({ status: 400, json: { message: 'Incorrect OTP. Please try again.' } });
-  78  |     });
-  79  | 
-  80  |     await page.goto('/1_NGO_Registration_Step_1.html');
-  81  |     await page.fill('#emailInput', 'test@ngo.com');
-  82  |     await page.click('#verifyEmailBtn', { force: true });
-  83  |     
-  84  |     await expect(page.locator('#otpSection')).toBeVisible();
-  85  | 
-  86  |     const otpInputs = page.locator('.otp-input');
-  87  |     for(let i=0; i<6; i++) {
-  88  |         await otpInputs.nth(i).fill('0');
-  89  |     }
-  90  |     await page.click('#verifyOtpBtn', { force: true });
-  91  |     
-  92  |     const err = page.locator('#globalError');
-> 93  |     await expect(err).toBeVisible();
+  75  |     await page.route('**/api/auth/verify/confirm', async route => {
+  76  |       if (route.request().method() === 'OPTIONS') {
+  77  |         await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+  78  |       } else {
+  79  |         await route.fulfill({ status: 400, json: { message: 'Incorrect OTP. Please try again.' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+  80  |       }
+  81  |     });
+  82  | 
+  83  |     await page.goto('/1_NGO_Registration_Step_1.html');
+  84  |     await page.fill('#emailInput', 'test@ngo.com');
+  85  |     await page.click('#verifyEmailBtn', { force: true });
+  86  |     
+  87  |     await expect(page.locator('#otpSection')).toBeVisible();
+  88  | 
+  89  |     const otpInputs = page.locator('.otp-input');
+  90  |     for(let i=0; i<6; i++) {
+  91  |         await otpInputs.nth(i).fill('0');
+  92  |     }
+  93  |     await page.click('#verifyOtpBtn', { force: true });
+  94  |     
+  95  |     const err = page.locator('#globalError');
+> 96  |     await expect(err).toBeVisible();
       |                       ^ Error: expect(locator).toBeVisible() failed
-  94  |     await expect(err).toContainText('Incorrect OTP');
-  95  |     await expect(page.locator('#successBadge')).toBeHidden();
-  96  |   });
-  97  | 
-  98  |   test('5. Large document uploads / Invalid file types', async ({ page }) => {
-  99  |     await page.goto('/4_NGO_Registration_Step_4.html');
-  100 |     
-  101 |     const fileInput = page.locator('#fileInput');
-  102 |     
-  103 |     // Create an invalid file type buffer
-  104 |     const invalidBuffer = Buffer.alloc(1024);
-  105 |     await fileInput.setInputFiles({
-  106 |         name: 'test.exe',
-  107 |         mimeType: 'application/x-msdownload',
-  108 |         buffer: invalidBuffer
-  109 |     });
-  110 |     
-  111 |     let err = page.locator('#globalError');
-  112 |     await expect(err).toBeVisible();
-  113 |     await expect(err).toContainText('has unsupported type');
-  114 |     
-  115 |     // Create a large file > 10MB
-  116 |     const largeBuffer = Buffer.alloc(11 * 1024 * 1024);
-  117 |     await fileInput.setInputFiles({
-  118 |         name: 'large.pdf',
-  119 |         mimeType: 'application/pdf',
-  120 |         buffer: largeBuffer
-  121 |     });
-  122 |     
-  123 |     await expect(err).toBeVisible();
-  124 |     await expect(err).toContainText('exceeds 10MB limit');
-  125 |   });
-  126 | 
-  127 |   test('6. Terms checkbox not selected', async ({ page }) => {
-  128 |     await page.goto('/5_NGO_Registration_Step_5.html');
-  129 |     
-  130 |     const submitBtn = page.locator('button:has-text("Submit Registration")');
-  131 |     await expect(submitBtn).toBeDisabled();
+  97  |     await expect(err).toContainText('Incorrect OTP');
+  98  |     await expect(page.locator('#successBadge')).toBeHidden();
+  99  |   });
+  100 | 
+  101 |   test('5. Large document uploads / Invalid file types', async ({ page }) => {
+  102 |     await page.goto('/4_NGO_Registration_Step_4.html');
+  103 |     
+  104 |     const fileInput = page.locator('#fileInput');
+  105 |     
+  106 |     // Create an invalid file type buffer
+  107 |     const invalidBuffer = Buffer.alloc(1024);
+  108 |     await fileInput.setInputFiles({
+  109 |         name: 'test.exe',
+  110 |         mimeType: 'application/x-msdownload',
+  111 |         buffer: invalidBuffer
+  112 |     });
+  113 |     
+  114 |     let err = page.locator('#globalError');
+  115 |     await expect(err).toBeVisible();
+  116 |     await expect(err).toContainText('has unsupported type');
+  117 |     
+  118 |     // Create a large file > 10MB
+  119 |     const largeBuffer = Buffer.alloc(11 * 1024 * 1024);
+  120 |     await fileInput.setInputFiles({
+  121 |         name: 'large.pdf',
+  122 |         mimeType: 'application/pdf',
+  123 |         buffer: largeBuffer
+  124 |     });
+  125 |     
+  126 |     await expect(err).toBeVisible();
+  127 |     await expect(err).toContainText('exceeds 10MB limit');
+  128 |   });
+  129 | 
+  130 |   test('6. Terms checkbox not selected', async ({ page }) => {
+  131 |     await page.goto('/5_NGO_Registration_Step_5.html');
   132 |     
-  133 |     const checkboxes = page.locator('input[type="checkbox"]');
-  134 |     const count = await checkboxes.count();
-  135 |     for(let i = 0; i < count; i++) {
-  136 |         await checkboxes.nth(i).check();
-  137 |     }
-  138 |     await expect(submitBtn).toBeEnabled();
-  139 |   });
-  140 | });
-  141 | 
+  133 |     const submitBtn = page.locator('button:has-text("Submit Registration")');
+  134 |     await expect(submitBtn).toBeDisabled();
+  135 |     
+  136 |     const checkboxes = page.locator('input[type="checkbox"]');
+  137 |     const count = await checkboxes.count();
+  138 |     for(let i = 0; i < count; i++) {
+  139 |         await checkboxes.nth(i).check();
+  140 |     }
+  141 |     await expect(submitBtn).toBeEnabled();
+  142 |   });
+  143 | });
+  144 | 
 ```

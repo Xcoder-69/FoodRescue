@@ -31,7 +31,7 @@ test.describe('Admin Approval QA', () => {
   test('Tab Switching Simulation', async ({ page }) => {
     await page.goto('/15_verification_management.html');
 
-    const ngoTab = page.locator('button:has-text("NGOs")');
+    const ngoTab = page.locator('button:has-text("NGOs")').first();
     await ngoTab.click();
     await expect(ngoTab).toHaveClass(/active-tab/);
   });

@@ -184,6 +184,9 @@
       const text = (el.textContent || el.innerText || el.getAttribute('data-icon') || '').trim();
       const href = el.getAttribute('href');
 
+      // Skip elements that opt-out of auto navigation
+      if (el.hasAttribute('data-no-nav')) return;
+
       // Skip elements that already have real navigation or internal logic
       if (href && href !== '#' && !href.startsWith('javascript')) return;
 

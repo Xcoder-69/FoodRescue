@@ -72,9 +72,12 @@ test.describe('NGO Registration QA - End to End', () => {
     await page.route('**/api/auth/verify/send', async route => {
       await route.fulfill({ status: 200, json: { message: 'OTP sent' } });
     });
-    // Mock the confirm OTP endpoint to FAIL
     await page.route('**/api/auth/verify/confirm', async route => {
-      await route.fulfill({ status: 400, json: { message: 'Incorrect OTP. Please try again.' } });
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 400, json: { message: 'Incorrect OTP. Please try again.' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
     });
 
     await page.goto('/1_NGO_Registration_Step_1.html');

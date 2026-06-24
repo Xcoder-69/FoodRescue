@@ -1,7 +1,22 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Volunteer Registration QA', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => {
+      window.localStorage.setItem('foodRescueToken', 'fake-token-123');
+      window.localStorage.setItem('foodRescueUser', JSON.stringify({ role: 'volunteer' }));
+    });
+  });
+
   test('Complete Registration Flow', async ({ page }) => {
+    await page.route('**/api/auth/register', async route => {
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 200, json: { message: 'Success', data: { tokens: { accessToken: 'fake' }, user: {} } }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
+    });
     await page.goto('/6_volunteer_registration.html');
 
     // Fill form
