@@ -104,7 +104,7 @@
     const t = text.toLowerCase().trim();
     for (const [key, dest] of Object.entries(NAV)) {
       if (t.includes(key)) {
-        if (dest === '_back')              return null; // handled separately
+        if (dest === '_back')              return '_back';
         if (dest === '_home_redirect')     return ROLE_DASHBOARD[getRole()];
         if (dest === '_dashboard_redirect') return ROLE_DASHBOARD[getRole()];
         if (dest === '_otp_flow')          return null; // handled by existing script
@@ -226,7 +226,11 @@
 
       // General resolution
       const dest = resolve(text);
-      if (dest) {
+      if (dest === '_back') {
+        e.preventDefault();
+        e.stopPropagation();
+        window.history.back();
+      } else if (dest) {
         e.preventDefault();
         e.stopPropagation();
         navigateTo(dest);
