@@ -228,11 +228,88 @@
     });
   }
 
+  // ── OTP Auto-advance & Auto-verify ────────────────────────────────────────
+  function initOTPInputs() {
+    const otpInputs = Array.from(document.querySelectorAll('.otp-input'));
+    if (!otpInputs.length) return;
+
+    otpInputs.forEach((input, idx) => {
+      // Allow only digits
+      input.setAttribute('inputmode', 'numeric');
+      input.setAttribute('pattern', '[0-9]*');
+
+      input.addEventListener('input', (e) => {
+        // Strip non-digits and keep only first char
+        input.value = input.value.replace(/\D/g, '').slice(0, 1);
+
+        if (input.value) {
+          // Move to next box
+          if (idx < otpInputs.length - 1) {
+            otpInputs[idx + 1].focus();
+          } else {
+            // Last box filled — auto-trigger verify
+            input.blur();
+            // Give the DOM a tick to update before calling verify
+            setTimeout(() => {
+              if (typeof verifyOTP === 'function') {
+                verifyOTP();
+              } else {
+                // Fallback: click the verify button if it exists
+                const verifyBtn = document.getElementById('verifyOtpBtn')
+                  || document.querySelector('button[onclick*="verifyOTP"]');
+                if (verifyBtn) verifyBtn.click();
+              }
+            }, 80);
+          }
+        }
+      });
+
+      // Backspace: clear & go to previous box
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && idx > 0) {
+          otpInputs[idx - 1].focus();
+          otpInputs[idx - 1].value = '';
+        }
+      });
+
+      // Handle paste: spread digits across boxes
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData)
+          .getData('text').replace(/\D/g, '').slice(0, otpInputs.length);
+        pasted.split('').forEach((ch, i) => {
+          if (otpInputs[idx + i]) otpInputs[idx + i].value = ch;
+        });
+        const nextEmpty = otpInputs.find(inp => !inp.value);
+        if (nextEmpty) {
+          nextEmpty.focus();
+        } else {
+          // All filled — auto verify
+          setTimeout(() => {
+            if (typeof verifyOTP === 'function') {
+              verifyOTP();
+            } else {
+              const verifyBtn = document.getElementById('verifyOtpBtn')
+                || document.querySelector('button[onclick*="verifyOTP"]');
+              if (verifyBtn) verifyBtn.click();
+            }
+          }, 80);
+        }
+      });
+    });
+  }
+
   // ── Init ───────────────────────────────────────────────────────────────────
   fadeIn();
   document.addEventListener('DOMContentLoaded', () => {
     wireClicks();
     initFormPersistence();
+    initOTPInputs();
   });
 
+  // Also run after dynamic sections (e.g. OTP section shown via JS)
+  // by exposing it globally so pages can call it after revealing the OTP UI
+  window.initOTPInputs = initOTPInputs;
+
 })();
+

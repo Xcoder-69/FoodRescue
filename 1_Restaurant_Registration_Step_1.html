@@ -266,6 +266,8 @@
                 document.getElementById('otpSection').classList.remove('hidden');
                 btn.classList.add('hidden');
                 startCountdown();
+                // Re-init OTP inputs now that the section is visible
+                if (typeof window.initOTPInputs === 'function') window.initOTPInputs();
             } catch (error) {
                 showRegError(error.message || 'Failed to send OTP.');
                 btn.disabled = false;

@@ -318,6 +318,7 @@
                 section.classList.remove('hidden');
                 startTimer();
                 btn.innerHTML = 'Sent!';
+                if (typeof window.initOTPInputs === 'function') window.initOTPInputs();
             } catch(e) {
                 showError(e.message || "Failed to send OTP.");
                 btn.innerHTML = 'Verify Email';

@@ -350,6 +350,7 @@
                 document.getElementById('otpSection').classList.remove('hidden');
                 btn.classList.add('hidden');
                 startCountdown();
+                if (typeof window.initOTPInputs === 'function') window.initOTPInputs();
             }, 800);
         }
 
