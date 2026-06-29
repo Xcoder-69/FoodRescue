@@ -352,7 +352,7 @@
 <p class="font-body-md text-body-md opacity-90">Our team typically reviews applications within 24-48 hours.</p>
 </div>
 </div>
-<button class="w-full md:w-auto px-xl py-md bg-white text-primary font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 text-headline-md" id="submitBtn">
+<button class="w-full md:w-auto px-xl py-md bg-white text-primary font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 text-headline-md disabled:opacity-50 disabled:cursor-not-allowed" id="submitBtn" disabled>
                 Submit for Verification
             </button>
 </div>
@@ -400,6 +400,15 @@
             if (addressParts.length > 0) {
                 document.getElementById('reviewAddress').innerText = addressParts.join(', ');
             }
+
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const submitBtn = document.getElementById('submitBtn');
+            checkboxes.forEach(c => {
+                c.addEventListener('change', () => {
+                    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                    submitBtn.disabled = !allChecked;
+                });
+            });
         });
 
         document.getElementById('submitBtn').addEventListener('click', async function() {

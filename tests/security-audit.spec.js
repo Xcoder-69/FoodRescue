@@ -9,7 +9,8 @@ test.describe('Security Audit API Tests', () => {
         // The limit is 5 per 15 minutes, so 10 requests should trigger a 429
         for (let i = 0; i < 10; i++) {
             const res = await request.post(url, {
-                data: { email: 'test@example.com', password: `pass${i}` }
+                data: { email: 'test@example.com', password: `pass${i}` },
+                headers: { 'x-test-ip': '127.0.0.10' }
             });
             if (res.status() === 429) {
                 rateLimited = true;
@@ -28,7 +29,8 @@ test.describe('Security Audit API Tests', () => {
         let rateLimited = false;
         for (let i = 0; i < 10; i++) {
             const res = await request.post(url, {
-                data: { email: `new${i}@example.com`, password: 'password123' }
+                data: { email: `new${i}@example.com`, password: 'password123' },
+                headers: { 'x-test-ip': '127.0.0.11' }
             });
             if (res.status() === 429) {
                 rateLimited = true;

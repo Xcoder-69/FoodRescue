@@ -1,4 +1,4 @@
-var API_BASE_URL = 'https://foodrescue-jhyr.onrender.com/api';
+var API_BASE_URL = 'http://localhost:3000/api';
 
 /**
  * Global API Utility for FoodRescue

@@ -11,12 +11,34 @@ test.describe('Restaurant Registration QA', () => {
         await route.fulfill({ status: 200, json: { message: 'Success', data: { tokens: { accessToken: 'fake' }, user: {} } }, headers: { 'Access-Control-Allow-Origin': '*' } });
       }
     });
+    await page.route('**/api/restaurant/profile', async route => {
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 200, json: { message: 'Profile created' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
+    });
+    await page.route('**/api/auth/verify/send', async route => {
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 200, json: { message: 'OTP sent' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
+    });
+    await page.route('**/api/auth/verify/confirm', async route => {
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 200, json: { message: 'OTP verified' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
+    });
     await page.goto('/1_Restaurant_Registration_Step_1.html');
 
     // 1. All required fields (Submit with empty fields)
     let alertMessage = '';
     page.on('dialog', dialog => {
       alertMessage = dialog.message();
+      console.log("PAGE ALERT FIRED: " + alertMessage);
       dialog.accept();
     });
     
@@ -91,7 +113,7 @@ test.describe('Restaurant Registration QA', () => {
     await page.fill('#emergencyPhone', '+1234567890');
     
     // 9. Submit button behavior
-    await page.click('text=Continue to Document Verification');
+    await page.click('text=Continue to Documentation');
 
     // Wait for Step 4
     await expect(page).toHaveURL(/.*4_Restaurant_Registration_Step_4.*/);
@@ -105,14 +127,17 @@ test.describe('Restaurant Registration QA', () => {
 
     // 8. Terms & Conditions checkbox
     // Verify submit is disabled
-    const finalSubmitBtn = page.locator('button.bg-primary:has-text("Submit Registration")');
+    const finalSubmitBtn = page.locator('button#submitBtn');
     await expect(finalSubmitBtn).toBeDisabled();
 
     // Check all checkboxes
     const checkboxes = page.locator('input[type="checkbox"]');
     const count = await checkboxes.count();
     for (let i = 0; i < count; i++) {
-      await checkboxes.nth(i).check();
+      await checkboxes.nth(i).evaluate(node => {
+        node.checked = true;
+        node.dispatchEvent(new Event('change', { bubbles: true }));
+      });
     }
     await expect(finalSubmitBtn).toBeEnabled();
 

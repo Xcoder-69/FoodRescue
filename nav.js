@@ -124,55 +124,6 @@
     setTimeout(() => { window.location.href = dest; }, 250);
   }
 
-  // ── Add back button to every page ──────────────────────────────────────────
-  function addBackButton() {
-    const currentFile = location.pathname.split('/').pop();
-    if (currentFile === '1_splash_screen.html' || currentFile === '' || currentFile === 'index.html') return;
-    
-    const btn = document.createElement('button');
-    btn.id = 'fr-back-btn';
-    btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:22px">arrow_back</span>`;
-    btn.style.cssText = `
-      position: fixed; top: 14px; left: 14px; z-index: 9999;
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(0,108,73,0.2);
-      color: #006c49; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-      transition: transform 0.15s, box-shadow 0.15s;
-    `;
-    btn.addEventListener('mouseenter', () => { btn.style.transform = 'scale(1.1)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = 'scale(1)'; });
-    btn.addEventListener('click', () => { window.history.back(); });
-    document.body.appendChild(btn);
-  }
-
-  // ── Add floating home button ───────────────────────────────────────────────
-  function addHomeButton() {
-    const currentFile = location.pathname.split('/').pop();
-    if (['1_splash_screen.html','2_role_selection.html','3_restaurant_registration.html',
-         '4_login_and_verification.html','5_ngo_registration.html','6_volunteer_registration.html',
-         'index.html',''].includes(currentFile)) return;
-
-    const btn = document.createElement('button');
-    btn.id = 'fr-home-btn';
-    btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1">home</span>`;
-    btn.style.cssText = `
-      position: fixed; top: 14px; right: 14px; z-index: 9999;
-      width: 40px; height: 40px; border-radius: 50%;
-      background: #006c49; color: #fff; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 12px rgba(0,108,73,0.35);
-      border: none;
-      transition: transform 0.15s;
-    `;
-    btn.addEventListener('mouseenter', () => { btn.style.transform = 'scale(1.1)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = 'scale(1)'; });
-    btn.addEventListener('click', () => navigateTo(ROLE_DASHBOARD[getRole()]));
-    document.body.appendChild(btn);
-  }
 
   // ── Wire all clickable elements ────────────────────────────────────────────
   function wireClicks() {
@@ -242,12 +193,46 @@
     });
   }
 
+  // ── Form Data Persistence ──────────────────────────────────────────────────
+  function initFormPersistence() {
+    const currentFile = location.pathname.split('/').pop() || 'index.html';
+    const lowerFile = currentFile.toLowerCase();
+    // Only apply to registration and login pages to avoid side effects on dashboard
+    if (!lowerFile.includes('registration') && !lowerFile.includes('login')) return;
+
+    const storageKey = 'fr_form_data_' + currentFile;
+    // Exclude passwords, OTPs, and hidden fields
+    const inputs = document.querySelectorAll('input[type="text"]:not(.otp-input):not(.otp-box), input[type="email"], input[type="tel"], textarea, select');
+    
+    // Restore values
+    const savedData = JSON.parse(sessionStorage.getItem(storageKey) || '{}');
+    inputs.forEach(input => {
+        if (input.id && savedData[input.id] !== undefined) {
+            input.value = savedData[input.id];
+            // Trigger input event to update any dynamic UI (like strength meters or validation)
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            if (input.tagName === 'SELECT') {
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+        
+        // Save on input/change
+        const saveEvent = input.tagName === 'SELECT' ? 'change' : 'input';
+        input.addEventListener(saveEvent, () => {
+            const currentData = JSON.parse(sessionStorage.getItem(storageKey) || '{}');
+            if (input.id) {
+                currentData[input.id] = input.value;
+                sessionStorage.setItem(storageKey, JSON.stringify(currentData));
+            }
+        });
+    });
+  }
+
   // ── Init ───────────────────────────────────────────────────────────────────
   fadeIn();
   document.addEventListener('DOMContentLoaded', () => {
-    addBackButton();
-    addHomeButton();
     wireClicks();
+    initFormPersistence();
   });
 
 })();

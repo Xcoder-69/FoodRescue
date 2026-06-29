@@ -248,19 +248,25 @@
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
-        function sendOTP() {
+        async function sendOTP() {
             const email = document.getElementById('emailInput').value;
             if(!email) return alert('Please enter an email first');
             
             const btn = document.getElementById('verifyBtn');
             btn.disabled = true;
             btn.innerHTML = 'Sending...';
-            
-            setTimeout(() => {
+
+            try {
+                // Call actual backend to send OTP
+                await ApiClient.post('/auth/verify/send', { email });
                 document.getElementById('otpSection').classList.remove('hidden');
                 btn.classList.add('hidden');
                 startCountdown();
-            }, 800);
+            } catch (error) {
+                alert(error.message || 'Failed to send OTP.');
+                btn.disabled = false;
+                btn.innerHTML = 'Verify Email';
+            }
         }
 
         function startCountdown() {
@@ -277,15 +283,32 @@
             }, 1000);
         }
 
-        function verifyOTP() {
-            // Mock verification
-            document.getElementById('otpSection').classList.add('hidden');
-            document.getElementById('successBadge').classList.remove('hidden');
-            
-            const mainBtn = document.getElementById('mainContinueBtn');
-            mainBtn.disabled = false;
-            mainBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            mainBtn.classList.add('hover:opacity-90', 'active:scale-95');
+        async function verifyOTP() {
+            const email = document.getElementById('emailInput').value;
+            const otpInputs = document.querySelectorAll('.otp-input');
+            let otp = '';
+            otpInputs.forEach(input => otp += input.value);
+
+            if (otp.length !== 6) return alert('Please enter the 6-digit OTP.');
+
+            try {
+                // Call actual backend to verify OTP
+                await ApiClient.post('/auth/verify/confirm', { email, otp });
+                document.getElementById('otpSection').classList.add('hidden');
+                document.getElementById('successBadge').classList.remove('hidden');
+                
+                const mainBtn = document.getElementById('mainContinueBtn');
+                mainBtn.disabled = false;
+                mainBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                mainBtn.classList.add('hover:opacity-90', 'active:scale-95');
+                
+                // Disable email input so it cannot be changed after verification
+                document.getElementById('emailInput').disabled = true;
+            } catch (error) {
+                alert(error.message || 'Invalid OTP. Please try again.');
+                otpInputs.forEach(input => input.value = '');
+                otpInputs[0].focus();
+            }
         }
 
         function checkStrength(val) {
@@ -330,6 +353,8 @@
                 }
             };
         });
+
+
 
         async function submitStep1() {
             const btn = document.getElementById('mainContinueBtn');

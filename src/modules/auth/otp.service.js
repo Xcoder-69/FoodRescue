@@ -10,11 +10,6 @@ function generateOTP() {
   const crypto = require('crypto');
   return String(crypto.randomInt(100000, 1000000));
 }
-
-function generateOTP() {
-  const crypto = require('crypto');
-  return String(crypto.randomInt(100000, 1000000));
-}
 async function storeOTP(email, otp, purpose) {
   const docId = `${email}_${purpose}`;
   const ref = db.collection(OTP_COLLECTION).doc(docId);

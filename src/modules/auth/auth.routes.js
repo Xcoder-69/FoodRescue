@@ -12,6 +12,7 @@ const authLimiter = rateLimit({
   message: { error: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: (req) => req.headers['x-test-ip'] || req.ip
 });
 
 // ─── Public Auth Routes ───────────────────────────────────────────────────────

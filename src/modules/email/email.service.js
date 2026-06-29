@@ -1,9 +1,8 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 const handlebars = require('handlebars');
 
-const resend = new Resend(process.env.RESEND_API_KEY || 're_123456789');
 const TEMPLATE_DIR = path.join(__dirname, '../../templates/emails');
 
 // Register partials
@@ -24,34 +23,41 @@ const getTemplate = (templateName) => {
   return compiledTemplates[templateName];
 };
 
+// Configure NodeMailer transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
+
 class EmailService {
   /**
-   * Send email using Resend with basic retry logic
+   * Send email using NodeMailer with basic retry logic
    */
   static async sendEmailWithRetry(to, subject, html, retries = 3) {
-    if (!process.env.RESEND_API_KEY) {
-      console.log(`📧 [EMAIL SKIPPED — NO API KEY] To: ${to} | Subject: ${subject}`);
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.log(`📧 [EMAIL SKIPPED — NO SMTP CREDS] To: ${to} | Subject: ${subject}`);
       return { success: true, simulated: true };
     }
 
+    const mailOptions = {
+      from: `FoodRescue <${process.env.SMTP_USER}>`,
+      to,
+      subject,
+      html,
+    };
+
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
-        const { data, error } = await resend.emails.send({
-          from: process.env.EMAIL_FROM || 'FoodRescue <foodrescuesupport@gmail.com>', // Usually needs verified domain, but using gmail for config
-          to,
-          subject,
-          html,
-        });
-
-        if (error) throw error;
-        
+        const data = await transporter.sendMail(mailOptions);
         console.log(`📧 Email sent to ${to} (Attempt ${attempt})`);
         return { success: true, data };
       } catch (err) {
         console.error(`❌ Email failed to ${to} (Attempt ${attempt}/${retries}):`, err.message);
         if (attempt === retries) {
-          // In a real production system, push to a DLQ or Firestore for later retry
-          return { success: false, error: err.message };
+          throw new Error(`Failed to send email after ${retries} attempts`);
         }
         // Exponential backoff: wait 1s, 2s, 4s...
         await new Promise(resolve => setTimeout(resolve, attempt * 1000));
