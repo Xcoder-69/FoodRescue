@@ -175,7 +175,7 @@
       if (dest === '_back') {
         e.preventDefault();
         e.stopPropagation();
-        window.history.back();
+        goBack();
       } else if (dest) {
         e.preventDefault();
         e.stopPropagation();
@@ -183,6 +183,91 @@
       }
     }, true);
   }
+
+  // ── Deterministic Back Navigation ──────────────────────────────────────────
+  // Maps each page to its logical previous page so back always works,
+  // even when opened directly (no browser history).
+  const BACK_MAP = {
+    // Splash / Role
+    '2_role_selection.html':                    '1_splash_screen.html',
+
+    // Restaurant registration flow
+    '1_Restaurant_Registration_Step_1.html':    '2_role_selection.html',
+    '2_Restaurant_Registration_Step_2.html':    '1_Restaurant_Registration_Step_1.html',
+    '3_Restaurant_Registration_Step_3.html':    '2_Restaurant_Registration_Step_2.html',
+    '4_Restaurant_Registration_Step_4.html':    '3_Restaurant_Registration_Step_3.html',
+    '5_Restaurant_Registration_Step_5.html':    '4_Restaurant_Registration_Step_4.html',
+    '6_Registration_Success_Status.html':       '1_splash_screen.html',
+
+    // NGO registration flow
+    '1_NGO_Registration_Step_1.html':           '2_role_selection.html',
+    '2_NGO_Registration_Step_2.html':           '1_NGO_Registration_Step_1.html',
+    '3_NGO_Registration_Step_3.html':           '2_NGO_Registration_Step_2.html',
+    '4_NGO_Registration_Step_4.html':           '3_NGO_Registration_Step_3.html',
+    '5_NGO_Registration_Step_5.html':           '4_NGO_Registration_Step_4.html',
+    '6_NGO_Registration_Success.html':          '1_splash_screen.html',
+
+    // Volunteer registration
+    '6_volunteer_registration.html':            '2_role_selection.html',
+
+    // Auth
+    '4_login_and_verification.html':            '1_splash_screen.html',
+    '28_2fa_verification.html':                 '4_login_and_verification.html',
+    '29_secret_security_key.html':              '28_2fa_verification.html',
+
+    // Restaurant dashboard pages
+    '7_restaurant_dashboard.html':              '4_login_and_verification.html',
+    '8_create_food_donation.html':              '7_restaurant_dashboard.html',
+    '11_notifications.html':                   '7_restaurant_dashboard.html',
+    '12_profile.html':                          '7_restaurant_dashboard.html',
+    '14_chat_and_coordination.html':            '7_restaurant_dashboard.html',
+
+    // NGO dashboard pages
+    '10_ngo_dashboard.html':                   '4_login_and_verification.html',
+
+    // Volunteer dashboard
+    '9_volunteer_dashboard.html':              '4_login_and_verification.html',
+
+    // Admin pages
+    '27_admin_login_command_center.html':       '4_login_and_verification.html',
+    '30_command_center_gateway.html':           '27_admin_login_command_center.html',
+    '31_mission_control_dashboard.html':        '30_command_center_gateway.html',
+    '32_security_operations_center.html':       '31_mission_control_dashboard.html',
+    '33_fraud_intelligence_center.html':        '31_mission_control_dashboard.html',
+    '34_immutable_audit_ledger.html':           '31_mission_control_dashboard.html',
+    '35_session_device_management.html':        '32_security_operations_center.html',
+    '36_account_recovery_system.html':          '31_mission_control_dashboard.html',
+    '37_security_vector_scan.html':             '32_security_operations_center.html',
+    '38_security_alert_access_blocked.html':    '31_mission_control_dashboard.html',
+    '15_verification_management.html':          '31_mission_control_dashboard.html',
+    '16_donation_monitoring.html':              '31_mission_control_dashboard.html',
+    '17_user_management_admin.html':            '31_mission_control_dashboard.html',
+    '18_csr_and_reporting.html':               '31_mission_control_dashboard.html',
+    '19_fraud_and_reports_admin.html':          '31_mission_control_dashboard.html',
+    '21_complaints_management.html':            '31_mission_control_dashboard.html',
+    '22_food_safety_and_compliance.html':       '31_mission_control_dashboard.html',
+
+    // Shared pages
+    '13_impact_analytics.html':                '7_restaurant_dashboard.html',
+    '20_help_and_support.html':                '7_restaurant_dashboard.html',
+    '23_dispute_and_policy_center.html':       '7_restaurant_dashboard.html',
+    '24_terms_and_conditions.html':            '7_restaurant_dashboard.html',
+    '25_privacy_and_guidelines.html':          '7_restaurant_dashboard.html',
+    '26_declarations_and_consent.html':        '7_restaurant_dashboard.html',
+  };
+
+  function goBack() {
+    const currentFile = location.pathname.split('/').pop() || 'index.html';
+    const prev = BACK_MAP[currentFile];
+    if (prev) {
+      navigateTo(prev);
+    } else if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      navigateTo('1_splash_screen.html'); // ultimate fallback
+    }
+  }
+
 
   // ── Fade in on load ────────────────────────────────────────────────────────
   function fadeIn() {
