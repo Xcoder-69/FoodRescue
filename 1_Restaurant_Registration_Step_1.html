@@ -196,6 +196,10 @@
 </div>
 </div>
 </section>
+<div id="reg-error" class="hidden w-full bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm flex items-start gap-2 mb-2">
+  <span class="material-symbols-outlined text-red-500" style="font-size:18px;flex-shrink:0;margin-top:1px">error</span>
+  <span id="reg-error-msg"></span>
+</div>
 <button class="w-full bg-primary text-on-primary font-label-md py-4 rounded-xl shadow-lg opacity-50 cursor-not-allowed transform active:scale-95 transition-all" disabled="" id="mainContinueBtn" onclick="submitStep1()">
                     Continue to Restaurant Details
                 </button>
@@ -250,7 +254,7 @@
 
         async function sendOTP() {
             const email = document.getElementById('emailInput').value;
-            if(!email) return alert('Please enter an email first');
+            if(!email) return showRegError('Please enter your email address first.');
             
             const btn = document.getElementById('verifyBtn');
             btn.disabled = true;
@@ -263,7 +267,7 @@
                 btn.classList.add('hidden');
                 startCountdown();
             } catch (error) {
-                alert(error.message || 'Failed to send OTP.');
+                showRegError(error.message || 'Failed to send OTP.');
                 btn.disabled = false;
                 btn.innerHTML = 'Verify Email';
             }
@@ -289,7 +293,7 @@
             let otp = '';
             otpInputs.forEach(input => otp += input.value);
 
-            if (otp.length !== 6) return alert('Please enter the 6-digit OTP.');
+            if (otp.length !== 6) return showRegError('Please enter the full 6-digit OTP.');
 
             try {
                 // Call actual backend to verify OTP
@@ -305,7 +309,7 @@
                 // Disable email input so it cannot be changed after verification
                 document.getElementById('emailInput').disabled = true;
             } catch (error) {
-                alert(error.message || 'Invalid OTP. Please try again.');
+                showRegError(error.message || 'Invalid OTP. Please try again.');
                 otpInputs.forEach(input => input.value = '');
                 otpInputs[0].focus();
             }
@@ -394,10 +398,23 @@
 
                 window.location.href = '2_Restaurant_Registration_Step_2.html';
             } catch(error) {
-                alert(error.message || "Failed to create account.");
+                const msg = error.message || 'Failed to create account.';
+                showRegError(
+                  msg.toLowerCase().includes('already registered')
+                    ? '⚠ This email is already registered. Please <a href="4_login_and_verification.html" class="underline font-semibold">login instead</a>.'
+                    : msg
+                );
                 btn.innerHTML = 'Continue to Restaurant Details';
                 btn.disabled = false;
             }
+        }
+
+        function showRegError(msg) {
+            const el = document.getElementById('reg-error');
+            const msgEl = document.getElementById('reg-error-msg');
+            msgEl.innerHTML = msg;
+            el.classList.remove('hidden');
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     </script>
     <script src="js/api.js"></script>

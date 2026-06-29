@@ -17,7 +17,7 @@ app.set('io', io); // Make socket available inside express routes if needed
 const startAggregator = require('./src/cron/analyticsAggregator');
 startAggregator();
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🚀 FoodRescue API Server running on port ${PORT}`);
   console.log(`📌 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Base URL: http://localhost:${PORT}/api\n`);

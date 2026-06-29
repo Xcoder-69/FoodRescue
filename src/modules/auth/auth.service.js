@@ -102,7 +102,7 @@ class AuthService {
     const snapshot = await usersRef.where('email', '==', email.toLowerCase()).limit(1).get();
     
     if (snapshot.empty) {
-      throw new Error('Invalid credentials');
+      throw new Error('No account found with this email. Please register first.');
     }
 
     const userDoc = snapshot.docs[0];
@@ -112,7 +112,7 @@ class AuthService {
     if (user.authProvider !== 'email') throw new Error('Use Google Login');
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!isMatch) throw new Error('Invalid credentials');
+    if (!isMatch) throw new Error('Incorrect password. Please try again.');
 
     const sessionId = await createSession(user.uid, ipAddress, deviceId);
     
