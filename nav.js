@@ -118,10 +118,10 @@
   // ── Navigate with transition ────────────────────────────────────────────────
   function navigateTo(dest) {
     if (!dest) return;
-    // Fade out
-    document.body.style.transition = 'opacity 0.25s ease';
+    // Fade out — redirect after transition completes
+    document.body.style.transition = 'opacity 0.3s ease';
     document.body.style.opacity = '0';
-    setTimeout(() => { window.location.href = dest; }, 250);
+    setTimeout(() => { window.location.href = dest; }, 300);
   }
 
 
@@ -270,11 +270,21 @@
 
 
   // ── Fade in on load ────────────────────────────────────────────────────────
+  // Sets body invisible immediately (before first paint), then fades in once
+  // the DOM is ready. This prevents a double-blink when navigating between pages.
   function fadeIn() {
+    // Apply opacity:0 synchronously before any paint
+    document.documentElement.style.setProperty('--page-opacity', '0');
     document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.3s ease';
-    window.addEventListener('load', () => {
-      setTimeout(() => { document.body.style.opacity = '1'; }, 50);
+    document.body.style.transition = 'none'; // no transition during initial hide
+    document.addEventListener('DOMContentLoaded', () => {
+      // Use double rAF to ensure the browser has painted the hidden state first
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.body.style.transition = 'opacity 0.3s ease';
+          document.body.style.opacity = '1';
+        });
+      });
     });
   }
 

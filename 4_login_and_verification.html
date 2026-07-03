@@ -396,9 +396,10 @@
       localStorage.setItem('foodRescueUser',         JSON.stringify(user));
       localStorage.setItem('fr_role',                user.role || 'restaurant');
       toast('Login successful! Redirecting...');
-      document.body.style.transition = 'opacity 0.3s';
+      // Single smooth fade-out — nav.js will fade-in the destination page
+      document.body.style.transition = 'opacity 0.3s ease';
       document.body.style.opacity    = '0';
-      setTimeout(() => { window.location.href = DASHBOARDS[user.role] || '7_restaurant_dashboard.html'; }, 500);
+      setTimeout(() => { window.location.href = DASHBOARDS[user.role] || '7_restaurant_dashboard.html'; }, 350);
     }
 
     // ── Verify OTP (email OTP login path) ──────────────────────────────────────
@@ -490,11 +491,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       wireBoxes('#otp-inputs input',       verifyOTP);
       wireBoxes('#reset-otp-inputs input');
-
-      // Fade in
-      document.body.style.opacity    = '0';
-      document.body.style.transition = 'opacity 0.3s ease';
-      requestAnimationFrame(() => { document.body.style.opacity = '1'; });
+      // NOTE: fade-in is handled globally by nav.js — no duplicate needed here
     });
   </script>
 

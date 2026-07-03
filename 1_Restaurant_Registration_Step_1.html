@@ -252,6 +252,8 @@
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
+        const PROD_API = 'https://foodrescue-jhyr.onrender.com/api';
+
         async function sendOTP() {
             const email = document.getElementById('emailInput').value;
             if(!email) return showRegError('Please enter your email address first.');
@@ -261,15 +263,21 @@
             btn.innerHTML = 'Sending...';
 
             try {
-                // Call actual backend to send OTP
-                await ApiClient.post('/auth/verify/send', { email });
+                // Use direct fetch with production URL to avoid localhost ApiClient issues
+                const res = await fetch(`${PROD_API}/auth/otp/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to send OTP.');
                 document.getElementById('otpSection').classList.remove('hidden');
                 btn.classList.add('hidden');
                 startCountdown();
                 // Re-init OTP inputs now that the section is visible
                 if (typeof window.initOTPInputs === 'function') window.initOTPInputs();
             } catch (error) {
-                showRegError(error.message || 'Failed to send OTP.');
+                showRegError(error.message || 'Failed to send OTP. Please check your connection.');
                 btn.disabled = false;
                 btn.innerHTML = 'Verify Email';
             }
@@ -298,8 +306,15 @@
             if (otp.length !== 6) return showRegError('Please enter the full 6-digit OTP.');
 
             try {
-                // Call actual backend to verify OTP
-                await ApiClient.post('/auth/verify/confirm', { email, otp });
+                // Use direct fetch with production URL
+                const res = await fetch(`${PROD_API}/auth/otp/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, otp })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Invalid OTP. Please try again.');
+                
                 document.getElementById('otpSection').classList.add('hidden');
                 document.getElementById('successBadge').classList.remove('hidden');
                 
@@ -398,7 +413,10 @@
                 regData.ownerName = ownerName;
                 localStorage.setItem('restaurant_reg_data', JSON.stringify(regData));
 
-                window.location.href = '2_Restaurant_Registration_Step_2.html';
+                // Smooth fade-out before redirect (nav.js will fade-in the next page)
+                document.body.style.transition = 'opacity 0.3s ease';
+                document.body.style.opacity = '0';
+                setTimeout(() => { window.location.href = '2_Restaurant_Registration_Step_2.html'; }, 300);
             } catch(error) {
                 const msg = error.message || 'Failed to create account.';
                 showRegError(
