@@ -437,36 +437,80 @@
         });
     </script>
 <script src="js/api.js"></script><script src="js/dashboard.js"></script><script>document.addEventListener("DOMContentLoaded", () => { DashboardLoader.requireAuth() && DashboardLoader.loadRestaurant(); });</script><script src="nav.js"></script><script>
-// Bottom nav wiring
 document.addEventListener('DOMContentLoaded', () => {
+  // ── Sidebar nav wiring ──────────────────────────────────────────
+  const sidebarLinks = {
+    'grid_view':    '7_restaurant_dashboard.html',
+    'receipt_long': '13_impact_analytics.html',
+    'leaderboard':  '13_impact_analytics.html',
+    'group':        '#volunteers',  // placeholder until page is created
+    'settings':     '#settings',    // placeholder until page is created
+    'logout':       null,           // handled below
+  };
+  document.querySelectorAll('aside nav a, aside a').forEach(el => {
+    const icon = el.querySelector('[data-icon]')?.getAttribute('data-icon') ||
+                 el.querySelector('.material-symbols-outlined')?.textContent?.trim();
+    if (icon === 'logout') {
+      el.href = '#';
+      el.onclick = (e) => { e.preventDefault(); localStorage.clear(); window.location.href = '1_splash_screen.html'; };
+      return;
+    }
+    if (sidebarLinks[icon]) {
+      el.href = '#';
+      el.onclick = (e) => { e.preventDefault(); window.location.href = sidebarLinks[icon]; };
+    }
+  });
+
+  // ── Bottom nav wiring ───────────────────────────────────────────
   const navMap = {
-    'dashboard': '7_restaurant_dashboard.html',
-    'history':   '13_impact_analytics.html',
-    'add_circle': '8_create_food_donation.html',
+    'dashboard':     '7_restaurant_dashboard.html',
+    'history':       '13_impact_analytics.html',
+    'add_circle':    '8_create_food_donation.html',
     'notifications': '11_notifications.html',
-    'person':    '12_profile.html',
+    'person':        '12_profile.html',
   };
   document.querySelectorAll('nav a').forEach(el => {
-    const icon = el.querySelector('.material-symbols-outlined')?.textContent?.trim();
+    const icon = el.querySelector('[data-icon]')?.getAttribute('data-icon') ||
+                 el.querySelector('.material-symbols-outlined')?.textContent?.trim();
     if (navMap[icon]) {
       el.href = '#';
       el.onclick = (e) => { e.preventDefault(); window.location.href = navMap[icon]; };
     }
   });
-  // Header notifications bell
+
+  // ── Header notifications bell ────────────────────────────────────
   document.querySelectorAll('header button').forEach(btn => {
-    if (btn.querySelector('.material-symbols-outlined')?.textContent?.trim() === 'notifications') {
-      btn.onclick = () => window.location.href = '11_notifications.html';
+    const icon = btn.querySelector('[data-icon]')?.getAttribute('data-icon') ||
+                 btn.querySelector('.material-symbols-outlined')?.textContent?.trim();
+    if (icon === 'notifications') btn.onclick = () => window.location.href = '11_notifications.html';
+  });
+
+  // ── Quick action buttons ──────────────────────────────────────────
+  document.querySelectorAll('section button').forEach(btn => {
+    const text = btn.textContent.trim().toLowerCase();
+    const icon = btn.querySelector('[data-icon]')?.getAttribute('data-icon') ||
+                 btn.querySelector('.material-symbols-outlined')?.textContent?.trim();
+    if (text.includes('donate food') || icon === 'add_circle') {
+      btn.onclick = () => window.location.href = '8_create_food_donation.html';
+    } else if (text.includes('track pickup') || icon === 'local_shipping') {
+      btn.onclick = () => alert('Track Pickup page coming soon! Create it in Stitch.');
+    } else if (text.includes('history') && icon === 'history') {
+      btn.onclick = () => window.location.href = '13_impact_analytics.html';
+    } else if (text.includes('view all') || text.includes('view analytics') || text.includes('analytics')) {
+      btn.onclick = () => window.location.href = '13_impact_analytics.html';
     }
   });
-  // "Create Donation" button
-  document.querySelectorAll('button, a').forEach(el => {
-    const text = el.textContent.trim().toLowerCase();
-    if (text.includes('create food') || text.includes('post donation') || text === 'donate') {
-      el.onclick = (e) => { e.preventDefault(); window.location.href = '8_create_food_donation.html'; };
+
+  // ── FAB (+) button ─────────────────────────────────────────────────
+  document.querySelectorAll('button').forEach(btn => {
+    const icon = btn.querySelector('[data-icon]')?.getAttribute('data-icon') ||
+                 btn.querySelector('.material-symbols-outlined')?.textContent?.trim();
+    if (icon === 'add' && btn.classList.contains('fixed')) {
+      btn.onclick = () => window.location.href = '8_create_food_donation.html';
     }
   });
-  // Load live dashboard data
+
+  // ── Load live dashboard data ───────────────────────────────────────
   if (typeof DashboardLoader !== 'undefined') {
     DashboardLoader.requireAuth() && DashboardLoader.loadRestaurant();
   }
