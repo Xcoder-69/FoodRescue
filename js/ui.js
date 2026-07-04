@@ -75,10 +75,13 @@
 
   window.frNavigate = function(dest) {
     if (!dest || dest === '#') return;
-    document.body.style.transition = 'opacity .22s ease,transform .22s ease';
+    document.body.style.transition = 'opacity .12s ease, transform .12s ease';
     document.body.style.opacity    = '0';
-    document.body.style.transform  = 'translateY(-6px)';
-    setTimeout(function(){ window.location.href = dest; }, 240);
+    document.body.style.transform  = 'translateY(-4px)';
+    setTimeout(function(){ 
+      if (dest === 'BACK') window.history.back();
+      else window.location.href = dest; 
+    }, 140);
   };
 
   /* ---- 2. BACK BUTTON ---- */
@@ -101,43 +104,57 @@
           clickable.style.cursor = 'pointer';
           clickable.addEventListener('click', function(e) {
             e.preventDefault(); e.stopPropagation();
-            window.frNavigate(dest);
+            if (document.referrer && document.referrer.indexOf(window.location.host) !== -1) window.frNavigate('BACK');
+            else window.frNavigate(dest);
           });
         }
       }
     });
     if (found) return;
 
-    /* No existing back icon — inject a floating FAB.
-       Position: bottom-left on mobile (avoids top hamburger overlap).
-       On desktop (lg:) where sidebar is visible, hide it. */
-    var s = document.createElement('style');
-    s.textContent =
-      '#fr-back{' +
-        'position:fixed;bottom:88px;left:16px;z-index:9998;' +
-        'width:44px;height:44px;border-radius:50%;' +
-        'background:rgba(255,255,255,.96);' +
-        'border:1.5px solid rgba(0,108,73,.22);' +
-        'box-shadow:0 4px 18px rgba(0,108,73,.20);' +
-        'display:flex;align-items:center;justify-content:center;' +
-        'cursor:pointer;color:#006c49;' +
-        'transition:transform .18s ease,box-shadow .18s ease,background .18s ease;' +
-        'backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);' +
-      '}' +
-      '#fr-back:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(0,108,73,.30);background:#e8f5ef;}' +
-      '#fr-back:active{transform:scale(.9);}' +
-      '#fr-back .material-symbols-outlined{font-size:22px;pointer-events:none;}' +
-      /* Hide on desktop where sidebar already provides navigation */
-      '@media(min-width:1024px){#fr-back{display:none;}}';
-    document.head.appendChild(s);
-
+    /* Inject back button. Try to put it in the top header flex container first. */
     var btn = document.createElement('button');
-    btn.id = 'fr-back';
+    btn.className = 'fr-injected-back';
     btn.title = 'Go Back';
     btn.setAttribute('aria-label', 'Go Back');
     btn.innerHTML = '<span class="material-symbols-outlined">arrow_back</span>';
-    btn.addEventListener('click', function() { window.frNavigate(dest); });
-    document.body.appendChild(btn);
+    
+    btn.addEventListener('click', function() { 
+      if (document.referrer && document.referrer.indexOf(window.location.host) !== -1) window.frNavigate('BACK');
+      else window.frNavigate(dest); 
+    });
+
+    var headerFlex = document.querySelector('header .flex.items-center.gap-4') || 
+                     document.querySelector('header .flex.items-center');
+    
+    if (headerFlex) {
+      /* Make it fit nicely in the header */
+      btn.style.cssText = 'display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:none;background:rgba(0,108,73,0.08);color:#006c49;cursor:pointer;margin-right:8px;transition:background 0.2s;';
+      btn.onmouseover = function() { btn.style.background = 'rgba(0,108,73,0.15)'; };
+      btn.onmouseout = function() { btn.style.background = 'rgba(0,108,73,0.08)'; };
+      headerFlex.insertBefore(btn, headerFlex.firstChild);
+    } else {
+      /* Fallback to a floating button at the TOP left (avoids bottom overlapping) */
+      var s = document.createElement('style');
+      s.textContent =
+        '.fr-injected-back{' +
+          'position:fixed;top:16px;left:16px;z-index:9998;' +
+          'width:44px;height:44px;border-radius:50%;' +
+          'background:rgba(255,255,255,.96);' +
+          'border:1.5px solid rgba(0,108,73,.22);' +
+          'box-shadow:0 4px 18px rgba(0,108,73,.20);' +
+          'display:flex;align-items:center;justify-content:center;' +
+          'cursor:pointer;color:#006c49;' +
+          'transition:transform .18s ease,box-shadow .18s ease,background .18s ease;' +
+          'backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);' +
+        '}' +
+        '.fr-injected-back:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(0,108,73,.30);background:#e8f5ef;}' +
+        '.fr-injected-back:active{transform:scale(.9);}' +
+        '.fr-injected-back .material-symbols-outlined{font-size:22px;pointer-events:none;}' +
+        '@media(min-width:1024px){.fr-injected-back{display:none;}}';
+      document.head.appendChild(s);
+      document.body.appendChild(btn);
+    }
   }
 
 
