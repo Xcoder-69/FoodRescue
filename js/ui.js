@@ -86,15 +86,20 @@
     var dest = BACK_MAP[currentPage];
     if (NO_BACK.indexOf(currentPage) !== -1 || !dest) return;
 
-    /* Wire any existing arrow_back elements first */
+    /* Wire any existing arrow_back icon elements first */
     var found = false;
     document.querySelectorAll('button,a,span').forEach(function(el) {
-      if (el.textContent.trim() === 'arrow_back') {
+      if (el.textContent.trim() === 'arrow_back' && el.children.length === 0) {
         found = true;
-        if (!el._frWired) {
-          el._frWired = true;
-          el.style.cursor = 'pointer';
-          el.addEventListener('click', function(e) {
+        /* Walk up to the real clickable ancestor */
+        var clickable = el;
+        if (el.parentElement && (el.parentElement.tagName === 'BUTTON' || el.parentElement.tagName === 'A')) {
+          clickable = el.parentElement;
+        }
+        if (!clickable._frWired) {
+          clickable._frWired = true;
+          clickable.style.cursor = 'pointer';
+          clickable.addEventListener('click', function(e) {
             e.preventDefault(); e.stopPropagation();
             window.frNavigate(dest);
           });
@@ -103,82 +108,161 @@
     });
     if (found) return;
 
-    /* Floating FAB back button */
+    /* No existing back icon — inject a floating FAB.
+       Position: bottom-left on mobile (avoids top hamburger overlap).
+       On desktop (lg:) where sidebar is visible, hide it. */
     var s = document.createElement('style');
     s.textContent =
-      '#fr-back{position:fixed;top:16px;left:16px;z-index:9998;width:44px;height:44px;border-radius:50%;' +
-      'background:rgba(255,255,255,.95);border:1.5px solid rgba(0,108,73,.2);' +
-      'box-shadow:0 2px 16px rgba(0,108,73,.18);display:flex;align-items:center;justify-content:center;' +
-      'cursor:pointer;color:#006c49;transition:transform .2s,box-shadow .2s,background .2s;' +
-      'backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}' +
-      '#fr-back:hover{transform:scale(1.1) translateX(-2px);box-shadow:0 4px 24px rgba(0,108,73,.28);background:#e6f4ef;}' +
-      '#fr-back:active{transform:scale(.93);}' +
-      '#fr-back .material-symbols-outlined{font-size:22px;pointer-events:none;}';
+      '#fr-back{' +
+        'position:fixed;bottom:88px;left:16px;z-index:9998;' +
+        'width:44px;height:44px;border-radius:50%;' +
+        'background:rgba(255,255,255,.96);' +
+        'border:1.5px solid rgba(0,108,73,.22);' +
+        'box-shadow:0 4px 18px rgba(0,108,73,.20);' +
+        'display:flex;align-items:center;justify-content:center;' +
+        'cursor:pointer;color:#006c49;' +
+        'transition:transform .18s ease,box-shadow .18s ease,background .18s ease;' +
+        'backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);' +
+      '}' +
+      '#fr-back:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(0,108,73,.30);background:#e8f5ef;}' +
+      '#fr-back:active{transform:scale(.9);}' +
+      '#fr-back .material-symbols-outlined{font-size:22px;pointer-events:none;}' +
+      /* Hide on desktop where sidebar already provides navigation */
+      '@media(min-width:1024px){#fr-back{display:none;}}';
     document.head.appendChild(s);
 
     var btn = document.createElement('button');
     btn.id = 'fr-back';
     btn.title = 'Go Back';
-    btn.setAttribute('aria-label','Go Back');
-    btn.innerHTML = '<span class= material-symbols-outlined>arrow_back</span>';
-    btn.addEventListener('click', function(){ window.frNavigate(dest); });
+    btn.setAttribute('aria-label', 'Go Back');
+    btn.innerHTML = '<span class="material-symbols-outlined">arrow_back</span>';
+    btn.addEventListener('click', function() { window.frNavigate(dest); });
     document.body.appendChild(btn);
   }
 
+
   /* ---- 3. SIDEBAR / HAMBURGER ---- */
   function initSidebar() {
-    var sidebar = document.querySelector('aside') ||
-                  document.getElementById('nav-drawer');
+    /* ── Find the sidebar panel (aside or drawer divs) ── */
+    var sidebar =
+      document.querySelector('aside') ||
+      document.getElementById('nav-drawer') ||
+      document.getElementById('sidebar') ||
+      document.querySelector('[id*="sidebar"]') ||
+      document.querySelector('[id*="drawer"]') ||
+      document.querySelector('[class*="sidebar"]');
     if (!sidebar) return;
 
-    var triggers = Array.from(document.querySelectorAll('*')).filter(function(el) {
-      var t = el.textContent.trim();
-      return (t === 'menu' || t === 'menu_open') &&
-             el.children.length === 0 &&
-             !el.closest('aside');
-    });
-    if (!triggers.length) return;
+    /* ── Find all hamburger trigger buttons ──
+       Strategy 1: button containing a material icon with text 'menu'
+       Strategy 2: any element whose DIRECT text child is 'menu' / 'menu_open'
+    */
+    var triggerBtns = [];
 
+    // S1: button > span.material-symbols-outlined with text 'menu'
+    document.querySelectorAll('button').forEach(function(btn) {
+      if (btn.closest('aside') || btn.closest('[id*="sidebar"]')) return;
+      var icon = btn.querySelector('.material-symbols-outlined, .material-icons');
+      if (icon && (icon.textContent.trim() === 'menu' || icon.textContent.trim() === 'menu_open')) {
+        triggerBtns.push(btn);
+      }
+    });
+
+    // S2: any leaf element whose text is exactly 'menu' (old pages)
+    if (!triggerBtns.length) {
+      Array.from(document.querySelectorAll('*')).forEach(function(el) {
+        var t = el.textContent.trim();
+        if ((t === 'menu' || t === 'menu_open') && el.children.length === 0 && !el.closest('aside')) {
+          var clickable = (el.parentElement &&
+            (el.parentElement.tagName === 'BUTTON' || el.parentElement.tagName === 'A'))
+            ? el.parentElement : el;
+          if (triggerBtns.indexOf(clickable) === -1) triggerBtns.push(clickable);
+        }
+      });
+    }
+
+    if (!triggerBtns.length) return;
+
+    /* ── Dark overlay ── */
     var overlay = document.createElement('div');
     overlay.id = 'fr-ov';
     document.body.appendChild(overlay);
 
+    /* ── Styles ──
+       Key fix for Stitch pages: aside has class 'hidden lg:flex'.
+       We override display via fr-open so it becomes flex on mobile too.
+    */
     var s = document.createElement('style');
     s.textContent =
-      '#fr-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:49;' +
-      'backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);}' +
-      '#fr-ov.on{display:block;animation:fr-ol .22s ease}' +
+      /* Overlay */
+      '#fr-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.40);z-index:49;' +
+        'backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);}' +
+      '#fr-ov.on{display:block;animation:fr-ol .22s ease forwards;}' +
       '@keyframes fr-ol{from{opacity:0}to{opacity:1}}' +
+      /* Mobile sidebar — applies to both aside and div sidebars */
       '@media(max-width:1023px){' +
-      'aside{position:fixed!important;top:0!important;left:0!important;height:100%!important;' +
-      'z-index:50!important;display:flex!important;' +
-      'transform:translateX(-110%)!important;' +
-      'transition:transform .3s cubic-bezier(.22,1,.36,1)!important;will-change:transform;}' +
-      'aside.fr-open{transform:translateX(0)!important;}}';
+        'aside,#sidebar,[id*="sidebar"]{' +
+          'position:fixed!important;top:0!important;left:0!important;' +
+          'height:100dvh!important;height:100vh!important;' +
+          'z-index:50!important;' +
+          'display:none!important;' +  /* hidden by default */
+          'flex-direction:column!important;' +
+          'transform:translateX(-100%)!important;' +
+          'transition:transform .28s cubic-bezier(.22,1,.36,1)!important;' +
+          'will-change:transform;overflow-y:auto;' +
+        '}' +
+        /* When open: show + slide in */
+        'aside.fr-open,[id*="sidebar"].fr-open{' +
+          'display:flex!important;' +
+          'transform:translateX(0)!important;' +
+        '}' +
+      '}';
     document.head.appendChild(s);
 
     var isOpen = false;
-    function open()  { isOpen=true;  sidebar.classList.add('fr-open');    overlay.classList.add('on');    document.body.style.overflow='hidden'; }
-    function close() { isOpen=false; sidebar.classList.remove('fr-open'); overlay.classList.remove('on'); document.body.style.overflow=''; }
 
-    triggers.forEach(function(trigger) {
-      var el = (trigger.parentElement &&
-        (trigger.parentElement.tagName==='BUTTON'||trigger.parentElement.tagName==='A'))
-        ? trigger.parentElement : trigger;
-      el.style.cursor = 'pointer';
-      var fresh = el.cloneNode(true);
-      el.parentNode.replaceChild(fresh, el);
+    function openSidebar() {
+      isOpen = true;
+      sidebar.classList.add('fr-open');
+      overlay.classList.add('on');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      isOpen = false;
+      sidebar.classList.remove('fr-open');
+      overlay.classList.remove('on');
+      document.body.style.overflow = '';
+    }
+
+    /* Wire each hamburger button — clone to strip stale handlers */
+    triggerBtns.forEach(function(btn) {
+      var fresh = btn.cloneNode(true);
+      btn.parentNode.replaceChild(fresh, btn);
+      fresh.style.cursor = 'pointer';
       fresh.addEventListener('click', function(e) {
-        e.preventDefault(); e.stopPropagation();
-        isOpen ? close() : open();
+        e.preventDefault();
+        e.stopPropagation();
+        isOpen ? closeSidebar() : openSidebar();
       });
     });
 
-    overlay.addEventListener('click', close);
-    sidebar.querySelectorAll('a,button').forEach(function(el) {
-      el.addEventListener('click', function() { if(window.innerWidth<1024) setTimeout(close,150); });
+    /* Close on overlay click */
+    overlay.addEventListener('click', closeSidebar);
+
+    /* Close when a sidebar link is tapped on mobile */
+    sidebar.querySelectorAll('a, button').forEach(function(el) {
+      el.addEventListener('click', function() {
+        if (window.innerWidth < 1024) setTimeout(closeSidebar, 160);
+      });
+    });
+
+    /* Close on Escape key */
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && isOpen) closeSidebar();
     });
   }
+
 
   /* ---- 4. COUNT-UP (scroll-triggered, 60fps, a11y-safe) ---- */
 
