@@ -241,20 +241,31 @@
 
     function openSidebar() {
       isOpen = true;
-      sidebar.classList.add('fr-open');
-      overlay.classList.add('on');
-      document.body.style.overflow = 'hidden';
+      if (window.innerWidth >= 1024) {
+        sidebar.classList.remove('fr-closed');
+        document.body.classList.remove('fr-sidebar-collapsed');
+      } else {
+        sidebar.classList.add('fr-open');
+        overlay.classList.add('on');
+        document.body.style.overflow = 'hidden';
+      }
     }
 
     function closeSidebar() {
       isOpen = false;
-      sidebar.classList.remove('fr-open');
-      overlay.classList.remove('on');
-      document.body.style.overflow = '';
+      if (window.innerWidth >= 1024) {
+        sidebar.classList.add('fr-closed');
+        document.body.classList.add('fr-sidebar-collapsed');
+      } else {
+        sidebar.classList.remove('fr-open');
+        overlay.classList.remove('on');
+        document.body.style.overflow = '';
+      }
     }
 
     /* Wire each hamburger button — clone to strip stale handlers */
     triggerBtns.forEach(function(btn) {
+      btn.classList.add('fr-hamburger');
       var fresh = btn.cloneNode(true);
       btn.parentNode.replaceChild(fresh, btn);
       fresh.style.cursor = 'pointer';
@@ -265,17 +276,24 @@
       });
     });
 
-    /* Inject a close 'X' button into the sidebar itself (visible only on mobile) */
+    /* Inject a close 'X' button into the sidebar itself (visible everywhere now) */
     var closeBtn = document.createElement('button');
-    closeBtn.className = 'fr-sidebar-close lg:hidden';
+    closeBtn.className = 'fr-sidebar-close';
     closeBtn.innerHTML = '<span class="material-symbols-outlined">close</span>';
     closeBtn.style.cssText = 'position:absolute;top:16px;right:16px;background:rgba(0,108,73,.08);color:#006c49;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:99;transition:background 0.2s;';
     closeBtn.onmouseover = function() { closeBtn.style.background = 'rgba(0,108,73,.15)'; };
     closeBtn.onmouseout = function() { closeBtn.style.background = 'rgba(0,108,73,.08)'; };
     closeBtn.addEventListener('click', closeSidebar);
-    // Hide it on large screens (>=1024px)
+    
+    // Desktop collapse styles
     var styleNode = document.createElement('style');
-    styleNode.textContent = '@media(min-width:1024px){.fr-sidebar-close{display:none!important;}}';
+    styleNode.textContent = 
+      '@media(min-width:1024px){' +
+        'aside.fr-closed, [id*="sidebar"].fr-closed { display: none !important; }' +
+        'body.fr-sidebar-collapsed main, body.fr-sidebar-collapsed body { padding-left: 0 !important; margin-left: 0 !important; transition: padding-left 0.3s ease; }' +
+        'body.fr-sidebar-collapsed .fr-hamburger { display: block !important; }' +
+        'main { transition: padding-left 0.3s ease; }' +
+      '}';
     document.head.appendChild(styleNode);
     // Make sure sidebar is relatively positioned so the absolute close button stays inside
     if (window.getComputedStyle(sidebar).position === 'static') {
