@@ -75,14 +75,16 @@ var ApiClient = class {
                     response = await fetch(url, { ...options, headers });
                     data = await response.json();
                 } else {
-                    this.clearSession();
+                    // Don't redirect if in test mode
+                    if (localStorage.getItem('fr_test_mode') !== 'true') this.clearSession();
                     return null;
                 }
             }
 
             if (response.status === 401) {
                 console.warn('Session expired or unauthorized');
-                this.clearSession();
+                // Don't redirect if in test mode
+                if (localStorage.getItem('fr_test_mode') !== 'true') this.clearSession();
                 return null;
             }
 

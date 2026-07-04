@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -373,7 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const inputs = form.querySelectorAll("input, select, textarea");
         const payload = { foodName: inputs[0]?.value, quantity: inputs[1]?.value, expiresAt: inputs[2]?.value };
         await ApiClient.post("/donations", payload);
-        alert("✅ Food donation listed successfully!");
+        alert("? Food donation listed successfully!");
         window.location.href = "7_restaurant_dashboard.html";
       } catch(err) {
         alert("Failed: " + err.message);
@@ -389,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (icon === 'arrow_back' || text === 'back') { el.href='#'; el.onclick=(e)=>{e.preventDefault();window.location.href='7_restaurant_dashboard.html';}; }
   });
 });
-</script><script src="js/api.js"></script><script src="js/nav.js"></script></body></html>
+</script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
+</body></html>
 
 

@@ -50,8 +50,10 @@ function goToDashboard() {
   navigateTo(map[role] || PAGES.login);
 }
 
-// ─── Check if logged in ───────────────────────────────────────────────────────
+// ─── Check if logged in (test mode bypasses real auth) ───────────────────────
 function isLoggedIn() {
+  // Test mode: fake token counts as logged in
+  if (localStorage.getItem('fr_test_mode') === 'true') return true;
   return !!localStorage.getItem('foodRescueToken');
 }
 
@@ -69,9 +71,7 @@ function wireSplash() {
   // Removed auto-redirect to allow users to click manually.
   const autoTimer = null;
 
-
   // Login button
-  const loginBtn = document.querySelector('button:first-of-type, [data-action="login"]');
   const allBtns  = document.querySelectorAll('button');
 
   allBtns.forEach(btn => {
@@ -81,6 +81,10 @@ function wireSplash() {
     }
     if (text.includes('register') || text.includes('get started') || text.includes('join') || text.includes('begin')) {
       btn.addEventListener('click', () => { clearTimeout(autoTimer); navigateTo(PAGES.roleSelection); });
+    }
+    // Test Mode quick-access button on splash
+    if (text.includes('test mode') || text.includes('demo')) {
+      btn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); if (window.FRTestMode) window.FRTestMode.activate('restaurant'); });
     }
   });
 
