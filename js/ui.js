@@ -221,12 +221,13 @@
         'aside,#sidebar,[id*="sidebar"]{' +
           'position:fixed!important;top:0!important;left:0!important;' +
           'height:100dvh!important;height:100vh!important;' +
+          'width:280px!important;max-width:85vw!important;' +
           'z-index:50!important;' +
           'display:none!important;' +  /* hidden by default */
           'flex-direction:column!important;' +
           'transform:translateX(-100%)!important;' +
           'transition:transform .28s cubic-bezier(.22,1,.36,1)!important;' +
-          'will-change:transform;overflow-y:auto;' +
+          'will-change:transform;overflow-y:auto;background-color:#f4fbf4!important;' +
         '}' +
         /* When open: show + slide in */
         'aside.fr-open,[id*="sidebar"].fr-open{' +
@@ -268,7 +269,9 @@
     var closeBtn = document.createElement('button');
     closeBtn.className = 'fr-sidebar-close lg:hidden';
     closeBtn.innerHTML = '<span class="material-symbols-outlined">close</span>';
-    closeBtn.style.cssText = 'position:absolute;top:16px;right:16px;background:rgba(0,108,73,.1);color:#006c49;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:99;';
+    closeBtn.style.cssText = 'position:absolute;top:16px;right:16px;background:rgba(0,108,73,.08);color:#006c49;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:99;transition:background 0.2s;';
+    closeBtn.onmouseover = function() { closeBtn.style.background = 'rgba(0,108,73,.15)'; };
+    closeBtn.onmouseout = function() { closeBtn.style.background = 'rgba(0,108,73,.08)'; };
     closeBtn.addEventListener('click', closeSidebar);
     // Hide it on large screens (>=1024px)
     var styleNode = document.createElement('style');
