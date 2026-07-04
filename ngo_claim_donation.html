@@ -289,37 +289,16 @@
 </div>
 </div>
 </section>
-</main>
-<!-- Confirm Button (Floating) -->
-<div class="fixed bottom-0 left-0 right-0 p-margin-mobile bg-gradient-to-t from-background via-background to-transparent pt-8">
-<button class="w-full bg-primary text-on-primary font-title-lg py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all" id="confirmBtn">
+<!-- Confirm Button -->
+<div class="pt-4 pb-12">
+<button class="w-full bg-primary text-on-primary font-title-lg py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all" id="confirmBtn" onclick="window.frNavigate('ngo_claim_success.html')">
             Confirm Claim 🛒
         </button>
 </div>
-<!-- Bottom Sheet Dialog -->
-<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300" id="overlay"></div>
-<div class="fixed bottom-0 left-0 right-0 bg-surface rounded-t-[32px] z-50 p-stack-lg flex flex-col items-center text-center bottom-sheet max-w-xl mx-auto" id="bottomSheet">
-<div class="w-12 h-1.5 bg-outline-variant rounded-full mb-8"></div>
-<div class="w-20 h-20 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mb-stack-md animate-bounce">
-<span class="material-symbols-outlined text-[48px]" style="font-variation-settings: 'wght' 700;">check</span>
-</div>
-<h2 class="text-headline-md font-headline-md text-primary mb-2">Claim Confirmed!</h2>
-<p class="text-body-lg font-body-lg text-on-surface-variant mb-stack-lg max-w-xs">
-            We've notified Fresh Market. Your volunteer is being updated with the pickup details.
-        </p>
-<button class="w-full bg-surface-container-highest text-primary font-label-lg py-4 rounded-xl hover:bg-surface-variant transition-colors mb-stack-sm" onclick="window.location.reload()">
-            View My Claims
-        </button>
-<button class="w-full bg-primary text-on-primary font-label-lg py-4 rounded-xl shadow-md transition-transform active:scale-95" onclick="window.location.reload()">
-            Back to Home
-        </button>
-</div>
+</main>
 <script>
         const volunteerToggle = document.getElementById('volunteerToggle');
         const volunteerSection = document.getElementById('volunteerSection');
-        const confirmBtn = document.getElementById('confirmBtn');
-        const bottomSheet = document.getElementById('bottomSheet');
-        const overlay = document.getElementById('overlay');
 
         // Toggle volunteer section visibility
         volunteerToggle.addEventListener('change', (e) => {
@@ -329,24 +308,6 @@
             } else {
                 volunteerSection.classList.add('hidden');
             }
-        });
-
-        // Show bottom sheet on confirmation
-        confirmBtn.addEventListener('click', () => {
-            overlay.classList.remove('hidden');
-            setTimeout(() => {
-                overlay.classList.add('opacity-100');
-                bottomSheet.classList.add('active');
-            }, 10);
-        });
-
-        // Close on overlay click
-        overlay.addEventListener('click', () => {
-            bottomSheet.classList.remove('active');
-            overlay.classList.remove('opacity-100');
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-            }, 400);
         });
     </script>
 <style>

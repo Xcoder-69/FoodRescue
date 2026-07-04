@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Donation Claimed | FoodRescue</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#006c49] min-h-screen flex flex-col items-center justify-center p-6 text-center">
+    
+    <!-- Party Popper Icon -->
+    <div class="text-[80px] mb-6 animate-bounce">
+        🎉
+    </div>
+
+    <!-- Main Heading -->
+    <h1 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
+        Donation Claimed!
+    </h1>
+    
+    <!-- Subtext -->
+    <p class="text-white/80 text-lg md:text-xl max-w-md mx-auto mb-10 leading-relaxed font-medium">
+        A volunteer will be assigned shortly to pick up this donation. Thank you for your impact!
+    </p>
+
+    <!-- Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 w-full max-w-sm mx-auto">
+        <button onclick="window.frNavigate('10_ngo_dashboard.html')" class="w-full bg-white text-[#006c49] font-bold text-lg py-4 px-6 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all">
+            Go to Dashboard
+        </button>
+        <button onclick="window.frNavigate('16_donation_monitoring.html')" class="w-full bg-transparent border-2 border-white/30 text-white font-bold text-lg py-4 px-6 rounded-full hover:bg-white/10 active:scale-95 transition-all">
+            Track Claim Status
+        </button>
+    </div>
+
+    <script src="js/ui.js"></script>
+</body>
+</html>
