@@ -427,25 +427,26 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('button, a').forEach(el => {
     const text = el.textContent.trim().toLowerCase();
     if (text === 'view all' || text.includes('view all')) {
-      el.onclick = (e) => { e.preventDefault(); alert('NGO Browse Donations page coming soon! Create it in Stitch.'); };
+      el.onclick = (e) => { e.preventDefault(); window.frNavigate('ngo_browse_donations.html'); };
     }
     // ── Claim Now buttons ──
     if (text.includes('claim now') || text.includes('claim')) {
-      el.onclick = () => alert('Claim flow coming soon! Create ngo_claim_donation.html in Stitch.');
+      el.onclick = () => window.frNavigate('ngo_claim_donation.html');
     }
     // ── Confirm Drop button ──
     if (text.includes('confirm drop')) {
-      el.onclick = () => alert('Delivery confirmation coming soon! Create delivery_confirmation.html in Stitch.');
+      el.onclick = () => window.frNavigate('delivery_confirmation.html');
     }
     // ── Assign button ──
     if (text === 'assign') {
-      el.onclick = () => alert('Volunteer assignment page coming soon!');
+      el.onclick = () => window.frNavigate('restaurant_volunteers.html');
     }
   });
+
 
   if (typeof DashboardLoader !== 'undefined') DashboardLoader.requireAuth() && DashboardLoader.loadNgo();
 });
 </script><script src="js/api.js"></script><script src="js/dashboard.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
-</body></html>
+<script src="js/ui.js"></script></body></html>
 
 

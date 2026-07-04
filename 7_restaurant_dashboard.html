@@ -443,8 +443,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'grid_view':    '7_restaurant_dashboard.html',
     'receipt_long': '13_impact_analytics.html',
     'leaderboard':  '13_impact_analytics.html',
-    'group':        '#volunteers',  // placeholder until page is created
-    'settings':     '#settings',    // placeholder until page is created
+    'group':        'restaurant_volunteers.html',
+    'settings':     'restaurant_settings.html',
     'logout':       null,           // handled below
   };
   document.querySelectorAll('aside nav a, aside a').forEach(el => {
@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (text.includes('donate food') || icon === 'add_circle') {
       btn.onclick = () => window.location.href = '8_create_food_donation.html';
     } else if (text.includes('track pickup') || icon === 'local_shipping') {
-      btn.onclick = () => alert('Track Pickup page coming soon! Create it in Stitch.');
+      btn.onclick = () => window.frNavigate('restaurant_track_pickup.html');
     } else if (text.includes('history') && icon === 'history') {
       btn.onclick = () => window.location.href = '13_impact_analytics.html';
     } else if (text.includes('view all') || text.includes('view analytics') || text.includes('analytics')) {
@@ -516,6 +516,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script><script src="js/api.js"></script><script src="js/dashboard.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
-</body></html>
+<script src="js/ui.js"></script></body></html>
 
 

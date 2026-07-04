@@ -147,7 +147,7 @@
 <nav class="w-[280px] h-screen fixed left-0 top-0 bg-surface-container-low/90 border-r border-outline-variant/30 backdrop-blur-xl shadow-2xl z-[100] flex flex-col py-8 overflow-y-auto">
 <div class="px-8 mb-10">
 <h1 class="font-headline-md text-headline-md font-bold text-secondary-container">COMMAND CENTER</h1>
-<p class="text-label-md font-label-md text-on-surface-variant opacity-60">Global Ops Admin • L4</p>
+<p class="text-label-md font-label-md text-on-surface-variant opacity-60">Global Ops Admin  L4</p>
 </div>
 <div class="flex-1 space-y-1">
 <!-- Active State: Dashboard -->
@@ -337,8 +337,8 @@
 <span class="material-symbols-outlined text-primary">sensors</span>
 </div>
 <div>
-<h4 class="text-label-lg font-label-lg text-on-surface">Central Bakery • Bulk Salvage</h4>
-<p class="text-body-sm font-body-sm text-on-surface-variant/60">ID: #RESC-9904 • Dispatching Volunteer</p>
+<h4 class="text-label-lg font-label-lg text-on-surface">Central Bakery  Bulk Salvage</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant/60">ID: #RESC-9904  Dispatching Volunteer</p>
 </div>
 </div>
 <div class="text-right">
@@ -352,7 +352,7 @@
 <span class="material-symbols-outlined text-secondary-container">navigation</span>
 </div>
 <div>
-<h4 class="text-label-lg font-label-lg text-on-surface">Volunteer 042 • Route Active</h4>
+<h4 class="text-label-lg font-label-lg text-on-surface">Volunteer 042  Route Active</h4>
 <p class="text-body-sm font-body-sm text-on-surface-variant/60">Transit to 'Green Harvest NGO'</p>
 </div>
 </div>
@@ -368,7 +368,7 @@
 </div>
 <div>
 <h4 class="text-label-lg font-label-lg text-on-surface">Drop-off Confirmed</h4>
-<p class="text-body-sm font-body-sm text-on-surface-variant/60">Community Kitchen • Batch 44A</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant/60">Community Kitchen  Batch 44A</p>
 </div>
 </div>
 <div class="text-right">
@@ -448,11 +448,11 @@
 <div class="flex gap-12 animate-[scroll_30s_linear_infinite] whitespace-nowrap">
 <span class="text-[10px] font-mono-data text-on-surface-variant uppercase flex items-center gap-2">
 <span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> 
-                New Restaurant Approved: "Green Bistro" • LAT: 40.7128 LON: -74.0060
+                New Restaurant Approved: "Green Bistro"  LAT: 40.7128 LON: -74.0060
             </span>
 <span class="text-[10px] font-mono-data text-on-surface-variant uppercase flex items-center gap-2">
 <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 
-                Surplus Spike Detected: District 9 • Deploying mobile units
+                Surplus Spike Detected: District 9  Deploying mobile units
             </span>
 <span class="text-[10px] font-mono-data text-on-surface-variant uppercase flex items-center gap-2">
 <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 
@@ -502,5 +502,5 @@
         });
     </script>
 <script src="js/api.js"></script><script src="js/dashboard.js"></script><script>document.addEventListener("DOMContentLoaded", () => { if (!DashboardLoader.requireAuth()) return; ApiClient.get("/admin/security/system-status").then(d => { if (d && d.data) { const el = (id) => document.getElementById(id); if (el("stat-fraud")) el("stat-fraud").textContent = d.data.openFraudReports ?? 0; if (el("stat-banned")) el("stat-banned").textContent = d.data.totalBannedUsers ?? 0; } }).catch(e => console.warn(e)); });</script><script src="nav.js"></script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
-</body></html>
+<script src="js/ui.js"></script></body></html>
 

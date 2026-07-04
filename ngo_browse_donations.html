@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Browse Donations | FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed-variant": "#783200",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#dde4dd",
+                      "tertiary": "#0053db",
+                      "surface-container-high": "#e3eae3",
+                      "surface": "#f4fbf4",
+                      "on-tertiary-fixed-variant": "#003ea8",
+                      "background": "#f4fbf4",
+                      "primary-fixed": "#6ffbbe",
+                      "primary-container": "#10b981",
+                      "secondary-fixed": "#ffdbca",
+                      "on-tertiary-container": "#00328b",
+                      "surface-bright": "#f4fbf4",
+                      "surface-container": "#e8f0e9",
+                      "on-secondary": "#ffffff",
+                      "secondary": "#9d4300",
+                      "on-primary-fixed": "#002113",
+                      "tertiary-fixed": "#dbe1ff",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-background": "#161d19",
+                      "error": "#ba1a1a",
+                      "error-container": "#ffdad6",
+                      "on-secondary-container": "#5c2400",
+                      "on-primary-container": "#00422b",
+                      "on-primary-fixed-variant": "#005236",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-container": "#fd761a",
+                      "on-surface-variant": "#3c4a42",
+                      "inverse-surface": "#2b322d",
+                      "surface-container-low": "#eef6ee",
+                      "inverse-on-surface": "#ebf3eb",
+                      "on-tertiary-fixed": "#00174b",
+                      "tertiary-fixed-dim": "#b4c5ff",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed-dim": "#ffb690",
+                      "surface-tint": "#006c49",
+                      "outline": "#6c7a71",
+                      "surface-dim": "#d4dcd5",
+                      "on-secondary-fixed": "#341100",
+                      "tertiary-container": "#7f9fff",
+                      "on-error": "#ffffff",
+                      "inverse-primary": "#4edea3",
+                      "on-error-container": "#93000a",
+                      "outline-variant": "#bbcabf",
+                      "on-surface": "#161d19",
+                      "primary": "#006c49",
+                      "surface-container-highest": "#dde4dd"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "2xl": "1rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-md": "16px",
+                      "stack-lg": "32px",
+                      "container-padding-mobile": "16px",
+                      "stack-sm": "8px",
+                      "gutter": "24px",
+                      "container-padding-desktop": "32px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "label-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "title-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24 lg:pb-0 lg:pl-80">
+<!-- Top App Bar -->
+<header class="bg-surface-container-low dark:bg-surface-container-high shadow-sm w-full top-0 sticky z-40 flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16">
+<div class="flex items-center gap-4">
+<button class="lg:hidden p-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-95 duration-100">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">FoodRescue</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-95 duration-100 relative">
+<span class="material-symbols-outlined text-primary">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary-container rounded-full border-2 border-surface"></span>
+</button>
+<div class="w-10 h-10 rounded-full bg-cover bg-center border-2 border-primary-container" data-alt="A professional headshot of a diverse male volunteer in his early 30s, smiling warmly at the camera. He is wearing a clean green polo shirt with a subtle NGO logo. The background is a brightly lit, modern office space with soft natural light and greenery. High-end portrait photography style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDkG1EJaXAMkJYI_zWE9zGbKuw6hS1m5yu3FgYTb1DJiRCmnViAQZabwtmrvt8evetmmG4U3pQ0TIlHG6sQ5CL_ABlKjoanjMyejN0N98Hs36dz5ZzAnUTkd5sg0tKHzKeN0uLuMp4LMJyARAu1_PVyrpMO1r923Dtvj4gjv9pwa5anH8jJM0nXHnZzhBqKy_qOV3o2_0cOL4HX4C7Og0Jxp0ooKcQ-eK-ZeJJ7qpd3hXD6aw3whoqbIS0TOjXCT4u_eHVhqhh9_aE')"></div>
+</div>
+</header>
+<!-- Sidebar (Desktop Only) -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-full w-80 bg-surface-container dark:bg-surface-container-high shadow-xl flex-col py-stack-lg gap-stack-sm z-50">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-full bg-cover bg-center" data-alt="A professional headshot of Alex, a male volunteer, against a minimalist background. He is wearing a modern green uniform. Soft high-key lighting creates a warm and trustworthy atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDC_Pxhpvx8PXG70TQ8VZijI9tMtTr06nMppelznbfIU1BmI9wEMbv5M4rbCP3MpqCWFG2CoYaf_lA94vBBv3ZE-4DnnNEMjrep_Ht5aDItsFbsqr2bkGqDln68owqyFjqrXDcMLsU9XF4G9nB96Dpe9PSX4VS4A1CL5NXOpdnY7by9AS71xcHlpUhSJav8ruGJcRJ09EN3H1nzbbAqXzc1yRid_UDRXaSMvmCsBKMxPtz7ZZsV6IEAlt_uai_WAFcKrKjsdJseRtg')"></div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Alex Volunteer</p>
+<p class="text-xs text-on-surface-variant">Verified Rescuer • Level 4</p>
+</div>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-4 py-3 px-4 bg-secondary-container text-on-secondary-container font-bold rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="font-label-lg text-label-lg">My Donations</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-label-lg text-label-lg">Pickup Schedule</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-lg text-label-lg">Impact Report</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+</nav>
+</div>
+</aside>
+<main class="p-container-padding-mobile md:p-container-padding-desktop max-w-7xl mx-auto">
+<!-- Title Section -->
+<section class="mb-stack-lg">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Browse Donations</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg">Find available food near you</p>
+</section>
+<!-- Filter Bar -->
+<section class="mb-stack-lg space-y-4">
+<div class="flex gap-2">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-3 rounded-xl bg-surface-container-low border-none focus:ring-2 focus:ring-primary text-body-md font-body-md" placeholder="Search restaurant or food type..." type="text"/>
+</div>
+<button class="bg-surface-container-high p-3 rounded-xl hover:bg-surface-variant transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+<div class="flex gap-2 overflow-x-auto hide-scrollbar py-1">
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md whitespace-nowrap">All</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-md text-label-md whitespace-nowrap">Perishable</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-md text-label-md whitespace-nowrap">Bakery</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-md text-label-md whitespace-nowrap">Produce</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-md text-label-md whitespace-nowrap">Dairy</button>
+<button class="px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-md text-label-md whitespace-nowrap">Hot Food</button>
+</div>
+</section>
+<!-- Donations Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1: Assorted Veggies -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col group hover:shadow-lg transition-shadow">
+<div class="relative h-48">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="A lush, colorful variety of fresh organic vegetables including bell peppers, carrots, and leafy greens arranged artistically on a rustic wooden table. The lighting is soft morning sunlight, emphasizing vibrant greens and oranges. The background is a clean, modern commercial kitchen. High-contrast, fresh food aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPLhZtWd0HWDJOeER4xKKUnEwTv3EtbxdhEu-WeeFxK0G0l86q7S1DoRW-Aom347TuxhGdbDxx3ohm0zCmED_tOBsY2R6LgX1oKXJfkceoMBNBFvFlX7ZhYNd0qNslM7JirVb5AsTsqDhr7JCt9zoHEGEK_JAWWpUOdLcAQUFt1NgIbujWn8UQH8UEk-M6wShukmj2Zj-dUiKAXUAHstualUcBLT6KZl-xQpApiBSSXFChYRVF02rtuTvwGqVcURCcIgoV6uD2S-o')"></div>
+<div class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 3h left
+                    </div>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-title-lg text-title-lg text-on-surface font-bold">Assorted Veggies</h3>
+<span class="bg-primary-container/20 text-on-primary-container px-2 py-0.5 rounded font-label-md text-label-md">25 kg</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-sm">Green Mart, Central Delhi</span>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full font-label-md text-label-md">FSSAI</span>
+<span class="bg-tertiary text-on-tertiary px-3 py-1 rounded-full font-label-md text-label-md">Verified</span>
+<span class="flex items-center gap-1 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span> 98% Trust
+                        </span>
+</div>
+<div class="mt-auto pt-4 flex gap-3 items-center">
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-label-lg text-label-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2">
+                            Claim Now <span class="material-symbols-outlined text-lg">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Bakery Surplus -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col group hover:shadow-lg transition-shadow">
+<div class="relative h-48">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="A delicious assortment of freshly baked pastries, croissants, and artisan breads displayed on marble trays. The golden-brown textures are highlighted by warm, inviting cafe lighting. The scene suggests a high-end French bakery atmosphere with a clean, minimalist background in shades of cream and soft green. Macro photography style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBJSYo1STcTJO-VJST8N-3QVYChKQnp7ubwYKvGbtavcZyvLfUN8SoWoF9hxax3nvDoWWDzewGSnKa6HpxDzov2LfgE2heOS9rldN7o7BueYqwSasMKJBKv6fEwEUgXRpfo9kzQdVmhuX4voz1yPYjEd1PBhElBcV8ytZ89aUse_wUc8I4mR3oOQliLktxADQi6OroRhDTClzuf2J9fpan87ANcX5GItyDiRfeQIckLo3jybgktkWTdOIwjGqElThfKc9TSfAVm0nQ')"></div>
+<div class="absolute top-3 left-3 bg-secondary-container/90 text-on-secondary-container px-3 py-1 rounded-full font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 6h left
+                    </div>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-title-lg text-title-lg text-on-surface font-bold">Bakery Surplus</h3>
+<span class="bg-primary-container/20 text-on-primary-container px-2 py-0.5 rounded font-label-md text-label-md">150 units</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-sm">Sweet Crumb, Noida</span>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full font-label-md text-label-md">FSSAI</span>
+<span class="bg-tertiary text-on-tertiary px-3 py-1 rounded-full font-label-md text-label-md">Verified</span>
+<span class="flex items-center gap-1 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span> 95% Trust
+                        </span>
+</div>
+<div class="mt-auto pt-4 flex gap-3 items-center">
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-label-lg text-label-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2">
+                            Claim Now <span class="material-symbols-outlined text-lg">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Prepared Bento (Urgent) -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col group border-2 border-error/20 hover:shadow-lg transition-shadow">
+<div class="relative h-48">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Balanced Japanese-style bento boxes with steamed rice, grilled salmon, and fresh vegetables neatly packed in eco-friendly containers. The lighting is bright and professional, showcasing a clean and hygienic food preparation environment. The color palette features vibrant salmon pinks and deep vegetable greens against white packaging." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDTqsIo5AUmZnfjGNWet1nNTabad8SlALDWyY-iRbebY1agJl3vU1fQxe8j5pZDlVfsF2Zicopn7x2BWxOF6Yrl8zg4D19u2kj7hnw47vXYWKqZPE054r1331_MQrjh7eFmTQoivcRUMSroAOdWT5_FmJU-LtFBweJ7OoDzQX7SfW8xqTQucooTG_oqyeSGVUpFG6p_O1pBjRa9pWimnLhHGuq8_02dAwNyiEL99G36C2QaLuZzhsPFYmHA3bWQXwiUinTRQwrz6fA')"></div>
+<div class="absolute top-3 left-3 bg-error text-on-error px-3 py-1 rounded-full font-label-md text-label-md flex items-center gap-1 animate-pulse">
+<span class="material-symbols-outlined text-sm">timer</span> 2h left (Urgent)
+                    </div>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-title-lg text-title-lg text-on-surface font-bold">Prepared Bento</h3>
+<span class="bg-primary-container/20 text-on-primary-container px-2 py-0.5 rounded font-label-md text-label-md">40 meals</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-sm">Tokyo Dine, Gurgaon</span>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full font-label-md text-label-md">FSSAI</span>
+<span class="bg-tertiary text-on-tertiary px-3 py-1 rounded-full font-label-md text-label-md">Verified</span>
+<span class="flex items-center gap-1 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span> 99% Trust
+                        </span>
+</div>
+<div class="mt-auto pt-4 flex gap-3 items-center">
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-label-lg text-label-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2">
+                            Claim Now <span class="material-symbols-outlined text-lg">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4: Dairy Essentials -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col group hover:shadow-lg transition-shadow">
+<div class="relative h-48">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Bottles of fresh cold milk, artisan cheese blocks, and jars of organic yogurt arranged in a clean, chilled environment. The aesthetic is extremely pure and fresh, dominated by crisp whites and soft blues. Soft diffused studio lighting highlights the creamy textures of the dairy products. Minimalist and professional food photography." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCnljDtcjJCR_x7O4hJjuLY-tQPWvdl0dbR-1voQ5wksKG24Vk_Yfd26e0vrNmy1-WGy78vZtsotJ3js-oeHDVWRg8vObE_b0hxlw02z-YSpgsxnZfCIKLkSKrGDBnr9EddXckoU41Sr7bHJH0R4EoC-CPrI6mGpUiRyzSO-1IVg57F33rI_Q7fbyC96HaLgsKzrz21X2STUWC92yWfPQYygFRqj_ejWWEqoy2Rs4Vv8fGABcrGgC7ENMaNZTwVHSDGh5ExsljXIgc')"></div>
+<div class="absolute top-3 left-3 bg-secondary-container/80 text-on-secondary-container px-3 py-1 rounded-full font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 8h left
+                    </div>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-title-lg text-title-lg text-on-surface font-bold">Dairy Essentials</h3>
+<span class="bg-primary-container/20 text-on-primary-container px-2 py-0.5 rounded font-label-md text-label-md">10 kg</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-sm">Pure Dairy, Noida Sec 18</span>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full font-label-md text-label-md">FSSAI</span>
+<span class="bg-tertiary text-on-tertiary px-3 py-1 rounded-full font-label-md text-label-md">Verified</span>
+<span class="flex items-center gap-1 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span> 97% Trust
+                        </span>
+</div>
+<div class="mt-auto pt-4 flex gap-3 items-center">
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-label-lg text-label-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2">
+                            Claim Now <span class="material-symbols-outlined text-lg">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 pb-safe bg-surface-container-lowest dark:bg-surface-container-highest shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-90 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-90 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-90 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<!-- Contextual Floating Action Button -->
+<button class="fixed bottom-24 right-6 lg:bottom-10 lg:right-10 w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-xl flex items-center justify-center active:scale-90 duration-200 hover:brightness-110 z-40">
+<span class="material-symbols-outlined" style="font-variation-settings: 'opsz' 40;">add_circle</span>
+</button>
+<script>
+        // Simple ripple-like effect on buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', function() {
+                this.style.opacity = '0.8';
+            });
+            button.addEventListener('mouseup', function() {
+                this.style.opacity = '1';
+            });
+        });
+    </script>
+<script src="js/ui.js"></script><script src="js/testmode.js"></script><script src="js/wire_new_pages.js"></script></body></html>

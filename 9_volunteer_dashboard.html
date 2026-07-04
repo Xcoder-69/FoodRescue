@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Navigate button → opens Google Maps / map page
     if (text.includes('navigate') || icon === 'directions') {
-      btn.onclick = () => alert('Navigation page coming soon! Create volunteer_navigation.html in Stitch.');
+      btn.onclick = () => window.frNavigate('volunteer_navigation.html');
     }
     // Message button → chat page
     if (text.includes('message') || icon === 'chat') {
@@ -371,6 +371,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof DashboardLoader !== 'undefined') DashboardLoader.requireAuth() && DashboardLoader.loadVolunteer();
 });
 </script><script src="js/api.js"></script><script src="js/dashboard.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
-</body></html>
+<script src="js/ui.js"></script></body></html>
 
 

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Claim Donation | Food Rescue Hero</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#783200",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#dde4dd",
+                        "tertiary": "#0053db",
+                        "surface-container-high": "#e3eae3",
+                        "surface": "#f4fbf4",
+                        "on-tertiary-fixed-variant": "#003ea8",
+                        "background": "#f4fbf4",
+                        "primary-fixed": "#6ffbbe",
+                        "primary-container": "#10b981",
+                        "secondary-fixed": "#ffdbca",
+                        "on-tertiary-container": "#00328b",
+                        "surface-bright": "#f4fbf4",
+                        "surface-container": "#e8f0e9",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#9d4300",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed": "#dbe1ff",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-background": "#161d19",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#5c2400",
+                        "on-primary-container": "#00422b",
+                        "on-primary-fixed-variant": "#005236",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#fd761a",
+                        "on-surface-variant": "#3c4a42",
+                        "inverse-surface": "#2b322d",
+                        "surface-container-low": "#eef6ee",
+                        "inverse-on-surface": "#ebf3eb",
+                        "on-tertiary-fixed": "#00174b",
+                        "tertiary-fixed-dim": "#b4c5ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb690",
+                        "surface-tint": "#006c49",
+                        "outline": "#6c7a71",
+                        "surface-dim": "#d4dcd5",
+                        "on-secondary-fixed": "#341100",
+                        "tertiary-container": "#7f9fff",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#4edea3",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#bbcabf",
+                        "on-surface": "#161d19",
+                        "primary": "#006c49",
+                        "surface-container-highest": "#dde4dd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "container-padding-mobile": "16px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "container-padding-desktop": "32px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px",
+                        "base": "16px"
+                    },
+                    "fontFamily": {
+                        "label-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "title-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                        "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                        "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .bottom-sheet {
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bottom-sheet.active {
+            transform: translateY(0);
+        }
+        .toggle-dot {
+            transition: transform 0.2s ease-in-out;
+        }
+        input:checked ~ .toggle-dot {
+            transform: translateX(100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-md px-margin-mobile py-base flex items-center justify-between shadow-sm">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors active:scale-95 duration-200" onclick="window.history.back()">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="text-headline-md font-headline-md text-primary text-center flex-1">Claim Donation</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="max-w-3xl mx-auto px-margin-mobile mt-stack-md space-y-gutter">
+<!-- Donation Summary Card (Glassmorphism) -->
+<section class="glass-card rounded-2xl overflow-hidden shadow-sm">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A vibrant, close-up shot of fresh, colorful vegetables like bell peppers, leafy greens, and carrots arranged beautifully in a wooden crate. The lighting is bright and natural, suggesting a high-end farmers market. The style is professional food photography with soft focus backgrounds, maintaining a clean and trustworthy atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Z2PROA663dp4QhUyYVm9HdCBjoNGSh1PbdpY-emx0La8Cy_GgbgUG_gxcvK8L8DqBQsjvuzTkRqLsht-I3wjIWjtmtBjMd-nspllMPpNlTJrnypTksRP9mHa2ioaE87ZnQrq7QWSFh7o3c0Q6MY7G9bB7-MuqQzSnVl5BDCF2faT5wvwO50qHPKzQe9YbIUanLW7_wYcOzhaoIy1rUuKM8oO2oJ9iGOoNaLhGSnWpef_sWeAG_7fZUJ8UPWLsskl-35KV8hHooc"/>
+<div class="absolute top-4 right-4 flex flex-col gap-2 items-end">
+<span class="bg-error text-on-error font-label-md text-label-md px-3 py-1 rounded-full shadow-sm">Expires in 3h</span>
+<span class="bg-primary text-on-primary font-label-md text-label-md px-3 py-1 rounded-full shadow-sm">25 kg</span>
+</div>
+</div>
+<div class="p-base space-y-2">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="text-title-lg font-title-lg text-on-surface">Assorted Veggies</h2>
+<p class="text-body-md font-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">store</span>
+                            Fresh Market
+                        </p>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+<div class="bg-surface-container-high px-2 py-1 rounded text-[10px] font-bold text-outline uppercase tracking-wider">FSSAI</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Claim Details Form -->
+<section class="space-y-gutter bg-surface-container-lowest p-base rounded-2xl">
+<h3 class="text-title-lg font-title-lg text-primary">Claim Details</h3>
+<div class="space-y-stack-md">
+<!-- Pickup Time -->
+<div class="space-y-1">
+<label class="block text-label-md font-label-md text-outline">Pickup Time</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low border-none border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg font-body-lg text-body-lg py-3 px-4 appearance-none transition-colors">
+<option>ASAP</option>
+<option>In 30 mins</option>
+<option>In 1 hour</option>
+<option>Custom</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<!-- Number of Beneficiaries -->
+<div class="space-y-1">
+<label class="block text-label-md font-label-md text-outline">Number of Beneficiaries</label>
+<input class="w-full bg-surface-container-low border-none border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg font-body-lg text-body-lg py-3 px-4 transition-colors" placeholder="e.g. 50" type="number"/>
+</div>
+<!-- Special Notes -->
+<div class="space-y-1">
+<label class="block text-label-md font-label-md text-outline">Special Notes (Optional)</label>
+<textarea class="w-full bg-surface-container-low border-none border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg font-body-lg text-body-lg py-3 px-4 transition-colors resize-none" placeholder="Any specific requirements or notes..." rows="3"></textarea>
+</div>
+<!-- Pickup Address -->
+<div class="space-y-1">
+<label class="block text-label-md font-label-md text-outline">Pickup Address</label>
+<div class="flex items-start gap-3 bg-surface-container-low p-4 rounded-xl">
+<span class="material-symbols-outlined text-primary mt-1">location_on</span>
+<div class="flex-1">
+<p class="text-body-md font-body-md text-on-surface">123 Charity Lane, Downtown Hub, Metro City, 400001</p>
+<p class="text-label-md font-label-md text-outline-variant mt-1">Primary NGO Center</p>
+</div>
+<button class="text-primary hover:bg-primary/5 p-1 rounded-full transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Volunteer Assignment -->
+<section class="bg-surface-container-lowest p-base rounded-2xl space-y-stack-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person_pin_circle</span>
+<h3 class="text-title-lg font-title-lg text-on-surface">Assign a Volunteer</h3>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" id="volunteerToggle" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Volunteer List (Hidden by default) -->
+<div class="hidden space-y-stack-md pt-2" id="volunteerSection">
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 px-10 text-body-md focus:ring-2 focus:ring-primary/20" placeholder="Search volunteers..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+</div>
+<div class="space-y-2">
+<!-- Volunteer 1 -->
+<label class="flex items-center gap-4 p-3 border-2 border-transparent hover:border-primary-container bg-surface-container rounded-xl cursor-pointer transition-all active:scale-[0.98]">
+<input class="hidden peer" name="volunteer" type="radio"/>
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A portrait of a friendly male volunteer in his late 20s wearing a green NGO t-shirt. He has a warm, professional smile. The lighting is soft and flattering with a clean, light-colored background. High-quality digital portrait." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5TGwu0okte9UVhZNrAAVzaBWi9FDkgmHH1IIuYl5TEQVocPm6mbYvgdX0u9705nZLSGZ7GZLRIWFyP3mnizndwnjEp8EcNlCopElZv9m_U6KrhLB3B3XkUxjXDanQu9XSAyfmV3_hlohz7ZHwXIBIRfvei0piVv0VqOiyn58j8dwSVZ7FReIW2oXyuNoz5EWqha8KoRELDc7Lztx982o42mzk32iyTQQwd4oDH-UKfk3htS1WLH8TwKdQk5-EXty1EbZHF73ml9A"/>
+<div class="flex-1">
+<p class="font-label-lg text-on-surface">Alex Rivera</p>
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-md font-label-md">4.9 (124 rescues)</span>
+</div>
+</div>
+<div class="peer-checked:flex hidden">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+</label>
+<!-- Volunteer 2 -->
+<label class="flex items-center gap-4 p-3 border-2 border-transparent hover:border-primary-container bg-surface-container rounded-xl cursor-pointer transition-all active:scale-[0.98]">
+<input class="hidden peer" name="volunteer" type="radio"/>
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A professional headshot of a female volunteer in her 30s with a kind expression. She is wearing a simple casual outfit. The style is bright and airy with a minimalist aesthetic, highlighting her trustworthy and helpful persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPpzM4UlrtOAqVG61G03SAtofMnAs72MieoaaCGu4yNkUwYbMU1Mvd8R9IUfsYgjRgoqtejZiaSXIm0aOnittyai2f3rO4A6Loz6i6tXkh7Wu-bgp82r1eVkKMBE7tnrfmbLx-bdwyBwFHSajIVlwKUHcBQWgV1rFLjrSTY5jBQ_G4hA8nmFIUE7nTJle2KmnfM5vJQPYIG_bgcTTJJl0A2i7vaddtT2Z-_L4DkewOM_XQrDTzFEbGF0MUspb4jQ9leAec1XuUM1A"/>
+<div class="flex-1">
+<p class="font-label-lg text-on-surface">Sarah Chen</p>
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-md font-label-md">4.8 (89 rescues)</span>
+</div>
+</div>
+<div class="peer-checked:flex hidden">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+</label>
+</div>
+</div>
+</section>
+</main>
+<!-- Confirm Button (Floating) -->
+<div class="fixed bottom-0 left-0 right-0 p-margin-mobile bg-gradient-to-t from-background via-background to-transparent pt-8">
+<button class="w-full bg-primary text-on-primary font-title-lg py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all" id="confirmBtn">
+            Confirm Claim 🛒
+        </button>
+</div>
+<!-- Bottom Sheet Dialog -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300" id="overlay"></div>
+<div class="fixed bottom-0 left-0 right-0 bg-surface rounded-t-[32px] z-50 p-stack-lg flex flex-col items-center text-center bottom-sheet max-w-xl mx-auto" id="bottomSheet">
+<div class="w-12 h-1.5 bg-outline-variant rounded-full mb-8"></div>
+<div class="w-20 h-20 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mb-stack-md animate-bounce">
+<span class="material-symbols-outlined text-[48px]" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<h2 class="text-headline-md font-headline-md text-primary mb-2">Claim Confirmed!</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-stack-lg max-w-xs">
+            We've notified Fresh Market. Your volunteer is being updated with the pickup details.
+        </p>
+<button class="w-full bg-surface-container-highest text-primary font-label-lg py-4 rounded-xl hover:bg-surface-variant transition-colors mb-stack-sm" onclick="window.location.reload()">
+            View My Claims
+        </button>
+<button class="w-full bg-primary text-on-primary font-label-lg py-4 rounded-xl shadow-md transition-transform active:scale-95" onclick="window.location.reload()">
+            Back to Home
+        </button>
+</div>
+<script>
+        const volunteerToggle = document.getElementById('volunteerToggle');
+        const volunteerSection = document.getElementById('volunteerSection');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const bottomSheet = document.getElementById('bottomSheet');
+        const overlay = document.getElementById('overlay');
+
+        // Toggle volunteer section visibility
+        volunteerToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                volunteerSection.classList.remove('hidden');
+                volunteerSection.classList.add('animate-fade-in');
+            } else {
+                volunteerSection.classList.add('hidden');
+            }
+        });
+
+        // Show bottom sheet on confirmation
+        confirmBtn.addEventListener('click', () => {
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                overlay.classList.add('opacity-100');
+                bottomSheet.classList.add('active');
+            }, 10);
+        });
+
+        // Close on overlay click
+        overlay.addEventListener('click', () => {
+            bottomSheet.classList.remove('active');
+            overlay.classList.remove('opacity-100');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 400);
+        });
+    </script>
+<style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out forwards;
+        }
+    </style>
+<script src="js/ui.js"></script><script src="js/testmode.js"></script><script src="js/wire_new_pages.js"></script></body></html>

@@ -1,0 +1,475 @@
+# FoodRescue React Native Migration Prompt
+
+## Objective
+
+Create a **new React Native application** for the existing FoodRescue project.
+
+**IMPORTANT REQUIREMENTS**
+
+* Do NOT modify the existing website.
+* Do NOT delete, rename, or refactor any web files.
+* Do NOT change the backend APIs unless absolutely necessary.
+* The existing website must continue working exactly as it does now.
+* The React Native app is a completely separate frontend that consumes the same backend APIs.
+
+---
+
+# Existing Architecture
+
+Current project:
+
+Backend
+
+* Node.js
+* Express.js
+* Firebase Firestore
+* JWT Authentication
+* Socket.IO
+* AWS S3
+* Cloudinary
+* Google OAuth
+* OTP Authentication
+
+Current Web Frontend
+
+* HTML5
+* Vanilla JavaScript
+* Tailwind CSS
+* 40+ HTML pages
+
+Backend API is already complete and should be reused.
+
+---
+
+# Goal
+
+Build a professional React Native application for both Android and iPhone using the existing backend.
+
+The mobile app must look modern, clean, and production-ready while preserving all existing business logic.
+
+---
+
+# UI Requirement
+
+I already designed a mobile UI using Stitch (through the MCP server in Antigravity).
+
+Use the Stitch-generated mobile UI as the visual reference.
+
+Do NOT redesign the application.
+
+Preserve:
+
+* layouts
+* spacing
+* colors
+* typography
+* icons
+* navigation
+* animations
+* cards
+* forms
+
+The final React Native app should closely match the Stitch design.
+
+---
+
+# Project Structure
+
+Create a new folder.
+
+mobile/
+
+Do NOT touch:
+
+web/
+backend/
+
+Expected structure:
+
+FoodRescue/
+
+backend/
+
+web/
+
+mobile/
+
+---
+
+# React Native Stack
+
+Use
+
+React Native
+
+Expo (latest stable)
+
+TypeScript
+
+React Navigation
+
+React Native Paper (if appropriate)
+
+React Hook Form
+
+Axios
+
+Socket.IO Client
+
+Async Storage or secure token storage
+
+React Query (TanStack Query)
+
+React Native Reanimated
+
+React Native Gesture Handler
+
+NativeWind only if needed
+
+Vector Icons
+
+---
+
+# Folder Structure
+
+mobile/
+
+src/
+
+screens/
+
+components/
+
+navigation/
+
+services/
+
+hooks/
+
+context/
+
+store/
+
+utils/
+
+types/
+
+assets/
+
+constants/
+
+theme/
+
+---
+
+# Navigation
+
+Implement proper navigation.
+
+Authentication Stack
+
+Splash
+
+Onboarding
+
+Login
+
+Register
+
+OTP
+
+Forgot Password
+
+Main App
+
+Dashboard
+
+Restaurant
+
+NGO
+
+Volunteer
+
+Donation
+
+Delivery
+
+Notifications
+
+Chat
+
+Analytics
+
+Support
+
+Complaint
+
+Profile
+
+Settings
+
+Admin (if user role is admin)
+
+---
+
+# Backend Integration
+
+Reuse every existing API.
+
+Never create duplicate APIs.
+
+Use Axios.
+
+Example
+
+services/
+
+auth.service.ts
+
+donation.service.ts
+
+notification.service.ts
+
+volunteer.service.ts
+
+restaurant.service.ts
+
+analytics.service.ts
+
+user.service.ts
+
+support.service.ts
+
+---
+
+# Authentication
+
+Reuse existing backend authentication.
+
+JWT
+
+Refresh Token
+
+OTP
+
+Google Login
+
+Store authentication tokens securely.
+
+Do not change backend authentication.
+
+---
+
+# Real-time Features
+
+Reuse existing Socket.IO server.
+
+Implement
+
+Live chat
+
+Delivery tracking
+
+Real-time notifications
+
+Status updates
+
+---
+
+# State Management
+
+Use Context API for authentication.
+
+Use TanStack Query for server state.
+
+Avoid unnecessary global state.
+
+---
+
+# Reusable Components
+
+Create reusable components.
+
+Button
+
+Input
+
+Card
+
+Loading Spinner
+
+Modal
+
+Bottom Sheet
+
+Search Bar
+
+Avatar
+
+Badge
+
+Toast
+
+Empty State
+
+Error State
+
+Food Card
+
+Volunteer Card
+
+Restaurant Card
+
+NGO Card
+
+---
+
+# Forms
+
+Use React Hook Form.
+
+Validate every field.
+
+Display proper validation errors.
+
+---
+
+# Error Handling
+
+Handle
+
+401
+
+403
+
+404
+
+500
+
+Offline mode
+
+Network timeout
+
+Expired token
+
+Automatically refresh authentication when appropriate.
+
+---
+
+# API Layer
+
+Create a centralized API client.
+
+No API calls inside screens.
+
+Every request should go through service classes.
+
+---
+
+# Code Quality
+
+Use TypeScript.
+
+Use functional components only.
+
+Use React Hooks.
+
+Avoid duplicated code.
+
+Follow SOLID principles where practical.
+
+Keep components small and reusable.
+
+---
+
+# Performance
+
+Lazy load screens.
+
+Memoize expensive components where needed.
+
+Optimize FlatLists.
+
+Cache API responses appropriately.
+
+Optimize images.
+
+Avoid unnecessary re-renders.
+
+---
+
+# Security
+
+Never expose secrets.
+
+Use secure token storage.
+
+Validate server responses.
+
+Sanitize user input where appropriate.
+
+---
+
+# Notifications
+
+Support push notifications.
+
+In-app notifications.
+
+Unread badge counts.
+
+---
+
+# Deliverables
+
+Generate
+
+Complete React Native project
+
+Navigation
+
+Folder structure
+
+API integration
+
+Authentication
+
+Reusable components
+
+Theme
+
+Services
+
+Hooks
+
+Utilities
+
+Screens
+
+Documentation
+
+Installation guide
+
+README
+
+---
+
+# IMPORTANT RULES
+
+DO NOT modify the website.
+
+DO NOT modify HTML pages.
+
+DO NOT remove any JavaScript from the website.
+
+DO NOT change Tailwind CSS.
+
+DO NOT break existing functionality.
+
+DO NOT duplicate backend logic.
+
+ONLY build a new React Native frontend inside the "mobile" folder.
+
+The website and mobile app must both work simultaneously using the same backend.
+
+Whenever backend changes are suggested, explain why they are necessary before making them. If a backend change is optional, prefer keeping the existing API unchanged.
