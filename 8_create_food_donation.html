@@ -282,15 +282,33 @@
 <div class="space-y-1">
 <div class="flex justify-between items-center">
 <label class="font-label-lg text-label-lg text-on-surface-variant">Pickup Address</label>
-<button class="text-primary font-label-md text-label-md flex items-center gap-1" type="button">
+<button class="text-primary font-label-md text-label-md flex items-center gap-1" type="button" onclick="document.getElementById('address-edit-rest').classList.remove('hidden'); document.getElementById('address-display-rest').classList.add('hidden')">
 <span class="material-symbols-outlined text-sm">edit</span> Edit Address
                         </button>
 </div>
-<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex items-start gap-3">
+<div id="address-display-rest" class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex items-start gap-3">
 <span class="material-symbols-outlined text-primary mt-1">location_on</span>
 <div>
 <p class="font-body-lg text-body-lg font-semibold">Green Table Bistro</p>
 <p class="text-on-surface-variant text-sm">123 Culinary Lane, Downtown District, Metropolis, NY 10001</p>
+</div>
+</div>
+
+<!-- Address Edit Options (Hidden by default) -->
+<div id="address-edit-rest" class="hidden bg-surface-container-low p-4 rounded-xl border border-outline-variant space-y-4 mt-2">
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-title-lg text-title-lg text-primary">Update Address</h4>
+<button type="button" onclick="document.getElementById('address-edit-rest').classList.add('hidden'); document.getElementById('address-display-rest').classList.remove('hidden')" class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined">close</span></button>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button type="button" onclick="frToast('Opening manual address form...');" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">edit_document</span>
+<span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Enter Manually</span>
+</button>
+<button type="button" onclick="frToast('Opening interactive map...');" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">map</span>
+<span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Pick on Map</span>
+</button>
 </div>
 </div>
 </div>
