@@ -68,8 +68,8 @@
     var s = document.createElement('style');
     s.id = 'fr-ui-transitions';
     s.textContent =
-      'body{animation:fr-in .32s cubic-bezier(.22,1,.36,1) both}' +
-      '@keyframes fr-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}';
+      'body{animation:fr-in .32s cubic-bezier(.22,1,.36,1) forwards}' +
+      '@keyframes fr-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}';
     document.head.appendChild(s);
   }
 
@@ -247,11 +247,28 @@
       });
     });
 
+    /* Inject a close 'X' button into the sidebar itself (visible only on mobile) */
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'fr-sidebar-close lg:hidden';
+    closeBtn.innerHTML = '<span class="material-symbols-outlined">close</span>';
+    closeBtn.style.cssText = 'position:absolute;top:16px;right:16px;background:rgba(0,108,73,.1);color:#006c49;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:99;';
+    closeBtn.addEventListener('click', closeSidebar);
+    // Hide it on large screens (>=1024px)
+    var styleNode = document.createElement('style');
+    styleNode.textContent = '@media(min-width:1024px){.fr-sidebar-close{display:none!important;}}';
+    document.head.appendChild(styleNode);
+    // Make sure sidebar is relatively positioned so the absolute close button stays inside
+    if (window.getComputedStyle(sidebar).position === 'static') {
+      sidebar.style.position = 'relative';
+    }
+    sidebar.insertBefore(closeBtn, sidebar.firstChild);
+
     /* Close on overlay click */
     overlay.addEventListener('click', closeSidebar);
 
     /* Close when a sidebar link is tapped on mobile */
     sidebar.querySelectorAll('a, button').forEach(function(el) {
+      if (el === closeBtn) return; // ignore the close button itself
       el.addEventListener('click', function() {
         if (window.innerWidth < 1024) setTimeout(closeSidebar, 160);
       });
