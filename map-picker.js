@@ -112,7 +112,7 @@ function openMapPicker(onConfirm) {
   loadLeaflet(() => {
     if (_pickerMap) { _pickerMap.invalidateSize(); return; }
 
-    const defaultLat = 19.076, defaultLng = 72.877; // Mumbai
+    const defaultLat = 19.076, defaultLng = 72.877; // Mumbai default
     _pickerMap = L.map('fr-leaflet-map').setView([defaultLat, defaultLng], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -126,7 +126,7 @@ function openMapPicker(onConfirm) {
     });
 
     _pickerMarker = L.marker([defaultLat, defaultLng], { draggable: true, icon: greenIcon }).addTo(_pickerMap);
-    reverseGeocode(defaultLat, defaultLng);
+    // Don't auto-reverse-geocode on open — wait for user interaction
 
     _pickerMap.on('click', (e) => {
       _pickerMarker.setLatLng(e.latlng);
@@ -137,16 +137,7 @@ function openMapPicker(onConfirm) {
       const ll = e.target.getLatLng();
       reverseGeocode(ll.lat, ll.lng);
     });
-
-    // Try to use user's current location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const { latitude: lat, longitude: lng } = pos.coords;
-        _pickerMap.setView([lat, lng], 15);
-        _pickerMarker.setLatLng([lat, lng]);
-        reverseGeocode(lat, lng);
-      }, () => {});
-    }
+    // NOTE: No auto getCurrentPosition here — user must click "Use My Location" button
   });
 }
 
@@ -169,6 +160,19 @@ async function reverseGeocode(lat, lng) {
 }
 
 function confirmMapPicker() {
+  if (!_lastGeoResult && _pickerMarker) {
+    // If user hasn't clicked the map but marker exists at default, show a hint
+    const ll = _pickerMarker.getLatLng();
+    if (_pickerCallback) {
+      _pickerCallback({
+        lat: ll.lat, lng: ll.lng,
+        displayAddress: document.getElementById('fr-map-addr-preview')?.textContent || `${ll.lat.toFixed(5)}, ${ll.lng.toFixed(5)}`,
+        address: {}
+      });
+    }
+    closeMapPicker();
+    return;
+  }
   if (_pickerCallback && _lastGeoResult) {
     const ll = _pickerMarker.getLatLng();
     _pickerCallback({
@@ -178,6 +182,30 @@ function confirmMapPicker() {
     });
   }
   closeMapPicker();
+}
+
+// ── Manual "Use My Location" button ────────────────────────────────────────
+function useMyLocation() {
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by your browser.');
+    return;
+  }
+  const preview = document.getElementById('fr-map-addr-preview');
+  if (preview) preview.textContent = '📡 Detecting your location...';
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+      if (_pickerMap) {
+        _pickerMap.setView([lat, lng], 16);
+        _pickerMarker.setLatLng([lat, lng]);
+        reverseGeocode(lat, lng);
+      }
+    },
+    (err) => {
+      if (preview) preview.textContent = '⚠️ Location access denied. Please click on the map instead.';
+    },
+    { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+  );
 }
 
 function closeMapPicker() {
@@ -199,10 +227,16 @@ function injectMapModal() {
       </div>
       <div id="fr-leaflet-map"></div>
       <div class="fr-map-footer">
-        <div class="fr-map-addr-preview" id="fr-map-addr-preview">Tap on the map to select a location</div>
-        <button class="fr-map-confirm" onclick="confirmMapPicker()">
-          ✅ Confirm This Location
-        </button>
+        <div class="fr-map-addr-preview" id="fr-map-addr-preview">Click anywhere on the map to drop a pin</div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="useMyLocation()" style="flex:1;background:#e8f0e9;color:#006c49;border:none;border-radius:999px;padding:11px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;transition:filter 0.15s;" onmouseover="this.style.filter='brightness(0.95)'" onmouseout="this.style.filter=''">
+            <span style="font-family:Material Symbols Outlined;font-size:16px;font-variation-settings:'FILL' 1">my_location</span>
+            Use My Location
+          </button>
+          <button class="fr-map-confirm" onclick="confirmMapPicker()" style="flex:2">
+            ✅ Confirm This Location
+          </button>
+        </div>
       </div>
     </div>
   `;
@@ -472,36 +506,58 @@ function initLiveTracking(containerId) {
       attribution: '© OpenStreetMap contributors', maxZoom: 19
     }).addTo(_trackingMap);
 
-    const pulseIcon = L.divIcon({
-      html: `<div style="position:relative">
-        <div class="live-dot"></div>
-        <div style="position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-radius:50%;border:3px solid #006c49;background:rgba(16,185,129,0.2)"></div>
-      </div>`,
+    // Show a placeholder marker at Mumbai default — do NOT auto-start GPS
+    const placeholderIcon = L.divIcon({
+      html: `<div style="width:14px;height:14px;border-radius:50%;background:#bbcabf;border:3px solid #6c7a71"></div>`,
       iconSize: [14, 14], iconAnchor: [7, 7], className: ''
     });
+    _trackingMarker = L.marker([19.076, 72.877], { icon: placeholderIcon }).addTo(_trackingMap);
 
-    if (navigator.geolocation) {
-      _trackingWatch = navigator.geolocation.watchPosition(
-        (pos) => {
-          const { latitude: lat, longitude: lng } = pos.coords;
-          if (!_trackingMarker) {
-            _trackingMarker = L.marker([lat, lng], { icon: pulseIcon }).addTo(_trackingMap);
-            _trackingMap.setView([lat, lng], 16);
-          } else {
-            _trackingMarker.setLatLng([lat, lng]);
-          }
-          document.getElementById('vol-lat').textContent = lat.toFixed(6);
-          document.getElementById('vol-lng').textContent = lng.toFixed(6);
-          document.getElementById('vol-acc').textContent = Math.round(pos.coords.accuracy) + 'm';
-        },
-        (err) => {
-          console.warn('Geolocation error:', err.message);
-          document.getElementById('vol-tracking-status').textContent = '⚠️ Location access denied';
-        },
-        { enableHighAccuracy: true, maximumAge: 5000 }
-      );
-    }
+    // Update status label
+    const statusEl = document.getElementById('vol-tracking-status');
+    if (statusEl) statusEl.textContent = '⏸ Tracking paused — click Start Tracking to begin';
   });
+}
+
+// Called when user clicks the Start Tracking button
+function startTracking() {
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by your browser.');
+    return;
+  }
+  const statusEl = document.getElementById('vol-tracking-status');
+  if (statusEl) statusEl.textContent = '📡 Requesting location permission...';
+
+  const pulseIcon = L.divIcon({
+    html: `<div style="position:relative">
+      <div class="live-dot"></div>
+      <div style="position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-radius:50%;border:3px solid #006c49;background:rgba(16,185,129,0.2)"></div>
+    </div>`,
+    iconSize: [14, 14], iconAnchor: [7, 7], className: ''
+  });
+
+  _trackingWatch = navigator.geolocation.watchPosition(
+    (pos) => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+      if (_trackingMap) {
+        if (_trackingMarker) _trackingMarker.remove();
+        _trackingMarker = L.marker([lat, lng], { icon: pulseIcon }).addTo(_trackingMap);
+        _trackingMap.setView([lat, lng], 16);
+      }
+      const latEl = document.getElementById('vol-lat');
+      const lngEl = document.getElementById('vol-lng');
+      const accEl = document.getElementById('vol-acc');
+      if (latEl) latEl.textContent = lat.toFixed(6);
+      if (lngEl) lngEl.textContent = lng.toFixed(6);
+      if (accEl) accEl.textContent = Math.round(pos.coords.accuracy) + 'm';
+      if (statusEl) statusEl.textContent = '🟢 Live tracking active';
+    },
+    (err) => {
+      console.warn('Geolocation error:', err.message);
+      if (statusEl) statusEl.textContent = '⚠️ Location access denied';
+    },
+    { enableHighAccuracy: true, maximumAge: 5000 }
+  );
 }
 
 function stopTracking() {

@@ -15,7 +15,7 @@ const generateTokens = async (uid, role, sessionId, is2FAVerified = false) => {
   const accessToken = jwt.sign(
     { uid, role, sessionId, is2FAVerified },
     process.env.JWT_ACCESS_SECRET,
-    { expiresIn: '15m' } // Short-lived
+    { expiresIn: '1h' } // Extended to 1h for multi-step registration flow
   );
 
   const refreshToken = jwt.sign(
@@ -82,9 +82,9 @@ class AuthService {
       const OTPService = require('./otp.service');
       await OTPService.sendVerifyOTP(normEmail);
       
-      // Send Welcome Email
+      // Send role-specific Welcome Email after OTP
       const EmailService = require('../email/email.service');
-      await EmailService.sendWelcomeEmail(normEmail, normEmail.split('@')[0], role || 'volunteer', user.uid);
+      await EmailService.sendWelcomeEmail(normEmail, normEmail.split('@')[0], role || 'volunteer', uid);
     } catch (e) {
       console.warn('Verification/Welcome email failed (non-fatal):', e.message);
     }

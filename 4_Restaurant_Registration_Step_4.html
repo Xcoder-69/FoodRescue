@@ -158,174 +158,327 @@
 </div>
 </div>
 <!-- Verification Canvas -->
-<div class="space-y-md">
-<!-- 1. Restaurant Front Photo (COMPLETED STATE) -->
-<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant upload-card-shadow transition-all hover:border-primary/30">
-<div class="flex items-start justify-between mb-sm">
-<div class="flex items-center gap-base">
-<div class="bg-primary/10 p-2 rounded-lg text-primary">
-<span class="material-symbols-outlined">photo_camera</span>
-</div>
-<div>
-<h3 class="font-headline-md text-body-lg font-semibold text-on-surface">Restaurant Front Photo</h3>
-<p class="font-body-md text-label-md text-on-surface-variant">Clear exterior shot with signage visible</p>
-</div>
-</div>
-<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-label-sm font-bold flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                        Uploaded
-                    </span>
-</div>
-<!-- Preview Area -->
-<div class="relative group mt-sm h-48 rounded-xl overflow-hidden border border-outline-variant">
-<div class="absolute inset-0 bg-cover bg-center" data-alt="A professional, high-quality photograph of a modern bistro entrance during the day. The restaurant has a clean dark green facade with a wooden sign that says 'The Green Plate'. Large glass windows show a warm, inviting interior with soft lighting. The aesthetic is professional, reliable, and corporate-modern." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDP6U92R0cy8DKZ3ltIJ3cBLhIflN_37FvppkU9aMiO42-6minXjAI6ANLIDpSANYPX0QVAt7HMW6NvdNuXWsjP7scFcfOblbKbJv4HM6PcE6SkN87jXvfz-BBfOzhXWWXXT6iGnQgUES4pZM-mY8emPehE2wYPqY8fzf4yle1Bcynn1x4WGFQWqv1PQLCNp4e5oxfouKGQLnpV8SvWPyQUcV3kzIHmtgGxIQwOTsKmhQsI7yM0C_nL3NlU5vfhOcRo2SKrFF78VjU')"></div>
-<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-sm">
-<button class="bg-white text-primary px-4 py-2 rounded-xl font-label-md flex items-center gap-2 active:scale-95 transition-transform">
-<span class="material-symbols-outlined">refresh</span> Replace
-                        </button>
-<button class="bg-tertiary text-white px-4 py-2 rounded-xl font-label-md flex items-center gap-2 active:scale-95 transition-transform">
-<span class="material-symbols-outlined">delete</span> Remove
-                        </button>
-</div>
-</div>
-</div>
-<!-- 2. FSSAI Certificate (PENDING STATE) -->
-<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant upload-card-shadow group hover:border-primary transition-colors cursor-pointer">
-<div class="flex items-start justify-between">
-<div class="flex items-center gap-base">
-<div class="bg-surface-container-highest p-2 rounded-lg text-on-surface-variant group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-<span class="material-symbols-outlined">verified_user</span>
-</div>
-<div>
-<h3 class="font-headline-md text-body-lg font-semibold text-on-surface">FSSAI Certificate <span class="font-bold text-error text-label-sm ml-1">*</span></h3>
-<p class="font-body-md text-label-md text-on-surface-variant">Valid Food Safety License (PDF or JPG)</p>
-</div>
-</div>
-<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-bold">
-                        Pending
-                    </span>
-</div>
-<div class="grid grid-cols-2 gap-sm mt-md">
-<button class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 transition-colors group/btn">
-<span class="material-symbols-outlined text-primary mb-2 text-[32px]">upload_file</span>
-<span class="font-label-md text-on-surface">Choose File</span>
-</button>
-<button class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 transition-colors group/btn">
-<span class="material-symbols-outlined text-primary mb-2 text-[32px]">photo_camera</span>
-<span class="font-label-md text-on-surface">Take Photo</span>
-</button>
-</div>
-</div>
-<!-- 3. Profile Photo (PENDING STATE) -->
-<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant upload-card-shadow group hover:border-primary transition-colors cursor-pointer">
-<div class="flex items-start justify-between">
-<div class="flex items-center gap-base">
-<div class="bg-surface-container-highest p-2 rounded-lg text-on-surface-variant group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-<span class="material-symbols-outlined">account_circle</span>
-</div>
-<div>
-<h3 class="font-headline-md text-body-lg font-semibold text-on-surface">Profile Photo</h3>
-<p class="font-body-md text-label-md text-on-surface-variant">Clear photo for your public profile</p>
-</div>
-</div>
-<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-bold">
-                        Pending
-                    </span>
-</div>
-<div class="grid grid-cols-2 gap-sm mt-md">
-<button class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 transition-colors group/btn">
-<span class="material-symbols-outlined text-primary mb-2 text-[32px]">upload_file</span>
-<span class="font-label-md text-on-surface">Choose File</span>
-</button>
-<button class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 transition-colors group/btn">
-<span class="material-symbols-outlined text-primary mb-2 text-[32px]">photo_camera</span>
-<span class="font-label-md text-on-surface">Take Photo</span>
-</button>
-</div>
-</div>
+<div class="space-y-md" id="doc-upload-container">
 
-<!-- 4. Business Proof (PENDING STATE) -->
-<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant upload-card-shadow group hover:border-primary transition-colors cursor-pointer">
-<div class="flex items-start justify-between">
-<div class="flex items-center gap-base">
-<div class="bg-surface-container-highest p-2 rounded-lg text-on-surface-variant group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-<span class="material-symbols-outlined">business_center</span>
-</div>
-<div>
-<h3 class="font-headline-md text-body-lg font-semibold text-on-surface">Business Proof <span class="font-normal text-on-surface-variant text-label-sm ml-2">(Optional)</span></h3>
-<p class="font-body-md text-label-md text-on-surface-variant">GST Registration or Trade License</p>
-</div>
-</div>
-<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-bold">
-                        Pending
-                    </span>
-</div>
-<div class="grid grid-cols-2 gap-sm mt-md">
-<button class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 transition-colors group/btn">
-<span class="material-symbols-outlined text-primary mb-2 text-[32px]">upload_file</span>
-<span class="font-label-md text-on-surface">Choose File</span>
-</button>
-<button class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 transition-colors group/btn">
-<span class="material-symbols-outlined text-primary mb-2 text-[32px]">photo_camera</span>
-<span class="font-label-md text-on-surface">Take Photo</span>
-</button>
-</div>
-</div>
+  <!-- hidden file inputs (off-screen) -->
+  <input type="file" id="file-front" accept="image/*" class="hidden" onchange="handleFileSelect('front', this)"/>
+  <input type="file" id="file-fssai" accept="image/*,.pdf" class="hidden" onchange="handleFileSelect('fssai', this)"/>
+  <input type="file" id="file-profile" accept="image/*" class="hidden" onchange="handleFileSelect('profile', this)"/>
+  <input type="file" id="file-biz" accept="image/*,.pdf" class="hidden" onchange="handleFileSelect('biz', this)"/>
+
+  <!-- camera capture inputs (off-screen) -->
+  <input type="file" id="cam-front" accept="image/*" capture="environment" class="hidden" onchange="handleFileSelect('front', this)"/>
+  <input type="file" id="cam-fssai" accept="image/*" capture="environment" class="hidden" onchange="handleFileSelect('fssai', this)"/>
+  <input type="file" id="cam-profile" accept="image/*" capture="user" class="hidden" onchange="handleFileSelect('profile', this)"/>
+  <input type="file" id="cam-biz" accept="image/*" capture="environment" class="hidden" onchange="handleFileSelect('biz', this)"/>
+
+  <!-- 1. Restaurant Front Photo -->
+  <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant upload-card-shadow transition-all" id="card-front">
+    <div class="flex items-start justify-between mb-3">
+      <div class="flex items-center gap-base">
+        <div class="bg-surface-container-highest p-2 rounded-lg text-on-surface-variant" id="icon-front">
+          <span class="material-symbols-outlined">photo_camera</span>
+        </div>
+        <div>
+          <h3 class="font-headline-md text-body-lg font-semibold text-on-surface">Restaurant Front Photo <span class="text-error text-label-sm">*</span></h3>
+          <p class="font-body-md text-label-md text-on-surface-variant">Clear exterior shot with signage visible</p>
+        </div>
+      </div>
+      <span id="badge-front" class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-bold">Pending</span>
+    </div>
+    <div id="preview-front" class="hidden relative h-40 rounded-xl overflow-hidden border border-outline-variant mb-3">
+      <img id="img-front" class="w-full h-full object-cover"/>
+      <div class="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+        <button onclick="removeFile('front')" class="bg-error text-white px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-base">delete</span> Remove</button>
+      </div>
+    </div>
+    <div id="progress-front" class="hidden h-1.5 rounded-full bg-surface-container-highest overflow-hidden mb-3"><div class="h-full bg-primary rounded-full transition-all" style="width:0%" id="prog-bar-front"></div></div>
+    <div class="grid grid-cols-2 gap-sm">
+      <button onclick="document.getElementById('file-front').click()" class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 hover:border-primary transition-all active:scale-95">
+        <span class="material-symbols-outlined text-primary mb-2 text-[28px]">upload_file</span>
+        <span class="font-label-md text-on-surface text-sm">Choose File</span>
+      </button>
+      <button onclick="document.getElementById('cam-front').click()" class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 hover:border-primary transition-all active:scale-95">
+        <span class="material-symbols-outlined text-primary mb-2 text-[28px]">photo_camera</span>
+        <span class="font-label-md text-on-surface text-sm">Take Photo</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. FSSAI Certificate -->
+  <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant upload-card-shadow transition-all" id="card-fssai">
+    <div class="flex items-start justify-between mb-3">
+      <div class="flex items-center gap-base">
+        <div class="bg-surface-container-highest p-2 rounded-lg text-on-surface-variant" id="icon-fssai">
+          <span class="material-symbols-outlined">verified_user</span>
+        </div>
+        <div>
+          <h3 class="font-headline-md text-body-lg font-semibold text-on-surface">FSSAI Certificate <span class="text-error text-label-sm">*</span></h3>
+          <p class="font-body-md text-label-md text-on-surface-variant">Valid Food Safety License (PDF or JPG)</p>
+        </div>
+      </div>
+      <span id="badge-fssai" class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-bold">Pending</span>
+    </div>
+    <div id="preview-fssai" class="hidden relative h-40 rounded-xl overflow-hidden border border-outline-variant mb-3">
+      <img id="img-fssai" class="w-full h-full object-cover"/>
+      <div class="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+        <button onclick="removeFile('fssai')" class="bg-error text-white px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-base">delete</span> Remove</button>
+      </div>
+    </div>
+    <div id="progress-fssai" class="hidden h-1.5 rounded-full bg-surface-container-highest overflow-hidden mb-3"><div class="h-full bg-primary rounded-full transition-all" style="width:0%" id="prog-bar-fssai"></div></div>
+    <div class="grid grid-cols-2 gap-sm">
+      <button onclick="document.getElementById('file-fssai').click()" class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 hover:border-primary transition-all active:scale-95">
+        <span class="material-symbols-outlined text-primary mb-2 text-[28px]">upload_file</span>
+        <span class="font-label-md text-on-surface text-sm">Choose File</span>
+      </button>
+      <button onclick="document.getElementById('cam-fssai').click()" class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 hover:border-primary transition-all active:scale-95">
+        <span class="material-symbols-outlined text-primary mb-2 text-[28px]">photo_camera</span>
+        <span class="font-label-md text-on-surface text-sm">Take Photo</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. Profile Photo -->
+  <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant upload-card-shadow transition-all" id="card-profile">
+    <div class="flex items-start justify-between mb-3">
+      <div class="flex items-center gap-base">
+        <div class="bg-surface-container-highest p-2 rounded-lg text-on-surface-variant" id="icon-profile">
+          <span class="material-symbols-outlined">account_circle</span>
+        </div>
+        <div>
+          <h3 class="font-headline-md text-body-lg font-semibold text-on-surface">Profile Photo <span class="text-error text-label-sm">*</span></h3>
+          <p class="font-body-md text-label-md text-on-surface-variant">Clear photo for your public profile (JPG/PNG)</p>
+        </div>
+      </div>
+      <span id="badge-profile" class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-bold">Pending</span>
+    </div>
+    <div id="preview-profile" class="hidden relative h-40 rounded-xl overflow-hidden border border-outline-variant mb-3">
+      <img id="img-profile" class="w-full h-full object-cover"/>
+      <div class="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+        <button onclick="removeFile('profile')" class="bg-error text-white px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-base">delete</span> Remove</button>
+      </div>
+    </div>
+    <div id="progress-profile" class="hidden h-1.5 rounded-full bg-surface-container-highest overflow-hidden mb-3"><div class="h-full bg-primary rounded-full transition-all" style="width:0%" id="prog-bar-profile"></div></div>
+    <div class="grid grid-cols-2 gap-sm">
+      <button onclick="document.getElementById('file-profile').click()" class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 hover:border-primary transition-all active:scale-95">
+        <span class="material-symbols-outlined text-primary mb-2 text-[28px]">upload_file</span>
+        <span class="font-label-md text-on-surface text-sm">Choose File</span>
+      </button>
+      <button onclick="document.getElementById('cam-profile').click()" class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 hover:border-primary transition-all active:scale-95">
+        <span class="material-symbols-outlined text-primary mb-2 text-[28px]">photo_camera</span>
+        <span class="font-label-md text-on-surface text-sm">Take Photo</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 4. Business Proof (Optional) -->
+  <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant upload-card-shadow transition-all" id="card-biz">
+    <div class="flex items-start justify-between mb-3">
+      <div class="flex items-center gap-base">
+        <div class="bg-surface-container-highest p-2 rounded-lg text-on-surface-variant" id="icon-biz">
+          <span class="material-symbols-outlined">business_center</span>
+        </div>
+        <div>
+          <h3 class="font-headline-md text-body-lg font-semibold text-on-surface">Business Proof <span class="text-on-surface-variant text-label-sm font-normal">(Optional)</span></h3>
+          <p class="font-body-md text-label-md text-on-surface-variant">GST Registration or Trade License</p>
+        </div>
+      </div>
+      <span id="badge-biz" class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-bold">Optional</span>
+    </div>
+    <div id="preview-biz" class="hidden relative h-40 rounded-xl overflow-hidden border border-outline-variant mb-3">
+      <img id="img-biz" class="w-full h-full object-cover"/>
+      <div class="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+        <button onclick="removeFile('biz')" class="bg-error text-white px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-base">delete</span> Remove</button>
+      </div>
+    </div>
+    <div id="progress-biz" class="hidden h-1.5 rounded-full bg-surface-container-highest overflow-hidden mb-3"><div class="h-full bg-primary rounded-full transition-all" style="width:0%" id="prog-bar-biz"></div></div>
+    <div class="grid grid-cols-2 gap-sm">
+      <button onclick="document.getElementById('file-biz').click()" class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 hover:border-primary transition-all active:scale-95">
+        <span class="material-symbols-outlined text-primary mb-2 text-[28px]">upload_file</span>
+        <span class="font-label-md text-on-surface text-sm">Choose File</span>
+      </button>
+      <button onclick="document.getElementById('cam-biz').click()" class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-xl hover:bg-primary/5 hover:border-primary transition-all active:scale-95">
+        <span class="material-symbols-outlined text-primary mb-2 text-[28px]">photo_camera</span>
+        <span class="font-label-md text-on-surface text-sm">Take Photo</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- inline error -->
+  <div id="doc-err" class="hidden px-4 py-3 bg-error-container text-error rounded-xl text-sm font-medium"></div>
 </div>
 <!-- Sticky Footer Buttons -->
 <div class="fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-md p-md border-t border-outline-variant md:relative md:bg-transparent md:border-0 md:px-0 md:mt-lg">
 <div class="max-w-3xl mx-auto flex gap-md">
-<button class="flex-1 py-4 px-6 border-2 border-primary text-primary font-bold rounded-2xl hover:bg-primary/5 active:scale-95 transition-all flex items-center justify-center gap-2">
-<span class="material-symbols-outlined">chevron_left</span>
-                    Back
-                </button>
-<button onclick="submitStep4()" class="flex-[2] py-4 px-6 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
-                    Continue to Review
-                    <span class="material-symbols-outlined">chevron_right</span>
+<button onclick="window.location.href='3_Restaurant_Registration_Step_3.html'" class="flex-1 py-4 px-6 border-2 border-primary text-primary font-bold rounded-2xl hover:bg-primary/5 active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">chevron_left</span> Back
+</button>
+<button onclick="submitStep4()" id="step4-btn" class="flex-[2] py-4 px-6 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
+  Continue to Review
+  <span class="material-symbols-outlined">chevron_right</span>
 </button>
 </div>
 </div>
 </main>
-<!-- Bottom Navigation (From JSON - Filtered for Registration task) -->
 <nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface dark:bg-surface-container shadow-[0_-4px_12px_rgba(15,138,95,0.05)] rounded-t-xl">
 <a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl p-2 transition-transform active:scale-95" href="#">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment_ind</span>
 <span class="font-label-sm text-label-sm">Registration</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant p-2 hover:bg-surface-container-high transition-colors active:scale-95" href="#">
-<span class="material-symbols-outlined">help_outline</span>
-<span class="font-label-sm text-label-sm">Help</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant p-2 hover:bg-surface-container-high transition-colors active:scale-95" href="#">
-<span class="material-symbols-outlined">support_agent</span>
-<span class="font-label-sm text-label-sm">Contact</span>
-</a>
 </nav>
-<script>
-        // Micro-interaction: Progress bar simulation
-        document.addEventListener('DOMContentLoaded', () => {
-            const bars = document.querySelectorAll('.progress-bar-animate');
-            // Adding a slight delay for entry animation effect
-            setTimeout(() => {
-                bars.forEach(bar => {
-                    const width = bar.style.width;
-                    bar.style.width = '0';
-                    setTimeout(() => bar.style.width = width, 100);
-                });
-            }, 500);
-        });
 
-        function submitStep4() {
-            let regData = JSON.parse(localStorage.getItem('restaurant_reg_data') || '{}');
-            // Mocking uploaded document URLs
-            regData.restaurantFrontPhotoUrl = 'mock_url_front_photo.jpg';
-            regData.fssaiCertificateUrl = 'mock_url_fssai.pdf';
-            regData.profilePhotoUrl = 'mock_url_profile_photo.jpg';
-            regData.businessProofUrl = 'mock_url_business_proof.pdf';
-            
-            localStorage.setItem('restaurant_reg_data', JSON.stringify(regData));
-            window.location.href = '5_Restaurant_Registration_Step_5.html';
-        }
-    </script>
-    <script src="js/api.js"></script>
-<script src="nav.js"></script></body></html>
+<script>
+  // ─── Backend upload endpoint ───────────────────────────────────────────────────
+  const UPLOAD_API = 'https://foodrescue-jhyr.onrender.com/api/auth/upload';
+
+  // ─── Uploaded URLs store ───────────────────────────────────────────────────
+  const uploaded = { front: null, fssai: null, profile: null, biz: null };
+  const required = ['front', 'fssai', 'profile'];
+
+  // ─── Handle file selected from input ───────────────────────────────────────
+  function handleFileSelect(key, input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      showDocErr('⚠️ File too large (max 10 MB): ' + file.name);
+      return;
+    }
+    // Show local preview immediately
+    const isImage = file.type.startsWith('image/');
+    const prevEl = document.getElementById(`preview-${key}`);
+    const imgEl  = document.getElementById(`img-${key}`);
+    if (isImage) {
+      imgEl.src = URL.createObjectURL(file);
+      prevEl.classList.remove('hidden');
+    } else {
+      // PDF — show a doc icon placeholder
+      imgEl.src = '';
+      imgEl.alt = '📄 ' + file.name;
+      imgEl.style.objectFit = 'contain';
+      imgEl.style.padding = '12px';
+      imgEl.style.background = '#f4fbf4';
+      prevEl.classList.remove('hidden');
+    }
+    uploadToBackend(key, file);
+  }
+
+  // ─── Upload via backend (uses signed Cloudinary in .env) ───────────────────────
+  async function uploadToBackend(key, file) {
+    const progressWrap = document.getElementById(`progress-${key}`);
+    const bar          = document.getElementById(`prog-bar-${key}`);
+    const badge        = document.getElementById(`badge-${key}`);
+    const iconWrap     = document.getElementById(`icon-${key}`);
+
+    progressWrap.classList.remove('hidden');
+    bar.style.width = '5%';
+    badge.textContent = 'Uploading...';
+    badge.className = 'bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-label-sm font-bold';
+    hideDocErr();
+
+    const form = new FormData();
+    form.append('file', file);
+    form.append('type', key); // front | fssai | profile | biz
+
+    try {
+      // Simulate progress (backend doesn't stream progress)
+      let pct = 5;
+      const ticker = setInterval(() => {
+        pct = Math.min(pct + 8, 85);
+        bar.style.width = pct + '%';
+      }, 300);
+
+      const res = await fetch(UPLOAD_API, { method: 'POST', body: form });
+      clearInterval(ticker);
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Upload failed (server error)');
+
+      uploaded[key] = data.data?.url || data.url;
+      bar.style.width = '100%';
+      setTimeout(() => progressWrap.classList.add('hidden'), 600);
+      badge.textContent = '✅ Uploaded';
+      badge.className = 'bg-primary/10 text-primary px-3 py-1 rounded-full text-label-sm font-bold flex items-center gap-1';
+      iconWrap.className = 'bg-primary/10 p-2 rounded-lg text-primary';
+      updateDocCount();
+    } catch (err) {
+      progressWrap.classList.add('hidden');
+      badge.textContent = '❌ Failed';
+      badge.className = 'bg-error-container text-error px-3 py-1 rounded-full text-label-sm font-bold';
+      uploaded[key] = null;
+      showDocErr('⚠️ Upload failed: ' + err.message);
+    }
+  }
+
+  // ─── Remove a file ──────────────────────────────────────────────────────────
+  function removeFile(key) {
+    uploaded[key] = null;
+    document.getElementById(`preview-${key}`).classList.add('hidden');
+    document.getElementById(`progress-${key}`).classList.add('hidden');
+    document.getElementById(`badge-${key}`).textContent = key === 'biz' ? 'Optional' : 'Pending';
+    document.getElementById(`badge-${key}`).className = 'bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-bold';
+    document.getElementById(`icon-${key}`).className = 'bg-surface-container-highest p-2 rounded-lg text-on-surface-variant';
+    // reset file input
+    const fi = document.getElementById(`file-${key}`);
+    if (fi) fi.value = '';
+    updateDocCount();
+  }
+
+  // ─── Update counter in header ───────────────────────────────────────────────
+  function updateDocCount() {
+    const done = Object.values(uploaded).filter(Boolean).length;
+    const total = Object.keys(uploaded).length;
+    const counterEl = document.querySelector('.text-headline-md.text-primary');
+    if (counterEl) counterEl.textContent = `${done} / ${total}`;
+  }
+
+  function showDocErr(msg) {
+    const el = document.getElementById('doc-err');
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
+  function hideDocErr() {
+    document.getElementById('doc-err').classList.add('hidden');
+  }
+
+  // ─── Progress bar animation on load ────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    const bars = document.querySelectorAll('.progress-bar-animate');
+    setTimeout(() => {
+      bars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => bar.style.width = width, 100);
+      });
+    }, 500);
+  });
+
+  // ─── Submit step 4 ──────────────────────────────────────────────────────────
+  function submitStep4() {
+    hideDocErr();
+    // Check required uploads
+    const missing = required.filter(k => !uploaded[k]);
+    if (missing.length > 0) {
+      const labels = { front: 'Restaurant Front Photo', fssai: 'FSSAI Certificate', profile: 'Profile Photo' };
+      showDocErr('⚠️ Please upload: ' + missing.map(k => labels[k]).join(', '));
+      document.getElementById(`card-${missing[0]}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const btn = document.getElementById('step4-btn');
+    btn.innerHTML = '<span style="display:inline-block;animation:spin 0.8s linear infinite">↻</span> Saving...';
+    btn.disabled = true;
+
+    let regData = JSON.parse(localStorage.getItem('restaurant_reg_data') || '{}');
+    regData.restaurantFrontPhotoUrl = uploaded.front;
+    regData.fssaiCertificateUrl     = uploaded.fssai;
+    regData.profilePhotoUrl         = uploaded.profile;
+    regData.businessProofUrl        = uploaded.biz || null;
+    localStorage.setItem('restaurant_reg_data', JSON.stringify(regData));
+
+    setTimeout(() => { window.location.href = '5_Restaurant_Registration_Step_5.html'; }, 300);
+  }
+</script>
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+<script src="js/api.js"></script>
+<script src="nav.js"></script>
+</body></html>

@@ -275,12 +275,14 @@
 <span class="font-label-sm text-label-sm">Contact</span>
 </a>
 </nav>
+    <script src="js/api.js"></script>
     <script>
+        const PROD_API   = 'https://foodrescue-jhyr.onrender.com/api';
         const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         function showError(msg, fieldId = null) {
             let errEl = document.getElementById('globalError');
-            if(!errEl) {
+            if (!errEl) {
                 errEl = document.createElement('div');
                 errEl.id = 'globalError';
                 errEl.className = 'text-error text-label-md bg-error-container p-3 rounded-lg mb-4';
@@ -288,39 +290,39 @@
             }
             errEl.textContent = '⚠️ ' + msg;
             errEl.classList.remove('hidden');
-            if (fieldId) {
-                const el = document.getElementById(fieldId);
-                if (el) el.classList.add('border-error');
-            }
+            if (fieldId) { const el = document.getElementById(fieldId); if (el) el.classList.add('border-error'); }
         }
-        
+
         function hideError() {
             const errEl = document.getElementById('globalError');
-            if(errEl) errEl.classList.add('hidden');
+            if (errEl) errEl.classList.add('hidden');
             document.querySelectorAll('.border-error').forEach(el => el.classList.remove('border-error'));
         }
 
         async function toggleOTP() {
             hideError();
             const email = document.getElementById('emailInput').value.trim();
-            if(!EMAIL_REGEX.test(email)) {
-                return showError("Please enter a valid email address.", 'emailInput');
-            }
-            
+            if (!EMAIL_REGEX.test(email)) return showError('Please enter a valid email address.', 'emailInput');
+
             const btn = document.getElementById('verifyEmailBtn');
-            const origText = btn.innerHTML;
             btn.innerHTML = 'Sending...';
             btn.disabled = true;
 
             try {
-                await ApiClient.post('/auth/verify/send', { email });
-                const section = document.getElementById('otpSection');
-                section.classList.remove('hidden');
+                const res = await fetch(`${PROD_API}/auth/verify/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to send OTP.');
+
+                document.getElementById('otpSection').classList.remove('hidden');
                 startTimer();
-                btn.innerHTML = 'Sent!';
-                if (typeof window.initOTPInputs === 'function') window.initOTPInputs();
-            } catch(e) {
-                showError(e.message || "Failed to send OTP.");
+                btn.innerHTML = '✅ OTP Sent';
+                initOTPInputs();
+            } catch (e) {
+                showError(e.message || 'Failed to send OTP.');
                 btn.innerHTML = 'Verify Email';
                 btn.disabled = false;
             }
@@ -334,7 +336,7 @@
             timerInterval = setInterval(() => {
                 timeLeft--;
                 timerEl.innerText = timeLeft + 's';
-                if(timeLeft <= 0) {
+                if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     timerEl.innerText = 'Resend Now';
                     timerEl.classList.add('underline', 'cursor-pointer');
@@ -343,103 +345,123 @@
             }, 1000);
         }
 
+        function initOTPInputs() {
+            const otpInputs = document.querySelectorAll('.otp-input');
+            otpInputs.forEach((input, index) => {
+                input.oninput = (e) => {
+                    const val = e.target.value.replace(/\D/g, '');
+                    e.target.value = val.slice(0, 1);
+                    if (val && index < otpInputs.length - 1) otpInputs[index + 1].focus();
+                };
+                input.onkeydown = (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) otpInputs[index - 1].focus();
+                };
+            });
+        }
+
         async function confirmVerify() {
             hideError();
             const email = document.getElementById('emailInput').value.trim();
-            const otps = document.querySelectorAll('.otp-input');
-            let otpVal = '';
+            const otps  = document.querySelectorAll('.otp-input');
+            let otpVal  = '';
             otps.forEach(i => otpVal += i.value);
-            console.log('OTP VAL:', otpVal);
-            if(otpVal.length < 6) return showError("Please enter all 6 digits.");
-            
+            if (otpVal.length < 6) return showError('Please enter all 6 digits.');
+
             const btn = document.getElementById('verifyOtpBtn');
             btn.innerHTML = 'Verifying...';
             btn.disabled = true;
 
             try {
-                await ApiClient.post('/auth/verify/confirm', { email, otp: otpVal });
-                
+                const res = await fetch(`${PROD_API}/auth/verify/confirm`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, otp: otpVal })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Invalid OTP.');
+
                 document.getElementById('otpSection').classList.add('hidden');
                 document.getElementById('successBadge').classList.remove('hidden');
                 const continueBtn = document.getElementById('continueBtn');
                 continueBtn.disabled = false;
                 continueBtn.classList.remove('bg-outline-variant');
                 continueBtn.classList.add('bg-primary');
-                
                 document.getElementById('emailInput').disabled = true;
                 btn.innerHTML = 'Verify OTP';
             } catch (e) {
-                showError(e.message || "Invalid OTP");
+                showError(e.message || 'Invalid OTP.');
+                // Shake and clear OTP inputs
+                const otpSection = document.getElementById('otpSection');
+                otpSection.style.animation = 'none'; void otpSection.offsetWidth;
+                otpSection.style.animation = 'shake 0.4s ease';
+                otps.forEach(i => i.value = '');
+                otps[0]?.focus();
                 btn.innerHTML = 'Verify OTP';
                 btn.disabled = false;
             }
         }
 
-        // Handle OTP auto-focus movement
-        const otpInputs = document.querySelectorAll('.otp-input');
-        otpInputs.forEach((input, index) => {
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus();
-                }
-            });
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && !e.target.value && index > 0) {
-                    otpInputs[index - 1].focus();
-                }
-            });
-        });
-
         async function submitStep1() {
             hideError();
-            const btn = document.getElementById('continueBtn');
-            const email = document.getElementById('emailInput').value;
+            const btn      = document.getElementById('continueBtn');
+            const email    = document.getElementById('emailInput').value.trim();
             const password = document.getElementById('pwd').value;
             const confirmPwd = document.getElementById('confirmPwd').value;
-            const ngoName = document.getElementById('ngoName').value;
-            const contactName = document.getElementById('contactName').value;
-            const ngoRegNum = document.getElementById('ngoRegNum').value;
-            const contactDesignation = document.getElementById('contactDesignation').value;
-            const mobile = document.getElementById('mobile').value;
-            
+            const ngoName  = document.getElementById('ngoName').value.trim();
+            const contactName = document.getElementById('contactName').value.trim();
+            const ngoRegNum   = document.getElementById('ngoRegNum').value.trim();
+            const contactDesignation = document.getElementById('contactDesignation').value.trim();
+            const mobile   = document.getElementById('mobile').value.trim();
+
             if (!ngoName || !email || !password || !confirmPwd || !contactName || !ngoRegNum || !contactDesignation || !mobile) {
-                return showError("Please fill in all required fields.");
+                return showError('Please fill in all required fields.');
             }
-            if (password !== confirmPwd) {
-                return showError("Passwords do not match.", 'confirmPwd');
-            }
+            if (password !== confirmPwd) return showError('Passwords do not match.', 'confirmPwd');
+            if (password.length < 8) return showError('Password must be at least 8 characters.', 'pwd');
 
             try {
-                btn.innerHTML = 'Creating Account... <span class="material-symbols-outlined animate-spin">sync</span>';
+                btn.innerHTML = 'Creating Account... <span style="display:inline-block;animation:spin 0.8s linear infinite">↻</span>';
                 btn.disabled = true;
 
-                const response = await ApiClient.post('/auth/register', {
-                    email: email,
-                    password: password,
-                    role: 'ngo',
-                    deviceId: navigator.userAgent
+                const res = await fetch(`${PROD_API}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, role: 'ngo', deviceId: navigator.userAgent })
                 });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Registration failed.');
 
-                ApiClient.setToken(response.data?.tokens?.accessToken || response.data?.accessToken);
-                localStorage.setItem('foodRescueUser', JSON.stringify(response.data?.user || response.data));
-                
+                const tokens = data.data?.tokens || {};
+                const user   = data.data?.user || {};
+                if (tokens.accessToken)  { localStorage.setItem('foodRescueToken', tokens.accessToken); }
+                if (tokens.refreshToken) { localStorage.setItem('foodRescueRefreshToken', tokens.refreshToken); }
+                localStorage.setItem('foodRescueUser', JSON.stringify(user));
+
                 let regData = JSON.parse(localStorage.getItem('ngo_reg_data') || '{}');
-                regData.organizationName = ngoName;
-                regData.registrationNumber = document.getElementById('ngoRegNum').value;
-                regData.contactPerson = contactName;
-                regData.designation = document.getElementById('contactDesignation').value;
-                regData.mobile = document.getElementById('mobile').value;
+                regData.organizationName   = ngoName;
+                regData.registrationNumber = ngoRegNum;
+                regData.contactPerson      = contactName;
+                regData.designation        = contactDesignation;
+                regData.mobile             = mobile;
+                regData.email              = email;
                 localStorage.setItem('ngo_reg_data', JSON.stringify(regData));
 
-                window.location.href = '2_NGO_Registration_Step_2.html';
-            } catch(error) {
-                showError(error.message || "Failed to create account.");
+                document.body.style.opacity = '0';
+                document.body.style.transition = 'opacity 0.3s';
+                setTimeout(() => window.location.href = '2_NGO_Registration_Step_2.html', 300);
+            } catch (error) {
+                showError(error.message || 'Failed to create account.');
                 btn.innerHTML = 'Continue <span class="material-symbols-outlined">arrow_forward</span>';
                 btn.disabled = false;
             }
         }
+
+        // Init OTP inputs if already rendered (pre-loaded)
+        document.addEventListener('DOMContentLoaded', () => {
+            initOTPInputs();
+        });
     </script>
-    <script src="js/api.js"></script>
+    <style>@keyframes spin { to { transform: rotate(360deg); } } @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }</style>
 <script src="nav.js"></script></body></html>
 
 

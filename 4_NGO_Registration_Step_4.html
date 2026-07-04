@@ -182,7 +182,7 @@
 <p class="text-label-sm">All uploads are encrypted and processed securely according to global data standards.</p>
 </div>
 <div class="flex gap-4 w-full md:w-auto">
-<button class="flex-1 md:flex-none px-xl py-sm font-label-md border-2 border-primary text-primary rounded-xl hover:bg-primary/5 transition-all active:scale-95">Back</button>
+<button class="flex-1 md:flex-none px-xl py-sm font-label-md border-2 border-primary text-primary rounded-xl hover:bg-primary/5 transition-all active:scale-95" onclick="window.location.href='3_NGO_Registration_Step_3.html'">Back</button>
 <button class="flex-1 md:flex-none px-xl py-sm font-label-md bg-primary text-on-primary rounded-xl shadow-[0_4px_12px_rgba(15,138,95,0.2)] hover:opacity-90 transition-all active:scale-95" onclick="submitStep4()">Continue</button>
 </div>
 </div>
@@ -202,7 +202,9 @@
 <span class="font-label-sm text-label-sm">Contact</span>
 </a>
 </nav>
+    <script src="js/api.js"></script>
     <script>
+        const NGO_UPLOAD_API = 'https://foodrescue-jhyr.onrender.com/api/auth/upload';
         const MAX_SIZE = 10 * 1024 * 1024;
         let selectedFiles = [];
 
@@ -219,18 +221,11 @@
             hideError();
             const files = Array.from(event.target.files);
             for (const file of files) {
-                if (file.size > MAX_SIZE) {
-                    showError(`File ${file.name} exceeds 10MB limit.`);
-                    continue;
-                }
+                if (file.size > MAX_SIZE) { showError(`File ${file.name} exceeds 10MB limit.`); continue; }
                 const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
-                if (!validTypes.includes(file.type)) {
-                    showError(`File ${file.name} has unsupported type.`);
-                    continue;
-                }
+                if (!validTypes.includes(file.type)) { showError(`File ${file.name} has unsupported type.`); continue; }
                 selectedFiles.push(file);
             }
-            // Clear input so same file can be selected again if removed
             event.target.value = '';
             renderFileList();
         }
@@ -241,9 +236,8 @@
             selectedFiles.forEach((file, index) => {
                 const isImage = file.type.startsWith('image/');
                 const previewUrl = isImage ? URL.createObjectURL(file) : '';
-                
                 list.innerHTML += `
-                    <div class="flex items-center gap-3 p-3 bg-surface-container rounded-lg border border-outline-variant/30">
+                    <div class="flex items-center gap-3 p-3 bg-surface-container rounded-lg border border-outline-variant/30" id="file-row-${index}">
                         ${isImage ? `<img src="${previewUrl}" class="w-10 h-10 object-cover rounded">` : `<span class="material-symbols-outlined text-primary text-2xl">description</span>`}
                         <div class="flex-1 min-w-0">
                             <p class="text-label-sm truncate font-bold">${file.name}</p>
@@ -251,6 +245,7 @@
                             <div class="w-full h-1 bg-surface-variant mt-1 rounded-full overflow-hidden hidden" id="progressWrap-${index}">
                                 <div class="h-full bg-primary w-0 transition-all duration-300" id="progress-${index}"></div>
                             </div>
+                            <p class="text-[10px] text-primary hidden" id="status-${index}"></p>
                         </div>
                         <span class="material-symbols-outlined text-error cursor-pointer hover:bg-error-container p-1 rounded transition" onclick="removeFile(${index})">delete</span>
                     </div>
@@ -264,84 +259,59 @@
         }
 
         async function submitStep4() {
-            if (selectedFiles.length === 0) {
-                return showError("Please upload at least one document.");
-            }
+            if (selectedFiles.length === 0) return showError('Please upload at least one document.');
             hideError();
 
             const btn = document.querySelector('button[onclick="submitStep4()"]');
             btn.innerHTML = 'Uploading...';
             btn.disabled = true;
 
-            try {
-                const token = ApiClient.getToken();
-                if (!token) throw new Error("Authentication missing. Please start from Step 1.");
-                
-                const backendUrl = ApiClient.baseUrl || 'http://localhost:3000/api';
-                const documentUrls = [];
+            const documentUrls = [];
 
+            try {
                 for (let i = 0; i < selectedFiles.length; i++) {
                     const f = selectedFiles[i];
                     const pWrap = document.getElementById(`progressWrap-${i}`);
-                    if(pWrap) pWrap.classList.remove('hidden');
-                    const pBar = document.getElementById(`progress-${i}`);
+                    const pBar  = document.getElementById(`progress-${i}`);
+                    const status = document.getElementById(`status-${i}`);
 
-                    // 1. Get Presigned URL
-                    const urlRes = await fetch(`${backendUrl}/ngo/upload-url`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({ filename: f.name, mimeType: f.type })
-                    });
-                    const urlData = await urlRes.json();
-                    if (!urlRes.ok) throw new Error(urlData.message || 'Failed to get upload URL');
+                    if (pWrap) pWrap.classList.remove('hidden');
+                    if (status) { status.classList.remove('hidden'); status.textContent = 'Uploading…'; }
 
-                    const { uploadUrl, key, publicUrl } = urlData.data;
-                    if(pBar) pBar.style.width = '30%';
+                    // Animate progress
+                    let pct = 5;
+                    const ticker = setInterval(() => {
+                        pct = Math.min(pct + 10, 85);
+                        if (pBar) pBar.style.width = pct + '%';
+                    }, 250);
 
-                    // 2. Upload directly to R2
-                    const r2Res = await fetch(uploadUrl, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': f.type
-                        },
-                        body: f
-                    });
+                    const form = new FormData();
+                    form.append('file', f);
+                    form.append('type', 'ngo_doc');
 
-                    if (!r2Res.ok) throw new Error(`Direct upload to Cloud failed for ${f.name}`);
-                    if(pBar) pBar.style.width = '70%';
+                    const res  = await fetch(NGO_UPLOAD_API, { method: 'POST', body: form });
+                    clearInterval(ticker);
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || `Upload failed for ${f.name}`);
 
-                    // 3. Confirm & Validate Magic Bytes on Backend
-                    const confirmRes = await fetch(`${backendUrl}/ngo/upload-confirm`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({ key })
-                    });
-                    const confirmData = await confirmRes.json();
-                    if (!confirmRes.ok) throw new Error(confirmData.message || `File validation failed for ${f.name}`);
-
-                    documentUrls.push(publicUrl);
-                    if(pBar) pBar.style.width = '100%';
+                    const url = data.data?.url || data.url;
+                    documentUrls.push(url);
+                    if (pBar) pBar.style.width = '100%';
+                    if (status) status.textContent = '✅ Done';
                 }
 
                 let regData = JSON.parse(localStorage.getItem('ngo_reg_data') || '{}');
                 regData.documentUrls = documentUrls;
                 localStorage.setItem('ngo_reg_data', JSON.stringify(regData));
-                
+
                 window.location.href = '5_NGO_Registration_Step_5.html';
             } catch (err) {
-                showError(err.message || 'Error uploading files');
+                showError(err.message || 'Error uploading files. Try again.');
                 btn.innerHTML = 'Continue';
                 btn.disabled = false;
             }
         }
     </script>
-    <script src="js/api.js"></script>
 <style>
         @keyframes progress {
             0% { transform: translateX(-100%); }

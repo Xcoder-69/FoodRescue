@@ -350,13 +350,26 @@
                 submitBtn.disabled = true;
 
                 const regData = JSON.parse(localStorage.getItem('ngo_reg_data') || '{}');
-                
-                const response = await ApiClient.post('/ngo/profile', regData);
+                const token = localStorage.getItem('foodRescueToken');
+                if (!token) throw new Error('Session expired. Please go back to Step 1.');
+
+                const res = await fetch('https://foodrescue-jhyr.onrender.com/api/ngo/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(regData)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Submission failed.');
                 
                 localStorage.removeItem('ngo_reg_data');
-                window.location.href = '6_NGO_Registration_Success.html';
+                document.body.style.opacity = '0';
+                document.body.style.transition = 'opacity 0.3s';
+                setTimeout(() => window.location.href = '6_NGO_Registration_Success.html', 300);
             } catch (error) {
-                alert(error.message || "Failed to submit registration.");
+                alert(error.message || 'Failed to submit registration.');
                 submitBtn.innerHTML = 'Submit Registration <span class="material-symbols-outlined">send</span>';
                 submitBtn.disabled = false;
             }

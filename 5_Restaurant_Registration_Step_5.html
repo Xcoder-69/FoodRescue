@@ -422,12 +422,26 @@
                     let regData = JSON.parse(localStorage.getItem('restaurant_reg_data') || '{}');
                     regData.status = 'PENDING';
 
-                    await ApiClient.post('/restaurant/profile', regData);
+                    const token = localStorage.getItem('foodRescueToken');
+                    if (!token) throw new Error('Session expired. Please go back to Step 1.');
+
+                    const res = await fetch('https://foodrescue-jhyr.onrender.com/api/restaurant/profile', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify(regData)
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || 'Submission failed.');
                     
                     localStorage.removeItem('restaurant_reg_data');
-                    window.location.href = '6_Registration_Success_Status.html';
+                    document.body.style.opacity = '0';
+                    document.body.style.transition = 'opacity 0.3s';
+                    setTimeout(() => window.location.href = '6_Registration_Success_Status.html', 300);
                 } catch(error) {
-                    alert("Submission failed: " + error.message);
+                    alert('Submission failed: ' + error.message);
                     this.innerText = 'Submit for Verification';
                 }
             } else {

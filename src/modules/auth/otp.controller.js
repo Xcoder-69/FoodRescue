@@ -61,7 +61,7 @@ class OTPController {
       const accessToken = jwt.sign(
         { uid, role, sessionId, is2FAVerified: true },
         process.env.JWT_ACCESS_SECRET,
-        { expiresIn: '15m' }
+        { expiresIn: '1h' }
       );
       const refreshToken = jwt.sign(
         { uid, sessionId },

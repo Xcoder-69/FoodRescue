@@ -1,4 +1,4 @@
-var API_BASE_URL = 'http://127.0.0.1:3000/api';
+var API_BASE_URL = 'https://foodrescue-jhyr.onrender.com/api';
 
 /**
  * Global API Utility for FoodRescue
@@ -13,6 +13,14 @@ var ApiClient = class {
         localStorage.setItem('foodRescueToken', token);
     }
 
+    static getRefreshToken() {
+        return localStorage.getItem('foodRescueRefreshToken');
+    }
+
+    static setRefreshToken(token) {
+        localStorage.setItem('foodRescueRefreshToken', token);
+    }
+
     static clearSession() {
         localStorage.removeItem('foodRescueToken');
         localStorage.removeItem('foodRescueRefreshToken');
@@ -21,9 +29,29 @@ var ApiClient = class {
         window.location.href = '4_login_and_verification.html';
     }
 
+    // Attempt silent token refresh, returns true on success
+    static async tryRefresh() {
+        const refreshToken = this.getRefreshToken();
+        if (!refreshToken) return false;
+        try {
+            const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ refreshToken })
+            });
+            if (!res.ok) return false;
+            const data = await res.json();
+            const newAccess = data.data?.accessToken || data.accessToken;
+            const newRefresh = data.data?.refreshToken || data.refreshToken;
+            if (newAccess) { this.setToken(newAccess); }
+            if (newRefresh) { this.setRefreshToken(newRefresh); }
+            return !!newAccess;
+        } catch { return false; }
+    }
+
     static async request(endpoint, options = {}) {
         const url = `${API_BASE_URL}${endpoint}`;
-        
+
         const headers = {
             'Content-Type': 'application/json',
             ...options.headers
@@ -35,14 +63,23 @@ var ApiClient = class {
         }
 
         try {
-            const response = await fetch(url, {
-                ...options,
-                headers
-            });
+            let response = await fetch(url, { ...options, headers });
+            let data = await response.json();
 
-            const data = await response.json();
+            // Auto-refresh on TOKEN_EXPIRED
+            if (response.status === 401 && data.code === 'TOKEN_EXPIRED') {
+                const refreshed = await this.tryRefresh();
+                if (refreshed) {
+                    // Retry original request with new token
+                    headers['Authorization'] = `Bearer ${this.getToken()}`;
+                    response = await fetch(url, { ...options, headers });
+                    data = await response.json();
+                } else {
+                    this.clearSession();
+                    return null;
+                }
+            }
 
-            // Handle unauthorized / token expiration natively
             if (response.status === 401) {
                 console.warn('Session expired or unauthorized');
                 this.clearSession();
@@ -68,9 +105,7 @@ var ApiClient = class {
     }
 
     static async get(endpoint) {
-        return this.request(endpoint, {
-            method: 'GET'
-        });
+        return this.request(endpoint, { method: 'GET' });
     }
 
     static async patch(endpoint, body) {
@@ -78,6 +113,17 @@ var ApiClient = class {
             method: 'PATCH',
             body: JSON.stringify(body)
         });
+    }
+
+    static async put(endpoint, body) {
+        return this.request(endpoint, {
+            method: 'PUT',
+            body: JSON.stringify(body)
+        });
+    }
+
+    static async del(endpoint) {
+        return this.request(endpoint, { method: 'DELETE' });
     }
 }
 

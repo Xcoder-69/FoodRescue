@@ -326,117 +326,195 @@
 <!-- (Suppressed as per Relevance Check: This is a Task-Focused Registration page) -->
 <script src="js/api.js"></script>
 <script>
-        // Micro-interaction for form inputs
-        document.querySelectorAll('input, select').forEach(el => {
-            el.addEventListener('focus', () => {
-                el.parentElement.classList.add('scale-[1.01]');
-                el.parentElement.style.transition = 'transform 0.2s ease';
-            });
-            el.addEventListener('blur', () => {
-                el.parentElement.classList.remove('scale-[1.01]');
-            });
+  const PROD_API_V = 'https://foodrescue-jhyr.onrender.com/api';
+
+  // Micro-interaction for form inputs
+  document.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('focus', () => {
+      el.parentElement.classList.add('scale-[1.01]');
+      el.parentElement.style.transition = 'transform 0.2s ease';
+    });
+    el.addEventListener('blur', () => {
+      el.parentElement.classList.remove('scale-[1.01]');
+    });
+  });
+
+  // ── OTP inputs auto-focus ─────────────────────────────────────────────
+  function initVolOTP() {
+    const otpInputs = document.querySelectorAll('.otp-input');
+    otpInputs.forEach((input, index) => {
+      input.oninput = (e) => {
+        const val = e.target.value.replace(/\D/g, '');
+        e.target.value = val.slice(0, 1);
+        if (val && index < otpInputs.length - 1) otpInputs[index + 1].focus();
+      };
+      input.onkeydown = (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) otpInputs[index - 1].focus();
+      };
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initVolOTP);
+
+  let volTimerInterval;
+  function startCountdown() {
+    let count = 60;
+    const timerEl = document.getElementById('countdown');
+    clearInterval(volTimerInterval);
+    volTimerInterval = setInterval(() => {
+      count--;
+      timerEl.innerText = `Resend in ${count}s`;
+      if (count <= 0) {
+        clearInterval(volTimerInterval);
+        timerEl.innerText = 'Resend OTP';
+        timerEl.classList.add('text-primary', 'cursor-pointer', 'underline');
+        timerEl.onclick = sendOTP;
+      }
+    }, 1000);
+  }
+
+  // ── Real sendOTP ──────────────────────────────────────────────────────────
+  async function sendOTP() {
+    const email = document.getElementById('vol-email').value.trim();
+    if (!email) return alert('Please enter your email first.');
+
+    const btn = document.getElementById('verifyBtn');
+    btn.disabled = true;
+    btn.innerHTML = 'Sending OTP...';
+
+    try {
+      const res = await fetch(`${PROD_API_V}/auth/verify/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to send OTP.');
+
+      document.getElementById('otpSection').classList.remove('hidden');
+      btn.classList.add('hidden');
+      startCountdown();
+      initVolOTP();
+    } catch (e) {
+      btn.innerHTML = 'Send OTP';
+      btn.disabled = false;
+      alert('⚠️ ' + (e.message || 'Failed to send OTP. Check your connection.'));
+    }
+  }
+
+  // ── Real verifyOTP ─────────────────────────────────────────────────────
+  async function verifyOTP() {
+    const email = document.getElementById('vol-email').value.trim();
+    const otpInputs = document.querySelectorAll('.otp-input');
+    let otp = '';
+    otpInputs.forEach(i => otp += i.value);
+
+    if (otp.length < 6) return alert('Please enter all 6 OTP digits.');
+
+    const btn = document.getElementById('verifyOtpBtn');
+    if (btn) { btn.disabled = true; btn.innerHTML = 'Verifying...'; }
+
+    try {
+      const res = await fetch(`${PROD_API_V}/auth/verify/confirm`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Invalid OTP.');
+
+      document.getElementById('otpSection').classList.add('hidden');
+      document.getElementById('successBadge').classList.remove('hidden');
+
+      const mainBtn = document.getElementById('mainContinueBtn');
+      mainBtn.disabled = false;
+      mainBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      mainBtn.classList.add('hover:opacity-90', 'active:scale-95');
+      if (btn) btn.innerHTML = 'Verify';
+    } catch (e) {
+      if (btn) { btn.innerHTML = 'Verify'; btn.disabled = false; }
+      // Shake and clear OTP
+      const otpSec = document.getElementById('otpSection');
+      otpSec.style.animation = 'none'; void otpSec.offsetWidth;
+      otpSec.style.animation = 'shake 0.4s ease';
+      otpInputs.forEach(i => i.value = '');
+      otpInputs[0]?.focus();
+      alert('⚠️ ' + (e.message || 'Invalid OTP. Please try again.'));
+    }
+  }
+
+  // ── Real submit ───────────────────────────────────────────────────────────
+  const submitBtn = document.getElementById('mainContinueBtn');
+  if (submitBtn) {
+    submitBtn.onclick = async (e) => {
+      e.preventDefault();
+
+      const nameEl    = document.getElementById('vol-name');
+      const emailEl   = document.getElementById('vol-email');
+      const phoneEl   = document.getElementById('vol-phone');
+      const pwEl      = document.getElementById('vol-password');
+      const pwCfEl    = document.getElementById('vol-confirm-password');
+
+      if (!nameEl?.value || !emailEl?.value || !phoneEl?.value || !pwEl?.value || !pwCfEl?.value) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      if (pwEl.value !== pwCfEl.value) {
+        alert('Passwords do not match.');
+        return;
+      }
+      if (pwEl.value.length < 8) {
+        alert('Password must be at least 8 characters.');
+        return;
+      }
+
+      submitBtn.innerHTML = 'Processing...';
+      submitBtn.disabled = true;
+
+      try {
+        const res = await fetch(`${PROD_API_V}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: emailEl.value.trim(),
+            password: pwEl.value,
+            role: 'volunteer',
+            deviceId: navigator.userAgent
+          })
         });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Registration failed.');
 
-        // Simple validation visualization
-        function sendOTP() {
-            const email = document.getElementById('vol-email').value;
-            if(!email) return alert('Please enter an email first');
-            
-            const btn = document.getElementById('verifyBtn');
-            btn.disabled = true;
-            btn.innerHTML = 'Sending...';
-            
-            setTimeout(() => {
-                document.getElementById('otpSection').classList.remove('hidden');
-                btn.classList.add('hidden');
-                startCountdown();
-                if (typeof window.initOTPInputs === 'function') window.initOTPInputs();
-            }, 800);
-        }
+        const tokens = data.data?.tokens || {};
+        const user   = data.data?.user || {};
+        if (tokens.accessToken)  { localStorage.setItem('foodRescueToken', tokens.accessToken); }
+        if (tokens.refreshToken) { localStorage.setItem('foodRescueRefreshToken', tokens.refreshToken); }
+        localStorage.setItem('foodRescueUser', JSON.stringify(user));
 
-        function startCountdown() {
-            let count = 10;
-            const timerEl = document.getElementById('countdown');
-            const interval = setInterval(() => {
-                count--;
-                timerEl.innerText = `Resend in ${count}s`;
-                if(count === 0) {
-                    clearInterval(interval);
-                    timerEl.innerText = "Resend OTP";
-                    timerEl.classList.add('text-primary', 'cursor-pointer');
-                    timerEl.onclick = sendOTP;
-                }
-            }, 1000);
-        }
-
-        function verifyOTP() {
-            // Mock verification
-            document.getElementById('otpSection').classList.add('hidden');
-            document.getElementById('successBadge').classList.remove('hidden');
-            
-            const mainBtn = document.getElementById('mainContinueBtn');
-            mainBtn.disabled = false;
-            mainBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            mainBtn.classList.add('hover:opacity-90', 'active:scale-95');
-        }
-
-        // Auto-focus OTP fields
-        const otpInputs = document.querySelectorAll('.otp-input');
-        otpInputs.forEach((input, index) => {
-            input.oninput = (e) => {
-                if (e.target.value && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus();
-                }
-            };
-            input.onkeydown = (e) => {
-                if (e.key === 'Backspace' && !e.target.value && index > 0) {
-                    otpInputs[index - 1].focus();
-                }
-            };
-        });
-
-        const submitBtn = document.getElementById('mainContinueBtn');
-        submitBtn.onclick = async (e) => {
-            e.preventDefault();
-            console.log('VOLUNTEER SUBMIT CLICKED');
-            
-            const nameEl = document.getElementById('vol-name');
-            const emailEl = document.getElementById('vol-email');
-            const phoneEl = document.getElementById('vol-phone');
-            const pwEl = document.getElementById('vol-password');
-            const pwConfirmEl = document.getElementById('vol-confirm-password');
-
-            if (!nameEl.value || !emailEl.value || !phoneEl.value || !pwEl.value || !pwConfirmEl.value) {
-                alert("Please fill in all required fields.");
-                return;
-            }
-
-            if (pwEl.value !== pwConfirmEl.value) {
-                alert("Passwords do not match.");
-                return;
-            }
-
-            submitBtn.innerHTML = 'Processing...';
-            submitBtn.disabled = true;
-            try {
-              const response = await ApiClient.post('/auth/register', {
-                email: emailEl.value,
-                password: pwEl.value,
-                role: 'volunteer',
-                deviceId: navigator.userAgent
-              });
-              ApiClient.setToken(response.data?.tokens?.accessToken || response.data?.accessToken);
-              localStorage.setItem('foodRescueUser', JSON.stringify(response.data?.user || response.data));
-              submitBtn.innerHTML = 'Registration Sent!';
-              submitBtn.classList.replace('bg-primary', 'bg-tertiary');
-              setTimeout(() => { window.location.href = '9_volunteer_dashboard.html'; }, 1500);
-            } catch(err) {
-              alert('Registration failed: ' + err.message);
-              submitBtn.innerHTML = 'Submit For Verification';
-              submitBtn.disabled = false;
-            }
+        // Save volunteer profile data
+        const volData = {
+          name:  nameEl.value.trim(),
+          email: emailEl.value.trim(),
+          phone: phoneEl.value.trim()
         };
-    </script>
+        localStorage.setItem('vol_reg_data', JSON.stringify(volData));
+
+        submitBtn.innerHTML = '✅ Registration Sent!';
+        submitBtn.classList.replace('bg-primary', 'bg-primary/80');
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s';
+        setTimeout(() => window.location.href = '9_volunteer_dashboard.html', 500);
+      } catch (err) {
+        alert('⚠️ Registration failed: ' + err.message);
+        submitBtn.innerHTML = 'Submit For Verification';
+        submitBtn.disabled = false;
+      }
+    };
+  }
+</script>
+<style>
+  @keyframes spin  { to { transform: rotate(360deg); } }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+</style>
 <script src="map-picker.js"></script><script>document.addEventListener("DOMContentLoaded",function(){var c=document.getElementById("vol-addr-container");if(c)c.innerHTML=buildAddressHTML("vol");initCountryDropdown("vol");initLiveTracking("fr-tracking-map");});</script><script src="nav.js"></script><script>
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('button, a').forEach(el => {

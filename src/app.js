@@ -27,8 +27,23 @@ const app = express();
 
 // ─── Security Middleware ────────────────────────────────────────────────────
 app.use(helmet());
+
+const allowedOrigins = [
+  ...(process.env.ALLOWED_ORIGINS?.split(',') || []),
+  'http://localhost:3000', 'http://localhost:5500', 'http://localhost:8080',
+  'http://127.0.0.1:5500', 'http://127.0.0.1:3000', 'http://127.0.0.1:8080',
+  'null', // file:// protocol sends Origin: null
+];
+
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl) or matching origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // permissive for now; tighten in production
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
