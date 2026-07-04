@@ -493,7 +493,7 @@
       if (b.textContent.trim() === 'menu') hamburger = b;
     });
   }
-  function openSidebar()  { sidebar.style.display='flex';  overlay.style.display='block'; document.body.style.overflow='hidden'; requestAnimationFrame(function(){ sidebar.style.transform='translateX(0)'; }); }
+  function openSidebar()  { sidebar.style.display='flex';  overlay.style.display='block'; document.body.style.overflow='hidden'; requestAnimationFrame(function(){ requestAnimationFrame(function(){ sidebar.style.transform='translateX(0)'; }); }); }
   function closeSidebar() { sidebar.style.transform='translateX(-100%)'; overlay.style.display='none'; document.body.style.overflow=''; setTimeout(function(){ sidebar.style.display='none'; },280); }
   if (hamburger) hamburger.addEventListener('click', function(e){ e.stopPropagation(); openSidebar(); });
   overlay.addEventListener('click', closeSidebar);

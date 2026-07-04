@@ -442,5 +442,383 @@
     initSidebar();
     initCounters();
     patchLinks();
+    wireAllButtons();
   });
+
+  /* ---- 6. WIRE ALL BUTTONS ---- */
+  function wireAllButtons() {
+    // Helper: show a quick toast
+    function toast(msg, icon) {
+      icon = icon || 'check_circle';
+      var t = document.createElement('div');
+      t.style.cssText = 'position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(12px);z-index:999999;background:#006c49;color:#fff;padding:11px 20px;border-radius:13px;font-size:14px;font-weight:600;font-family:Inter,sans-serif;box-shadow:0 6px 24px rgba(0,108,73,.32);opacity:0;transition:opacity .22s,transform .22s;display:flex;align-items:center;gap:8px;white-space:nowrap;';
+      t.innerHTML = '<span class="material-symbols-outlined" style="font-size:17px">' + icon + '</span>' + msg;
+      document.body.appendChild(t);
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; }); });
+      setTimeout(function(){ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(12px)'; setTimeout(function(){ t.remove(); }, 230); }, 2600);
+    }
+
+    /* ──── SHARED: Bottom nav bar wiring for all pages ──── */
+    document.querySelectorAll('nav a, nav button').forEach(function(el) {
+      var icon = (el.querySelector('.material-symbols-outlined') || {}).textContent || '';
+      icon = icon.trim();
+      var txt = el.textContent.trim().toLowerCase();
+      var map = {
+        'dashboard': '7_restaurant_dashboard.html', 'home': '7_restaurant_dashboard.html',
+        'history': '13_impact_analytics.html', 'analytics': '13_impact_analytics.html',
+        'add_circle': '8_create_food_donation.html', 'donate': '8_create_food_donation.html',
+        'volunteer_activism': '8_create_food_donation.html',
+        'notifications': '11_notifications.html', 'alerts': '11_notifications.html',
+        'person': '12_profile.html', 'profile': '12_profile.html',
+        'settings': 'restaurant_settings.html',
+        'grid_view': '7_restaurant_dashboard.html',
+        'receipt_long': '13_impact_analytics.html',
+        'leaderboard': '13_impact_analytics.html',
+        'group': 'restaurant_volunteers.html',
+      };
+      var dest = map[icon] || (txt === 'home' ? '7_restaurant_dashboard.html' : null)
+                            || (txt === 'donate' ? '8_create_food_donation.html' : null)
+                            || (txt === 'alerts' ? '11_notifications.html' : null)
+                            || (txt === 'profile' ? '12_profile.html' : null)
+                            || (txt === 'history' ? '13_impact_analytics.html' : null);
+      if (dest && !el._wired) {
+        el._wired = true;
+        el.href = '#';
+        el.onclick = function(e){ e.preventDefault(); window.frNavigate(dest); };
+      }
+    });
+
+    /* ──── 10_ngo_dashboard ──── */
+    if (currentPage === '10_ngo_dashboard.html') {
+      document.querySelectorAll('button').forEach(function(btn) {
+        var txt = btn.textContent.trim().toLowerCase();
+        var icon = (btn.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        icon = icon.trim();
+        if (txt.includes('view all') || icon === 'arrow_forward') {
+          btn.onclick = function(){ window.frNavigate('ngo_browse_donations.html'); };
+        } else if (txt.includes('claim now') || icon === 'shopping_cart_checkout') {
+          btn.onclick = function(){ window.frNavigate('ngo_claim_donation.html'); };
+        } else if (icon === 'filter_list' || txt.includes('filter')) {
+          btn.onclick = function(){ toast('Filters coming soon!', 'tune'); };
+        } else if (txt.includes('verified') || txt.includes('fssai')) {
+          btn.onclick = function(){ window.frNavigate('15_verification_management.html'); };
+        } else if (txt.includes('top donors') || icon === 'star') {
+          btn.onclick = function(){ window.frNavigate('ngo_browse_donations.html'); };
+        }
+      });
+    }
+
+    /* ──── 11_notifications ──── */
+    if (currentPage === '11_notifications.html') {
+      document.querySelectorAll('button, a').forEach(function(el) {
+        var txt = el.textContent.trim().toLowerCase();
+        var icon = (el.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        if (txt.includes('mark all') || icon.trim() === 'done_all') {
+          el.onclick = function(e){ e.preventDefault();
+            document.querySelectorAll('.notification-item, [class*=notif]').forEach(function(n){ n.style.opacity='0.5'; });
+            toast('All notifications marked as read', 'done_all');
+          };
+        } else if (txt.includes('boost now')) {
+          el.onclick = function(){ toast('Boost feature coming soon!', 'rocket_launch'); };
+        } else if (txt.includes('dismiss')) {
+          el.onclick = function(){ 
+            var p = el.closest('[class*=notif], li, .card, div.p-4');
+            if (p) { p.style.opacity='0'; setTimeout(function(){ p.remove(); }, 300); }
+            toast('Notification dismissed', 'close'); 
+          };
+        }
+      });
+    }
+
+    /* ──── 13_impact_analytics ──── */
+    if (currentPage === '13_impact_analytics.html') {
+      document.querySelectorAll('button').forEach(function(btn) {
+        var txt = btn.textContent.trim().toLowerCase();
+        var icon = (btn.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        if (txt.includes('last 30') || txt.includes('quarterly') || txt.includes('custom')) {
+          if (!btn._wired) {
+            btn._wired = true;
+            btn.onclick = function(){
+              document.querySelectorAll('button').forEach(function(b){ if(['last 30 days','quarterly','custom'].some(function(k){ return b.textContent.trim().toLowerCase().includes(k); })) b.style.fontWeight='400'; });
+              btn.style.fontWeight = '700'; btn.style.background='rgba(0,108,73,.12)';
+              toast('Showing: ' + btn.textContent.trim(), 'calendar_today');
+            };
+          }
+        } else if (txt.includes('boost outreach')) {
+          btn.onclick = function(){ toast('Boost campaign started!', 'rocket_launch'); };
+        } else if (txt.includes('view all')) {
+          btn.onclick = function(){ window.frNavigate('ngo_browse_donations.html'); };
+        } else if (icon.trim() === 'download' || txt.includes('download')) {
+          btn.onclick = function(){
+            var a = document.createElement('a');
+            a.href = 'data:text/csv,Date,Rescued,Donated\n' + ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(function(d,i){ return d+','+(45+i*7)+','+(30+i*6); }).join('\n');
+            a.download = 'impact_analytics.csv'; a.click();
+            toast('Analytics exported!', 'download');
+          };
+        }
+      });
+    }
+
+    /* ──── 14_chat_and_coordination ──── */
+    if (currentPage === '14_chat_and_coordination.html') {
+      document.querySelectorAll('button').forEach(function(btn) {
+        var icon = (btn.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        icon = icon.trim();
+        var txt = btn.textContent.trim().toLowerCase();
+        if (icon === 'call') {
+          btn.onclick = function(){ toast('📞 Calling…', 'phone_in_talk'); };
+        } else if (icon === 'more_vert') {
+          btn.onclick = function(){ toast('Options: Delete chat, Mute, Block', 'more_vert'); };
+        } else if (icon === 'arrow_back' || txt === 'back') {
+          btn.onclick = function(){ history.back(); };
+        }
+      });
+      // Send button
+      var sendInput = document.querySelector('input[type=text], textarea');
+      document.querySelectorAll('button').forEach(function(btn) {
+        var icon = (btn.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        if (icon.trim() === 'send') {
+          btn.onclick = function(){
+            var val = sendInput ? sendInput.value.trim() : '';
+            if (!val) { toast('Type a message first', 'edit'); return; }
+            if (sendInput) sendInput.value = '';
+            toast('Message sent!', 'send');
+          };
+        }
+      });
+    }
+
+    /* ──── 7_restaurant_dashboard ──── */
+    if (currentPage === '7_restaurant_dashboard.html') {
+      document.querySelectorAll('button, a').forEach(function(el) {
+        var icon = (el.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        icon = icon.trim();
+        var txt = el.textContent.trim().toLowerCase();
+        if (icon === 'add_circle' || txt.includes('donate food')) { el.onclick = function(e){ e.preventDefault(); window.frNavigate('8_create_food_donation.html'); }; }
+        else if (icon === 'local_shipping' || txt.includes('track pickup')) { el.onclick = function(e){ e.preventDefault(); window.frNavigate('restaurant_track_pickup.html'); }; }
+        else if (txt.includes('view all') && !el._wired) { el._wired=true; el.onclick = function(e){ e.preventDefault(); window.frNavigate('13_impact_analytics.html'); }; }
+        else if (icon === 'search' || txt.includes('search')) { el.onclick = function(){ toast('Search coming soon!', 'search'); }; }
+        else if (icon === 'more_vert' && !el._wired) { el._wired=true; el.onclick = function(){ toast('Options: Edit, Delete', 'more_vert'); }; }
+      });
+    }
+
+    /* ──── 8_create_food_donation ──── */
+    if (currentPage === '8_create_food_donation.html') {
+      document.querySelectorAll('button').forEach(function(btn) {
+        var txt = btn.textContent.trim().toLowerCase();
+        if (txt === 'veg' || txt === 'non-veg' || txt === 'vegan') {
+          btn.onclick = function(){
+            document.querySelectorAll('button').forEach(function(b){ if(['veg','non-veg','vegan'].includes(b.textContent.trim().toLowerCase())) b.style.background='transparent'; });
+            btn.style.background = 'rgba(0,108,73,.15)';
+            toast(btn.textContent.trim() + ' selected', 'eco');
+          };
+        } else if (txt.includes('edit address')) {
+          btn.onclick = function(){ toast('Address editing coming soon!', 'edit_location'); };
+        }
+      });
+    }
+
+    /* ──── 20_help_and_support ──── */
+    if (currentPage === '20_help_and_support.html') {
+      document.querySelectorAll('button').forEach(function(btn) {
+        var icon = (btn.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        icon = icon.trim();
+        var txt = btn.textContent.trim().toLowerCase();
+        if (icon === 'expand_more' || txt.includes('how do') || txt.includes('account') || txt.includes('track') || txt.includes('donor is closed')) {
+          if (!btn._wired) {
+            btn._wired = true;
+            var next = btn.nextElementSibling || btn.parentElement.nextElementSibling;
+            btn.onclick = function(){
+              if (next) { next.style.display = next.style.display === 'none' ? 'block' : 'none'; }
+              var ic = btn.querySelector('.material-symbols-outlined');
+              if (ic) ic.textContent = ic.textContent.trim() === 'expand_more' ? 'expand_less' : 'expand_more';
+            };
+          }
+        } else if (txt.includes('browse guides')) {
+          btn.onclick = function(){ window.frNavigate('22_food_safety_and_compliance.html'); };
+        } else if (txt.includes('send message')) {
+          var msgInput = document.querySelector('textarea, input[type=text]');
+          btn.onclick = function(){
+            var val = msgInput ? msgInput.value.trim() : '';
+            if (!val) { toast('Please type your message first', 'edit'); return; }
+            if (msgInput) msgInput.value = '';
+            toast('Message sent! We\'ll respond within 24h', 'send');
+          };
+        } else if (txt.includes('live chat') || txt.includes('start live')) {
+          btn.onclick = function(){ window.frNavigate('14_chat_and_coordination.html'); };
+        }
+      });
+    }
+
+    /* ──── ngo_browse_donations ──── */
+    if (currentPage === 'ngo_browse_donations.html') {
+      document.querySelectorAll('button').forEach(function(btn) {
+        var txt = btn.textContent.trim();
+        var isFilter = ['All','Perishable','Bakery','Produce','Dairy','Cooked'].some(function(f){ return txt === f; });
+        if (isFilter && !btn._wired) {
+          btn._wired = true;
+          btn.onclick = function(){
+            document.querySelectorAll('button').forEach(function(b){ if(['All','Perishable','Bakery','Produce','Dairy','Cooked'].includes(b.textContent.trim())) { b.style.background='transparent'; b.style.color=''; } });
+            btn.style.background = '#006c49'; btn.style.color = '#fff';
+            toast('Filtered: ' + txt, 'filter_list');
+          };
+        }
+        if ((btn.querySelector('.material-symbols-outlined')||{}).textContent?.trim() === 'filter_list') {
+          btn.onclick = function(){ toast('More filters coming soon!', 'tune'); };
+        }
+        if (txt.toLowerCase().includes('claim') && !btn._wired) {
+          btn._wired = true;
+          btn.onclick = function(){ window.frNavigate('ngo_claim_donation.html'); };
+        }
+      });
+    }
+
+    /* ──── ngo_claim_donation ──── */
+    if (currentPage === 'ngo_claim_donation.html') {
+      document.querySelectorAll('button, a').forEach(function(el) {
+        var txt = el.textContent.trim().toLowerCase();
+        var icon = (el.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        if (txt.includes('confirm claim')) {
+          el.onclick = function(){
+            el.style.opacity = '0.7'; el.disabled = true;
+            setTimeout(function(){
+              var overlay = document.createElement('div');
+              overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,108,73,.97);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Inter,sans-serif;text-align:center;padding:24px;';
+              overlay.innerHTML = '<div style="font-size:80px;margin-bottom:16px">🎉</div>'
+                + '<h2 style="font-size:26px;font-weight:800;margin:0 0 10px">Donation Claimed!</h2>'
+                + '<p style="opacity:.85;font-size:15px;max-width:300px;line-height:1.6;margin:0 0 28px">A volunteer will be assigned shortly to pick up this donation.</p>'
+                + '<button onclick="window.frNavigate(\'10_ngo_dashboard.html\')" style="padding:13px 28px;background:#fff;color:#006c49;border-radius:14px;font-weight:700;border:none;cursor:pointer;font-size:15px;">Go to Dashboard</button>';
+              document.body.appendChild(overlay);
+            }, 600);
+          };
+        } else if (txt.includes('view my claims')) {
+          el.onclick = function(e){ e.preventDefault(); window.frNavigate('ngo_browse_donations.html'); };
+        } else if (txt.includes('back to home') || icon.trim() === 'arrow_back') {
+          el.onclick = function(e){ e.preventDefault(); window.frNavigate('10_ngo_dashboard.html'); };
+        } else if (icon.trim() === 'edit') {
+          el.onclick = function(){ toast('Edit pickup notes', 'edit'); };
+        }
+      });
+    }
+
+    /* ──── delivery_confirmation ──── */
+    if (currentPage === 'delivery_confirmation.html') {
+      document.querySelectorAll('button, a').forEach(function(el) {
+        var txt = el.textContent.trim().toLowerCase();
+        var icon = (el.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        if (txt.includes('confirm drop') || txt.includes('confirm delivery')) {
+          el.onclick = function(){
+            el.style.opacity = '0.7'; el.disabled = true;
+            setTimeout(function(){
+              var overlay = document.createElement('div');
+              overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,108,73,.97);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Inter,sans-serif;text-align:center;padding:24px;';
+              overlay.innerHTML = '<div style="font-size:80px;margin-bottom:16px">✅</div>'
+                + '<h2 style="font-size:26px;font-weight:800;margin:0 0 10px">Delivery Complete!</h2>'
+                + '<p style="opacity:.85;font-size:15px;max-width:300px;line-height:1.6;margin:0 0 28px">You just made a difference. Thank you for rescuing food!</p>'
+                + '<button onclick="window.frNavigate(\'9_volunteer_dashboard.html\')" style="padding:13px 28px;background:#fff;color:#006c49;border-radius:14px;font-weight:700;border:none;cursor:pointer;font-size:15px;">Back to Dashboard</button>';
+              document.body.appendChild(overlay);
+            }, 600);
+          };
+        } else if (txt.includes('return to dashboard') || txt.includes('back')) {
+          el.onclick = function(e){ e.preventDefault(); window.frNavigate('9_volunteer_dashboard.html'); };
+        } else if (txt.includes('view route') || icon.trim() === 'map') {
+          el.onclick = function(e){ e.preventDefault(); window.frNavigate('volunteer_navigation.html'); };
+        } else if (txt.includes('call') || icon.trim() === 'call') {
+          el.onclick = function(e){ e.preventDefault(); toast('📞 Calling volunteer…', 'phone_in_talk'); };
+        }
+      });
+    }
+
+    /* ──── restaurant_volunteers ──── */
+    if (currentPage === 'restaurant_volunteers.html') {
+      document.querySelectorAll('button').forEach(function(btn) {
+        var txt = btn.textContent.trim().toLowerCase();
+        var icon = (btn.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        if (txt.includes('invite volunteer') || icon.trim() === 'person_add') {
+          btn.onclick = function(){
+            var email = prompt('Enter volunteer email to invite:');
+            if (email) toast('Invite sent to ' + email, 'send');
+          };
+        } else if (icon.trim() === 'call') {
+          btn.onclick = function(){ toast('📞 Calling volunteer…', 'phone_in_talk'); };
+        } else if (txt.includes('assign') && !btn._wired) {
+          btn._wired = true;
+          btn.onclick = function(){ toast('Volunteer assigned to pickup!', 'check_circle'); btn.style.background='#e8f5ef'; btn.textContent='Assigned ✓'; };
+        } else if (['all','available','busy','top rated'].includes(txt) && !btn._wired) {
+          btn._wired = true;
+          btn.onclick = function(){
+            document.querySelectorAll('button').forEach(function(b){ if(['all','available','busy','top rated'].includes(b.textContent.trim().toLowerCase())) { b.style.background='transparent'; b.style.color=''; } });
+            btn.style.background='#006c49'; btn.style.color='#fff';
+            toast('Filtered: ' + btn.textContent.trim(), 'filter_list');
+          };
+        }
+      });
+    }
+
+    /* ──── volunteer_navigation ──── */
+    if (currentPage === 'volunteer_navigation.html') {
+      document.querySelectorAll('button').forEach(function(btn) {
+        var txt = btn.textContent.trim().toLowerCase();
+        var icon = (btn.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        if (icon.trim() === 'call') {
+          btn.onclick = function(){ toast('📞 Calling restaurant…', 'phone_in_talk'); };
+        } else if (txt.includes("i've arrived") || txt.includes('arrived')) {
+          btn.onclick = function(){
+            btn.style.background='#4caf50'; btn.textContent='✅ Arrived! Proceeding to delivery…';
+            setTimeout(function(){ window.frNavigate('delivery_confirmation.html'); }, 1200);
+          };
+        }
+      });
+    }
+
+    /* ──── restaurant_track_pickup ──── */
+    if (currentPage === 'restaurant_track_pickup.html') {
+      document.querySelectorAll('button').forEach(function(btn) {
+        var icon = (btn.querySelector('.material-symbols-outlined')||{}).textContent||'';
+        var txt = btn.textContent.trim().toLowerCase();
+        if (icon.trim() === 'call' || txt.includes('call volunteer')) {
+          btn.onclick = function(){ toast('📞 Calling volunteer…', 'phone_in_talk'); };
+        } else if (icon.trim() === 'chat_bubble' || txt.includes('send message') || txt.includes('message')) {
+          btn.onclick = function(){ window.frNavigate('14_chat_and_coordination.html'); };
+        }
+      });
+    }
+
+    /* ──── Sidebar nav links wiring for pages with aside ──── */
+    document.querySelectorAll('aside a, aside button').forEach(function(el) {
+      if (el._wired) return;
+      var icon = (el.querySelector('.material-symbols-outlined')||{}).textContent||'';
+      icon = icon.trim();
+      var txt = el.textContent.trim().toLowerCase();
+      var map2 = {
+        'grid_view':          '7_restaurant_dashboard.html',
+        'dashboard':          '7_restaurant_dashboard.html',
+        'receipt_long':       '13_impact_analytics.html',
+        'leaderboard':        '13_impact_analytics.html',
+        'analytics':          '13_impact_analytics.html',
+        'group':              'restaurant_volunteers.html',
+        'settings':           'restaurant_settings.html',
+        'person':             '12_profile.html',
+        'volunteer_activism': '8_create_food_donation.html',
+        'receipt':            'restaurant_track_pickup.html',
+      };
+      var dest = map2[icon];
+      if (!dest && txt.includes('dashboard'))  dest = '7_restaurant_dashboard.html';
+      if (!dest && txt.includes('volunteer'))  dest = 'restaurant_volunteers.html';
+      if (!dest && txt.includes('settings'))   dest = 'restaurant_settings.html';
+      if (!dest && txt.includes('profile'))    dest = '12_profile.html';
+      if (!dest && txt.includes('analytics'))  dest = '13_impact_analytics.html';
+      if (!dest && txt.includes('donation'))   dest = '8_create_food_donation.html';
+      if (!dest && (txt.includes('logout') || txt.includes('sign out'))) {
+        el._wired = true;
+        el.onclick = function(e){ e.preventDefault(); localStorage.clear(); window.frNavigate('1_splash_screen.html'); };
+        return;
+      }
+      if (dest) {
+        el._wired = true;
+        el.href = '#';
+        el.onclick = function(e){ e.preventDefault(); window.frNavigate(dest); };
+      }
+    });
+  }
 })();
