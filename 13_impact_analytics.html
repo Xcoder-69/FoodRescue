@@ -104,7 +104,21 @@
         body { font-family: 'Inter', sans-serif; background-color: #f4fbf4; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .chart-bar { transition: height 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* ── Fixed-height chart bars ── */
+        .ia-chart-wrap { position:relative; width:100%; height:260px; }
+        .ia-chart-inner { display:flex; align-items:flex-end; justify-content:space-between; gap:8px; height:100%; padding-bottom:28px; }
+        .ia-group { display:flex; align-items:flex-end; gap:3px; flex:1; height:100%; }
+        .ia-bar {
+            flex:1; border-radius:6px 6px 0 0;
+            transform-origin: bottom;
+            transform: scaleY(0);
+            transition: transform 0.7s cubic-bezier(.22,1,.36,1);
+        }
+        .ia-bar.visible { transform: scaleY(1); }
+        .ia-label { position:absolute; bottom:0; font-size:11px; font-weight:600; color:#6c7a71; text-align:center; width:100%; }
+        .ia-group-wrap { display:flex; flex-direction:column; align-items:center; flex:1; height:100%; }
+        .ia-group-wrap .ia-label-b { margin-top:6px; font-size:11px; font-weight:600; color:#6c7a71; }
+        /* ── Gauge ── */
         .gauge-svg { transform: rotate(-90deg); }
     </style>
 <style>
@@ -200,79 +214,89 @@
 </div>
 <!-- Main Content Area: Bento Style -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-<!-- Weekly Donation Trends Bar Chart -->
-<div class="lg:col-span-8 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 h-[400px] flex flex-col">
-<div class="flex justify-between items-center mb-stack-lg">
-<h3 class="font-title-lg text-title-lg text-on-surface">Weekly Donation Trends</h3>
-<div class="flex items-center gap-4">
-<div class="flex items-center gap-2">
-<div class="w-3 h-3 rounded-full bg-primary"></div>
-<span class="font-label-md text-label-md text-on-surface-variant">Rescued</span>
-</div>
-<div class="flex items-center gap-2">
-<div class="w-3 h-3 rounded-full bg-secondary-container"></div>
-<span class="font-label-md text-label-md text-on-surface-variant">Donated</span>
-</div>
-</div>
-</div>
-<div class="flex-grow flex items-end justify-between px-stack-md gap-4">
-<!-- Monday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 45%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 30%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Mon</span>
-</div>
-<!-- Tuesday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 65%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 55%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Tue</span>
-</div>
-<!-- Wednesday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 85%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 70%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Wed</span>
-</div>
-<!-- Thursday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 55%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 40%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Thu</span>
-</div>
-<!-- Friday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 95%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 80%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Fri</span>
-</div>
-<!-- Saturday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 40%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 35%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Sat</span>
-</div>
-<!-- Sunday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 30%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 25%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Sun</span>
-</div>
-</div>
+<!-- Weekly Donation Trends Bar Chart (fixed-height CSS chart) -->
+<div class="lg:col-span-8 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 flex flex-col">
+  <div class="flex justify-between items-center mb-stack-lg">
+    <h3 class="font-title-lg text-title-lg text-on-surface">Weekly Donation Trends</h3>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-primary"></div>
+        <span class="font-label-md text-label-md text-on-surface-variant">Rescued</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-secondary-container"></div>
+        <span class="font-label-md text-label-md text-on-surface-variant">Donated</span>
+      </div>
+    </div>
+  </div>
+  <!-- ── Chart area: fixed pixel height so % heights work ── -->
+  <div style="position:relative;width:100%;height:260px;">
+    <div style="display:flex;align-items:flex-end;gap:10px;height:232px;padding:0 4px;">
+      <!-- Mon -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="45" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="30" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Mon</span>
+      </div>
+      <!-- Tue -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="65" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .05s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="55" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .05s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Tue</span>
+      </div>
+      <!-- Wed -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="85" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .10s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="70" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .10s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Wed</span>
+      </div>
+      <!-- Thu -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="55" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .15s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="40" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .15s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Thu</span>
+      </div>
+      <!-- Fri (peak) -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="95" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .20s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="80" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .20s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Fri</span>
+      </div>
+      <!-- Sat -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="40" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .25s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="35" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .25s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Sat</span>
+      </div>
+      <!-- Sun -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="30" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .30s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="25" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .30s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Sun</span>
+      </div>
+    </div>
+    <!-- Gridlines -->
+    <div style="position:absolute;top:0;left:0;right:0;height:200px;pointer-events:none;">
+      <div style="position:absolute;bottom:0;left:0;right:0;border-top:1px dashed rgba(187,202,191,.5);"></div>
+      <div style="position:absolute;bottom:25%;left:0;right:0;border-top:1px dashed rgba(187,202,191,.35);"></div>
+      <div style="position:absolute;bottom:50%;left:0;right:0;border-top:1px dashed rgba(187,202,191,.35);"></div>
+      <div style="position:absolute;bottom:75%;left:0;right:0;border-top:1px dashed rgba(187,202,191,.35);"></div>
+    </div>
+  </div>
 </div>
 <!-- Monthly Goal Gauge -->
 <div class="lg:col-span-4 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 flex flex-col items-center justify-center text-center">
@@ -396,17 +420,85 @@
 </button>
 </nav>
 <script>
-        // Micro-interactions and Chart animations
-        window.addEventListener('DOMContentLoaded', () => {
-            const bars = document.querySelectorAll('.chart-bar');
-            bars.forEach((bar, index) => {
-                const finalHeight = bar.style.height;
-                bar.style.height = '0%';
-                setTimeout(() => {
-                    bar.style.height = finalHeight;
-                }, 200 + (index * 50));
-            });
-        });
-    </script>
+        // ── Bar chart: use scaleY transform (works regardless of container height) ──
+        (function animateBars() {
+          var bars = document.querySelectorAll('.ia-bar');
+          if (!bars.length) return;
+          bars.forEach(function(bar) {
+            var pct = parseFloat(bar.dataset.h) / 100;
+            bar.style.height = (200 * pct) + 'px'; // absolute height in 200px column
+          });
+          // Trigger animation
+          function trigger() {
+            bars.forEach(function(bar) { bar.style.transform = 'scaleY(1)'; });
+          }
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() { requestAnimationFrame(function(){ requestAnimationFrame(trigger); }); });
+          } else {
+            requestAnimationFrame(function(){ requestAnimationFrame(trigger); });
+          }
+          // IntersectionObserver re-trigger on scroll into view
+          if ('IntersectionObserver' in window) {
+            var firstBar = bars[0];
+            var obs = new IntersectionObserver(function(entries) {
+              if (entries[0].isIntersecting) {
+                bars.forEach(function(b){ b.style.transform='scaleY(0)'; });
+                requestAnimationFrame(function(){ requestAnimationFrame(function(){
+                  bars.forEach(function(b){ b.style.transform='scaleY(1)'; });
+                }); });
+                obs.disconnect();
+              }
+            }, { threshold: 0.2 });
+            obs.observe(firstBar);
+          }
+        })();
+</script>
+<!-- ── Sidebar drawer for hamburger ── -->
+<aside id="ia-sidebar" style="display:none;position:fixed;top:0;left:0;height:100dvh;width:280px;background:#f4fbf4;box-shadow:4px 0 24px rgba(0,0,0,.12);z-index:999;flex-direction:column;font-family:'Inter',sans-serif;transform:translateX(-100%);transition:transform .28s cubic-bezier(.22,1,.36,1);overflow-y:auto;">
+  <div style="padding:24px 20px 16px;background:#006c49;color:#fff;">
+    <p style="font-weight:800;font-size:20px;margin:0 0 4px;">FoodRescue</p>
+    <p style="font-size:13px;opacity:.8;margin:0;">Impact Analytics</p>
+  </div>
+  <nav style="padding:16px 12px;display:flex;flex-direction:column;gap:4px;">
+    <button onclick="window.frNavigate('7_restaurant_dashboard.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='rgba(0,108,73,.08)'" onmouseout="this.style.background='none'">
+      <span class="material-symbols-outlined" style="font-size:20px;color:#006c49;">dashboard</span> Dashboard
+    </button>
+    <button onclick="window.frNavigate('8_create_food_donation.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='rgba(0,108,73,.08)'" onmouseout="this.style.background='none'">
+      <span class="material-symbols-outlined" style="font-size:20px;color:#006c49;">volunteer_activism</span> Create Donation
+    </button>
+    <button style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:rgba(0,108,73,.10);border-radius:12px;cursor:pointer;font-size:14px;font-weight:700;color:#006c49;font-family:inherit;text-align:left;">
+      <span class="material-symbols-outlined" style="font-size:20px;">analytics</span> Impact Analytics
+    </button>
+    <button onclick="window.frNavigate('12_profile.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='rgba(0,108,73,.08)'" onmouseout="this.style.background='none'">
+      <span class="material-symbols-outlined" style="font-size:20px;color:#006c49;">person</span> Profile
+    </button>
+    <button onclick="window.frNavigate('restaurant_settings.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='rgba(0,108,73,.08)'" onmouseout="this.style.background='none'">
+      <span class="material-symbols-outlined" style="font-size:20px;color:#006c49;">settings</span> Settings
+    </button>
+    <div style="height:1px;background:#e8f0e9;margin:8px 0;"></div>
+    <button onclick="localStorage.clear();window.frNavigate('1_splash_screen.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#ba1a1a;font-family:inherit;text-align:left;">
+      <span class="material-symbols-outlined" style="font-size:20px;">logout</span> Logout
+    </button>
+  </nav>
+</aside>
+<div id="ia-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:998;backdrop-filter:blur(2px);"></div>
+<script>
+(function(){
+  var sidebar  = document.getElementById('ia-sidebar');
+  var overlay  = document.getElementById('ia-overlay');
+  var hamburger = document.querySelector('button[data-icon="menu"], button.material-symbols-outlined');
+  // Also try finding by text content
+  if (!hamburger) {
+    document.querySelectorAll('button').forEach(function(b){
+      if (b.textContent.trim() === 'menu') hamburger = b;
+    });
+  }
+  function openSidebar()  { sidebar.style.display='flex';  overlay.style.display='block'; document.body.style.overflow='hidden'; requestAnimationFrame(function(){ sidebar.style.transform='translateX(0)'; }); }
+  function closeSidebar() { sidebar.style.transform='translateX(-100%)'; overlay.style.display='none'; document.body.style.overflow=''; setTimeout(function(){ sidebar.style.display='none'; },280); }
+  if (hamburger) hamburger.addEventListener('click', function(e){ e.stopPropagation(); openSidebar(); });
+  overlay.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSidebar(); });
+})();
+</script>
 <script src="nav.js"></script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
 <script src="js/ui.js"></script></body></html>
