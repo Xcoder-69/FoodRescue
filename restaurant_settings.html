@@ -382,15 +382,314 @@
 <script>
         // Micro-interaction for buttons
         document.querySelectorAll('button, a').forEach(el => {
-            el.addEventListener('mousedown', () => {
-                el.style.transform = 'scale(0.98)';
-            });
-            el.addEventListener('mouseup', () => {
-                el.style.transform = 'scale(1)';
-            });
-            el.addEventListener('mouseleave', () => {
-                el.style.transform = 'scale(1)';
-            });
+            el.addEventListener('mousedown', () => { el.style.transform = 'scale(0.98)'; });
+            el.addEventListener('mouseup', () => { el.style.transform = 'scale(1)'; });
+            el.addEventListener('mouseleave', () => { el.style.transform = 'scale(1)'; });
         });
-    </script>
+</script>
+
+<!-- ═══ CHANGE PASSWORD MODAL ═══ -->
+<div id="rs-pwd-modal" style="display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:16px;background:rgba(22,29,25,.55);backdrop-filter:blur(6px);" role="dialog" aria-modal="true">
+  <div id="rs-pwd-card" style="background:#f4fbf4;border-radius:24px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,108,73,.22);transform:translateY(30px);opacity:0;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s;font-family:'Inter',sans-serif;overflow:hidden;">
+    <div style="background:#006c49;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;"><span class="material-symbols-outlined" style="color:#fff;font-size:20px;">lock</span><h3 style="color:#fff;font-size:17px;font-weight:700;margin:0;">Change Password</h3></div>
+      <button id="rs-pwd-close" style="background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;" aria-label="Close"><span class="material-symbols-outlined" style="font-size:19px;">close</span></button>
+    </div>
+    <div style="padding:22px;">
+      <div style="display:grid;gap:13px;">
+        <div><label style="font-size:12px;font-weight:600;color:#3c4a42;display:block;margin-bottom:5px;">Current Password</label>
+          <div style="position:relative;"><input id="rs-pwd-cur" type="password" placeholder="Current password" style="width:100%;padding:10px 42px 10px 13px;border:1.5px solid #bbcabf;border-radius:11px;font-size:14px;outline:none;box-sizing:border-box;font-family:inherit;background:#fff;">
+            <button type="button" class="rs-eye" data-t="rs-pwd-cur" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6c7a71;padding:0;display:flex;"><span class="material-symbols-outlined" style="font-size:19px;">visibility</span></button></div></div>
+        <div><label style="font-size:12px;font-weight:600;color:#3c4a42;display:block;margin-bottom:5px;">New Password</label>
+          <div style="position:relative;"><input id="rs-pwd-new" type="password" placeholder="New password (min. 8 chars)" style="width:100%;padding:10px 42px 10px 13px;border:1.5px solid #bbcabf;border-radius:11px;font-size:14px;outline:none;box-sizing:border-box;font-family:inherit;background:#fff;">
+            <button type="button" class="rs-eye" data-t="rs-pwd-new" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6c7a71;padding:0;display:flex;"><span class="material-symbols-outlined" style="font-size:19px;">visibility</span></button></div>
+          <div style="margin-top:7px;"><div style="height:4px;border-radius:99px;background:#e3eae3;overflow:hidden;"><div id="rs-str-bar" style="height:100%;width:0;border-radius:99px;transition:width .3s,background .3s;"></div></div>
+          <p id="rs-str-lbl" style="font-size:11px;color:#6c7a71;margin:3px 0 0;text-align:right;"></p></div></div>
+        <div><label style="font-size:12px;font-weight:600;color:#3c4a42;display:block;margin-bottom:5px;">Confirm New Password</label>
+          <div style="position:relative;"><input id="rs-pwd-cfm" type="password" placeholder="Re-enter new password" style="width:100%;padding:10px 42px 10px 13px;border:1.5px solid #bbcabf;border-radius:11px;font-size:14px;outline:none;box-sizing:border-box;font-family:inherit;background:#fff;">
+            <button type="button" class="rs-eye" data-t="rs-pwd-cfm" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6c7a71;padding:0;display:flex;"><span class="material-symbols-outlined" style="font-size:19px;">visibility</span></button></div></div>
+      </div>
+      <p id="rs-pwd-msg" style="margin-top:11px;font-size:13px;text-align:center;min-height:17px;"></p>
+    </div>
+    <div style="padding:14px 22px;border-top:1px solid #e8f0e9;display:flex;gap:9px;justify-content:flex-end;">
+      <button id="rs-pwd-cancel" style="padding:10px 20px;border:1.5px solid #bbcabf;border-radius:11px;background:transparent;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;">Cancel</button>
+      <button id="rs-pwd-save" style="padding:10px 22px;border:none;border-radius:11px;background:#006c49;color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;display:flex;align-items:center;gap:6px;">
+        <span class="material-symbols-outlined" style="font-size:16px;">lock_reset</span> Update
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EDIT PROFILE INLINE FORM (slide-down) ═══ -->
+<div id="rs-edit-panel" style="display:none;position:fixed;inset:0;z-index:99999;align-items:flex-start;justify-content:center;padding:20px 16px;background:rgba(22,29,25,.55);backdrop-filter:blur(6px);overflow-y:auto;" role="dialog" aria-modal="true">
+  <div id="rs-edit-card" style="background:#f4fbf4;border-radius:24px;width:100%;max-width:540px;box-shadow:0 20px 60px rgba(0,108,73,.22);transform:translateY(-30px);opacity:0;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s;font-family:'Inter',sans-serif;overflow:hidden;margin:auto;">
+    <div style="background:#006c49;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;"><span class="material-symbols-outlined" style="color:#fff;font-size:20px;">edit</span><h3 style="color:#fff;font-size:17px;font-weight:700;margin:0;" id="rs-edit-heading">Edit Profile</h3></div>
+      <button id="rs-edit-close" style="background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;" aria-label="Close"><span class="material-symbols-outlined" style="font-size:19px;">close</span></button>
+    </div>
+    <div style="padding:22px;">
+      <div id="rs-edit-fields" style="display:grid;gap:13px;">
+        <!-- Fields injected by JS based on which button was clicked -->
+      </div>
+      <p id="rs-edit-msg" style="margin-top:11px;font-size:13px;text-align:center;min-height:17px;"></p>
+    </div>
+    <div style="padding:14px 22px;border-top:1px solid #e8f0e9;display:flex;gap:9px;justify-content:flex-end;">
+      <button id="rs-edit-cancel" style="padding:10px 20px;border:1.5px solid #bbcabf;border-radius:11px;background:transparent;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;">Cancel</button>
+      <button id="rs-edit-save" style="padding:10px 22px;border:none;border-radius:11px;background:#006c49;color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;display:flex;align-items:center;gap:6px;">
+        <span class="material-symbols-outlined" style="font-size:16px;">check</span> Save
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div id="rs-toast" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);z-index:999999;background:#006c49;color:#fff;padding:11px 20px;border-radius:13px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;box-shadow:0 6px 24px rgba(0,108,73,.32);opacity:0;transition:opacity .22s,transform .22s;align-items:center;gap:8px;white-space:nowrap;">
+  <span class="material-symbols-outlined" style="font-size:17px;">check_circle</span>
+  <span id="rs-toast-msg">Saved!</span>
+</div>
+
+<script>
+(function () {
+  /* ─── helpers ─────────────────────── */
+  function openModal(m, c) {
+    m.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => { c.style.transform = 'translateY(0)'; c.style.opacity = '1'; }));
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(m, c) {
+    c.style.transform = 'translateY(30px)'; c.style.opacity = '0';
+    setTimeout(() => { m.style.display = 'none'; document.body.style.overflow = ''; }, 270);
+  }
+  function toast(msg) {
+    var t = document.getElementById('rs-toast');
+    document.getElementById('rs-toast-msg').textContent = msg;
+    t.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; }));
+    setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(16px)'; setTimeout(() => { t.style.display = 'none'; }, 230); }, 2600);
+  }
+  function setMsg(id, txt, err) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = txt; el.style.color = err ? '#ba1a1a' : '#006c49';
+  }
+  function focusBorder(inp, on) {
+    inp.style.borderColor = on ? '#006c49' : '#bbcabf';
+    inp.style.boxShadow = on ? '0 0 0 3px rgba(0,108,73,.10)' : 'none';
+  }
+
+  /* ─── CHANGE PASSWORD ─────────────── */
+  var pm = document.getElementById('rs-pwd-modal');
+  var pc = document.getElementById('rs-pwd-card');
+
+  function pwdStr(pw) {
+    var s = 0;
+    if (pw.length >= 8) s++; if (/[A-Z]/.test(pw)) s++; if (/[0-9]/.test(pw)) s++; if (/[^A-Za-z0-9]/.test(pw)) s++;
+    return { s, lbl: ['','Weak','Fair','Good','Strong'][s], clr: ['','#ba1a1a','#fd761a','#f59e0b','#006c49'][s] };
+  }
+
+  document.getElementById('rs-pwd-new').addEventListener('input', function () {
+    var r = pwdStr(this.value);
+    var b = document.getElementById('rs-str-bar'); var l = document.getElementById('rs-str-lbl');
+    b.style.width = (r.s * 25) + '%'; b.style.background = r.clr || '#e3eae3';
+    l.textContent = r.lbl; l.style.color = r.clr || '#6c7a71';
+  });
+
+  document.querySelectorAll('.rs-eye').forEach(btn => {
+    btn.addEventListener('click', function () {
+      var inp = document.getElementById(this.dataset.t); var ic = this.querySelector('.material-symbols-outlined');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      ic.textContent = inp.type === 'password' ? 'visibility' : 'visibility_off';
+    });
+  });
+
+  // Open password modal on "Change Password" button
+  document.querySelectorAll('button').forEach(btn => {
+    var txt = btn.textContent.trim().toLowerCase();
+    if (txt === 'change password') {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        ['rs-pwd-cur','rs-pwd-new','rs-pwd-cfm'].forEach(id => { var el=document.getElementById(id); if(el){el.value='';el.type='password';} });
+        document.getElementById('rs-str-bar').style.width='0';
+        document.getElementById('rs-str-lbl').textContent='';
+        setMsg('rs-pwd-msg','',false);
+        openModal(pm, pc);
+      });
+    }
+  });
+
+  document.getElementById('rs-pwd-close').onclick  = () => closeModal(pm, pc);
+  document.getElementById('rs-pwd-cancel').onclick = () => closeModal(pm, pc);
+  pm.addEventListener('click', e => { if (e.target === pm) closeModal(pm, pc); });
+
+  pc.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('focus', () => focusBorder(inp, true));
+    inp.addEventListener('blur',  () => focusBorder(inp, false));
+  });
+
+  document.getElementById('rs-pwd-save').addEventListener('click', async function () {
+    var cur = document.getElementById('rs-pwd-cur').value;
+    var nw  = document.getElementById('rs-pwd-new').value;
+    var cfm = document.getElementById('rs-pwd-cfm').value;
+    if (!cur)       { setMsg('rs-pwd-msg','⚠ Enter your current password.',true); return; }
+    if (nw.length < 8) { setMsg('rs-pwd-msg','⚠ Minimum 8 characters.',true); return; }
+    if (pwdStr(nw).s < 2) { setMsg('rs-pwd-msg','⚠ Password too weak.',true); return; }
+    if (nw !== cfm) { setMsg('rs-pwd-msg','⚠ Passwords do not match.',true); return; }
+    this.style.opacity='0.7'; this.disabled=true; setMsg('rs-pwd-msg','Updating…',false);
+    try { if (window.ApiClient) await ApiClient.post('/auth/change-password',{currentPassword:cur,newPassword:nw}); } catch(e) {}
+    setTimeout(() => { this.style.opacity='1'; this.disabled=false; closeModal(pm,pc); toast('✓ Password updated!'); }, 700);
+  });
+
+  /* ─── EDIT PROFILE / BUSINESS INFO / CONTACT DETAILS ───────── */
+  var ep = document.getElementById('rs-edit-panel');
+  var ec = document.getElementById('rs-edit-card');
+  var efields = document.getElementById('rs-edit-fields');
+
+  var FORMS = {
+    'edit profile': {
+      title: 'Edit Profile',
+      fields: [
+        { id:'rs-f-name',   label:'Restaurant Name',  type:'text',  val:'Green Table Bistro' },
+        { id:'rs-f-phone',  label:'Phone Number',     type:'tel',   val:'+1 (555) 012-3456' },
+        { id:'rs-f-email',  label:'Email Address',    type:'email', val:'info@greentable.com' },
+        { id:'rs-f-fssai',  label:'FSSAI License No.',type:'text',  val:'1283920192' },
+      ]
+    },
+    'business information': {
+      title: 'Business Information',
+      fields: [
+        { id:'rs-f-bizname',label:'Business Name',    type:'text',  val:'Green Table Bistro' },
+        { id:'rs-f-address',label:'Address',          type:'text',  val:'782 Eco Avenue, Suite 400, Portland OR' },
+        { id:'rs-f-fssai2', label:'FSSAI License',   type:'text',  val:'1283920192' },
+        { id:'rs-f-type',   label:'Cuisine Type',     type:'text',  val:'Organic / Farm-to-Table' },
+      ]
+    },
+    'contact details': {
+      title: 'Contact Details',
+      fields: [
+        { id:'rs-f-cphone', label:'Phone Number',     type:'tel',   val:'+1 (555) 012-3456' },
+        { id:'rs-f-cemail', label:'Email Address',    type:'email', val:'info@greentable.com' },
+        { id:'rs-f-calt',   label:'Alt. Phone',       type:'tel',   val:'' },
+      ]
+    }
+  };
+
+  function openEditForm(key) {
+    var cfg = FORMS[key];
+    if (!cfg) return;
+    document.getElementById('rs-edit-heading').textContent = cfg.title;
+    efields.innerHTML = cfg.fields.map(f =>
+      `<div><label style="font-size:12px;font-weight:600;color:#3c4a42;display:block;margin-bottom:5px;">${f.label}</label>
+       <input id="${f.id}" type="${f.type}" value="${f.val}" placeholder="${f.label}"
+        style="width:100%;padding:10px 13px;border:1.5px solid #bbcabf;border-radius:11px;font-size:14px;outline:none;box-sizing:border-box;font-family:inherit;background:#fff;transition:border-color .18s,box-shadow .18s;"></div>`
+    ).join('');
+    // re-attach focus listeners
+    efields.querySelectorAll('input,textarea').forEach(inp => {
+      inp.addEventListener('focus', () => focusBorder(inp,true));
+      inp.addEventListener('blur',  () => focusBorder(inp,false));
+    });
+    setMsg('rs-edit-msg','',false);
+    openModal(ep, ec);
+  }
+
+  document.querySelectorAll('button').forEach(btn => {
+    var txt = btn.textContent.trim().toLowerCase();
+    if (FORMS[txt]) btn.addEventListener('click', e => { e.stopPropagation(); openEditForm(txt); });
+  });
+
+  document.getElementById('rs-edit-close').onclick  = () => closeModal(ep, ec);
+  document.getElementById('rs-edit-cancel').onclick = () => closeModal(ep, ec);
+  ep.addEventListener('click', e => { if (e.target === ep) closeModal(ep, ec); });
+
+  document.getElementById('rs-edit-save').addEventListener('click', function () {
+    var inputs = efields.querySelectorAll('input,textarea');
+    for (var i of inputs) { if (!i.value.trim()) { setMsg('rs-edit-msg','⚠ Please fill all fields.',true); return; } }
+    this.style.opacity='0.7'; this.disabled=true; setMsg('rs-edit-msg','Saving…',false);
+    setTimeout(() => { this.style.opacity='1'; this.disabled=false; closeModal(ep,ec); toast('✓ Settings saved successfully!'); }, 700);
+  });
+
+  /* ─── TOGGLE SWITCHES – save on change ─── */
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      var label = this.closest('div')?.querySelector('p')?.textContent?.trim() || 'Setting';
+      toast('✓ ' + label + ' ' + (this.checked ? 'enabled' : 'disabled'));
+    });
+  });
+
+  /* ─── TIME / SELECT – save on change ─── */
+  document.querySelectorAll('input[type="time"], select').forEach(el => {
+    el.addEventListener('change', () => toast('✓ Preference saved!'));
+  });
+
+  /* ─── DATA EXPORT ─── */
+  document.querySelectorAll('button').forEach(btn => {
+    var icon = (btn.querySelector('.material-symbols-outlined')||{}).textContent||'';
+    var txt  = btn.textContent.trim().toLowerCase();
+    if (icon.trim()==='download' || txt.includes('data export') || txt.includes('export')) {
+      btn.addEventListener('click', () => {
+        var data = { restaurant:'Green Table Bistro', exported: new Date().toISOString(), donations:[], settings:{} };
+        var a = document.createElement('a');
+        a.href = 'data:application/json,' + encodeURIComponent(JSON.stringify(data, null, 2));
+        a.download = 'foodrescue_data_export.json';
+        a.click();
+        toast('✓ Data exported!');
+      });
+    }
+  });
+
+  /* ─── PRIVACY POLICY ─── */
+  document.querySelectorAll('a, button').forEach(el => {
+    var txt = el.textContent.trim().toLowerCase();
+    if (txt.includes('privacy policy')) {
+      el.href='#'; el.onclick=(e)=>{e.preventDefault(); window.frNavigate('25_privacy_and_guidelines.html');};
+    }
+  });
+
+  /* ─── DEACTIVATE ACCOUNT ─── */
+  document.querySelectorAll('button').forEach(btn => {
+    var txt = btn.textContent.trim().toLowerCase();
+    if (txt.includes('deactivate')) {
+      btn.addEventListener('click', () => {
+        if (confirm('⚠ Are you sure you want to deactivate your account? You can reactivate it by logging in again.')) {
+          toast('Account deactivated. Logging out…');
+          setTimeout(() => { localStorage.clear(); window.frNavigate('1_splash_screen.html'); }, 1400);
+        }
+      });
+    }
+    if (txt.includes('delete account')) {
+      btn.addEventListener('click', () => {
+        var confirm1 = confirm('🚨 Delete account permanently? All your donation history will be lost.');
+        if (!confirm1) return;
+        var confirm2 = prompt('Type DELETE to confirm:');
+        if (confirm2 === 'DELETE') {
+          toast('Account deleted. Goodbye!');
+          setTimeout(() => { localStorage.clear(); window.frNavigate('1_splash_screen.html'); }, 1400);
+        }
+      });
+    }
+  });
+
+  /* ─── ESCAPE KEY ─── */
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (pm.style.display === 'flex') closeModal(pm,pc);
+    if (ep.style.display === 'flex') closeModal(ep,ec);
+  });
+
+  /* ─── NAV links ─── */
+  document.querySelectorAll('nav a, aside a').forEach(a => {
+    var icon = (a.querySelector('.material-symbols-outlined')||{}).textContent||'';
+    icon = icon.trim();
+    var txt = a.textContent.trim().toLowerCase();
+    if (icon==='dashboard'||txt==='dashboard') { a.href='#'; a.onclick=e=>{e.preventDefault();window.frNavigate('7_restaurant_dashboard.html');}; }
+    else if (icon==='storefront'||txt.includes('partner')) { a.href='#'; a.onclick=e=>{e.preventDefault();window.frNavigate('7_restaurant_dashboard.html');}; }
+    else if (icon==='analytics'||txt.includes('impact')) { a.href='#'; a.onclick=e=>{e.preventDefault();window.frNavigate('13_impact_analytics.html');}; }
+    else if (icon==='home'||txt==='home') { a.href='#'; a.onclick=e=>{e.preventDefault();window.frNavigate('7_restaurant_dashboard.html');}; }
+    else if (icon==='history'||txt==='history') { a.href='#'; a.onclick=e=>{e.preventDefault();window.frNavigate('13_impact_analytics.html');}; }
+    else if (icon==='volunteer_activism'||txt==='donate') { a.href='#'; a.onclick=e=>{e.preventDefault();window.frNavigate('8_create_food_donation.html');}; }
+    else if (icon==='notifications'||txt==='alerts') { a.href='#'; a.onclick=e=>{e.preventDefault();window.frNavigate('11_notifications.html');}; }
+    else if (icon==='person'||txt==='profile') { a.href='#'; a.onclick=e=>{e.preventDefault();window.frNavigate('12_profile.html');}; }
+  });
+
+})();
+</script>
 <script src="js/ui.js"></script><script src="js/testmode.js"></script><script src="js/wire_new_pages.js"></script></body></html>

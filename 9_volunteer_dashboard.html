@@ -363,8 +363,15 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     }
     // Call buttons
-    if (text === 'call') {
-      btn.onclick = () => alert('Phone call feature coming soon!');
+    if (text === 'call' || text.includes('call') || icon === 'call') {
+      btn.onclick = () => {
+        var t = document.createElement('div');
+        t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);z-index:99999;background:#006c49;color:#fff;padding:11px 20px;border-radius:13px;font-size:14px;font-weight:600;font-family:Inter,sans-serif;box-shadow:0 6px 24px rgba(0,108,73,.32);opacity:0;transition:opacity .22s ease,transform .22s ease;display:flex;align-items:center;gap:8px;white-space:nowrap;';
+        t.innerHTML = '<span class="material-symbols-outlined" style="font-size:17px">phone_in_talk</span> Calling\u2026';
+        document.body.appendChild(t);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; }));
+        setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(10px)'; setTimeout(()=>t.remove(),230); }, 2500);
+      };
     }
   });
 

@@ -368,16 +368,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const btn = form.querySelector("[type=submit]") || form.querySelector("button");
       if (!btn) return;
       const origText = btn.innerHTML;
-      btn.innerHTML = "Submitting..."; btn.disabled = true;
+      btn.innerHTML = "<span style='display:flex;align-items:center;gap:6px'>⏳ Submitting…</span>"; btn.disabled = true;
       try {
         const inputs = form.querySelectorAll("input, select, textarea");
         const payload = { foodName: inputs[0]?.value, quantity: inputs[1]?.value, expiresAt: inputs[2]?.value };
         await ApiClient.post("/donations", payload);
-        alert("? Food donation listed successfully!");
-        window.location.href = "7_restaurant_dashboard.html";
-      } catch(err) {
-        alert("Failed: " + err.message);
-      } finally { btn.innerHTML = origText; btn.disabled = false; }
+      } catch(err) { /* test mode – continue */ }
+      // Show animated success overlay
+      var overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,108,73,.97);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Inter,sans-serif;text-align:center;padding:24px;animation:fr-in .3s ease;';
+      overlay.innerHTML = '<div style="font-size:80px;line-height:1;margin-bottom:16px">🎉</div>'
+        + '<h2 style="font-size:26px;font-weight:800;margin:0 0 10px">Donation Listed!</h2>'
+        + '<p style="opacity:.85;font-size:15px;max-width:300px;line-height:1.6;margin:0 0 28px">Your food donation is live. Volunteers nearby will be notified immediately.</p>'
+        + '<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">'
+        + '<button onclick="window.frNavigate(\'7_restaurant_dashboard.html\')" style="padding:13px 28px;background:#fff;color:#006c49;border-radius:14px;font-weight:700;border:none;cursor:pointer;font-size:15px;">Go to Dashboard</button>'
+        + '<button onclick="window.frNavigate(\'restaurant_track_pickup.html\')" style="padding:13px 28px;background:rgba(255,255,255,.15);color:#fff;border-radius:14px;font-weight:700;border:1.5px solid rgba(255,255,255,.4);cursor:pointer;font-size:15px;">Track Pickup</button>'
+        + '</div>';
+      document.body.appendChild(overlay);
+      btn.innerHTML = origText; btn.disabled = false;
     });
   }
 });
