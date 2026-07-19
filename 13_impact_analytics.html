@@ -5,6 +5,8 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>FoodRescue | Impact Analytics</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -398,13 +400,13 @@
 </div>
 <div class="relative z-10 mt-stack-lg flex flex-col gap-stack-sm">
 <div class="flex items-center gap-3 bg-white/10 p-stack-sm rounded-xl border border-white/20">
-<span class="material-symbols-outlined text-white">description</span>
+<span class="material-symbols-outlined text-white">table_view</span>
 <div class="flex flex-col">
-<span class="font-label-md text-label-md">impact_report_q3_2024.pdf</span>
+<span class="font-label-md text-label-md">impact_report_2024.xlsx</span>
 <span class="text-[10px] opacity-70">Ready to download  4.2 MB</span>
 </div>
 </div>
-<button class="w-full bg-white text-primary font-bold font-label-lg py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-primary-fixed transition-colors active:scale-95">
+<button onclick="downloadExcel(event)" class="w-full bg-white text-primary font-bold font-label-lg py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-primary-fixed transition-colors active:scale-95">
 <span class="material-symbols-outlined">download</span>
                         Download Full Report
                     </button>
@@ -608,6 +610,69 @@
             
             document.getElementById('custom-date-picker').classList.add('hidden');
             setPeriod('custom');
+        }
+
+        async function downloadExcel(event) {
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined" style="animation: spin 1s linear infinite;">refresh</span> Generating...`;
+            btn.disabled = true;
+
+            try {
+                const workbook = new ExcelJS.Workbook();
+                const sheet = workbook.addWorksheet('Impact Analytics');
+
+                // Add Title
+                sheet.mergeCells('A1:D1');
+                sheet.getCell('A1').value = 'FoodRescue Impact Analytics Report';
+                sheet.getCell('A1').font = { size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
+                sheet.getCell('A1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
+                sheet.getCell('A1').alignment = { horizontal: 'center' };
+
+                // Add Data Headers
+                sheet.addRow([]);
+                const headerRow = sheet.addRow(['Metric', 'Value', 'Unit', 'Details']);
+                headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+                headerRow.eachCell(cell => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF10B981' } };
+                    cell.alignment = { horizontal: 'center' };
+                });
+
+                // Add Data (pulling current dashboard numbers)
+                const meals = document.getElementById('stat-meals').innerText;
+                const carbon = document.getElementById('stat-carbon').innerText;
+                const lives = document.getElementById('stat-lives').innerText;
+
+                sheet.addRow(['Meals Rescued', meals, 'plates', 'Total surplus food redistributed']);
+                sheet.addRow(['Carbon Saved', carbon, 'Metric Tons CO2', 'Equivalent to planting trees']);
+                sheet.addRow(['Lives Touched', lives, 'Individuals', 'People nourished this period']);
+
+                // Add Top Partners
+                sheet.addRow([]);
+                const partnerHeader = sheet.addRow(['Top Contributing Partners', 'Type', 'Contribution', 'Status']);
+                partnerHeader.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+                partnerHeader.eachCell(cell => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFD761A' } };
+                });
+
+                sheet.addRow(['Green Garden Bistro', 'Restaurant', '1,240kg Rescued', 'Platinum Hero']);
+                sheet.addRow(['St. Jude Community Kitchen', 'NGO', '980kg Distributed', 'Gold Member']);
+                sheet.addRow(['Organic Mart & Co.', 'Retail', '750kg Rescued', 'Active Partner']);
+
+                // Adjust column widths
+                sheet.columns.forEach(column => { column.width = 25; });
+
+                // Generate & Download
+                const buffer = await workbook.xlsx.writeBuffer();
+                const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                saveAs(blob, 'FoodRescue_Impact_Report.xlsx');
+            } catch (err) {
+                console.error(err);
+                alert("Error generating report.");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
         }
 </script>
 <script src="nav.js"></script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
