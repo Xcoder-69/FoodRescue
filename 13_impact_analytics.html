@@ -148,13 +148,22 @@
 <h2 class="font-headline-lg text-headline-lg text-on-surface">Impact Analytics</h2>
 <p class="font-body-md text-on-surface-variant">Real-time visualization of community nourishment and waste reduction.</p>
 </div>
-<div class="flex items-center gap-stack-sm bg-surface-container-lowest p-unit rounded-xl shadow-sm border border-outline-variant">
-<button class="px-4 py-2 font-label-lg text-label-lg text-primary bg-primary-container/20 rounded-lg">Last 30 Days</button>
-<button class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors">Quarterly</button>
-<button class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors flex items-center gap-2">
-<span class="material-symbols-outlined text-[18px]">calendar_today</span>
-                    Custom
-                </button>
+<div class="flex items-center gap-stack-sm bg-surface-container-lowest p-unit rounded-xl shadow-sm border border-outline-variant flex-wrap relative">
+<button id="btn-monthly" onclick="setPeriod('monthly')" class="period-btn px-4 py-2 font-label-lg text-label-lg text-primary bg-primary-container/20 rounded-lg transition-colors">Last 30 Days</button>
+<button id="btn-weekly" onclick="setPeriod('weekly')" class="period-btn px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors">Weekly</button>
+<div class="relative flex items-center">
+    <button id="btn-custom" onclick="toggleCustomDates()" class="period-btn px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+        Custom
+    </button>
+    <!-- Custom Date Picker Dropdown -->
+    <div id="custom-date-picker" class="hidden absolute top-full right-0 mt-2 bg-white p-3 rounded-xl shadow-lg border border-outline-variant/30 z-50 flex items-center gap-2 min-w-max">
+        <input type="date" id="start-date" class="border border-outline-variant rounded p-1.5 text-sm bg-surface-bright outline-none focus:border-primary">
+        <span class="text-on-surface-variant text-sm font-medium">to</span>
+        <input type="date" id="end-date" class="border border-outline-variant rounded p-1.5 text-sm bg-surface-bright outline-none focus:border-primary">
+        <button onclick="applyCustomDate()" class="bg-primary text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:opacity-90 transition-colors active:scale-95">Apply</button>
+    </div>
+</div>
 </div>
 </div>
 <!-- Summary Cards Grid -->
@@ -169,7 +178,7 @@
 </div>
 <h3 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Meals Rescued</h3>
 <div class="flex items-baseline gap-2 mt-unit">
-<span class="font-display-lg text-display-lg text-primary">12,482</span>
+<span class="font-display-lg text-display-lg text-primary" id="stat-meals">12,482</span>
 <span class="font-body-md text-body-md text-on-surface-variant">plates</span>
 </div>
 <div class="mt-stack-md h-12 w-full flex items-end gap-1">
@@ -188,7 +197,7 @@
 </div>
 <h3 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Carbon Saved</h3>
 <div class="flex items-baseline gap-2 mt-unit">
-<span class="font-display-lg text-display-lg text-[#FACC15]">4.2</span>
+<span class="font-display-lg text-display-lg text-[#FACC15]" id="stat-carbon">4.2</span>
 <span class="font-body-md text-body-md text-on-surface-variant">Metric Tons CO2</span>
 </div>
 <p class="mt-stack-md font-body-md text-body-md text-on-surface-variant italic">Equivalent to planting 192 trees this month.</p>
@@ -201,7 +210,7 @@
 </div>
 <h3 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Lives Touched</h3>
 <div class="flex items-baseline gap-2 mt-unit">
-<span class="font-display-lg text-display-lg text-[#10B981]">3,150</span>
+<span class="font-display-lg text-display-lg text-[#10B981]" id="stat-lives">3,150</span>
 <span class="font-body-md text-body-md text-on-surface-variant">Individuals</span>
 </div>
 <div class="flex -space-x-2 mt-stack-md">
@@ -307,11 +316,11 @@
 <circle cx="50" cy="50" fill="transparent" r="40" stroke="#006c49" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round" stroke-width="8"></circle>
 </svg>
 <div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="font-display-lg text-[32px] font-bold text-on-surface">75%</span>
+<span class="font-display-lg text-[32px] font-bold text-on-surface" id="stat-goal-pct">75%</span>
 <span class="font-label-md text-label-md text-on-surface-variant">Achieved</span>
 </div>
 </div>
-<p class="font-body-md text-body-md text-on-surface-variant">9,375 / 12,500 meals target reached for September.</p>
+<p class="font-body-md text-body-md text-on-surface-variant" id="stat-goal-text">9,375 / 12,500 meals target reached for September.</p>
 <button class="mt-stack-md w-full bg-primary hover:bg-on-primary-fixed-variant text-white font-label-lg py-3 rounded-xl shadow-md transition-all active:scale-95 duration-200">Boost Outreach</button>
 </div>
 <!-- Top Partners -->
@@ -499,6 +508,77 @@
   overlay.addEventListener('click', closeSidebar);
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSidebar(); });
 })();
+
+        // ── Period Selection Logic ──
+        const dataMap = {
+            monthly: { meals: '12,482', carbon: '4.2', lives: '3,150', pct: '75%', text: '9,375 / 12,500 meals target reached for September.', offset: '62.8' },
+            weekly: { meals: '3,210', carbon: '1.1', lives: '840', pct: '26%', text: '3,210 / 12,500 meals target reached this week.', offset: '185.8' },
+            custom: { meals: '8,105', carbon: '2.8', lives: '1,920', pct: '50%', text: '8,105 / 12,500 meals target reached in custom range.', offset: '125.6' }
+        };
+
+        function updateData(period) {
+            const data = dataMap[period];
+            if(!data) return;
+
+            // Animate numbers (simple fade out/in effect using opacity transition)
+            const ids = ['stat-meals', 'stat-carbon', 'stat-lives', 'stat-goal-pct', 'stat-goal-text'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                el.style.transition = 'opacity 0.2s';
+                el.style.opacity = '0';
+            });
+
+            setTimeout(() => {
+                document.getElementById('stat-meals').innerText = data.meals;
+                document.getElementById('stat-carbon').innerText = data.carbon;
+                document.getElementById('stat-lives').innerText = data.lives;
+                document.getElementById('stat-goal-pct').innerText = data.pct;
+                document.getElementById('stat-goal-text').innerText = data.text;
+                
+                // Update SVG Gauge
+                const circle = document.querySelector('.gauge-svg circle:nth-child(2)');
+                if(circle) circle.style.strokeDashoffset = data.offset;
+
+                ids.forEach(id => {
+                    document.getElementById(id).style.opacity = '1';
+                });
+            }, 200);
+        }
+
+        function setPeriod(period) {
+            // Update button styles
+            const buttons = document.querySelectorAll('.period-btn');
+            buttons.forEach(btn => {
+                btn.className = btn.className.replace('text-primary bg-primary-container/20', 'text-on-surface-variant hover:bg-surface-variant/30');
+            });
+            const activeBtn = document.getElementById('btn-' + period);
+            activeBtn.className = activeBtn.className.replace('text-on-surface-variant hover:bg-surface-variant/30', 'text-primary bg-primary-container/20');
+            
+            // Hide custom date picker if switching away
+            if(period !== 'custom') {
+                document.getElementById('custom-date-picker').classList.add('hidden');
+            }
+            
+            updateData(period);
+        }
+
+        function toggleCustomDates() {
+            const picker = document.getElementById('custom-date-picker');
+            picker.classList.toggle('hidden');
+        }
+
+        function applyCustomDate() {
+            const start = document.getElementById('start-date').value;
+            const end = document.getElementById('end-date').value;
+            
+            if(!start || !end) {
+                alert('Please select both start and end dates.');
+                return;
+            }
+            
+            document.getElementById('custom-date-picker').classList.add('hidden');
+            setPeriod('custom');
+        }
 </script>
 <script src="nav.js"></script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
 <script src="js/ui.js"></script></body></html>
