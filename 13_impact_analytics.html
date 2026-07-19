@@ -578,13 +578,17 @@
         }
 
         function setPeriod(period) {
-            // Update button styles
+            // Update button styles using classList for robust toggling
             const buttons = document.querySelectorAll('.period-btn');
             buttons.forEach(btn => {
-                btn.className = btn.className.replace('text-primary bg-primary-container/20', 'text-on-surface-variant hover:bg-surface-variant/30');
+                btn.classList.remove('text-primary', 'bg-primary-container/20');
+                btn.classList.add('text-on-surface-variant', 'hover:bg-surface-variant/30');
             });
             const activeBtn = document.getElementById('btn-' + period);
-            activeBtn.className = activeBtn.className.replace('text-on-surface-variant hover:bg-surface-variant/30', 'text-primary bg-primary-container/20');
+            if (activeBtn) {
+                activeBtn.classList.remove('text-on-surface-variant', 'hover:bg-surface-variant/30');
+                activeBtn.classList.add('text-primary', 'bg-primary-container/20');
+            }
             
             // Hide custom date picker if switching away
             if(period !== 'custom') {
@@ -600,14 +604,8 @@
         }
 
         function applyCustomDate() {
-            const start = document.getElementById('start-date').value;
-            const end = document.getElementById('end-date').value;
-            
-            if(!start || !end) {
-                alert('Please select both start and end dates.');
-                return;
-            }
-            
+            // Normally you would validate dates here and fetch real data for the range
+            // For now, we will just apply the custom dummy data so you can test the UI
             document.getElementById('custom-date-picker').classList.add('hidden');
             setPeriod('custom');
         }
