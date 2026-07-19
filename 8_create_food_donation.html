@@ -199,15 +199,29 @@
 <div class="space-y-gutter">
 <!-- Section: Image Upload (Bento Style) -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md">
-<div class="md:col-span-2 relative group cursor-pointer overflow-hidden rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant hover:border-primary transition-all aspect-video flex flex-col items-center justify-center text-on-surface-variant">
-<div class="absolute inset-0 opacity-0 group-hover:opacity-10 bg-primary transition-opacity"></div>
-<span class="material-symbols-outlined text-4xl mb-2 text-primary">add_a_photo</span>
-<p class="font-label-lg text-label-lg">Upload Food Photo</p>
-<p class="text-xs mt-1">PNG, JPG up to 10MB</p>
+<div class="md:col-span-2 relative group overflow-hidden rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant hover:border-primary transition-all aspect-video flex flex-col items-center justify-center text-on-surface-variant">
+    <div class="absolute inset-0 opacity-0 group-hover:opacity-10 bg-primary transition-opacity pointer-events-none"></div>
+    <span class="material-symbols-outlined text-4xl mb-2 text-primary">add_a_photo</span>
+    <p class="font-label-lg text-label-lg">Upload Food Photo</p>
+    <p class="text-xs mt-1 mb-4">PNG, JPG up to 10MB</p>
+    
+    <div class="flex gap-3 z-10">
+        <button type="button" onclick="document.getElementById('fileInput').click()" class="px-4 py-2 bg-primary text-white rounded-lg flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-colors text-sm font-semibold">
+            <span class="material-symbols-outlined text-[18px]">upload_file</span> Browse Files
+        </button>
+        <button type="button" onclick="document.getElementById('cameraInput').click()" class="px-4 py-2 bg-surface border border-primary text-primary rounded-lg flex items-center gap-2 hover:bg-primary-container/20 transition-colors text-sm font-semibold">
+            <span class="material-symbols-outlined text-[18px]">photo_camera</span> Take Photo
+        </button>
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="fileInput" accept="image/png, image/jpeg" class="hidden" onchange="previewImage(event)">
+    <!-- 'capture="environment"' suggests to the mobile OS to open the rear camera directly -->
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="previewImage(event)">
 </div>
 <div class="hidden md:flex flex-col gap-stack-md">
-<div class="flex-1 rounded-xl bg-surface-container overflow-hidden border border-outline-variant">
-<img alt="Sample Food" class="w-full h-full object-cover opacity-50 grayscale" data-alt="A top-down view of a colorful salad in a clean white bowl placed on a rustic wooden table. The lighting is warm and appetizing, featuring soft highlights. The overall aesthetic is professional, conveying fresh, high-quality surplus food ready for donation in an emerald green-themed environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI7-nZ4FQNa1GnBL7V1u7unkyAfs6uoItM3C99oKdk-P8-JzbBhsEViIjbc6IPkX55dZ0vr_0qxdVvSJ5t_bCrTiys34ER_er5436SoLeI1CWFu6OttnrONUPy716WzXvuV4HXetSckhOe3JZC-NQGwF1F4i0hjJXvemP9ma5MKfMv1pWSMgkd4-LxVUs9VStN8oaQk19TeAvt7_m_GwwxTkG7KkQXq7-28_62OLIAnzuZJn0yFZ2hmPH8Qp9v22pGn5UsS_-ZT9c"/>
+<div class="flex-1 rounded-xl bg-surface-container overflow-hidden border border-outline-variant relative">
+    <img id="imagePreview" alt="Sample Food" class="w-full h-full object-cover opacity-50 grayscale transition-all duration-300" data-alt="A top-down view of a colorful salad in a clean white bowl placed on a rustic wooden table." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI7-nZ4FQNa1GnBL7V1u7unkyAfs6uoItM3C99oKdk-P8-JzbBhsEViIjbc6IPkX55dZ0vr_0qxdVvSJ5t_bCrTiys34ER_er5436SoLeI1CWFu6OttnrONUPy716WzXvuV4HXetSckhOe3JZC-NQGwF1F4i0hjJXvemP9ma5MKfMv1pWSMgkd4-LxVUs9VStN8oaQk19TeAvt7_m_GwwxTkG7KkQXq7-28_62OLIAnzuZJn0yFZ2hmPH8Qp9v22pGn5UsS_-ZT9c"/>
 </div>
 <div class="flex-1 rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant flex items-center justify-center">
 <span class="material-symbols-outlined text-outline">add</span>
@@ -328,7 +342,22 @@
 </form>
 </div>
 </main>
-<!-- Bottom Navigation Bar (Mobile Only) -->
+<script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('imagePreview');
+                img.src = e.target.result;
+                img.classList.remove('opacity-50', 'grayscale');
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+<!-- Bottom Navigation Bar (Mobile only) -->
 <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
 <button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all active:scale-90">
 <span class="material-symbols-outlined">dashboard</span>
