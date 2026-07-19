@@ -132,7 +132,7 @@
     }
   </style>
   </head>
-<body class="bg-background text-on-surface">
+<body class="bg-background text-on-surface lg:pl-80">
 <!-- Top AppBar -->
 <header class="bg-surface dark:bg-background shadow-[0px_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-50">
 <div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
@@ -244,14 +244,14 @@
 <section class="bg-surface rounded-3xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)] overflow-hidden">
 <h3 class="font-title-lg text-title-lg font-bold px-4 py-2 mb-2">Account Settings</h3>
 <div class="space-y-1">
-<button class="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-surface-container-low transition-colors group active:scale-[0.98] duration-150">
+<button data-no-nav="true" id="btn-open-edit-profile" class="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-surface-container-low transition-colors group active:scale-[0.98] duration-150">
 <div class="flex items-center gap-4">
 <span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">edit</span>
 <span class="font-label-lg text-label-lg">Edit Profile</span>
 </div>
 <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
 </button>
-<button class="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-surface-container-low transition-colors group active:scale-[0.98] duration-150">
+<button data-no-nav="true" id="btn-open-change-password" class="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-surface-container-low transition-colors group active:scale-[0.98] duration-150">
 <div class="flex items-center gap-4">
 <span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">lock</span>
 <span class="font-label-lg text-label-lg">Change Password</span>
@@ -312,7 +312,7 @@
 </a>
 </nav>
 <!-- Desktop Navigation Drawer (Conditional) -->
-<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container dark:bg-surface-container-high w-80 shadow-md">
+<aside class="hidden lg:flex flex-col border-r border-outline-variant bg-surface-container dark:bg-surface-container-high w-80 shadow-md overflow-y-auto" style="position:fixed !important;left:0;top:0;height:100vh;z-index:40;">
 <div class="font-headline-lg text-headline-lg font-black text-primary px-gutter py-stack-lg">FoodRescue</div>
 <div class="px-gutter mb-stack-lg">
 <div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-2xl shadow-sm">
@@ -617,18 +617,15 @@ Portland, OR 97201</textarea>
   var editModal = document.getElementById('fr-edit-modal');
   var editCard  = document.getElementById('fr-edit-card');
 
-  // Open
-  document.querySelectorAll('button').forEach(function(btn) {
-    var icon = (btn.querySelector('.material-symbols-outlined') || {}).textContent || '';
-    var text = btn.textContent.trim().toLowerCase();
-    if (icon.trim() === 'edit' || text.includes('edit profile')) {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        setMsg('fr-edit-msg', '', false);
-        openModal(editModal, editCard);
-      });
-    }
-  });
+  // Open — wire directly by ID (immune to nav.js interception)
+  var btnOpenEdit = document.getElementById('btn-open-edit-profile');
+  if (btnOpenEdit) {
+    btnOpenEdit.addEventListener('click', function(e) {
+      e.preventDefault(); e.stopImmediatePropagation();
+      setMsg('fr-edit-msg', '', false);
+      openModal(editModal, editCard);
+    });
+  }
 
   // Close
   document.getElementById('fr-edit-close').onclick  = function() { closeModal(editModal, editCard); };
@@ -732,25 +729,22 @@ Portland, OR 97201</textarea>
     });
   });
 
-  // Open
-  document.querySelectorAll('button').forEach(function(btn) {
-    var icon = (btn.querySelector('.material-symbols-outlined') || {}).textContent || '';
-    var text = btn.textContent.trim().toLowerCase();
-    if (icon.trim() === 'lock' || text.includes('change password')) {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        // Reset fields
-        ['fr-pwd-current','fr-pwd-new','fr-pwd-confirm'].forEach(function(id) {
-          var el = document.getElementById(id);
-          if (el) { el.value = ''; el.type = 'password'; }
-        });
-        document.getElementById('fr-pwd-strength-bar').style.width = '0';
-        document.getElementById('fr-pwd-strength-label').textContent = '';
-        setMsg('fr-pwd-msg', '', false);
-        openModal(pwdModal, pwdCard);
+  // Open — wire directly by ID (immune to nav.js interception)
+  var btnOpenPwd = document.getElementById('btn-open-change-password');
+  if (btnOpenPwd) {
+    btnOpenPwd.addEventListener('click', function(e) {
+      e.preventDefault(); e.stopImmediatePropagation();
+      // Reset fields
+      ['fr-pwd-current','fr-pwd-new','fr-pwd-confirm'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) { el.value = ''; el.type = 'password'; }
       });
-    }
-  });
+      document.getElementById('fr-pwd-strength-bar').style.width = '0';
+      document.getElementById('fr-pwd-strength-label').textContent = '';
+      setMsg('fr-pwd-msg', '', false);
+      openModal(pwdModal, pwdCard);
+    });
+  }
 
   // Close
   document.getElementById('fr-pwd-close').onclick  = function() { closeModal(pwdModal, pwdCard); };
