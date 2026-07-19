@@ -110,11 +110,22 @@
         .ia-group { display:flex; align-items:flex-end; gap:3px; flex:1; height:100%; }
         .ia-bar {
             flex:1; border-radius:6px 6px 0 0;
-            transform-origin: bottom;
-            transform: scaleY(0);
-            transition: transform 0.7s cubic-bezier(.22,1,.36,1);
+            height: 0px;
+            position: relative;
         }
-        .ia-bar.visible { transform: scaleY(1); }
+        .ia-bar::after {
+            content: attr(data-val);
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-weight: 600;
+            color: #6c7a71;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.5s;
+        }
+        .ia-bar.visible::after { opacity: 1; }
         .ia-label { position:absolute; bottom:0; font-size:11px; font-weight:600; color:#6c7a71; text-align:center; width:100%; }
         .ia-group-wrap { display:flex; flex-direction:column; align-items:center; flex:1; height:100%; }
         .ia-group-wrap .ia-label-b { margin-top:6px; font-size:11px; font-weight:600; color:#6c7a71; }
@@ -429,31 +440,51 @@
 </button>
 </nav>
 <script>
-        // ── Bar chart: use scaleY transform (works regardless of container height) ──
+        // ── Bar chart: animate height and show numbers ──
         (function animateBars() {
           var bars = document.querySelectorAll('.ia-bar');
           if (!bars.length) return;
+          
           bars.forEach(function(bar) {
-            var pct = parseFloat(bar.dataset.h) / 100;
-            bar.style.height = (200 * pct) + 'px'; // absolute height in 200px column
+            // Strip inline transform styles
+            bar.style.transform = 'none';
+            bar.style.transition = 'height 0.7s cubic-bezier(.22,1,.36,1)';
+            
+            // Calculate a dummy number based on percentage height
+            var val = Math.round(parseFloat(bar.dataset.h) * 12.5);
+            bar.setAttribute('data-val', val);
+            
+            bar.style.height = '0px'; 
           });
-          // Trigger animation
+          
           function trigger() {
-            bars.forEach(function(bar) { bar.style.transform = 'scaleY(1)'; });
+            bars.forEach(function(bar) { 
+              var pct = parseFloat(bar.dataset.h) / 100;
+              bar.style.height = (200 * pct) + 'px'; 
+              bar.classList.add('visible');
+            });
           }
+          
           if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() { requestAnimationFrame(function(){ requestAnimationFrame(trigger); }); });
           } else {
             requestAnimationFrame(function(){ requestAnimationFrame(trigger); });
           }
-          // IntersectionObserver re-trigger on scroll into view
+          
           if ('IntersectionObserver' in window) {
             var firstBar = bars[0];
             var obs = new IntersectionObserver(function(entries) {
               if (entries[0].isIntersecting) {
-                bars.forEach(function(b){ b.style.transform='scaleY(0)'; });
+                bars.forEach(function(b){ 
+                  b.style.height = '0px'; 
+                  b.classList.remove('visible'); 
+                });
                 requestAnimationFrame(function(){ requestAnimationFrame(function(){
-                  bars.forEach(function(b){ b.style.transform='scaleY(1)'; });
+                  bars.forEach(function(b){ 
+                    var pct = parseFloat(b.dataset.h) / 100;
+                    b.style.height = (200 * pct) + 'px';
+                    b.classList.add('visible');
+                  });
                 }); });
                 obs.disconnect();
               }
