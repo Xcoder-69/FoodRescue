@@ -297,12 +297,14 @@
 <span class="material-symbols-outlined text-sm">edit</span> Edit Address
                         </button>
 </div>
-<div id="address-display-rest" class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex items-start gap-3">
-<span class="material-symbols-outlined text-primary mt-1">location_on</span>
-<div>
-<p class="font-body-lg text-body-lg font-semibold">Green Table Bistro</p>
-<p class="text-on-surface-variant text-sm">123 Culinary Lane, Downtown District, Metropolis, NY 10001</p>
-</div>
+<div id="address-display-rest" class="bg-surface-container-low p-4 rounded-xl border border-outline-variant">
+    <div class="flex items-start gap-3">
+        <span class="material-symbols-outlined text-primary mt-1">location_on</span>
+        <div>
+            <p class="font-body-lg text-body-lg font-semibold">Green Table Bistro</p>
+            <p class="text-on-surface-variant text-sm">123 Culinary Lane, Downtown District, Metropolis, NY 10001</p>
+        </div>
+    </div>
 </div>
 
 <!-- Address Edit Options (Hidden by default) -->
@@ -312,15 +314,17 @@
         <button type="button" onclick="document.getElementById('address-edit-rest').classList.add('hidden'); document.getElementById('address-display-rest').classList.remove('hidden')" class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined">close</span></button>
     </div>
     
-    <div id="address-mode-selection" class="grid grid-cols-2 gap-3">
-        <button type="button" onclick="showManualAddressForm()" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
-            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">edit_document</span>
-            <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Enter Manually</span>
-        </button>
-        <button type="button" onclick="showMapAddressForm()" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
-            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">map</span>
-            <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Pick on Map</span>
-        </button>
+    <div id="address-mode-selection">
+        <div class="grid grid-cols-2 gap-3">
+            <button type="button" onclick="showManualAddressForm()" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
+                <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">edit_document</span>
+                <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Enter Manually</span>
+            </button>
+            <button type="button" onclick="showMapAddressForm()" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
+                <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">map</span>
+                <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Pick on Map</span>
+            </button>
+        </div>
     </div>
 
     <!-- Manual Address Form -->
@@ -444,10 +448,12 @@
     function updateDisplayAddress(title, addressLine) {
         const display = document.getElementById('address-display-rest');
         display.innerHTML = `
-            <span class="material-symbols-outlined text-primary mt-1">location_on</span>
-            <div>
-                <p class="font-body-lg text-body-lg font-semibold">${title}</p>
-                <p class="text-on-surface-variant text-sm">${addressLine}</p>
+            <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-primary mt-1">location_on</span>
+                <div>
+                    <p class="font-body-lg text-body-lg font-semibold">${title}</p>
+                    <p class="text-on-surface-variant text-sm">${addressLine}</p>
+                </div>
             </div>
         `;
         document.getElementById('address-edit-rest').classList.add('hidden');
