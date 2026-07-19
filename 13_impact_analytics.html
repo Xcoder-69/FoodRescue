@@ -162,19 +162,27 @@
 <p class="font-body-md text-on-surface-variant">Real-time visualization of community nourishment and waste reduction.</p>
 </div>
 <div class="flex items-center gap-stack-sm bg-surface-container-lowest p-unit rounded-xl shadow-sm border border-outline-variant flex-wrap relative">
-<button id="btn-monthly" onclick="setPeriod('monthly')" class="period-btn px-4 py-2 font-label-lg text-label-lg text-primary bg-primary-container/20 rounded-lg transition-colors">Last 30 Days</button>
-<button id="btn-weekly" onclick="setPeriod('weekly')" class="period-btn px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors">Weekly</button>
+<button data-no-nav="true" id="btn-monthly" onclick="setPeriod('monthly')" class="period-btn px-4 py-2 font-label-lg text-label-lg text-primary bg-primary-container/20 rounded-lg transition-colors">Last 30 Days</button>
+<button data-no-nav="true" id="btn-weekly" onclick="setPeriod('weekly')" class="period-btn px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors">Weekly</button>
 <div class="relative flex items-center">
-    <button id="btn-custom" onclick="toggleCustomDates()" class="period-btn px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors flex items-center gap-2">
+    <button data-no-nav="true" id="btn-custom" onclick="toggleCustomDates()" class="period-btn px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors flex items-center gap-2">
         <span class="material-symbols-outlined text-[18px]">calendar_today</span>
         Custom
     </button>
-    <!-- Custom Date Picker Dropdown -->
-    <div id="custom-date-picker" class="hidden absolute top-full right-0 mt-2 bg-white p-3 rounded-xl shadow-lg border border-outline-variant/30 z-50 flex items-center gap-2 min-w-max">
-        <input type="date" id="start-date" class="border border-outline-variant rounded p-1.5 text-sm bg-surface-bright outline-none focus:border-primary">
-        <span class="text-on-surface-variant text-sm font-medium">to</span>
-        <input type="date" id="end-date" class="border border-outline-variant rounded p-1.5 text-sm bg-surface-bright outline-none focus:border-primary">
-        <button onclick="applyCustomDate()" class="bg-primary text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:opacity-90 transition-colors active:scale-95">Apply</button>
+    <!-- Custom Date Picker Dropdown (inline style toggle, no hidden+flex conflict) -->
+    <div id="custom-date-picker" style="display:none;" class="absolute top-full right-0 mt-2 bg-white p-3 rounded-xl shadow-lg border border-outline-variant/30 z-50 min-w-max">
+        <div class="flex flex-wrap items-center gap-2">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-on-surface-variant">Start Date</label>
+                <input data-no-nav="true" type="date" id="start-date" class="border border-outline-variant rounded-lg p-2 text-sm bg-surface-bright outline-none focus:border-primary">
+            </div>
+            <span class="text-on-surface-variant text-sm font-bold mt-4">→</span>
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-on-surface-variant">End Date</label>
+                <input data-no-nav="true" type="date" id="end-date" class="border border-outline-variant rounded-lg p-2 text-sm bg-surface-bright outline-none focus:border-primary">
+            </div>
+            <button data-no-nav="true" onclick="applyCustomDate()" class="mt-4 bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-colors active:scale-95">Apply</button>
+        </div>
     </div>
 </div>
 </div>
@@ -600,99 +608,249 @@
 
         function toggleCustomDates() {
             const picker = document.getElementById('custom-date-picker');
-            picker.classList.toggle('hidden');
+            // Toggle using inline display (avoids hidden+flex Tailwind conflict)
+            picker.style.display = (picker.style.display === 'none' || !picker.style.display) ? 'block' : 'none';
         }
 
         function applyCustomDate() {
-            // Normally you would validate dates here and fetch real data for the range
-            // For now, we will just apply the custom dummy data so you can test the UI
-            document.getElementById('custom-date-picker').classList.add('hidden');
+            const startEl = document.getElementById('start-date');
+            const endEl   = document.getElementById('end-date');
+            if (!startEl.value || !endEl.value) {
+                alert('Please select both a start and end date.');
+                return;
+            }
+            if (new Date(startEl.value) > new Date(endEl.value)) {
+                alert('Start date must be before end date.');
+                return;
+            }
+            document.getElementById('custom-date-picker').style.display = 'none';
             setPeriod('custom');
         }
 
         async function downloadExcel(event) {
             const btn = event.currentTarget;
-            const originalText = btn.innerHTML;
-            btn.innerHTML = `<span class="material-symbols-outlined" style="animation: spin 1s linear infinite;">refresh</span> Generating...`;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined" style="animation:spin 1s linear infinite;">refresh</span> Generating...`;
             btn.disabled = true;
 
             try {
                 const workbook = new ExcelJS.Workbook();
-                const sheet = workbook.addWorksheet('Impact Analytics');
+                workbook.creator = 'FoodRescue Platform';
+                workbook.created = new Date();
 
-                // Add Title
-                sheet.mergeCells('A1:D1');
-                sheet.getCell('A1').value = 'FoodRescue Impact Analytics Report';
-                sheet.getCell('A1').font = { size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
-                sheet.getCell('A1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
-                sheet.getCell('A1').alignment = { horizontal: 'center' };
+                // ═══════════════════════════════════════════════
+                // SHEET 1: Executive Summary
+                // ═══════════════════════════════════════════════
+                const summary = workbook.addWorksheet('Executive Summary');
 
-                // Add Data Headers
-                sheet.addRow([]);
-                const headerRow = sheet.addRow(['Metric', 'Value', 'Unit', 'Details']);
-                headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-                headerRow.eachCell(cell => {
-                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF10B981' } };
-                    cell.alignment = { horizontal: 'center' };
+                // Title Banner
+                summary.mergeCells('A1:H1');
+                const titleCell = summary.getCell('A1');
+                titleCell.value = '🌱 FoodRescue — Impact Analytics Report';
+                titleCell.font = { size: 18, bold: true, color: { argb: 'FFFFFFFF' }, name: 'Calibri' };
+                titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
+                titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+                summary.getRow(1).height = 40;
+
+                // Sub-title
+                summary.mergeCells('A2:H2');
+                const subCell = summary.getCell('A2');
+                subCell.value = `Generated on: ${new Date().toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}`;
+                subCell.font = { size: 11, italic: true, color: { argb: 'FF3C4A42' } };
+                subCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE8F5E9' } };
+                subCell.alignment = { horizontal: 'center' };
+                summary.getRow(2).height = 22;
+
+                summary.addRow([]);
+
+                // KPI Header
+                const kpiHeader = summary.addRow(['📊 Key Performance Indicator', 'Current Value', 'Unit', 'Period', 'vs Last Period', 'Trend', 'Target', 'Achievement %']);
+                kpiHeader.font = { bold: true, size: 11, color: { argb: 'FFFFFFFF' } };
+                kpiHeader.height = 28;
+                kpiHeader.eachCell((cell) => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+                    cell.border = { bottom: { style: 'thin', color: { argb: 'FF4EDEA3' } } };
                 });
 
-                // Add Data (pulling current dashboard numbers)
-                const meals = document.getElementById('stat-meals').innerText;
-                const carbon = document.getElementById('stat-carbon').innerText;
-                const lives = document.getElementById('stat-lives').innerText;
+                const meals  = document.getElementById('stat-meals').innerText  || '12,482';
+                const carbon = document.getElementById('stat-carbon').innerText || '4.2';
+                const lives  = document.getElementById('stat-lives').innerText  || '3,150';
 
-                sheet.addRow(['Meals Rescued', meals, 'plates', 'Total surplus food redistributed']);
-                sheet.addRow(['Carbon Saved', carbon, 'Metric Tons CO2', 'Equivalent to planting trees']);
-                sheet.addRow(['Lives Touched', lives, 'Individuals', 'People nourished this period']);
+                const kpiData = [
+                    ['🍽️ Meals Rescued',       meals,   'Plates',      'Last 30 Days', '+12%', '↑ Up',  '11,000', '113%'],
+                    ['🌿 Carbon Saved',         carbon,  'Metric Tons CO₂', 'Last 30 Days', '+8%',  '↑ Up',  '4.0',    '105%'],
+                    ['❤️ Lives Touched',        lives,   'Individuals', 'Last 30 Days', '+5%',  '↑ Up',  '3,000',  '105%'],
+                    ['🏪 Active Restaurants',  '48',    'Partners',    'Last 30 Days', '+3',   '↑ Up',  '45',     '107%'],
+                    ['🚴 Active Volunteers',   '126',   'Volunteers',  'Last 30 Days', '+14',  '↑ Up',  '100',    '126%'],
+                    ['🤝 NGO Partners',        '12',    'Organisations','Last 30 Days', '+2',  '↑ Up',  '10',     '120%'],
+                    ['♻️ Waste Diverted',      '2,840', 'kg',          'Last 30 Days', '+9%',  '↑ Up',  '2,500',  '114%'],
+                    ['⭐ Avg Donor Rating',    '4.8',   '/ 5.0',       'Last 30 Days', '+0.1','↑ Up',  '4.5',    '107%'],
+                ];
 
-                // Add Top Partners
-                sheet.addRow([]);
-                const partnerHeader = sheet.addRow(['Top Contributing Partners', 'Type', 'Contribution', 'Status']);
-                partnerHeader.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-                partnerHeader.eachCell(cell => {
+                const kpiColors = ['FFE8F5E9','FFF3F9F3','FFE8F5E9','FFF3F9F3','FFE8F5E9','FFF3F9F3','FFE8F5E9','FFF3F9F3'];
+
+                kpiData.forEach((data, i) => {
+                    const row = summary.addRow(data);
+                    row.height = 22;
+                    row.eachCell((cell, colNum) => {
+                        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: kpiColors[i] } };
+                        cell.alignment = { horizontal: colNum === 1 ? 'left' : 'center', vertical: 'middle' };
+                        cell.font = { size: 11 };
+                        if (colNum === 5) { // vs last period
+                            cell.font = { size: 11, color: { argb: 'FF006C49' }, bold: true };
+                        }
+                        if (colNum === 8) { // achievement
+                            cell.font = { size: 11, bold: true, color: { argb: 'FF006C49' } };
+                        }
+                    });
+                });
+
+                summary.columns = [
+                    { width: 28 }, { width: 16 }, { width: 18 }, { width: 16 },
+                    { width: 14 }, { width: 10 }, { width: 12 }, { width: 16 },
+                ];
+
+                // ═══════════════════════════════════════════════
+                // SHEET 2: Weekly Donation Trends
+                // ═══════════════════════════════════════════════
+                const trends = workbook.addWorksheet('Weekly Trends');
+
+                trends.mergeCells('A1:G1');
+                const t1 = trends.getCell('A1');
+                t1.value = '📈 Weekly Donation Trends — Detailed Breakdown';
+                t1.font = { size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
+                t1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF10B981' } };
+                t1.alignment = { horizontal: 'center', vertical: 'middle' };
+                trends.getRow(1).height = 36;
+
+                trends.addRow([]);
+
+                const tHead = trends.addRow(['📅 Day', 'Meals Rescued', 'Meals Donated', 'Waste Saved (kg)', 'Active Volunteers', 'Pickups Completed', 'Status']);
+                tHead.font = { bold: true, size: 11, color: { argb: 'FFFFFFFF' } };
+                tHead.height = 26;
+                tHead.eachCell(cell => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                    cell.border = {
+                        bottom: { style: 'medium', color: { argb: 'FF4EDEA3' } },
+                    };
+                });
+
+                const weekData = [
+                    ['Monday',    813,  688,  95,  18, 14, '✅ Completed'],
+                    ['Tuesday',  1063,  875, 124,  22, 19, '✅ Completed'],
+                    ['Wednesday',1188, 1000, 140,  25, 22, '✅ Completed'],
+                    ['Thursday',  940,  780, 108,  20, 17, '✅ Completed'],
+                    ['Friday',   1320, 1100, 155,  28, 24, '✅ Completed'],
+                    ['Saturday',  688,  560,  78,  14, 11, '✅ Completed'],
+                    ['Sunday',    478,  380,  55,  10,  8, '✅ Completed'],
+                ];
+
+                const rowBgs = ['FFE8F5E9','FFFFF8E1','FFE3F2FD','FFE8F5E9','FFFFF8E1','FFE3F2FD','FFE8F5E9'];
+
+                weekData.forEach((data, i) => {
+                    const row = trends.addRow(data);
+                    row.height = 22;
+                    row.eachCell((cell, colNum) => {
+                        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: rowBgs[i] } };
+                        cell.alignment = { horizontal: colNum === 1 ? 'left' : 'center', vertical: 'middle' };
+                        if (colNum === 2) cell.font = { color: { argb: 'FF006C49' }, bold: true, size: 11 };
+                        if (colNum === 3) cell.font = { color: { argb: 'FFFD761A' }, bold: true, size: 11 };
+                        if (colNum === 7) cell.font = { color: { argb: 'FF006C49' }, size: 11 };
+                    });
+                });
+
+                // Totals row
+                const totals = trends.addRow(['📊 TOTAL',
+                    weekData.reduce((s,r)=>s+r[1],0),
+                    weekData.reduce((s,r)=>s+r[2],0),
+                    weekData.reduce((s,r)=>s+r[3],0),
+                    weekData.reduce((s,r)=>s+r[4],0),
+                    weekData.reduce((s,r)=>s+r[5],0),
+                    '7 Days'
+                ]);
+                totals.height = 26;
+                totals.font = { bold: true, size: 12 };
+                totals.eachCell(cell => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
+                    cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                });
+
+                trends.columns = [
+                    { width: 16 }, { width: 16 }, { width: 16 }, { width: 18 },
+                    { width: 18 }, { width: 20 }, { width: 18 },
+                ];
+
+                // ═══════════════════════════════════════════════
+                // SHEET 3: Top Partners
+                // ═══════════════════════════════════════════════
+                const partners = workbook.addWorksheet('Top Partners');
+
+                partners.mergeCells('A1:G1');
+                const p1 = partners.getCell('A1');
+                p1.value = '🏆 Top Contributing Partners — This Month';
+                p1.font = { size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
+                p1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFD761A' } };
+                p1.alignment = { horizontal: 'center', vertical: 'middle' };
+                partners.getRow(1).height = 36;
+
+                partners.addRow([]);
+
+                const pHead = partners.addRow(['🏅 Rank', 'Partner Name', 'Type', 'Meals Contributed', 'Waste Saved (kg)', 'Tier Status', 'Join Date']);
+                pHead.font = { bold: true, size: 11, color: { argb: 'FFFFFFFF' } };
+                pHead.height = 26;
+                pHead.eachCell(cell => {
                     cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFD761A' } };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' };
                 });
 
-                sheet.addRow(['Green Garden Bistro', 'Restaurant', '1,240kg Rescued', 'Platinum Hero']);
-                sheet.addRow(['St. Jude Community Kitchen', 'NGO', '980kg Distributed', 'Gold Member']);
-                sheet.addRow(['Organic Mart & Co.', 'Retail', '750kg Rescued', 'Active Partner']);
+                const partnerData = [
+                    ['🥇 #1', 'Green Garden Bistro',         'Restaurant', '1,240',  '148 kg', '🏆 Platinum Hero',  'Jan 2023'],
+                    ['🥈 #2', 'St. Jude Community Kitchen',  'NGO',        '980',    '117 kg', '🥇 Gold Member',    'Mar 2023'],
+                    ['🥉 #3', 'Organic Mart & Co.',          'Retail',     '750',    ' 90 kg', '🥈 Silver Partner', 'Jun 2023'],
+                    ['#4',    'The Blue Plate Diner',        'Restaurant', '620',    ' 74 kg', '🥈 Silver Partner', 'Aug 2023'],
+                    ['#5',    'Hope Foundation NGO',         'NGO',        '480',    ' 57 kg', '🟢 Active Member',  'Oct 2023'],
+                    ['#6',    'Fresh Harvest Farms',         'Farm',       '390',    ' 46 kg', '🟢 Active Member',  'Nov 2023'],
+                    ['#7',    'City Central Bakery',         'Restaurant', '320',    ' 38 kg', '🟢 Active Member',  'Dec 2023'],
+                    ['#8',    'Golden Spoon Restaurant',     'Restaurant', '280',    ' 33 kg', '🟢 Active Partner', 'Jan 2024'],
+                ];
 
-                // Add Weekly Trends Data
-                sheet.addRow([]);
-                const trendHeader = sheet.addRow(['Daily Breakdown', 'Meals Rescued', 'Meals Donated', 'Status']);
-                trendHeader.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-                trendHeader.eachCell(cell => {
-                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF3B82F6' } }; // Blue header
-                    cell.alignment = { horizontal: 'center' };
+                const tierColors = [
+                    'FFFFF8E1','FFF3F9F3','FFE8EAF6','FFF3F9F3','FFE8F5E9',
+                    'FFF3F9F3','FFE8F5E9','FFF3F9F3'
+                ];
+
+                partnerData.forEach((data, i) => {
+                    const row = partners.addRow(data);
+                    row.height = 22;
+                    row.eachCell((cell, colNum) => {
+                        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: tierColors[i] } };
+                        cell.alignment = { horizontal: colNum === 2 ? 'left' : 'center', vertical: 'middle' };
+                        cell.font = { size: 11 };
+                        if (i === 0) cell.font = { size: 11, bold: true };
+                    });
                 });
 
-                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                const bars = document.querySelectorAll('.ia-bar');
-                if (bars.length >= 14) {
-                    for(let i=0; i<7; i++) {
-                        const rescuedBar = bars[i*2];
-                        const donatedBar = bars[i*2+1];
-                        const rescuedVal = rescuedBar ? rescuedBar.getAttribute('data-val') : '0';
-                        const donatedVal = donatedBar ? donatedBar.getAttribute('data-val') : '0';
-                        
-                        const row = sheet.addRow([days[i], rescuedVal, donatedVal, 'Verified']);
-                        row.getCell(2).font = { color: { argb: 'FF006C49' }, bold: true };
-                        row.getCell(3).font = { color: { argb: 'FFFD761A' }, bold: true };
-                    }
-                }
+                partners.columns = [
+                    { width: 10 }, { width: 26 }, { width: 14 }, { width: 18 },
+                    { width: 16 }, { width: 20 }, { width: 12 },
+                ];
 
-                // Adjust column widths
-                sheet.columns.forEach(column => { column.width = 25; });
-
+                // ═══════════════════════════════════════════════
                 // Generate & Download
+                // ═══════════════════════════════════════════════
                 const buffer = await workbook.xlsx.writeBuffer();
                 const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                saveAs(blob, 'FoodRescue_Impact_Report.xlsx');
+                const fileName = `FoodRescue_Impact_Report_${new Date().toISOString().slice(0,10)}.xlsx`;
+                saveAs(blob, fileName);
+
             } catch (err) {
-                console.error(err);
-                alert("Error generating report.");
+                console.error('Excel generation error:', err);
+                alert('❌ Error generating report: ' + err.message);
             } finally {
-                btn.innerHTML = originalText;
+                btn.innerHTML = originalHTML;
                 btn.disabled = false;
             }
         }
