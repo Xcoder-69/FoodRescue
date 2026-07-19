@@ -657,6 +657,30 @@
                 sheet.addRow(['St. Jude Community Kitchen', 'NGO', '980kg Distributed', 'Gold Member']);
                 sheet.addRow(['Organic Mart & Co.', 'Retail', '750kg Rescued', 'Active Partner']);
 
+                // Add Weekly Trends Data
+                sheet.addRow([]);
+                const trendHeader = sheet.addRow(['Daily Breakdown', 'Meals Rescued', 'Meals Donated', 'Status']);
+                trendHeader.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+                trendHeader.eachCell(cell => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF3B82F6' } }; // Blue header
+                    cell.alignment = { horizontal: 'center' };
+                });
+
+                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                const bars = document.querySelectorAll('.ia-bar');
+                if (bars.length >= 14) {
+                    for(let i=0; i<7; i++) {
+                        const rescuedBar = bars[i*2];
+                        const donatedBar = bars[i*2+1];
+                        const rescuedVal = rescuedBar ? rescuedBar.getAttribute('data-val') : '0';
+                        const donatedVal = donatedBar ? donatedBar.getAttribute('data-val') : '0';
+                        
+                        const row = sheet.addRow([days[i], rescuedVal, donatedVal, 'Verified']);
+                        row.getCell(2).font = { color: { argb: 'FF006C49' }, bold: true };
+                        row.getCell(3).font = { color: { argb: 'FFFD761A' }, bold: true };
+                    }
+                }
+
                 // Adjust column widths
                 sheet.columns.forEach(column => { column.width = 25; });
 
