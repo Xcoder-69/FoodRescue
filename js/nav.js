@@ -12,6 +12,7 @@ const PAGES = {
   ngoReg:              '5_ngo_registration.html',
   volunteerReg:        '6_volunteer_registration.html',
   restaurantDashboard: '7_restaurant_dashboard.html',
+  restaurantHistory:   'restaurant_donation_history.html',
   createDonation:      '8_create_food_donation.html',
   volunteerDashboard:  '9_volunteer_dashboard.html',
   ngoDashboard:        '10_ngo_dashboard.html',
@@ -179,7 +180,7 @@ function wireDashboardNav(role) {
       donate:       PAGES.createDonation,
       notifications: PAGES.notifications,
       profile:      PAGES.profile,
-      history:      PAGES.analytics,
+      history:      PAGES.restaurantHistory,
     },
     ngo: {
       home:         PAGES.ngoDashboard,

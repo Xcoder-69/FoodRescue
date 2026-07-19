@@ -36,6 +36,7 @@
     // Bottom nav & sidebar – shared across dashboards
     'home':                     '_home_redirect',
     'dashboard':                '_home_redirect',
+    'donation history':         'restaurant_donation_history.html',
     'history':                  '_home_redirect',
     'donate':                   '8_create_food_donation.html',
     'alerts':                   '11_notifications.html',
@@ -217,6 +218,7 @@
 
     // Restaurant dashboard pages
     '7_restaurant_dashboard.html':              '4_login_and_verification.html',
+    'restaurant_donation_history.html':         '7_restaurant_dashboard.html',
     '8_create_food_donation.html':              '7_restaurant_dashboard.html',
     '11_notifications.html':                   '7_restaurant_dashboard.html',
     '12_profile.html':                          '7_restaurant_dashboard.html',

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Donation History | FoodRescue</title>
+<meta name="description" content="View your complete food donation history on FoodRescue."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode:"class",
+  theme:{
+    extend:{
+      colors:{
+        "primary":"#006c49","on-primary":"#ffffff","primary-container":"#10b981",
+        "surface":"#f4fbf4","surface-container":"#e8f0e9","surface-container-lowest":"#ffffff",
+        "background":"#f4fbf4","on-background":"#161d19","on-surface":"#161d19",
+        "on-surface-variant":"#3c4a42","outline-variant":"#bbcabf","error":"#ba1a1a",
+      }
+    }
+  }
+}
+</script>
+<style>
+* { font-family:"Inter",sans-serif; }
+body { background-color:#f4fbf4; }
+.material-symbols-outlined { font-variation-settings:"FILL" 0,"wght" 400,"GRAD" 0,"opsz" 24; }
+.badge-completed { background:#dcfce7;color:#166534; }
+.badge-pickup    { background:#fef9c3;color:#854d0e; }
+.badge-pending   { background:#e0f2fe;color:#075985; }
+.badge-cancelled { background:#fee2e2;color:#991b1b; }
+aside::-webkit-scrollbar { width:0; }
+.stat-g1{background:linear-gradient(135deg,#006c49,#10b981);}
+.stat-g2{background:linear-gradient(135deg,#fd761a,#fbbf24);}
+.stat-g3{background:linear-gradient(135deg,#0053db,#60a5fa);}
+.stat-g4{background:linear-gradient(135deg,#7c3aed,#a78bfa);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.dcard{animation:fadeIn .3s ease both;transition:box-shadow .2s,transform .2s;}
+.dcard:hover{box-shadow:0 8px 24px rgba(0,108,73,.12);transform:translateY(-1px);}
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 lg:pb-0 lg:pl-80">
+
+<!-- SIDEBAR - Permanent Restaurant Navigation -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-80 border-r border-outline-variant bg-surface-container shadow-md z-50 overflow-y-auto">
+  <div style="padding:24px 24px 8px;"><h1 class="text-2xl font-black text-primary">FoodRescue</h1></div>
+  <div style="padding:0 16px 20px;">
+    <div class="flex items-center gap-3 bg-surface-container-lowest p-3 rounded-2xl shadow-sm border border-outline-variant/30">
+      <img alt="Restaurant Admin" class="w-11 h-11 rounded-full object-cover border-2 border-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsiEPwb6K7ZH-WAcp9aKEljSsVPMVe775TznMjxjp2bb2RNtDr6QatRqs4fA1YViudsOot_oXxdOzJBGpU2R2zZ_BWVPXSWKG8SO6z9ENjM2lg1W-et17dgjwhcK2D1zjxX9RobCJheOZHzs9QiW4e0y4PmvoNI1R-PvOWw-1g5Agwq5i0DAdtjHksepo1m5913nhB3EOvKZjggK6FGE00zgUUVKS6HviaHriZmUzq03eNWqQNyjylVsDzc3UL7YWiWLfrEkv_Oy4"/>
+      <div><p class="text-sm font-bold text-on-surface">Green Table Bistro</p><p class="text-xs text-on-surface-variant">Premium Partner</p></div>
+    </div>
+  </div>
+  <nav class="flex-1 space-y-0.5 px-3">
+    <a data-no-nav="true" href="7_restaurant_dashboard.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">grid_view</span><span class="text-base">Dashboard</span>
+    </a>
+    <a data-no-nav="true" href="8_create_food_donation.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">add_circle</span><span class="text-base">Donate Food</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_donation_history.html" class="flex items-center gap-3 bg-primary text-on-primary px-4 py-3 rounded-xl shadow-sm">
+      <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">receipt_long</span><span class="text-base font-semibold">Donation History</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_track_pickup.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">local_shipping</span><span class="text-base">Track Pickups</span>
+    </a>
+    <a data-no-nav="true" href="14_chat_and_coordination.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">chat</span><span class="text-base">Coordination Chat</span>
+    </a>
+    <a data-no-nav="true" href="13_impact_analytics.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">leaderboard</span><span class="text-base">Impact Analytics</span>
+    </a>
+    <a data-no-nav="true" href="11_notifications.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">notifications</span><span class="text-base">Notifications</span>
+    </a>
+    <div class="h-px bg-outline-variant mx-1 my-2"></div>
+    <a data-no-nav="true" href="12_profile.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">person</span><span class="text-base">Profile</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_settings.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">settings</span><span class="text-base">Settings</span>
+    </a>
+  </nav>
+  <div class="p-4 border-t border-outline-variant">
+    <a data-no-nav="true" href="#" onclick="localStorage.clear();window.location.href='1_splash_screen.html';return false;" class="flex items-center gap-3 text-error px-4 py-3 rounded-xl hover:bg-red-50 transition-all duration-150">
+      <span class="material-symbols-outlined text-[22px]">logout</span><span class="text-base font-semibold">Logout</span>
+    </a>
+  </div>
+</aside>
+
+<!-- MOBILE HEADER -->
+<header class="lg:hidden sticky top-0 z-40 bg-surface/95 backdrop-blur-sm shadow-sm w-full h-16 flex items-center justify-between px-4 border-b border-outline-variant/30">
+  <span class="text-xl font-black text-primary">FoodRescue</span>
+  <button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container"><span class="material-symbols-outlined">notifications</span></button>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="max-w-7xl mx-auto px-4 md:px-8 py-6">
+  <!-- Page Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-bold text-on-background">Donation History</h1>
+      <p class="text-sm text-on-surface-variant mt-1">Green Table Bistro &middot; All your food rescue contributions</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="exportCSV()" data-no-nav="true" class="flex items-center gap-2 px-4 py-2 bg-white border border-outline-variant rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined text-[18px]">download</span>Export CSV
+      </button>
+      <a data-no-nav="true" href="8_create_food_donation.html" class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors">
+        <span class="material-symbols-outlined text-[18px]">add</span>New Donation
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="stat-g1 text-white p-4 rounded-2xl shadow-md">
+      <div class="flex items-center gap-2 mb-1 opacity-80"><span class="material-symbols-outlined text-[18px]">restaurant</span><span class="text-xs font-semibold uppercase tracking-wide">Total Donations</span></div>
+      <p class="text-3xl font-bold" id="stat-total">48</p><p class="text-xs opacity-70 mt-1">All time</p>
+    </div>
+    <div class="stat-g2 text-white p-4 rounded-2xl shadow-md">
+      <div class="flex items-center gap-2 mb-1 opacity-80"><span class="material-symbols-outlined text-[18px]">scale</span><span class="text-xs font-semibold uppercase tracking-wide">Food Rescued</span></div>
+      <p class="text-3xl font-bold">2.4k<span class="text-lg"> kg</span></p><p class="text-xs opacity-70 mt-1">Total weight</p>
+    </div>
+    <div class="stat-g3 text-white p-4 rounded-2xl shadow-md">
+      <div class="flex items-center gap-2 mb-1 opacity-80"><span class="material-symbols-outlined text-[18px]">favorite</span><span class="text-xs font-semibold uppercase tracking-wide">Meals Served</span></div>
+      <p class="text-3xl font-bold">8,120</p><p class="text-xs opacity-70 mt-1">Lives impacted</p>
+    </div>
+    <div class="stat-g4 text-white p-4 rounded-2xl shadow-md">
+      <div class="flex items-center gap-2 mb-1 opacity-80"><span class="material-symbols-outlined text-[18px]">eco</span><span class="text-xs font-semibold uppercase tracking-wide">CO2 Saved</span></div>
+      <p class="text-3xl font-bold">1.8<span class="text-lg"> MT</span></p><p class="text-xs opacity-70 mt-1">Carbon offset</p>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="bg-white rounded-2xl border border-outline-variant/30 shadow-sm p-4 mb-5">
+    <div class="flex flex-wrap gap-3 items-center">
+      <div class="flex-1 min-w-[180px] flex items-center gap-2 bg-surface-container rounded-xl px-3 py-2 border border-outline-variant/40">
+        <span class="material-symbols-outlined text-[18px] text-on-surface-variant">search</span>
+        <input id="search-input" data-no-nav="true" type="text" placeholder="Search donations..." class="flex-1 bg-transparent text-sm outline-none" oninput="filterDonations()"/>
+      </div>
+      <select id="status-filter" data-no-nav="true" onchange="filterDonations()" class="bg-surface-container rounded-xl px-3 py-2 text-sm border border-outline-variant/40 outline-none cursor-pointer">
+        <option value="">All Status</option>
+        <option value="completed">Completed</option>
+        <option value="pickup">Awaiting Pickup</option>
+        <option value="pending">Pending</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <select id="date-filter" data-no-nav="true" onchange="filterDonations()" class="bg-surface-container rounded-xl px-3 py-2 text-sm border border-outline-variant/40 outline-none cursor-pointer">
+        <option value="">All Time</option>
+        <option value="week">This Week</option>
+        <option value="month">This Month</option>
+      </select>
+      <div class="ml-auto text-sm text-on-surface-variant font-medium"><span id="results-count">6</span> results</div>
+    </div>
+  </div>
+
+  <!-- Donation Cards -->
+  <div id="donations-container" class="space-y-4">
+
+    <div class="dcard bg-white rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden" data-status="completed" data-search="mixed vegetables biryani st jude" data-date="2026-07-19">
+      <div class="flex"><div class="w-1.5 bg-green-500 flex-shrink-0"></div>
+        <div class="flex-1 p-4 md:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-green-600" style="font-variation-settings:'FILL' 1;">restaurant</span></div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Mixed Vegetables Biryani</h3><span class="badge-completed text-xs font-semibold px-2.5 py-0.5 rounded-full">Completed</span></div>
+                <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">St. Jude Community Kitchen</span></p>
+                <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>45 kg</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">restaurant_menu</span>~225 meals</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span>Jul 19, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 sm:flex-col sm:items-end">
+              <div class="text-right"><p class="text-xl font-bold text-primary">45 kg</p><p class="text-xs text-on-surface-variant">rescued</p></div>
+              <button onclick="openModal('DON-001','Mixed Vegetables Biryani','45','St. Jude Community Kitchen','Jul 19, 2026','Completed')" data-no-nav="true" class="flex items-center gap-1 text-xs text-primary font-semibold px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/15"><span class="material-symbols-outlined text-[14px]">open_in_new</span>Details</button>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-outline-variant/20">
+            <div class="flex justify-between text-xs text-on-surface-variant mb-1"><span>Progress</span><span class="font-semibold text-green-600">Delivered</span></div>
+            <div class="h-1.5 bg-surface-container rounded-full"><div class="h-full bg-green-500 rounded-full" style="width:100%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dcard bg-white rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden" data-status="pickup" data-search="bread rolls pastries hope foundation" data-date="2026-07-19">
+      <div class="flex"><div class="w-1.5 bg-yellow-400 flex-shrink-0"></div>
+        <div class="flex-1 p-4 md:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-yellow-600" style="font-variation-settings:'FILL' 1;">bakery_dining</span></div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Bread Rolls &amp; Pastries</h3><span class="badge-pickup text-xs font-semibold px-2.5 py-0.5 rounded-full">Awaiting Pickup</span></div>
+                <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">Hope Foundation NGO</span></p>
+                <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>18 kg</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span>Pickup: 2:30 PM</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span>Jul 19, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 sm:flex-col sm:items-end">
+              <div class="text-right"><p class="text-xl font-bold text-yellow-600">18 kg</p><p class="text-xs text-on-surface-variant">listed</p></div>
+              <button onclick="openModal('DON-002','Bread Rolls & Pastries','18','Hope Foundation NGO','Jul 19, 2026','Awaiting Pickup')" data-no-nav="true" class="flex items-center gap-1 text-xs text-primary font-semibold px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/15"><span class="material-symbols-outlined text-[14px]">open_in_new</span>Details</button>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-outline-variant/20">
+            <div class="flex justify-between text-xs text-on-surface-variant mb-1"><span>Volunteer en route</span><span class="font-semibold text-yellow-600">65%</span></div>
+            <div class="h-1.5 bg-surface-container rounded-full"><div class="h-full bg-yellow-400 rounded-full" style="width:65%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dcard bg-white rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden" data-status="pending" data-search="paneer curry rice unassigned" data-date="2026-07-18">
+      <div class="flex"><div class="w-1.5 bg-blue-400 flex-shrink-0"></div>
+        <div class="flex-1 p-4 md:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-blue-600" style="font-variation-settings:'FILL' 1;">dining</span></div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Paneer Curry &amp; Rice</h3><span class="badge-pending text-xs font-semibold px-2.5 py-0.5 rounded-full">Pending Claim</span></div>
+                <p class="text-sm text-on-surface-variant mt-0.5">Awaiting NGO assignment</p>
+                <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>32 kg</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">restaurant_menu</span>~160 meals</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span>Jul 18, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 sm:flex-col sm:items-end">
+              <div class="text-right"><p class="text-xl font-bold text-blue-600">32 kg</p><p class="text-xs text-on-surface-variant">listed</p></div>
+              <button onclick="openModal('DON-003','Paneer Curry & Rice','32','Unassigned','Jul 18, 2026','Pending')" data-no-nav="true" class="flex items-center gap-1 text-xs text-primary font-semibold px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/15"><span class="material-symbols-outlined text-[14px]">open_in_new</span>Details</button>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-outline-variant/20">
+            <div class="flex justify-between text-xs text-on-surface-variant mb-1"><span>Awaiting assignment</span><span class="font-semibold text-blue-500">Listed</span></div>
+            <div class="h-1.5 bg-surface-container rounded-full"><div class="h-full bg-blue-400 rounded-full" style="width:15%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dcard bg-white rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden" data-status="completed" data-search="dal makhani naan city shelter" data-date="2026-07-17">
+      <div class="flex"><div class="w-1.5 bg-green-500 flex-shrink-0"></div>
+        <div class="flex-1 p-4 md:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-green-600" style="font-variation-settings:'FILL' 1;">soup_kitchen</span></div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Dal Makhani &amp; Naan</h3><span class="badge-completed text-xs font-semibold px-2.5 py-0.5 rounded-full">Completed</span></div>
+                <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">City Shelter &amp; Relief</span></p>
+                <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>60 kg</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">restaurant_menu</span>~300 meals</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span>Jul 17, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 sm:flex-col sm:items-end">
+              <div class="text-right"><p class="text-xl font-bold text-primary">60 kg</p><p class="text-xs text-on-surface-variant">rescued</p></div>
+              <button onclick="openModal('DON-004','Dal Makhani & Naan','60','City Shelter & Relief','Jul 17, 2026','Completed')" data-no-nav="true" class="flex items-center gap-1 text-xs text-primary font-semibold px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/15"><span class="material-symbols-outlined text-[14px]">open_in_new</span>Details</button>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-outline-variant/20">
+            <div class="flex justify-between text-xs text-on-surface-variant mb-1"><span>Progress</span><span class="font-semibold text-green-600">Delivered</span></div>
+            <div class="h-1.5 bg-surface-container rounded-full"><div class="h-full bg-green-500 rounded-full" style="width:100%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dcard bg-white rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden" data-status="cancelled" data-search="fruit salad desserts cancelled" data-date="2026-07-16">
+      <div class="flex"><div class="w-1.5 bg-red-400 flex-shrink-0"></div>
+        <div class="flex-1 p-4 md:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-red-500" style="font-variation-settings:'FILL' 1;">no_food</span></div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Fruit Salad &amp; Desserts</h3><span class="badge-cancelled text-xs font-semibold px-2.5 py-0.5 rounded-full">Cancelled</span></div>
+                <p class="text-sm text-on-surface-variant mt-0.5">Reason: <span class="font-medium text-red-500">Volunteer no-show</span></p>
+                <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>12 kg</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span>Jul 16, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 sm:flex-col sm:items-end">
+              <div class="text-right"><p class="text-xl font-bold text-red-400">12 kg</p><p class="text-xs text-on-surface-variant">wasted</p></div>
+              <button onclick="openModal('DON-005','Fruit Salad & Desserts','12','-','Jul 16, 2026','Cancelled')" data-no-nav="true" class="flex items-center gap-1 text-xs text-primary font-semibold px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/15"><span class="material-symbols-outlined text-[14px]">open_in_new</span>Details</button>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center gap-2 text-xs text-red-500">
+            <span class="material-symbols-outlined text-[14px]">info</span><span>Consider re-posting for future pickups.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dcard bg-white rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden" data-status="completed" data-search="chicken tikka masala green shield" data-date="2026-07-15">
+      <div class="flex"><div class="w-1.5 bg-green-500 flex-shrink-0"></div>
+        <div class="flex-1 p-4 md:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-green-600" style="font-variation-settings:'FILL' 1;">restaurant</span></div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Chicken Tikka Masala</h3><span class="badge-completed text-xs font-semibold px-2.5 py-0.5 rounded-full">Completed</span></div>
+                <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">Green Shield NGO</span></p>
+                <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>55 kg</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">restaurant_menu</span>~275 meals</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span>Jul 15, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 sm:flex-col sm:items-end">
+              <div class="text-right"><p class="text-xl font-bold text-primary">55 kg</p><p class="text-xs text-on-surface-variant">rescued</p></div>
+              <button onclick="openModal('DON-006','Chicken Tikka Masala','55','Green Shield NGO','Jul 15, 2026','Completed')" data-no-nav="true" class="flex items-center gap-1 text-xs text-primary font-semibold px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/15"><span class="material-symbols-outlined text-[14px]">open_in_new</span>Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="empty-state" class="hidden text-center py-16">
+      <div class="w-20 h-20 bg-surface-container rounded-full flex items-center justify-center mx-auto mb-4"><span class="material-symbols-outlined text-4xl text-on-surface-variant">search_off</span></div>
+      <h3 class="text-lg font-bold mb-2">No donations found</h3>
+      <p class="text-sm text-on-surface-variant">Try adjusting your filters</p>
+    </div>
+  </div>
+
+  <div class="text-center mt-6">
+    <button data-no-nav="true" class="px-6 py-2.5 bg-white border border-outline-variant rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container transition-colors">Load More Donations</button>
+  </div>
+</main>
+
+<!-- DETAIL MODAL -->
+<div id="detail-modal" style="display:none;position:fixed;inset:0;z-index:60;" class="flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModal()"></div>
+  <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg flex flex-col overflow-hidden" style="max-height:90vh;">
+    <div class="bg-primary text-white p-5 flex items-center justify-between flex-shrink-0">
+      <div><h2 class="text-lg font-bold">Donation Details</h2><p id="modal-id" class="text-sm opacity-75"></p></div>
+      <button onclick="closeModal()" data-no-nav="true" class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <div class="overflow-y-auto flex-1 p-5 space-y-4">
+      <div id="modal-banner" class="rounded-xl p-4 flex items-center gap-3"></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-surface-container rounded-xl p-3"><p class="text-xs text-on-surface-variant mb-1">Food Item</p><p id="modal-item" class="font-semibold text-sm"></p></div>
+        <div class="bg-surface-container rounded-xl p-3"><p class="text-xs text-on-surface-variant mb-1">Quantity</p><p id="modal-qty" class="font-semibold text-sm"></p></div>
+        <div class="bg-surface-container rounded-xl p-3"><p class="text-xs text-on-surface-variant mb-1">Received By</p><p id="modal-ngo" class="font-semibold text-sm text-primary"></p></div>
+        <div class="bg-surface-container rounded-xl p-3"><p class="text-xs text-on-surface-variant mb-1">Date</p><p id="modal-date" class="font-semibold text-sm"></p></div>
+        <div class="bg-surface-container rounded-xl p-3"><p class="text-xs text-on-surface-variant mb-1">Status</p><p id="modal-status" class="font-semibold text-sm"></p></div>
+        <div class="bg-surface-container rounded-xl p-3"><p class="text-xs text-on-surface-variant mb-1">CO2 Saved</p><p id="modal-co2" class="font-semibold text-sm text-green-600"></p></div>
+      </div>
+    </div>
+    <div class="p-4 border-t border-outline-variant/30 flex gap-3 flex-shrink-0">
+      <button onclick="closeModal()" data-no-nav="true" class="flex-1 px-4 py-2.5 border border-outline-variant rounded-xl text-sm font-semibold hover:bg-surface-container transition-colors">Close</button>
+      <button data-no-nav="true" class="flex-1 px-4 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors">Download Receipt</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant z-40 flex items-center justify-around px-2 py-2">
+  <a data-no-nav="true" href="7_restaurant_dashboard.html" class="flex flex-col items-center gap-0.5 px-3 py-1 text-on-surface-variant"><span class="material-symbols-outlined text-[24px]">grid_view</span><span class="text-[10px]">Home</span></a>
+  <a data-no-nav="true" href="8_create_food_donation.html" class="flex flex-col items-center gap-0.5 px-3 py-1 text-on-surface-variant"><span class="material-symbols-outlined text-[24px]">add_circle</span><span class="text-[10px]">Donate</span></a>
+  <a data-no-nav="true" href="restaurant_donation_history.html" class="flex flex-col items-center gap-0.5 px-3 py-1 text-primary"><span class="material-symbols-outlined text-[24px]" style="font-variation-settings:'FILL' 1;">receipt_long</span><span class="text-[10px] font-semibold">History</span></a>
+  <a data-no-nav="true" href="12_profile.html" class="flex flex-col items-center gap-0.5 px-3 py-1 text-on-surface-variant"><span class="material-symbols-outlined text-[24px]">person</span><span class="text-[10px]">Profile</span></a>
+</nav>
+
+<script>
+function filterDonations(){
+  const s=document.getElementById('search-input').value.toLowerCase();
+  const st=document.getElementById('status-filter').value;
+  const cards=document.querySelectorAll('.dcard');
+  let v=0;
+  cards.forEach(c=>{
+    const show=(!st||c.dataset.status===st)&&(!s||c.dataset.search.includes(s));
+    c.style.display=show?'':'none';
+    if(show)v++;
+  });
+  document.getElementById('results-count').textContent=v;
+  document.getElementById('empty-state').classList.toggle('hidden',v>0);
+}
+
+function openModal(id,item,qty,ngo,date,status){
+  document.getElementById('modal-id').textContent=id;
+  document.getElementById('modal-item').textContent=item;
+  document.getElementById('modal-qty').textContent=qty+' kg';
+  document.getElementById('modal-ngo').textContent=ngo;
+  document.getElementById('modal-date').textContent=date;
+  document.getElementById('modal-status').textContent=status;
+  document.getElementById('modal-co2').textContent=(parseFloat(qty)*2.5).toFixed(1)+' kg';
+  const b=document.getElementById('modal-banner');
+  const configs={
+    'Completed':['bg-green-50','check_circle','text-green-600','Successfully Rescued','Delivered to beneficiaries','text-green-800','text-green-600'],
+    'Awaiting Pickup':['bg-yellow-50','local_shipping','text-yellow-600','Volunteer En Route','Pickup in progress','text-yellow-800','text-yellow-600'],
+    'Pending':['bg-blue-50','pending','text-blue-600','Awaiting Assignment','Looking for nearby NGO','text-blue-800','text-blue-600'],
+    'Cancelled':['bg-red-50','cancel','text-red-500','Donation Cancelled','This donation was cancelled','text-red-800','text-red-500']
+  };
+  const cfg=configs[status]||configs['Pending'];
+  b.className='rounded-xl p-4 flex items-center gap-3 '+cfg[0];
+  b.innerHTML=`<span class="material-symbols-outlined ${cfg[2]} text-3xl" style="font-variation-settings:'FILL' 1;">${cfg[1]}</span><div><p class="font-bold ${cfg[5]}">${cfg[3]}</p><p class="text-sm ${cfg[6]}">${cfg[4]}</p></div>`;
+  document.getElementById('detail-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('detail-modal').style.display='none';
+  document.body.style.overflow='';
+}
+
+function exportCSV(){
+  const rows=[
+    ['ID','Item','Status','Weight (kg)','NGO','Date'],
+    ['DON-001','Mixed Vegetables Biryani','Completed','45','St. Jude Community Kitchen','2026-07-19'],
+    ['DON-002','Bread Rolls & Pastries','Awaiting Pickup','18','Hope Foundation NGO','2026-07-19'],
+    ['DON-003','Paneer Curry & Rice','Pending','32','Unassigned','2026-07-18'],
+    ['DON-004','Dal Makhani & Naan','Completed','60','City Shelter & Relief','2026-07-17'],
+    ['DON-005','Fruit Salad & Desserts','Cancelled','12','-','2026-07-16'],
+    ['DON-006','Chicken Tikka Masala','Completed','55','Green Shield NGO','2026-07-15']
+  ];
+  const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='FoodRescue_Donations_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('results-count').textContent=document.querySelectorAll('.dcard').length;
+});
+</script>
+</body>
+</html>

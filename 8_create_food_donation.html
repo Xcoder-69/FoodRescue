@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -133,49 +133,68 @@
   </style>
   </head>
 <body class="bg-background text-on-background font-body-md min-h-screen pb-24 md:pb-0 md:pl-80">
-<!-- Navigation Drawer (Desktop) -->
-<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container shadow-md w-80 rounded-r-xl z-40 overflow-y-auto hide-scrollbar" style="position: fixed !important; top: 0 !important; left: 0 !important; height: 100vh !important; bottom: 0 !important;">
-<div class="font-headline-lg text-headline-lg font-black text-primary px-gutter py-stack-lg shrink-0">
-            FoodRescue
-        </div>
-<div class="flex items-center gap-stack-md px-stack-md py-6 mb-4">
-<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container overflow-hidden">
-<img alt="Green Table Bistro" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5Jfv-lB2d5kTWJ5RIE50aKj3a_fB17gzevSOBZXCwsiHYZpSjTeyCMSSOv4Rh8KM1axi60ULiP5EOr0p-duCNOdNQRaWdcJdTHiu78rBwyj9_crckUCIjMO7kAd5kPaY_2kaB2YE4E-AW3_U5C_4k5Um4KZ-Nf5byGGDmzEuLgiODDEoJz6J7imFTyR-g0saTQn-ggPM1tvPWRlOwdfPAM0PZlLT6p-5WbjUL2zUXty4nad-o8Y6KQv_Z4U47H_CEi24tkYqf6_U"/>
-</div>
-<div>
-<p class="font-title-lg text-title-lg text-on-surface leading-tight">Restaurant Admin</p>
-<p class="font-label-md text-label-md text-on-surface-variant">Green Table Bistro</p>
-</div>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
-<span class="material-symbols-outlined">grid_view</span>
-<span class="font-body-lg text-body-lg">Dashboard</span>
-</a>
-<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 transition-all active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined">add_circle</span>
-<span class="font-body-lg text-body-lg">Donate Food</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
-<span class="material-symbols-outlined">receipt_long</span>
-<span class="font-body-lg text-body-lg">Donation History</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
-<span class="material-symbols-outlined">leaderboard</span>
-<span class="font-body-lg text-body-lg">Impact Analytics</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-body-lg text-body-lg">Settings</span>
-</a>
-</nav>
-<div class="p-gutter">
-<button class="flex items-center gap-stack-md text-error w-full px-stack-md py-3 hover:bg-error-container/20 rounded-full transition-colors">
-<span class="material-symbols-outlined">logout</span>
-<span class="font-body-lg text-body-lg">Logout</span>
-</button>
-</div>
+<!-- Desktop Sidebar - Permanent Restaurant Navigation -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-80 border-r border-outline-variant bg-surface-container shadow-md z-50 overflow-y-auto" style="position:fixed !important;">
+  <div style="padding:24px 24px 8px;">
+    <span class="font-headline-lg text-headline-lg font-black text-primary">FoodRescue</span>
+  </div>
+  <div style="padding:0 16px 20px;">
+    <div class="flex items-center gap-3 bg-surface-container-lowest p-3 rounded-2xl shadow-sm border border-outline-variant/30">
+      <img alt="Restaurant Admin" class="w-11 h-11 rounded-full object-cover border-2 border-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsiEPwb6K7ZH-WAcp9aKEljSsVPMVe775TznMjxjp2bb2RNtDr6QatRqs4fA1YViudsOot_oXxdOzJBGpU2R2zZ_BWVPXSWKG8SO6z9ENjM2lg1W-et17dgjwhcK2D1zjxX9RobCJheOZHzs9QiW4e0y4PmvoNI1R-PvOWw-1g5Agwq5i0DAdtjHksepo1m5913nhB3EOvKZjggK6FGE00zgUUVKS6HviaHriZmUzq03eNWqQNyjylVsDzc3UL7YWiWLfrEkv_Oy4"/>
+      <div>
+        <p class="font-label-lg text-label-lg font-bold text-on-surface">Green Table Bistro</p>
+        <p class="text-xs text-on-surface-variant">Premium Partner</p>
+      </div>
+    </div>
+  </div>
+  <nav class="flex-1 space-y-0.5 px-3">
+    <a data-no-nav="true" href="7_restaurant_dashboard.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">grid_view</span>
+      <span class="font-body-lg text-body-lg">Dashboard</span>
+    </a>
+    <!-- Donate Food (Active) -->
+    <a data-no-nav="true" href="8_create_food_donation.html" class="flex items-center gap-3 bg-primary text-on-primary px-4 py-3 rounded-xl shadow-sm transition-all duration-150">
+      <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">add_circle</span>
+      <span class="font-body-lg text-body-lg font-semibold">Donate Food</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_donation_history.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">receipt_long</span>
+      <span class="font-body-lg text-body-lg">Donation History</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_track_pickup.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">local_shipping</span>
+      <span class="font-body-lg text-body-lg">Track Pickups</span>
+    </a>
+    <a data-no-nav="true" href="14_chat_and_coordination.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">chat</span>
+      <span class="font-body-lg text-body-lg">Coordination Chat</span>
+    </a>
+    <a data-no-nav="true" href="13_impact_analytics.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">leaderboard</span>
+      <span class="font-body-lg text-body-lg">Impact Analytics</span>
+    </a>
+    <a data-no-nav="true" href="11_notifications.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">notifications</span>
+      <span class="font-body-lg text-body-lg">Notifications</span>
+    </a>
+    <div class="h-px bg-outline-variant mx-1 my-2"></div>
+    <a data-no-nav="true" href="12_profile.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">person</span>
+      <span class="font-body-lg text-body-lg">Profile</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_settings.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">settings</span>
+      <span class="font-body-lg text-body-lg">Settings</span>
+    </a>
+  </nav>
+  <div class="p-4 border-t border-outline-variant">
+    <a data-no-nav="true" href="#" onclick="localStorage.clear(); window.location.href='1_splash_screen.html'; return false;" class="flex items-center gap-3 text-error px-4 py-3 rounded-xl hover:bg-red-50 transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px]">logout</span>
+      <span class="font-body-lg text-body-lg font-semibold">Logout</span>
+    </a>
+  </div>
 </aside>
+
 <!-- Top App Bar -->
 <header class="bg-surface shadow-sm sticky top-0 z-30 w-full">
 <div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
