@@ -198,36 +198,32 @@
 <main class="max-w-4xl mx-auto p-container-padding-mobile md:p-container-padding-desktop">
 <!-- Form Container -->
 <div class="space-y-gutter">
-<!-- Section: Image Upload (Bento Style) -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md">
-<div class="md:col-span-2 relative group overflow-hidden rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant hover:border-primary transition-all aspect-video flex flex-col items-center justify-center text-on-surface-variant">
-    <div class="absolute inset-0 opacity-0 group-hover:opacity-10 bg-primary transition-opacity pointer-events-none"></div>
-    <span class="material-symbols-outlined text-4xl mb-2 text-primary">add_a_photo</span>
-    <p class="font-label-lg text-label-lg">Upload Food Photo</p>
-    <p class="text-xs mt-1 mb-4">PNG, JPG up to 10MB</p>
-    
-    <div class="flex gap-3 z-10">
-        <button type="button" onclick="document.getElementById('fileInput').click()" class="px-4 py-2 bg-primary text-white rounded-lg flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-colors text-sm font-semibold">
-            <span class="material-symbols-outlined text-[18px]">upload_file</span> Browse Files
-        </button>
-        <button type="button" onclick="document.getElementById('cameraInput').click()" class="px-4 py-2 bg-surface border border-primary text-primary rounded-lg flex items-center gap-2 hover:bg-primary-container/20 transition-colors text-sm font-semibold">
-            <span class="material-symbols-outlined text-[18px]">photo_camera</span> Take Photo
-        </button>
+<!-- Section: Image Upload -->
+<div class="space-y-4">
+    <div class="w-full relative group overflow-hidden rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant hover:border-primary transition-all py-12 flex flex-col items-center justify-center text-on-surface-variant">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-10 bg-primary transition-opacity pointer-events-none"></div>
+        <span class="material-symbols-outlined text-4xl mb-2 text-primary">add_a_photo</span>
+        <p class="font-label-lg text-label-lg">Upload Food Photo</p>
+        <p class="text-xs mt-1 mb-4">PNG, JPG up to 10MB</p>
+        
+        <div class="flex gap-3 z-10">
+            <button type="button" onclick="document.getElementById('fileInput').click()" class="px-4 py-2 bg-primary text-white rounded-lg flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-colors text-sm font-semibold">
+                <span class="material-symbols-outlined text-[18px]">upload_file</span> Browse Files
+            </button>
+            <button type="button" onclick="document.getElementById('cameraInput').click()" class="px-4 py-2 bg-surface border border-primary text-primary rounded-lg flex items-center gap-2 hover:bg-primary-container/20 transition-colors text-sm font-semibold">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span> Take Photo
+            </button>
+        </div>
+
+        <!-- Hidden file inputs -->
+        <input type="file" id="fileInput" accept="image/png, image/jpeg" class="hidden" onchange="previewImage(event)" multiple>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="previewImage(event)">
     </div>
 
-    <!-- Hidden file inputs -->
-    <input type="file" id="fileInput" accept="image/png, image/jpeg" class="hidden" onchange="previewImage(event)">
-    <!-- 'capture="environment"' suggests to the mobile OS to open the rear camera directly -->
-    <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="previewImage(event)">
-</div>
-<div class="hidden md:flex flex-col gap-stack-md">
-<div class="flex-1 rounded-xl bg-surface-container overflow-hidden border border-outline-variant relative">
-    <img id="imagePreview" alt="Sample Food" class="w-full h-full object-cover opacity-50 grayscale transition-all duration-300" data-alt="A top-down view of a colorful salad in a clean white bowl placed on a rustic wooden table." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI7-nZ4FQNa1GnBL7V1u7unkyAfs6uoItM3C99oKdk-P8-JzbBhsEViIjbc6IPkX55dZ0vr_0qxdVvSJ5t_bCrTiys34ER_er5436SoLeI1CWFu6OttnrONUPy716WzXvuV4HXetSckhOe3JZC-NQGwF1F4i0hjJXvemP9ma5MKfMv1pWSMgkd4-LxVUs9VStN8oaQk19TeAvt7_m_GwwxTkG7KkQXq7-28_62OLIAnzuZJn0yFZ2hmPH8Qp9v22pGn5UsS_-ZT9c"/>
-</div>
-<div class="flex-1 rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant flex items-center justify-center">
-<span class="material-symbols-outlined text-outline">add</span>
-</div>
-</div>
+    <!-- Responsive Grid for Uploaded Photos -->
+    <div id="photo-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 empty:hidden">
+        <!-- Uploaded photos will appear here dynamically -->
+    </div>
 </div>
 <!-- Main Form Card -->
 <form class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-gutter space-y-gutter">
@@ -460,16 +456,35 @@
     }
 
     function previewImage(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.getElementById('imagePreview');
-                img.src = e.target.result;
-                img.classList.remove('opacity-50', 'grayscale');
-            }
-            reader.readAsDataURL(file);
+        const files = event.target.files;
+        const grid = document.getElementById('photo-grid');
+        
+        if (files && files.length > 0) {
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'relative aspect-square rounded-xl overflow-hidden border border-outline-variant bg-surface-container group shadow-sm';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-full h-full object-cover';
+                    
+                    const delBtn = document.createElement('button');
+                    delBtn.innerHTML = '<span class="material-symbols-outlined text-sm">close</span>';
+                    delBtn.className = 'absolute top-1 right-1 bg-black/60 hover:bg-error text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center justify-center';
+                    delBtn.type = 'button';
+                    delBtn.onclick = function() { imgContainer.remove(); };
+                    
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(delBtn);
+                    grid.appendChild(imgContainer);
+                }
+                reader.readAsDataURL(file);
+            });
         }
+        // Reset input so the same file can be selected again if needed
+        event.target.value = '';
     }
 </script>
 
