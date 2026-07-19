@@ -15,23 +15,27 @@
 
       if (icon === 'home' || icon === 'dashboard' || icon === 'grid_view' || txt === 'home') {
         a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate(roleHome); };
-      } else if (icon === 'history' || txt.includes('history') || txt.includes('donation history')) {
+      } else if (icon === 'receipt_long' || txt.includes('donation history')) {
+        a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('restaurant_donation_history.html'); };
+      } else if (icon === 'history' || txt === 'history') {
         a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('13_impact_analytics.html'); };
       } else if (icon === 'notifications' || txt.includes('alert') || txt.includes('notif')) {
         a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('11_notifications.html'); };
-      } else if (icon === 'person' || txt.includes('profile')) {
-        a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('12_profile.html'); };
+      } else if (icon === 'person' || txt === 'profile') {
+        a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('restaurant_settings.html'); };
+      } else if (icon === 'chat' || txt.includes('coordination chat') || txt.includes('chat')) {
+        a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('14_chat_and_coordination.html'); };
       } else if (icon === 'group' || txt.includes('volunteer')) {
         a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('restaurant_volunteers.html'); };
       } else if (icon === 'settings' || txt.includes('setting')) {
         a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('restaurant_settings.html'); };
-      } else if (icon === 'leaderboard' || txt.includes('analytics') || txt.includes('impact')) {
+      } else if (icon === 'leaderboard' || txt.includes('impact analytics') || txt.includes('analytics')) {
         a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('13_impact_analytics.html'); };
-      } else if (icon === 'local_shipping' || txt.includes('track')) {
+      } else if (icon === 'local_shipping' || txt.includes('track pickup') || txt.includes('track')) {
         a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('restaurant_track_pickup.html'); };
       } else if (icon === 'logout' || txt.includes('logout') || txt.includes('sign out')) {
         a.href = '#'; a.onclick = function () { localStorage.clear(); window.frNavigate('1_splash_screen.html'); };
-      } else if (icon === 'add_circle' || txt.includes('donate')) {
+      } else if (icon === 'add_circle' || txt.includes('donate food') || txt === 'donate') {
         a.href = '#'; a.onclick = function (e) { e.preventDefault(); window.frNavigate('8_create_food_donation.html'); };
       }
     });

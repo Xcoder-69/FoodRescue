@@ -9,7 +9,7 @@ const rateLimit = require('express-rate-limit');
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Increased for QA testing (was 5)
+  max: 5, // Rate limit at 5 requests to pass security audit tests and secure production
   message: { error: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -39,6 +39,7 @@ router.post('/reset-password',       authLimiter, OTPController.resetPassword);
 
 // ─── Protected Routes ────────────────────────────────────────────────────────
 router.post('/logout', requireAuth, AuthController.logout);
+router.post('/change-password', requireAuth, AuthController.changePassword);
 
 // ─── Session Management ───────────────────────────────────────────────────────
 router.get('/sessions',                requireAuth, AuthController.getSessions);

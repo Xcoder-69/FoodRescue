@@ -12,8 +12,11 @@ module.exports = defineConfig({
   webServer: [
     {
       command: 'npm start',
-      port: 3000,
-      reuseExistingServer: true,
+      port: 3009,
+      env: {
+        PORT: '3009'
+      },
+      reuseExistingServer: false,
       timeout: 120000,
     },
     {

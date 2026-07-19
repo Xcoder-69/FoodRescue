@@ -29,7 +29,7 @@
     '29_secret_security_key.html':'28_2fa_verification.html',
     '8_create_food_donation.html':'7_restaurant_dashboard.html',
     '11_notifications.html':'7_restaurant_dashboard.html',
-    '12_profile.html':'7_restaurant_dashboard.html',
+    'restaurant_settings.html':'7_restaurant_dashboard.html',
     '13_impact_analytics.html':'7_restaurant_dashboard.html',
     '14_chat_and_coordination.html':'7_restaurant_dashboard.html',
     '20_help_and_support.html':'7_restaurant_dashboard.html',
@@ -38,7 +38,7 @@
     '25_privacy_and_guidelines.html':'7_restaurant_dashboard.html',
     '26_declarations_and_consent.html':'7_restaurant_dashboard.html',
     '15_verification_management.html':'31_mission_control_dashboard.html',
-    '16_donation_monitoring.html':'31_mission_control_dashboard.html',
+    'restaurant_track_pickup.html':'31_mission_control_dashboard.html',
     '17_user_management_admin.html':'31_mission_control_dashboard.html',
     '18_csr_and_reporting.html':'31_mission_control_dashboard.html',
     '19_fraud_and_reports_admin.html':'31_mission_control_dashboard.html',
@@ -71,6 +71,9 @@
       'body{animation:fr-in .32s cubic-bezier(.22,1,.36,1) forwards}' +
       '@keyframes fr-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}';
     document.head.appendChild(s);
+    setTimeout(function() {
+      if (s.parentNode) s.parentNode.removeChild(s);
+    }, 400);
   }
 
   window.frNavigate = function(dest) {
@@ -93,6 +96,7 @@
     var found = false;
     document.querySelectorAll('button,a,span').forEach(function(el) {
       if (el.textContent.trim() === 'arrow_back' && el.children.length === 0) {
+        if (el.hasAttribute('data-no-back') || (el.parentElement && el.parentElement.hasAttribute('data-no-back'))) return;
         found = true;
         /* Walk up to the real clickable ancestor */
         var clickable = el;
@@ -524,7 +528,7 @@
         'add_circle': '8_create_food_donation.html', 'donate': '8_create_food_donation.html',
         'volunteer_activism': '8_create_food_donation.html',
         'notifications': '11_notifications.html', 'alerts': '11_notifications.html',
-        'person': '12_profile.html', 'profile': '12_profile.html',
+        'person': 'restaurant_settings.html', 'profile': 'restaurant_settings.html',
         'settings': 'restaurant_settings.html',
         'grid_view': '7_restaurant_dashboard.html',
         'receipt_long': '13_impact_analytics.html',
@@ -534,7 +538,7 @@
       var dest = map[icon] || (txt === 'home' ? '7_restaurant_dashboard.html' : null)
                             || (txt === 'donate' ? '8_create_food_donation.html' : null)
                             || (txt === 'alerts' ? '11_notifications.html' : null)
-                            || (txt === 'profile' ? '12_profile.html' : null)
+                            || (txt === 'profile' ? 'restaurant_settings.html' : null)
                             || (txt === 'history' ? '13_impact_analytics.html' : null);
       if (dest && !el._wired) {
         el._wired = true;
@@ -853,7 +857,7 @@
         'analytics':          '13_impact_analytics.html',
         'group':              'restaurant_volunteers.html',
         'settings':           'restaurant_settings.html',
-        'person':             '12_profile.html',
+        'person':             'restaurant_settings.html',
         'volunteer_activism': '8_create_food_donation.html',
         'receipt':            'restaurant_track_pickup.html',
       };
@@ -861,7 +865,7 @@
       if (!dest && txt.includes('dashboard'))  dest = '7_restaurant_dashboard.html';
       if (!dest && txt.includes('volunteer'))  dest = 'restaurant_volunteers.html';
       if (!dest && txt.includes('settings'))   dest = 'restaurant_settings.html';
-      if (!dest && txt.includes('profile'))    dest = '12_profile.html';
+      if (!dest && txt.includes('profile'))    dest = 'restaurant_settings.html';
       if (!dest && txt.includes('analytics'))  dest = '13_impact_analytics.html';
       if (!dest && txt.includes('donation'))   dest = '8_create_food_donation.html';
       if (!dest && (txt.includes('logout') || txt.includes('sign out'))) {

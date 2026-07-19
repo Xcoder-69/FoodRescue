@@ -226,7 +226,7 @@
 </button>
 </div>
 <div class="text-center md:text-left">
-<h2 class="font-title-lg text-title-lg text-on-surface">Green Table Bistro</h2>
+<h2 id="profile-header-name" class="font-title-lg text-title-lg text-on-surface">Loading...</h2>
 <div class="flex items-center justify-center md:justify-start gap-2 mt-1">
 <span class="bg-primary-fixed-dim/20 text-on-primary-fixed-variant px-3 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider">Premium Partner</span>
 </div>
@@ -249,23 +249,23 @@
 <button class="w-full px-6 py-5 flex items-center justify-between hover:bg-surface-container-low transition-colors group">
 <div class="text-left">
 <p class="font-body-lg font-medium">Business Information</p>
-<p class="text-sm text-on-surface-variant">Name, Address, FSSAI: 1283920192</p>
+<p id="profile-business-info" class="text-sm text-on-surface-variant">Loading...</p>
 </div>
 <span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
 </button>
 <button class="w-full px-6 py-5 flex items-center justify-between hover:bg-surface-container-low transition-colors group">
 <div class="text-left">
 <p class="font-body-lg font-medium">Contact Details</p>
-<p class="text-sm text-on-surface-variant">+1 (555) 012-3456, info@greentable.com</p>
+<p id="profile-contact-info" class="text-sm text-on-surface-variant">Loading...</p>
 </div>
 <span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
 </button>
-<button class="w-full px-6 py-5 flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<button id="open-change-pwd-btn" class="w-full px-6 py-5 flex items-center justify-between hover:bg-surface-container-low transition-colors group">
 <div class="text-left">
 <p class="font-body-lg font-medium">Change Password</p>
 <p class="text-sm text-on-surface-variant">Last updated 3 months ago</p>
 </div>
-<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">lock</span>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
 </button>
 </div>
 </section>
@@ -420,11 +420,27 @@
             el.addEventListener('mouseup', () => { el.style.transform = 'scale(1)'; });
             el.addEventListener('mouseleave', () => { el.style.transform = 'scale(1)'; });
         });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (window.ApiClient) {
+                try {
+                    const res = await ApiClient.get('/auth/me');
+                    if (res.data) {
+                        const user = res.data;
+                        document.getElementById('profile-header-name').textContent = user.name || 'Restaurant Partner';
+                        document.getElementById('profile-business-info').textContent = user.address ? `Address: ${user.address}` : 'No address provided';
+                        document.getElementById('profile-contact-info').textContent = user.email || 'No contact provided';
+                    }
+                } catch(e) {
+                    console.error('Failed to load profile', e);
+                }
+            }
+        });
 </script>
 
 <!-- ═══ CHANGE PASSWORD MODAL ═══ -->
-<div id="rs-pwd-modal" style="display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:16px;background:rgba(22,29,25,.55);backdrop-filter:blur(6px);" role="dialog" aria-modal="true">
-  <div id="rs-pwd-card" style="background:#f4fbf4;border-radius:24px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,108,73,.22);transform:translateY(30px);opacity:0;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s;font-family:'Inter',sans-serif;overflow:hidden;">
+<div id="rs-pwd-modal" class="hidden fixed inset-0 z-[99999] items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto" role="dialog" aria-modal="true">
+  <div id="rs-pwd-card" class="bg-surface rounded-3xl w-full max-w-md shadow-2xl scale-95 opacity-0 transition-all duration-300 mx-auto my-auto overflow-hidden">
     <div style="background:#006c49;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;">
       <div style="display:flex;align-items:center;gap:10px;"><span class="material-symbols-outlined" style="color:#fff;font-size:20px;">lock</span><h3 style="color:#fff;font-size:17px;font-weight:700;margin:0;">Change Password</h3></div>
       <button id="rs-pwd-close" style="background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;" aria-label="Close"><span class="material-symbols-outlined" style="font-size:19px;">close</span></button>
@@ -455,8 +471,8 @@
 </div>
 
 <!-- ═══ EDIT PROFILE INLINE FORM (slide-down) ═══ -->
-<div id="rs-edit-panel" style="display:none;position:fixed;inset:0;z-index:99999;align-items:flex-start;justify-content:center;padding:20px 16px;background:rgba(22,29,25,.55);backdrop-filter:blur(6px);overflow-y:auto;" role="dialog" aria-modal="true">
-  <div id="rs-edit-card" style="background:#f4fbf4;border-radius:24px;width:100%;max-width:540px;box-shadow:0 20px 60px rgba(0,108,73,.22);transform:translateY(-30px);opacity:0;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s;font-family:'Inter',sans-serif;overflow:hidden;margin:auto;">
+<div id="rs-edit-panel" class="hidden fixed inset-0 z-[99999] items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto" role="dialog" aria-modal="true">
+  <div id="rs-edit-card" class="bg-surface rounded-3xl w-full max-w-lg shadow-2xl scale-95 opacity-0 transition-all duration-300 mx-auto my-auto overflow-hidden">
     <div style="background:#006c49;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;">
       <div style="display:flex;align-items:center;gap:10px;"><span class="material-symbols-outlined" style="color:#fff;font-size:20px;">edit</span><h3 style="color:#fff;font-size:17px;font-weight:700;margin:0;" id="rs-edit-heading">Edit Profile</h3></div>
       <button id="rs-edit-close" style="background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;" aria-label="Close"><span class="material-symbols-outlined" style="font-size:19px;">close</span></button>
@@ -486,13 +502,22 @@
 (function () {
   /* ─── helpers ─────────────────────── */
   function openModal(m, c) {
-    m.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => { c.style.transform = 'translateY(0)'; c.style.opacity = '1'; }));
+    m.classList.remove('hidden');
+    m.classList.add('flex');
+    requestAnimationFrame(() => requestAnimationFrame(() => { 
+      c.classList.remove('scale-95', 'opacity-0');
+      c.classList.add('scale-100', 'opacity-100'); 
+    }));
     document.body.style.overflow = 'hidden';
   }
   function closeModal(m, c) {
-    c.style.transform = 'translateY(30px)'; c.style.opacity = '0';
-    setTimeout(() => { m.style.display = 'none'; document.body.style.overflow = ''; }, 270);
+    c.classList.remove('scale-100', 'opacity-100');
+    c.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => { 
+      m.classList.remove('flex');
+      m.classList.add('hidden'); 
+      document.body.style.overflow = ''; 
+    }, 270);
   }
   function toast(msg) {
     var t = document.getElementById('rs-toast');
@@ -536,8 +561,21 @@
     });
   });
 
-  // Open password modal on "Change Password" button
+  // Open password modal on "Change Password" button (by ID or text)
+  var pwdBtn = document.getElementById('open-change-pwd-btn');
+  if (pwdBtn) {
+    pwdBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      ['rs-pwd-cur','rs-pwd-new','rs-pwd-cfm'].forEach(id => { var el=document.getElementById(id); if(el){el.value='';el.type='password';} });
+      document.getElementById('rs-str-bar').style.width='0';
+      document.getElementById('rs-str-lbl').textContent='';
+      setMsg('rs-pwd-msg','',false);
+      openModal(pm, pc);
+    });
+  }
+  // Also wire by text for any other buttons that say "change password"
   document.querySelectorAll('button').forEach(btn => {
+    if (btn.id === 'open-change-pwd-btn') return;
     var txt = btn.textContent.trim().toLowerCase();
     if (txt === 'change password') {
       btn.addEventListener('click', e => {

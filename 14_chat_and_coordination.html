@@ -130,7 +130,10 @@
 <!-- Shared Component: TopAppBar -->
 <header class="bg-surface-container-low dark:bg-surface-container-high shadow-sm w-full top-0 sticky flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16 w-full z-40">
 <div class="flex items-center gap-4">
-<button class="hover:bg-surface-variant/50 transition-colors p-2 rounded-full active:scale-95 duration-100">
+<button class="hover:bg-surface-variant/50 transition-colors p-2 rounded-full active:scale-95 duration-100" onclick="window.history.length > 1 ? window.history.back() : window.location.href='7_restaurant_dashboard.html'">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">arrow_back</span>
+</button>
+<button class="hover:bg-surface-variant/50 transition-colors p-2 rounded-full active:scale-95 duration-100" onclick="toggleSidebar()">
 <span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">menu</span>
 </button>
 <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary dark:text-primary-fixed">FoodRescue</h1>
@@ -201,7 +204,7 @@
 <!-- Chat Header -->
 <header class="h-16 flex items-center justify-between px-container-padding-mobile md:px-gutter border-b border-outline-variant glass-effect z-10">
 <div class="flex items-center gap-3">
-<button class="md:hidden p-2 -ml-2" onclick="toggleSidebar()">
+<button class="md:hidden p-2 -ml-2" onclick="toggleSidebar()" data-no-back="true">
 <span class="material-symbols-outlined text-primary">arrow_back</span>
 </button>
 <img alt="Sarah Jenkins" class="w-10 h-10 rounded-full bg-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAnBgk2JQ9cyLF3URsFRDQ27F5-pixKOZl4NxxNlHmnZY-iIYNwBC_ZOIYcaTPVNlIrAmFVVobijsgZ5FGohb3YPWvaeR8HCMKURnbEWdf6IMIPNQ9x66UqOQbeKoAEj5CsS0A7gZuLqd18gOCcDpyJC5iVirGpfNqkHasaoaq88o9u5SA5tqMpp7cGKvWaKCNcYes6SThalOPL0hcdXKX1w5KSSE4IOpu50mgRniHWFy6JzhQgLpu8zNllqX9Ai_ToRffodY590M"/>

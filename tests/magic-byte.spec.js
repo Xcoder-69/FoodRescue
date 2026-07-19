@@ -5,7 +5,7 @@ test.describe('Magic Bytes Validation API Tests', () => {
 
     test('1. Backend rejects spoofed executable files', async ({ request }) => {
         // We need a valid token to access upload routes
-        const registerRes = await request.post('http://localhost:3000/api/auth/register', {
+        const registerRes = await request.post('http://localhost:3009/api/auth/register', {
             data: { email: `mockngo_${Date.now()}@example.com`, password: 'password123', role: 'ngo' }
         });
         
@@ -21,7 +21,7 @@ test.describe('Magic Bytes Validation API Tests', () => {
         if (!token) return; // Might be missing if mock fails, skip
 
         // 1. Get Presigned URL
-        const urlRes = await request.post('http://localhost:3000/api/ngo/upload-url', {
+        const urlRes = await request.post('http://localhost:3009/api/ngo/upload-url', {
             headers: { 'Authorization': `Bearer ${token}` },
             data: { filename: 'malware.png', mimeType: 'image/png' }
         });
@@ -51,7 +51,7 @@ test.describe('Magic Bytes Validation API Tests', () => {
         // The PUT might succeed or fail depending on R2 configuration
         
         // 3. Confirm & Validate
-        const confirmRes = await request.post('http://localhost:3000/api/ngo/upload-confirm', {
+        const confirmRes = await request.post('http://localhost:3009/api/ngo/upload-confirm', {
             headers: { 'Authorization': `Bearer ${token}` },
             data: { key }
         });

@@ -55,8 +55,6 @@ test.describe('Volunteer Registration QA', () => {
     });
     await page.dispatchEvent('#mainContinueBtn', 'click');
 
-    // Expect button to change to 'Processing...' or 'Registration Sent!'
-    await page.waitForTimeout(500);
     const submitBtn = page.locator('button:has-text("Processing..."), button:has-text("Registration Sent!")');
     await expect(submitBtn).toBeVisible({ timeout: 5000 });
   });

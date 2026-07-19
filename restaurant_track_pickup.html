@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -8,6 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -219,14 +221,18 @@
 </header>
 <div class="max-w-5xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-stack-md space-y-stack-lg">
 <!-- Active Pickup Card -->
-<section class="relative bg-white/60 backdrop-blur-xl border border-white/40 shadow-xl rounded-[2rem] overflow-hidden p-stack-lg">
+<div id="no-pickup-message" class="hidden text-center p-8 bg-surface-container-low rounded-2xl text-on-surface-variant">
+    <span class="material-symbols-outlined text-4xl mb-2">local_shipping</span>
+    <p>You have no active pickups to track.</p>
+</div>
+<section id="active-pickup-card" class="relative bg-white/60 backdrop-blur-xl border border-white/40 shadow-xl rounded-[2rem] overflow-hidden p-stack-lg">
 <div class="flex flex-col md:flex-row gap-stack-lg justify-between mb-8">
 <div class="space-y-stack-sm">
-<span class="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full font-label-lg text-label-lg uppercase tracking-wider">Active Pickup</span>
-<h2 class="font-display-lg text-[40px] md:text-display-lg leading-tight text-primary">12 mins</h2>
-<p class="font-title-lg text-title-lg text-on-surface-variant flex items-center gap-2">
+<span id="track-status" class="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full font-label-lg text-label-lg uppercase tracking-wider">Active Pickup</span>
+<h2 class="font-display-lg text-[40px] md:text-display-lg leading-tight text-primary">Live</h2>
+<p id="track-volunteer-title" class="font-title-lg text-title-lg text-on-surface-variant flex items-center gap-2">
 <span class="material-symbols-outlined text-primary filled-icon">near_me</span>
-                            Mike Reynolds is En Route
+                            Volunteer is En Route
                         </p>
 </div>
 <div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-2xl self-start">
@@ -234,7 +240,7 @@
 <img class="w-full h-full object-cover" data-alt="Close-up portrait of a friendly volunteer driver named Mike. He is wearing a green FoodRescue branded polo shirt and has a warm, helpful expression. Soft outdoor daylight illuminates his face. The photo is high-quality with a slight blur in the background showing a clean white delivery van." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjG4pKjq42GDgkfKin9bVcRy1SArL1a41dR5PML7vWbAwnrJIHMcnXftglPj_RUv4Xxm5ls8rkSvHyYsDcVdRKO-E4ov2z1nBy0g7DcJ_O_EGXT1l3d4ZSJ1WQhj5qfbkJbrr-AzuugSbOAp3v-lKsnNC7Cx5b6rcA4Q0mcxPiKbmm4iZLFUJlA3XIZe3BITXSiAl3pElyj8sVIfbSHqU4jFvlfenyCbm9O22e6VIK3xm_XU029AVeSPLsGw1JCBj-7JgnmIJRG4E"/>
 </div>
 <div>
-<p class="font-label-lg text-label-lg font-bold">Mike Reynolds</p>
+<p id="track-volunteer-name" class="font-label-lg text-label-lg font-bold">Unassigned</p>
 <div class="flex items-center text-secondary">
 <span class="material-symbols-outlined text-sm filled-icon">star</span>
 <span class="font-label-md text-label-md ml-1">4.9 Volunteer Rating</span>
@@ -274,31 +280,17 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md mt-6 pt-6 border-t border-outline-variant/30">
 <div class="space-y-1">
 <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wide">Food Details</p>
-<p class="font-title-lg text-title-lg text-on-surface">Artisan Bread Mix — 15 Units</p>
+<p id="track-food-details" class="font-title-lg text-title-lg text-on-surface">...</p>
 </div>
 <div class="space-y-1">
 <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wide">Destination</p>
-<p class="font-title-lg text-title-lg text-on-surface">Hope NGO Kitchen, 2.3 km</p>
+<p id="track-destination" class="font-title-lg text-title-lg text-on-surface">...</p>
 </div>
 </div>
 </section>
 <!-- Map Placeholder -->
-<section class="relative h-80 rounded-[2rem] overflow-hidden shadow-lg border border-outline-variant/20">
-<div class="w-full h-full bg-cover bg-center" data-alt="A stylized, clean vector-style map of a metropolitan neighborhood with soft green park areas, grey streets, and minimal building outlines. The map should have an artistic, premium look matching the FoodRescue green and white palette. It shows a clear route line in primary emerald green connecting a restaurant icon to a community kitchen icon." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBhNSN2TbPU5onD16v7x_7VIXFjG7NoplHRI3I_q1eUHOuLT2EISI0DKJdnGo4RaLRhA_xm9R8d_TFJcSj4v5DziX87eaPaFWhzlTq7P0XhlPEWW9Tvl6NWcdTkBcw7YTbcoKfB79MZ_FP20W5EnPsWibEcgoZFccZw2UklGgcqO5CjjVtzH0EvK7iOa9ri-V8SVp-ZD0wS9TPb4yWnE8gWYa8zEVmF3iYibWk_5BcnfdSi-mOoStNOIsGjh_GDLgrFqO62YlNUr94')"></div>
-<!-- Interactive Overlay Components -->
-<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
-<!-- Live Pulse Dot -->
-<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-<div class="pulse-dot w-6 h-6 bg-primary rounded-full border-2 border-white shadow-xl z-20"></div>
-<div class="absolute -top-12 -left-14 bg-white px-4 py-2 rounded-xl shadow-lg border border-outline-variant/20 flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-sm">local_shipping</span>
-<span class="font-label-lg text-label-lg text-on-surface font-bold">Mike's Van</span>
-</div>
-</div>
-<!-- Destination Marker -->
-<div class="absolute top-1/4 right-1/4 bg-secondary-container text-white p-2 rounded-full shadow-lg border-2 border-white">
-<span class="material-symbols-outlined">location_on</span>
-</div>
+<section id="map-placeholder" class="relative h-80 rounded-[2rem] overflow-hidden shadow-lg border border-outline-variant/20 z-0">
+<div id="map-container" class="w-full h-full relative z-0"></div>
 </section>
 <!-- Contact Actions -->
 <div class="grid grid-cols-2 gap-stack-md">
@@ -404,15 +396,76 @@
 </nav>
 <script>
         // Micro-interactions and simple state handling
-        document.addEventListener('DOMContentLoaded', () => {
+        // Micro-interactions and simple state handling
+        document.addEventListener('DOMContentLoaded', async () => {
             console.log('FoodRescue Tracking Initialized');
             
+            // Initialize Map
+            const map = L.map('map-container', { zoomControl: false }).setView([20.5937, 78.9629], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        map.setView([lat, lng], 15);
+                        
+                        const customIcon = L.divIcon({
+                            className: 'custom-div-icon',
+                            html: '<div class="pulse-dot w-6 h-6 bg-primary rounded-full border-2 border-white shadow-xl"></div><div style="white-space:nowrap;transform:translate(-30px,-50px);" class="absolute bg-white px-3 py-1 rounded-xl shadow-lg border border-outline-variant/20 font-bold text-on-surface">Volunteer</div>',
+                            iconSize: [24, 24],
+                            iconAnchor: [12, 12]
+                        });
+                        L.marker([lat, lng], {icon: customIcon}).addTo(map);
+                    },
+                    (error) => {
+                        console.warn('Geolocation failed or denied:', error);
+                    },
+                    { timeout: 10000 }
+                );
+            }
+
+            // Fetch live data
+            if (window.ApiClient) {
+                try {
+                    const res = await ApiClient.get('/donations');
+                    // Find first donation that is ASSIGNED or CLAIMED (in progress)
+                    const activeDonation = (res.data || []).find(d => ['CLAIMED', 'ASSIGNED'].includes(d.status));
+                    
+                    if (!activeDonation) {
+                        document.getElementById('active-pickup-card').classList.add('hidden');
+                        document.getElementById('map-placeholder').classList.add('hidden');
+                        document.getElementById('no-pickup-message').classList.remove('hidden');
+                    } else {
+                        const foodTitle = activeDonation.foodDetails?.title || activeDonation.title || 'Food Donation';
+                        const qty = activeDonation.foodDetails?.quantity || activeDonation.weight || '0';
+                        document.getElementById('track-food-details').textContent = `${foodTitle} - ${qty} kg`;
+                        document.getElementById('track-status').textContent = activeDonation.status;
+                        
+                        if (activeDonation.ngoName) {
+                            document.getElementById('track-destination').textContent = activeDonation.ngoName;
+                        }
+                        if (activeDonation.volunteerName) {
+                            document.getElementById('track-volunteer-name').textContent = activeDonation.volunteerName;
+                            document.getElementById('track-volunteer-title').innerHTML = `<span class="material-symbols-outlined text-primary filled-icon">near_me</span> ${activeDonation.volunteerName} is En Route`;
+                        }
+                    }
+                } catch(e) {
+                    console.error('Failed to load tracking data', e);
+                }
+            }
+
             // Notification dot toggle simulation
             const notifyBtn = document.querySelector('header button .material-symbols-outlined');
-            notifyBtn.addEventListener('click', () => {
-                const dot = document.querySelector('header button span.absolute');
-                if(dot) dot.classList.toggle('hidden');
-            });
+            if (notifyBtn) {
+                notifyBtn.addEventListener('click', () => {
+                    const dot = document.querySelector('header button span.absolute');
+                    if(dot) dot.classList.toggle('hidden');
+                });
+            }
 
             // Smooth entrance for history rows
             const rows = document.querySelectorAll('section div.hover\\:bg-surface-container-low');

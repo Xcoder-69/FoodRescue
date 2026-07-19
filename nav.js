@@ -48,7 +48,7 @@
     'contact':                  '20_help_and_support.html',
     'contact us':               '20_help_and_support.html',
     'support':                  '20_help_and_support.html',
-    'settings':                 '12_profile.html',
+    'settings':                 'restaurant_settings.html',
 
     // Admin links
     'verification management':  '15_verification_management.html',

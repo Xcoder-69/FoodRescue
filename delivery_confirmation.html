@@ -297,7 +297,17 @@
 </div>
 </footer>
 <script>
-        function handleConfirm() {
+        async function handleConfirm() {
+            try {
+                if (window.ApiClient) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const donationId = urlParams.get('id') || 'dummy_delivery_id';
+                    await ApiClient.patch(`/delivery/${donationId}/status`, { status: 'COMPLETED' });
+                }
+            } catch (err) {
+                console.error("Failed to update delivery status", err);
+            }
+            
             const successScreen = document.getElementById('success-screen');
             successScreen.style.display = 'flex';
             

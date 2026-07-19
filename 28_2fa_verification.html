@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (token.length < 6) { alert("Enter full 6-digit code"); return; }
       verifyBtn.textContent = "Verifying..."; verifyBtn.disabled = true;
       try {
-        const res = await ApiClient.post("/auth/2fa/verify", { token });
+        const res = await ApiClient.post("/auth/2fa/verify-login", { token });
         ApiClient.setToken(res.data.accessToken);
         window.location.href = "30_command_center_gateway.html";
       } catch(err) {
@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (token.length < 6) { alert("Enter full 6-digit code"); return; }
       verifyBtn.textContent = "Verifying..."; verifyBtn.disabled = true;
       try {
-        const res = await ApiClient.post("/auth/2fa/verify", { token });
+        const res = await ApiClient.post("/auth/2fa/verify-login", { token });
         ApiClient.setToken(res.data.accessToken);
         window.location.href = "30_command_center_gateway.html";
       } catch(err) {

@@ -256,6 +256,30 @@ class AuthService {
       await sessionRef.delete();
       return { success: true };
   }
+
+  static async changePassword(uid, currentPassword, newPassword) {
+      const userRef = db.collection('users').doc(uid);
+      const doc = await userRef.get();
+
+      if (!doc.exists) {
+          throw new Error("User not found");
+      }
+
+      const userData = doc.data();
+
+      // Verify current password
+      const isMatch = await bcrypt.compare(currentPassword, userData.password);
+      if (!isMatch) {
+          throw new Error("Invalid current password");
+      }
+
+      // Hash and update new password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+      await userRef.update({ password: hashedPassword });
+      return { success: true };
+  }
 }
 
 module.exports = AuthService;

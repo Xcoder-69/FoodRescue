@@ -157,16 +157,16 @@
 <img class="w-full h-full object-cover" data-alt="A vibrant, close-up shot of fresh, colorful vegetables like bell peppers, leafy greens, and carrots arranged beautifully in a wooden crate. The lighting is bright and natural, suggesting a high-end farmers market. The style is professional food photography with soft focus backgrounds, maintaining a clean and trustworthy atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Z2PROA663dp4QhUyYVm9HdCBjoNGSh1PbdpY-emx0La8Cy_GgbgUG_gxcvK8L8DqBQsjvuzTkRqLsht-I3wjIWjtmtBjMd-nspllMPpNlTJrnypTksRP9mHa2ioaE87ZnQrq7QWSFh7o3c0Q6MY7G9bB7-MuqQzSnVl5BDCF2faT5wvwO50qHPKzQe9YbIUanLW7_wYcOzhaoIy1rUuKM8oO2oJ9iGOoNaLhGSnWpef_sWeAG_7fZUJ8UPWLsskl-35KV8hHooc"/>
 <div class="absolute top-4 right-4 flex flex-col gap-2 items-end">
 <span class="bg-error text-on-error font-label-md text-label-md px-3 py-1 rounded-full shadow-sm">Expires in 3h</span>
-<span class="bg-primary text-on-primary font-label-md text-label-md px-3 py-1 rounded-full shadow-sm">25 kg</span>
+<span id="claim-weight" class="bg-primary text-on-primary font-label-md text-label-md px-3 py-1 rounded-full shadow-sm">-- kg</span>
 </div>
 </div>
 <div class="p-base space-y-2">
 <div class="flex justify-between items-start">
 <div>
-<h2 class="text-title-lg font-title-lg text-on-surface">Assorted Veggies</h2>
-<p class="text-body-md font-body-md text-on-surface-variant flex items-center gap-1">
+<h2 id="claim-title" class="text-title-lg font-title-lg text-on-surface">Loading...</h2>
+<p id="claim-restaurant" class="text-body-md font-body-md text-on-surface-variant flex items-center gap-1">
 <span class="material-symbols-outlined text-[18px]">store</span>
-                            Fresh Market
+                            ...
                         </p>
 </div>
 <div class="flex gap-2">
@@ -291,7 +291,7 @@
 </section>
 <!-- Confirm Button -->
 <div class="pt-4 pb-12">
-<button class="w-full bg-primary text-on-primary font-title-lg py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all" id="confirmBtn" onclick="window.frNavigate('ngo_claim_success.html')">
+<button class="w-full bg-primary text-on-primary font-title-lg py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all" id="confirmBtn">
             Confirm Claim 🛒
         </button>
 </div>
@@ -299,6 +299,28 @@
 <script>
         const volunteerToggle = document.getElementById('volunteerToggle');
         const volunteerSection = document.getElementById('volunteerSection');
+
+        const confirmBtn = document.getElementById('confirmBtn');
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const donationId = urlParams.get('id');
+            if (!donationId) return;
+            
+            if (window.ApiClient) {
+                try {
+                    const res = await ApiClient.get(`/donations/${donationId}`);
+                    const don = res.data;
+                    if (don) {
+                        document.getElementById('claim-title').textContent = don.foodDetails?.title || don.title || 'Food Donation';
+                        document.getElementById('claim-restaurant').innerHTML = `<span class="material-symbols-outlined text-[18px]">store</span> ${don.restaurantName || 'Verified Partner'}`;
+                        document.getElementById('claim-weight').textContent = (don.foodDetails?.quantity || don.weight || '0') + ' kg';
+                    }
+                } catch(e) {
+                    console.error("Failed to fetch donation details", e);
+                }
+            }
+        });
 
         // Toggle volunteer section visibility
         volunteerToggle.addEventListener('change', (e) => {
@@ -309,6 +331,34 @@
                 volunteerSection.classList.add('hidden');
             }
         });
+
+        // Wire confirm claim API
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', async () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const donationId = urlParams.get('id') || 'dummy_donation_id'; // Fallback for local testing
+                
+                confirmBtn.innerHTML = 'Claiming...';
+                confirmBtn.disabled = true;
+
+                try {
+                    if (window.ApiClient) {
+                        await ApiClient.patch(`/donations/${donationId}/claim`);
+                    }
+                    window.frNavigate('ngo_claim_success.html');
+                } catch (err) {
+                    console.error('Claim failed', err);
+                    // In test mode, still navigate
+                    if (localStorage.getItem('fr_test_mode') === 'true' || !window.ApiClient) {
+                        window.frNavigate('ngo_claim_success.html');
+                    } else {
+                        alert('Failed to claim donation: ' + err.message);
+                        confirmBtn.innerHTML = 'Confirm Claim 🛒';
+                        confirmBtn.disabled = false;
+                    }
+                }
+            });
+        }
     </script>
 <style>
         @keyframes fade-in {

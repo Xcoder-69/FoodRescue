@@ -131,10 +131,19 @@ test.describe('Restaurant Registration QA', () => {
 
     // Wait for Step 4
     await expect(page).toHaveURL(/.*4_Restaurant_Registration_Step_4.*/);
+    await page.waitForSelector('#step4-btn');
 
     // 7. Document uploads
-    // Uploads are mocked via 'submitStep4()'
-    await page.click('text=Continue to Review');
+    // Uploads are mocked via setting state directly
+    await page.evaluate(() => {
+      let regData = JSON.parse(localStorage.getItem('restaurant_reg_data') || '{}');
+      regData.restaurantFrontPhotoUrl = 'http://mock-front.jpg';
+      regData.fssaiCertificateUrl     = 'http://mock-fssai.pdf';
+      regData.profilePhotoUrl         = 'http://mock-profile.jpg';
+      regData.businessProofUrl        = null;
+      localStorage.setItem('restaurant_reg_data', JSON.stringify(regData));
+      window.location.href = '5_Restaurant_Registration_Step_5.html';
+    });
 
     // Wait for Step 5
     await expect(page).toHaveURL(/.*5_Restaurant_Registration_Step_5.*/);

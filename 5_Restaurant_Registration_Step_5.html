@@ -352,7 +352,7 @@
 <p class="font-body-md text-body-md opacity-90">Our team typically reviews applications within 24-48 hours.</p>
 </div>
 </div>
-<button class="w-full md:w-auto px-xl py-md bg-white text-primary font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 text-headline-md disabled:opacity-50 disabled:cursor-not-allowed" id="submitBtn" disabled>
+<button data-no-nav="true" class="w-full md:w-auto px-xl py-md bg-white text-primary font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 text-headline-md disabled:opacity-50 disabled:cursor-not-allowed" id="submitBtn" disabled>
                 Submit for Verification
             </button>
 </div>
@@ -425,16 +425,7 @@
                     const token = localStorage.getItem('foodRescueToken');
                     if (!token) throw new Error('Session expired. Please go back to Step 1.');
 
-                    const res = await fetch('https://foodrescue-jhyr.onrender.com/api/restaurant/profile', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + token
-                        },
-                        body: JSON.stringify(regData)
-                    });
-                    const data = await res.json();
-                    if (!res.ok) throw new Error(data.message || 'Submission failed.');
+                    const data = await ApiClient.post('/restaurant/profile', regData);
                     
                     localStorage.removeItem('restaurant_reg_data');
                     document.body.style.opacity = '0';

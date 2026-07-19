@@ -7,7 +7,7 @@ test.describe('Authorization & Session Audits', () => {
     test('1. Refresh Token 2FA Bypass Prevention', async ({ request }) => {
         // Register a user
         const email = `test2fa_${Date.now()}@example.com`;
-        const regRes = await request.post('http://localhost:3000/api/auth/register', {
+        const regRes = await request.post('http://localhost:3009/api/auth/register', {
             data: { email, password: 'password123', role: 'volunteer' }
         });
 
@@ -25,7 +25,7 @@ test.describe('Authorization & Session Audits', () => {
 
         // Now, attempt to refresh the token using the refresh token acquired *before* 2FA was theoretically completed.
         // Wait, if we use the refresh token, the backend should return is2FAVerified: false
-        const refreshRes = await request.post('http://localhost:3000/api/auth/refresh', {
+        const refreshRes = await request.post('http://localhost:3009/api/auth/refresh', {
             data: { refreshToken }
         });
 
@@ -47,7 +47,7 @@ test.describe('Authorization & Session Audits', () => {
     test('2. Password Reset Invalidates Sessions', async ({ request }) => {
         // Register a user
         const email = `reset_${Date.now()}@example.com`;
-        const regRes = await request.post('http://localhost:3000/api/auth/register', {
+        const regRes = await request.post('http://localhost:3009/api/auth/register', {
             data: { email, password: 'password123', role: 'volunteer' }
         });
 
@@ -64,14 +64,14 @@ test.describe('Authorization & Session Audits', () => {
         });
 
         // Call reset password API
-        const resetRes = await request.post('http://localhost:3000/api/auth/reset-password', {
+        const resetRes = await request.post('http://localhost:3009/api/auth/reset-password', {
             data: { email, otp, newPassword: 'newpassword123' }
         });
         
         expect(resetRes.status()).toBe(200);
 
         // Attempt to use the old refresh token
-        const refreshRes = await request.post('http://localhost:3000/api/auth/refresh', {
+        const refreshRes = await request.post('http://localhost:3009/api/auth/refresh', {
             data: { refreshToken }
         });
 

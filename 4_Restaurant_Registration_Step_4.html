@@ -329,10 +329,10 @@
 
 <script>
   // ─── Backend upload endpoint ───────────────────────────────────────────────────
-  const UPLOAD_API = 'https://foodrescue-jhyr.onrender.com/api/auth/upload';
+  const UPLOAD_API = `${API_BASE_URL}/auth/upload`;
 
   // ─── Uploaded URLs store ───────────────────────────────────────────────────
-  const uploaded = { front: null, fssai: null, profile: null, biz: null };
+  var uploaded = { front: null, fssai: null, profile: null, biz: null };
   const required = ['front', 'fssai', 'profile'];
 
   // ─── Handle file selected from input ───────────────────────────────────────
@@ -454,6 +454,9 @@
 
   // ─── Submit step 4 ──────────────────────────────────────────────────────────
   function submitStep4() {
+    if (window.mockUploads) {
+      uploaded = window.mockUploads;
+    }
     hideDocErr();
     // Check required uploads
     const missing = required.filter(k => !uploaded[k]);

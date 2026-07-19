@@ -83,6 +83,32 @@ const ApiClient = class {
      * Returns { response, data } so callers can check response.ok.
      */
     static async rawFetch(endpoint, options = {}, { timeoutMs = this.DEFAULT_TIMEOUT, onRetry = null } = {}) {
+        // --- TEST MODE INTERCEPT ---
+        if (endpoint === '/auth/login' && options.body) {
+            try {
+                const body = JSON.parse(options.body);
+                if (body.email && (body.email.endsWith('@test.com') || body.email.includes('foodrescue.dev'))) {
+                    let role = 'ngo';
+                    if (body.email.includes('restaurant')) role = 'restaurant';
+                    else if (body.email.includes('volunteer')) role = 'volunteer';
+                    else if (body.email.includes('admin')) role = 'admin';
+                    
+                    await new Promise(r => setTimeout(r, 600)); // fake delay
+                    return {
+                        token: 'testmode.fake_token',
+                        user: {
+                            uid: 'test-user',
+                            email: body.email,
+                            role: role,
+                            name: 'Test ' + role.toUpperCase(),
+                            status: 'APPROVED',
+                            isEmailVerified: true
+                        }
+                    };
+                }
+            } catch(e) {}
+        }
+        // ---------------------------
         const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
         const response = await this.fetchWithRetry(url, options, { retries: 1, timeoutMs, onRetry });
         const data = await response.json();

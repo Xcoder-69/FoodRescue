@@ -431,10 +431,93 @@ function exportCSV(){
   a.download='FoodRescue_Donations_'+new Date().toISOString().slice(0,10)+'.csv';
   a.click();
 }
+}
 
-document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('results-count').textContent=document.querySelectorAll('.dcard').length;
+document.addEventListener("DOMContentLoaded", async () => {
+  if (window.ApiClient) {
+    try {
+      const userToken = localStorage.getItem("foodRescueToken");
+      if (!userToken) {
+        window.location.href = "4_login_and_verification.html";
+        return;
+      }
+      const res = await ApiClient.get("/donations");
+      const donations = res?.data || [];
+      console.log("Loaded Donations:", donations);
+      renderDonations(donations);
+    } catch (e) {
+      console.error("Failed to load donations:", e);
+    }
+  }
 });
+
+function renderDonations(donations) {
+  const container = document.getElementById('donations-container');
+  if (!container) return;
+  
+  if (donations.length === 0) {
+    container.innerHTML = `<div class="text-center p-8 text-on-surface-variant bg-surface-container rounded-2xl">No donations found.</div>`;
+    document.getElementById('results-count').textContent = '0';
+    return;
+  }
+  
+  // Status mapping to UI styles
+  const statusMap = {
+    'AVAILABLE': { label: 'Pending Claim', icon: 'dining', color: 'blue-600', bgClass: 'bg-blue-400', badgeClass: 'bg-blue-50 text-blue-600', titleClass: 'badge-pending' },
+    'CLAIMED': { label: 'Awaiting Pickup', icon: 'bakery_dining', color: 'yellow-600', bgClass: 'bg-yellow-400', badgeClass: 'bg-yellow-50 text-yellow-600', titleClass: 'badge-pickup' },
+    'COMPLETED': { label: 'Completed', icon: 'done_all', color: 'green-600', bgClass: 'bg-green-500', badgeClass: 'bg-green-50 text-green-600', titleClass: 'badge-completed' },
+    'CANCELLED': { label: 'Cancelled', icon: 'cancel', color: 'red-500', bgClass: 'bg-red-500', badgeClass: 'bg-red-50 text-red-600', titleClass: 'badge-cancelled' }
+  };
+  
+  container.innerHTML = donations.map(don => {
+    const statusInfo = statusMap[don.status] || statusMap['AVAILABLE'];
+    const dateObj = new Date(don.createdAt?.seconds ? don.createdAt.seconds * 1000 : don.createdAt || Date.now());
+    const dateStr = dateObj.toLocaleDateString();
+    const isoDate = dateObj.toISOString().slice(0,10);
+    const weight = don.foodDetails?.quantity || '0';
+    const meals = Math.round(weight * 5); // Rough estimate for display
+    const title = don.foodDetails?.title || don.title || 'Food Donation';
+    const searchString = `${title.toLowerCase()} ${don.status.toLowerCase()}`;
+    const claimer = don.ngoName || (don.status === 'AVAILABLE' ? 'Awaiting NGO assignment' : 'Unassigned');
+    
+    return `
+      <div class="dcard bg-white rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden" data-status="${don.status.toLowerCase()}" data-search="${searchString}" data-date="${isoDate}">
+        <div class="flex"><div class="w-1.5 ${statusInfo.bgClass} flex-shrink-0"></div>
+          <div class="flex-1 p-4 md:p-5">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              <div class="flex items-start gap-3">
+                <div class="w-12 h-12 rounded-xl ${statusInfo.badgeClass.split(' ')[0]} flex items-center justify-center flex-shrink-0">
+                  <span class="material-symbols-outlined text-${statusInfo.color}" style="font-variation-settings:'FILL' 1;">${statusInfo.icon}</span>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h3 class="font-bold text-base">${title}</h3>
+                    <span class="${statusInfo.titleClass} text-xs font-semibold px-2.5 py-0.5 rounded-full">${statusInfo.label}</span>
+                  </div>
+                  <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">${claimer}</span></p>
+                  <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>${weight} kg</span>
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">restaurant_menu</span>~${meals} meals</span>
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span>${dateStr}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 sm:flex-col sm:items-end">
+                <div class="text-right">
+                  <p class="text-xl font-bold text-${statusInfo.color}">${weight} kg</p>
+                  <p class="text-xs text-on-surface-variant">${don.status === 'COMPLETED' ? 'rescued' : 'listed'}</p>
+                </div>
+                <button onclick="openModal('${don.id || 'N/A'}','${title.replace(/'/g, "\\'")}','${weight}','${claimer.replace(/'/g, "\\'")}','${dateStr}','${statusInfo.label}')" data-no-nav="true" class="flex items-center gap-1 text-xs text-primary font-semibold px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/15"><span class="material-symbols-outlined text-[14px]">open_in_new</span>Details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  document.getElementById('results-count').textContent = donations.length;
+}
 </script>
 </body>
 </html>

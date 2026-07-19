@@ -296,7 +296,7 @@
 </div>
 <!-- Registration Actions (Mobile Floating) -->
 <div class="flex flex-col gap-3">
-<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md">
+<button data-no-nav="true" class="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md">
                         Submit Registration
                         <span class="material-symbols-outlined">send</span>
 </button>
@@ -353,16 +353,7 @@
                 const token = localStorage.getItem('foodRescueToken');
                 if (!token) throw new Error('Session expired. Please go back to Step 1.');
 
-                const res = await fetch('https://foodrescue-jhyr.onrender.com/api/ngo/profile', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: JSON.stringify(regData)
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || 'Submission failed.');
+                const data = await ApiClient.post('/ngo/profile', regData);
                 
                 localStorage.removeItem('ngo_reg_data');
                 document.body.style.opacity = '0';

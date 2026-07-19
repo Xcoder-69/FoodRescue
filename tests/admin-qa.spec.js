@@ -2,6 +2,19 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('Admin Approval QA', () => {
   test.beforeEach(async ({ page }) => {
+    // Intercept API calls
+    await page.route('**/api/admin/approvals/restaurant', async route => {
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({
+          status: 200,
+          json: { status: 'success', data: [] },
+          headers: { 'Access-Control-Allow-Origin': '*' }
+        });
+      }
+    });
+
     // Add fake token to prevent redirect
     await page.goto('/');
     await page.evaluate(() => {

@@ -141,6 +141,22 @@ class AuthController {
       return errorResponse(res, 500, 'Upload failed: ' + error.message);
     }
   }
+
+  static async changePassword(req, res) {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const uid = req.user.uid; // From requireAuth middleware
+
+      if (!currentPassword || !newPassword) {
+        return errorResponse(res, 400, 'Current and new password are required');
+      }
+
+      await AuthService.changePassword(uid, currentPassword, newPassword);
+      return successResponse(res, 200, 'Password changed successfully');
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
+  }
 }
 
 module.exports = AuthController;

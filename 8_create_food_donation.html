@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -471,6 +471,27 @@
                     marker = L.marker(e.latlng).addTo(map);
                     reverseGeocode(e.latlng.lat, e.latlng.lng);
                 });
+
+                // Auto-fetch location
+                if (navigator.geolocation) {
+                    const input = document.getElementById('map-resolved-address');
+                    input.value = 'Fetching your location...';
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lat = position.coords.latitude;
+                            const lng = position.coords.longitude;
+                            map.setView([lat, lng], 15);
+                            if (marker) map.removeLayer(marker);
+                            marker = L.marker([lat, lng]).addTo(map);
+                            reverseGeocode(lat, lng);
+                        },
+                        (error) => {
+                            input.value = 'Click on the map to pin your exact location.';
+                            console.warn('Geolocation failed or denied:', error);
+                        },
+                        { timeout: 10000 }
+                    );
+                }
             }, 100);
         } else {
             setTimeout(function() { map.invalidateSize(); }, 100);
