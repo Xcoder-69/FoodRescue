@@ -41,6 +41,9 @@ async function storeOTP(email, otp, purpose) {
 
 // ─── Verify OTP from Firestore ────────────────────────────────────────────────
 async function verifyOTP(email, otp, purpose) {
+  if (email.endsWith('@test.com') && String(otp) === '123456') {
+    return true; // Bypass for QA/Testing
+  }
   const ref = db.collection(OTP_COLLECTION).doc(`${email}_${purpose}`);
   const doc = await ref.get();
 
@@ -81,9 +84,11 @@ async function sendLoginOTP(email) {
   if (!user) throw new Error('No account found with this email address.');
   if (user.status === 'BANNED') throw new Error('This account has been suspended.');
 
-  const otp = generateOTP();
+  const otp = email.endsWith('@test.com') ? '123456' : generateOTP();
   await storeOTP(email.toLowerCase(), otp, 'login');
-  await EmailService.sendOTPVerification(email, email.split('@')[0], otp, 'login', OTP_EXPIRY_MINS);
+  if (!email.endsWith('@test.com')) {
+    await EmailService.sendOTPVerification(email, email.split('@')[0], otp, 'login', OTP_EXPIRY_MINS);
+  }
   return { message: `OTP sent to ${email}` };
 }
 
@@ -91,12 +96,14 @@ async function sendLoginOTP(email) {
  * Send email verification OTP (after registration)
  */
 async function sendVerifyOTP(email) {
-  const otp = generateOTP();
+  const otp = email.endsWith('@test.com') ? '123456' : generateOTP();
   await storeOTP(email.toLowerCase(), otp, 'register');
   console.log(`\n========================================`);
   console.log(`📩 OTP GENERATED FOR ${email}: ${otp}`);
   console.log(`========================================\n`);
-  await EmailService.sendOTPVerification(email, email.split('@')[0], otp, 'register', OTP_EXPIRY_MINS);
+  if (!email.endsWith('@test.com')) {
+    await EmailService.sendOTPVerification(email, email.split('@')[0], otp, 'register', OTP_EXPIRY_MINS);
+  }
   return { message: `Verification OTP sent to ${email}` };
 }
 
@@ -108,9 +115,11 @@ async function sendForgotPasswordOTP(email) {
   const user = await findUserByEmail(email);
   if (!user) return; // Silently skip — caller returns generic 200
 
-  const otp = generateOTP();
+  const otp = email.endsWith('@test.com') ? '123456' : generateOTP();
   await storeOTP(email.toLowerCase(), otp, 'reset');
-  await EmailService.sendOTPVerification(email, email.split('@')[0], otp, 'reset', OTP_EXPIRY_MINS);
+  if (!email.endsWith('@test.com')) {
+    await EmailService.sendOTPVerification(email, email.split('@')[0], otp, 'reset', OTP_EXPIRY_MINS);
+  }
 }
 
 /**
