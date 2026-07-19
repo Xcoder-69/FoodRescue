@@ -6,8 +6,8 @@
 
 # Test info
 
-- Name: security-audit.spec.js >> Security Audit API Tests >> 2. Rate Limiting on Register Endpoint
-- Location: tests\security-audit.spec.js:26:5
+- Name: security-audit.spec.js >> Security Audit API Tests >> 1. Rate Limiting on Login Endpoint
+- Location: tests\security-audit.spec.js:5:5
 
 # Error details
 
@@ -43,7 +43,8 @@ Received: false
   20 |             }
   21 |         }
   22 |         
-  23 |         expect(rateLimited).toBe(true);
+> 23 |         expect(rateLimited).toBe(true);
+     |                             ^ Error: expect(received).toBe(expected) // Object.is equality
   24 |     });
   25 | 
   26 |     test('2. Rate Limiting on Register Endpoint', async ({ request }) => {
@@ -61,8 +62,7 @@ Received: false
   38 |             }
   39 |         }
   40 |         
-> 41 |         expect(rateLimited).toBe(true);
-     |                             ^ Error: expect(received).toBe(expected) // Object.is equality
+  41 |         expect(rateLimited).toBe(true);
   42 |     });
   43 | });
   44 | 

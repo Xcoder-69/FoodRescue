@@ -25,7 +25,21 @@ test.describe('Restaurant Registration QA', () => {
         await route.fulfill({ status: 200, json: { message: 'OTP sent' }, headers: { 'Access-Control-Allow-Origin': '*' } });
       }
     });
+    await page.route('**/api/auth/otp/send', async route => {
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 200, json: { message: 'OTP sent' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
+    });
     await page.route('**/api/auth/verify/confirm', async route => {
+      if (route.request().method() === 'OPTIONS') {
+        await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+      } else {
+        await route.fulfill({ status: 200, json: { message: 'OTP verified' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+      }
+    });
+    await page.route('**/api/auth/otp/verify', async route => {
       if (route.request().method() === 'OPTIONS') {
         await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
       } else {

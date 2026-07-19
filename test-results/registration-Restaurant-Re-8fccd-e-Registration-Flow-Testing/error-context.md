@@ -12,18 +12,15 @@
 # Error details
 
 ```
-Error: expect(locator).toBeVisible() failed
+Error: expect(page).toHaveURL(expected) failed
 
-Locator:  locator('#otpSection')
-Expected: visible
-Received: hidden
-Timeout:  2000ms
+Expected pattern: /.*5_Restaurant_Registration_Step_5.*/
+Received string:  "http://localhost:3005/4_Restaurant_Registration_Step_4"
+Timeout: 5000ms
 
 Call log:
-  - Expect "toBeVisible" with timeout 2000ms
-  - waiting for locator('#otpSection')
-    14 × locator resolved to <div id="otpSection" class="hidden mt-md p-md bg-surface-container-low border border-outline-variant rounded-xl space-y-md">…</div>
-       - unexpected value "hidden"
+  - Expect "toHaveURL" with timeout 5000ms
+    13 × unexpected value "http://localhost:3005/4_Restaurant_Registration_Step_4"
 
 ```
 
@@ -31,187 +28,170 @@ Call log:
 - banner:
   - button "arrow_back"
   - heading "Food Rescue Hero" [level=1]
-  - button "Need help? contact_support"
+  - text: Registration Help Contact
 - main:
-  - paragraph: Step 1 of 5
-  - paragraph: Account Creation
-  - heading "Basic Information" [level=2]
-  - text: Restaurant Owner Full Name
-  - textbox "John Doe"
-  - text: Restaurant Email
-  - textbox "owner@restaurant.com": testowner_1783181634172@restaurant.com
-  - button "Sending..." [disabled]
-  - heading "Security" [level=2]
-  - text: Password
-  - textbox "••••••••"
-  - text: visibility
-  - paragraph: Enter a strong password
-  - text: Confirm Password
-  - textbox "••••••••"
-  - text: visibility
-  - button "Continue to Restaurant Details"
-  - heading "Why Join Us?" [level=3]
-  - list:
-    - listitem: compost Reduce food waste footprint.
-    - listitem: volunteer_activism Support local community food banks.
-    - listitem: receipt_long Get automated tax deduction logs.
-  - paragraph: Join 500+ restaurants making a difference today.
+  - paragraph: Step 4 of 5
+  - heading "Document Verification" [level=2]
+  - text: Documents Uploaded
+  - paragraph: 1 / 4
+  - text: photo_camera
+  - heading "Restaurant Front Photo *" [level=3]
+  - paragraph: Clear exterior shot with signage visible
+  - text: Pending
+  - button "upload_file Choose File"
+  - button "photo_camera Take Photo"
+  - text: verified_user
+  - heading "FSSAI Certificate *" [level=3]
+  - paragraph: Valid Food Safety License (PDF or JPG)
+  - text: Pending
+  - button "upload_file Choose File"
+  - button "photo_camera Take Photo"
+  - text: account_circle
+  - heading "Profile Photo *" [level=3]
+  - paragraph: Clear photo for your public profile (JPG/PNG)
+  - text: Pending
+  - button "upload_file Choose File"
+  - button "photo_camera Take Photo"
+  - text: business_center
+  - heading "Business Proof (Optional)" [level=3]
+  - paragraph: GST Registration or Trade License
+  - text: Optional
+  - button "upload_file Choose File"
+  - button "photo_camera Take Photo"
+  - text: "⚠️ Please upload: Restaurant Front Photo, FSSAI Certificate, Profile Photo"
+  - button "chevron_left Back"
+  - button "Continue to Review chevron_right"
 ```
 
 # Test source
 
 ```ts
-  1   | const { test, expect } = require('@playwright/test');
-  2   | 
-  3   | test.describe('Restaurant Registration QA', () => {
-  4   |   test('Complete Registration Flow Testing', async ({ page }) => {
-  5   |     test.setTimeout(60000);
-  6   |     // Navigate to Step 1
-  7   |     await page.route('**/api/auth/register', async route => {
-  8   |       if (route.request().method() === 'OPTIONS') {
-  9   |         await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
-  10  |       } else {
-  11  |         await route.fulfill({ status: 200, json: { message: 'Success', data: { tokens: { accessToken: 'fake' }, user: {} } }, headers: { 'Access-Control-Allow-Origin': '*' } });
-  12  |       }
-  13  |     });
-  14  |     await page.route('**/api/restaurant/profile', async route => {
-  15  |       if (route.request().method() === 'OPTIONS') {
-  16  |         await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
-  17  |       } else {
-  18  |         await route.fulfill({ status: 200, json: { message: 'Profile created' }, headers: { 'Access-Control-Allow-Origin': '*' } });
-  19  |       }
-  20  |     });
-  21  |     await page.route('**/api/auth/verify/send', async route => {
-  22  |       if (route.request().method() === 'OPTIONS') {
-  23  |         await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
-  24  |       } else {
-  25  |         await route.fulfill({ status: 200, json: { message: 'OTP sent' }, headers: { 'Access-Control-Allow-Origin': '*' } });
-  26  |       }
-  27  |     });
-  28  |     await page.route('**/api/auth/verify/confirm', async route => {
-  29  |       if (route.request().method() === 'OPTIONS') {
-  30  |         await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
-  31  |       } else {
-  32  |         await route.fulfill({ status: 200, json: { message: 'OTP verified' }, headers: { 'Access-Control-Allow-Origin': '*' } });
-  33  |       }
-  34  |     });
-  35  |     await page.goto('/1_Restaurant_Registration_Step_1.html');
-  36  | 
-  37  |     // 1. All required fields (Submit with empty fields)
-  38  |     let alertMessage = '';
-  39  |     page.on('dialog', dialog => {
-  40  |       alertMessage = dialog.message();
-  41  |       console.log("PAGE ALERT FIRED: " + alertMessage);
-  42  |       dialog.accept();
-  43  |     });
-  44  |     
-  45  |     await page.evaluate(() => {
-  46  |         // Enable button for test purposes to see if it allows submit without verify
-  47  |         document.getElementById('mainContinueBtn').disabled = false;
+  40  |       }
+  41  |     });
+  42  |     await page.route('**/api/auth/otp/verify', async route => {
+  43  |       if (route.request().method() === 'OPTIONS') {
+  44  |         await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
+  45  |       } else {
+  46  |         await route.fulfill({ status: 200, json: { message: 'OTP verified' }, headers: { 'Access-Control-Allow-Origin': '*' } });
+  47  |       }
   48  |     });
-  49  |     await page.click('#mainContinueBtn');
-  50  |     expect(alertMessage, '1. Required fields should trigger alert').toContain('Please fill in all required fields');
-  51  | 
-  52  |     // 2. Email validation (Enter invalid email and verify)
-  53  |     await page.fill('#emailInput', 'invalid-email');
-  54  |     // The current code doesn't have strict client-side email regex validation before sending OTP, 
-  55  |     // but the API will reject it later.
-  56  | 
-  57  |     // 3. Email OTP verification
-  58  |     const randomEmail = `testowner_${Date.now()}@restaurant.com`;
-  59  |     await page.fill('#emailInput', randomEmail);
-  60  |     
-  61  |     // We expect the Verify Email button to exist, but currently it's hidden by default in the HTML!
-  62  |     // Let's unhide it if it is hidden, as per current UI state
-  63  |     await page.evaluate(() => document.getElementById('verifyBtn').classList.remove('hidden'));
-  64  |     
-  65  |     await page.click('#verifyBtn');
-> 66  |     await expect(page.locator('#otpSection')).toBeVisible({ timeout: 2000 });
-      |                                               ^ Error: expect(locator).toBeVisible() failed
-  67  | 
-  68  |     // 4. OTP resend after 10 seconds
-  69  |     const countdownLocator = page.locator('#countdown');
-  70  |     await expect(countdownLocator).toContainText('Resend in');
-  71  |     // Wait for 11 seconds to verify it changes to 'Resend OTP'
-  72  |     await page.waitForTimeout(11000);
-  73  |     await expect(countdownLocator).toHaveText('Resend OTP', { timeout: 2000 });
-  74  | 
-  75  |     // Enter OTP and verify
-  76  |     const otpInputs = page.locator('.otp-input');
-  77  |     for(let i=0; i<6; i++) {
-  78  |         await otpInputs.nth(i).fill('1');
-  79  |     }
-  80  |     await page.click('text=Verify OTP');
-  81  |     await expect(page.locator('#successBadge')).toBeVisible();
-  82  | 
-  83  |     // 5. Password validation
-  84  |     await page.fill('#pwd', 'weak');
-  85  |     await expect(page.locator('#strengthLabel')).toHaveText('Weak');
-  86  |     await page.fill('#pwd', 'StrongPass123!');
-  87  |     await expect(page.locator('#strengthLabel')).toHaveText('Strong');
-  88  |     await page.fill('#pwd-confirm', 'StrongPass123!');
-  89  | 
-  90  |     // Submit Step 1
-  91  |     await page.fill('#ownerNameInput', 'Test Owner');
-  92  |     await page.click('#mainContinueBtn');
-  93  |     
-  94  |     // Wait for navigation to Step 2
-  95  |     await expect(page).toHaveURL(/.*2_Restaurant_Registration_Step_2.*/);
+  49  |     await page.goto('/1_Restaurant_Registration_Step_1.html');
+  50  | 
+  51  |     // 1. All required fields (Submit with empty fields)
+  52  |     let alertMessage = '';
+  53  |     page.on('dialog', dialog => {
+  54  |       alertMessage = dialog.message();
+  55  |       console.log("PAGE ALERT FIRED: " + alertMessage);
+  56  |       dialog.accept();
+  57  |     });
+  58  |     
+  59  |     await page.evaluate(() => {
+  60  |         // Enable button for test purposes to see if it allows submit without verify
+  61  |         document.getElementById('mainContinueBtn').disabled = false;
+  62  |     });
+  63  |     await page.click('#mainContinueBtn');
+  64  |     expect(alertMessage, '1. Required fields should trigger alert').toContain('Please fill in all required fields');
+  65  | 
+  66  |     // 2. Email validation (Enter invalid email and verify)
+  67  |     await page.fill('#emailInput', 'invalid-email');
+  68  |     // The current code doesn't have strict client-side email regex validation before sending OTP, 
+  69  |     // but the API will reject it later.
+  70  | 
+  71  |     // 3. Email OTP verification
+  72  |     const randomEmail = `testowner_${Date.now()}@restaurant.com`;
+  73  |     await page.fill('#emailInput', randomEmail);
+  74  |     
+  75  |     // We expect the Verify Email button to exist, but currently it's hidden by default in the HTML!
+  76  |     // Let's unhide it if it is hidden, as per current UI state
+  77  |     await page.evaluate(() => document.getElementById('verifyBtn').classList.remove('hidden'));
+  78  |     
+  79  |     await page.click('#verifyBtn');
+  80  |     await expect(page.locator('#otpSection')).toBeVisible({ timeout: 2000 });
+  81  | 
+  82  |     // 4. OTP resend after 10 seconds
+  83  |     const countdownLocator = page.locator('#countdown');
+  84  |     await expect(countdownLocator).toContainText('Resend in');
+  85  |     // Wait for 11 seconds to verify it changes to 'Resend OTP'
+  86  |     await page.waitForTimeout(11000);
+  87  |     await expect(countdownLocator).toHaveText('Resend OTP', { timeout: 2000 });
+  88  | 
+  89  |     // Enter OTP and verify
+  90  |     const otpInputs = page.locator('.otp-input');
+  91  |     for(let i=0; i<6; i++) {
+  92  |         await otpInputs.nth(i).fill('1');
+  93  |     }
+  94  |     await page.click('text=Verify OTP');
+  95  |     await expect(page.locator('#successBadge')).toBeVisible();
   96  | 
-  97  |     // Fill Step 2
-  98  |     await page.fill('#restName', 'Test Restaurant');
-  99  |     await page.selectOption('#restType', 'Cafe / Bistro');
-  100 |     await page.fill('#restFSSAI', '12345678901234');
-  101 |     await page.fill('#restGST', '22AAAAA0000A1Z5');
-  102 |     await page.click('text=Continue to Location');
+  97  |     // 5. Password validation
+  98  |     await page.fill('#pwd', 'weak');
+  99  |     await expect(page.locator('#strengthLabel')).toHaveText('Weak');
+  100 |     await page.fill('#pwd', 'StrongPass123!');
+  101 |     await expect(page.locator('#strengthLabel')).toHaveText('Strong');
+  102 |     await page.fill('#pwd-confirm', 'StrongPass123!');
   103 | 
-  104 |     // Wait for Step 3
-  105 |     await expect(page).toHaveURL(/.*3_Restaurant_Registration_Step_3.*/);
-  106 | 
-  107 |     // 6. Location picker
-  108 |     // Since we don't have real geolocation permissions in headless mode easily, we mock it or manually fill
-  109 |     await page.fill('#addr1', '123 Fake St');
-  110 |     await page.fill('#city', 'Test City');
-  111 |     await page.fill('#state', 'Test State');
-  112 |     await page.fill('#pincode', '123456');
-  113 |     await page.fill('#emergencyPhone', '+1234567890');
-  114 |     
-  115 |     // 9. Submit button behavior
-  116 |     await page.click('text=Continue to Documentation');
+  104 |     // Submit Step 1
+  105 |     await page.fill('#ownerNameInput', 'Test Owner');
+  106 |     await page.click('#mainContinueBtn');
+  107 |     
+  108 |     // Wait for navigation to Step 2
+  109 |     await expect(page).toHaveURL(/.*2_Restaurant_Registration_Step_2.*/);
+  110 | 
+  111 |     // Fill Step 2
+  112 |     await page.fill('#restName', 'Test Restaurant');
+  113 |     await page.selectOption('#restType', 'Cafe / Bistro');
+  114 |     await page.fill('#restFSSAI', '12345678901234');
+  115 |     await page.fill('#restGST', '22AAAAA0000A1Z5');
+  116 |     await page.click('text=Continue to Location');
   117 | 
-  118 |     // Wait for Step 4
-  119 |     await expect(page).toHaveURL(/.*4_Restaurant_Registration_Step_4.*/);
+  118 |     // Wait for Step 3
+  119 |     await expect(page).toHaveURL(/.*3_Restaurant_Registration_Step_3.*/);
   120 | 
-  121 |     // 7. Document uploads
-  122 |     // Uploads are mocked via 'submitStep4()'
-  123 |     await page.click('text=Continue to Review');
-  124 | 
-  125 |     // Wait for Step 5
-  126 |     await expect(page).toHaveURL(/.*5_Restaurant_Registration_Step_5.*/);
-  127 | 
-  128 |     // 8. Terms & Conditions checkbox
-  129 |     // Verify submit is disabled
-  130 |     const finalSubmitBtn = page.locator('button#submitBtn');
-  131 |     await expect(finalSubmitBtn).toBeDisabled();
-  132 | 
-  133 |     // Check all checkboxes
-  134 |     const checkboxes = page.locator('input[type="checkbox"]');
-  135 |     const count = await checkboxes.count();
-  136 |     for (let i = 0; i < count; i++) {
-  137 |       await checkboxes.nth(i).evaluate(node => {
-  138 |         node.checked = true;
-  139 |         node.dispatchEvent(new Event('change', { bubbles: true }));
-  140 |       });
-  141 |     }
-  142 |     await expect(finalSubmitBtn).toBeEnabled();
-  143 | 
-  144 |     // 10. Error messages / Success submission
-  145 |     // Since backend might fail on invalid email format or duplication, we capture response
-  146 |     await finalSubmitBtn.click();
-  147 |     
-  148 |     // Check if it redirects to Step 6
-  149 |     await expect(page).toHaveURL(/.*6_Registration_Success_Status.*/, { timeout: 10000 });
-  150 |   });
-  151 | });
-  152 | 
+  121 |     // 6. Location picker
+  122 |     // Since we don't have real geolocation permissions in headless mode easily, we mock it or manually fill
+  123 |     await page.fill('#addr1', '123 Fake St');
+  124 |     await page.fill('#city', 'Test City');
+  125 |     await page.fill('#state', 'Test State');
+  126 |     await page.fill('#pincode', '123456');
+  127 |     await page.fill('#emergencyPhone', '+1234567890');
+  128 |     
+  129 |     // 9. Submit button behavior
+  130 |     await page.click('text=Continue to Documentation');
+  131 | 
+  132 |     // Wait for Step 4
+  133 |     await expect(page).toHaveURL(/.*4_Restaurant_Registration_Step_4.*/);
+  134 | 
+  135 |     // 7. Document uploads
+  136 |     // Uploads are mocked via 'submitStep4()'
+  137 |     await page.click('text=Continue to Review');
+  138 | 
+  139 |     // Wait for Step 5
+> 140 |     await expect(page).toHaveURL(/.*5_Restaurant_Registration_Step_5.*/);
+      |                        ^ Error: expect(page).toHaveURL(expected) failed
+  141 | 
+  142 |     // 8. Terms & Conditions checkbox
+  143 |     // Verify submit is disabled
+  144 |     const finalSubmitBtn = page.locator('button#submitBtn');
+  145 |     await expect(finalSubmitBtn).toBeDisabled();
+  146 | 
+  147 |     // Check all checkboxes
+  148 |     const checkboxes = page.locator('input[type="checkbox"]');
+  149 |     const count = await checkboxes.count();
+  150 |     for (let i = 0; i < count; i++) {
+  151 |       await checkboxes.nth(i).evaluate(node => {
+  152 |         node.checked = true;
+  153 |         node.dispatchEvent(new Event('change', { bubbles: true }));
+  154 |       });
+  155 |     }
+  156 |     await expect(finalSubmitBtn).toBeEnabled();
+  157 | 
+  158 |     // 10. Error messages / Success submission
+  159 |     // Since backend might fail on invalid email format or duplication, we capture response
+  160 |     await finalSubmitBtn.click();
+  161 |     
+  162 |     // Check if it redirects to Step 6
+  163 |     await expect(page).toHaveURL(/.*6_Registration_Success_Status.*/, { timeout: 10000 });
+  164 |   });
+  165 | });
+  166 | 
 ```

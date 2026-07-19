@@ -324,8 +324,9 @@
   <!-- ═══════════════════════════════════════════════════════════ -->
   <!--  Scripts                                                    -->
   <!-- ═══════════════════════════════════════════════════════════ -->
+  <script src="js/api.js"></script>
   <script>
-    const API        = 'https://foodrescue-jhyr.onrender.com/api';
+    const API        = API_BASE_URL;
     const DASHBOARDS = { restaurant:'7_restaurant_dashboard.html', ngo:'10_ngo_dashboard.html', volunteer:'9_volunteer_dashboard.html', admin:'31_mission_control_dashboard.html' };
 
     // ── Toast ──────────────────────────────────────────────────────────────────
@@ -409,7 +410,7 @@
       const email = localStorage.getItem('fr_otp_email');
       if (!email) return toast('Email not found', 'err');
       try {
-        await fetch(`${API}/auth/otp/send`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        await ApiClient.rawFetch('/auth/otp/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
         toast('New OTP sent!');
         startTimer();
       } catch { toast('Failed to resend. Try again.', 'err'); }
@@ -430,10 +431,7 @@
 
       try {
         // Step 1: validate credentials
-        const res  = await fetch(`${API}/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, deviceId: navigator.userAgent.substring(0, 60) }) });
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.message || 'Incorrect email or password.');
+        const data = await ApiClient.rawFetch('/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, deviceId: navigator.userAgent.substring(0, 60) }) });
 
         // Credentials valid — save token temporarily and redirect directly
         // (For 2-step: first verify password, then send OTP)
@@ -476,9 +474,7 @@
       btn.disabled  = true;
 
       try {
-        const res  = await fetch(`${API}/auth/otp/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, otp, deviceId: navigator.userAgent.substring(0, 60) }) });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'OTP verification failed.');
+        const data = await ApiClient.rawFetch('/auth/otp/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, otp, deviceId: navigator.userAgent.substring(0, 60) }) });
         saveSession(data);
       } catch (e) {
         toast(e.message, 'err');
@@ -563,7 +559,7 @@
       btn.textContent = 'Sending...';
       btn.disabled = true;
       try {
-        const res = await fetch(`${API}/auth/forgot-password`, {
+        await ApiClient.rawFetch('/auth/forgot-password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
@@ -593,17 +589,11 @@
       btn.disabled = true;
 
       try {
-        const res = await fetch(`${API}/auth/forgot-password`, {
+        const res = await ApiClient.rawFetch('/auth/forgot-password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
         });
-        // API always returns 200 (security: prevents email enumeration)
-        // Even if email not registered, show step 2 with generic message
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.message || 'Failed to send reset code.');
-        }
         localStorage.setItem('fr_reset_email', email);
         const masked = email.replace(/(.)(.*)(@.*)/, (_, a, b, c) => a + b.replace(/./g, '•') + c);
         document.getElementById('forgot-sent-to').textContent = `Code sent to ${masked}`;
@@ -639,13 +629,11 @@
       btn.disabled = true;
 
       try {
-        const res  = await fetch(`${API}/auth/reset-password`, {
+        const data = await ApiClient.rawFetch('/auth/reset-password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, otp, newPassword: newPwd })
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Reset failed. Please check your OTP and try again.');
 
         clearInterval(fpTimerInterval);
         // Show success step

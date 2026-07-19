@@ -252,7 +252,7 @@
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
-        const PROD_API = 'https://foodrescue-jhyr.onrender.com/api';
+
 
         async function sendOTP() {
             const email = document.getElementById('emailInput').value;
@@ -263,14 +263,13 @@
             btn.innerHTML = 'Sending...';
 
             try {
-                // Use direct fetch with production URL to avoid localhost ApiClient issues
-                const res = await fetch(`${PROD_API}/auth/otp/send`, {
+                await ApiClient.rawFetch('/auth/verify/send', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })
+                }, {
+                    onRetry: () => { btn.innerHTML = 'Server starting, retrying...'; }
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || 'Failed to send OTP.');
                 document.getElementById('otpSection').classList.remove('hidden');
                 btn.classList.add('hidden');
                 startCountdown();
@@ -306,14 +305,11 @@
             if (otp.length !== 6) return showRegError('Please enter the full 6-digit OTP.');
 
             try {
-                // Use direct fetch with production URL
-                const res = await fetch(`${PROD_API}/auth/otp/verify`, {
+                await ApiClient.rawFetch('/auth/verify/confirm', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, otp })
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || 'Invalid OTP. Please try again.');
                 
                 document.getElementById('otpSection').classList.add('hidden');
                 document.getElementById('successBadge').classList.remove('hidden');

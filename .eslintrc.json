@@ -1,11 +1,17 @@
 {
   "env": {
     "node": true,
+    "browser": true,
     "es2022": true,
     "commonjs": true
   },
   "parserOptions": {
     "ecmaVersion": 2022
+  },
+  "globals": {
+    "ApiClient": "readonly",
+    "API_BASE_URL": "readonly",
+    "tailwind": "readonly"
   },
   "rules": {
     "no-unused-vars": ["warn", { "argsIgnorePattern": "^_|next" }],

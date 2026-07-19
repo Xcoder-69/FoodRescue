@@ -326,7 +326,7 @@
 <!-- (Suppressed as per Relevance Check: This is a Task-Focused Registration page) -->
 <script src="js/api.js"></script>
 <script>
-  const PROD_API_V = 'https://foodrescue-jhyr.onrender.com/api';
+
 
   // Micro-interaction for form inputs
   document.querySelectorAll('input, select').forEach(el => {
@@ -382,13 +382,13 @@
     btn.innerHTML = 'Sending OTP...';
 
     try {
-      const res = await fetch(`${PROD_API_V}/auth/verify/send`, {
+      await ApiClient.rawFetch('/auth/verify/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
+      }, {
+        onRetry: () => { btn.innerHTML = 'Server starting, retrying...'; }
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to send OTP.');
 
       document.getElementById('otpSection').classList.remove('hidden');
       btn.classList.add('hidden');
@@ -414,13 +414,11 @@
     if (btn) { btn.disabled = true; btn.innerHTML = 'Verifying...'; }
 
     try {
-      const res = await fetch(`${PROD_API_V}/auth/verify/confirm`, {
+      await ApiClient.rawFetch('/auth/verify/confirm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp })
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Invalid OTP.');
 
       document.getElementById('otpSection').classList.add('hidden');
       document.getElementById('successBadge').classList.remove('hidden');
@@ -471,7 +469,7 @@
       submitBtn.disabled = true;
 
       try {
-        const res = await fetch(`${PROD_API_V}/auth/register`, {
+        const res = await ApiClient.rawFetch('/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -481,8 +479,7 @@
             deviceId: navigator.userAgent
           })
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Registration failed.');
+        const data = res;
 
         const tokens = data.data?.tokens || {};
         const user   = data.data?.user || {};
