@@ -94,6 +94,7 @@ const ApiClient = class {
                     else if (body.email.includes('admin')) role = 'admin';
                     
                     await new Promise(r => setTimeout(r, 600)); // fake delay
+                    localStorage.setItem('fr_test_mode', 'true');
                     return {
                         token: 'testmode.fake_token',
                         user: {
