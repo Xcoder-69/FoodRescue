@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -266,9 +266,11 @@
 </div>
 </label>
 </div>
-<button class="w-full mt-stack-lg bg-primary text-white font-label-lg text-label-lg py-4 rounded-xl shadow-lg hover:bg-primary/90 active:scale-95 transition-all">
-                Acknowledge &amp; Proceed
-            </button>
+<button id="ack-btn" data-no-nav="true" onclick="handleAcknowledge()" class="w-full mt-stack-lg bg-primary text-white font-label-lg text-label-lg py-4 rounded-xl shadow-lg hover:bg-primary/90 active:scale-95 transition-all flex items-center justify-center gap-2">
+  <span class="material-symbols-outlined text-[20px]">verified</span>
+  Acknowledge &amp; Proceed
+</button>
+<p id="ack-msg" style="display:none;margin-top:10px;text-align:center;font-size:13px;font-weight:600;color:#ba1a1a;">⚠️ Please check all items before proceeding.</p>
 </section>
 </main>
 <!-- Bottom Nav Bar -->
@@ -318,4 +320,34 @@
             }
         });
     </script>
+<script data-no-nav="true">
+  function handleAcknowledge() {
+    var boxes = document.querySelectorAll('input[type="checkbox"]');
+    var allChecked = true;
+    boxes.forEach(function(b) { if (!b.checked) allChecked = false; });
+    var msg = document.getElementById('ack-msg');
+    if (!allChecked) {
+      msg.style.display = 'block';
+      // Shake the button
+      var btn = document.getElementById('ack-btn');
+      btn.style.transform = 'translateX(-4px)';
+      setTimeout(function() { btn.style.transform = 'translateX(4px)'; }, 80);
+      setTimeout(function() { btn.style.transform = 'translateX(-4px)'; }, 160);
+      setTimeout(function() { btn.style.transform = 'translateX(0)'; }, 240);
+      return;
+    }
+    msg.style.display = 'none';
+    // All checked — navigate to restaurant dashboard
+    window.location.href = '7_restaurant_dashboard.html';
+  }
+
+  // Update button opacity based on checkbox state
+  function updateBtn() {
+    var boxes = document.querySelectorAll('input[type="checkbox"]');
+    var all = true;
+    boxes.forEach(function(b) { if (!b.checked) all = false; });
+    var btn = document.getElementById('ack-btn');
+    btn.style.opacity = all ? '1' : '0.7';
+  }
+</script>
 <script src="nav.js"></script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/ui.js"></script></body></html>
