@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://foodrescue-jhyr.onrender.com/api';
+const API_BASE_URL = 'https://foodrescue-backend-l5x4.onrender.com/api';
 
 /**
  * Global API Utility for FoodRescue
