@@ -208,8 +208,8 @@
 <h2 class="hidden lg:block font-title-lg text-title-lg text-on-surface">Overview</h2>
 </div>
 <div class="flex items-center gap-stack-md">
-<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150" data-icon="notifications">notifications</button>
-<button class="hidden md:flex material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150" data-icon="search">search</button>
+<button data-no-nav="true" onclick="window.location.href='11_notifications.html'" class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150">notifications</button>
+<button data-no-nav="true" id="dash-search-btn" onclick="openDashSearch()" class="hidden md:flex material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150">search</button>
 </div>
 </div>
 </header>
@@ -545,7 +545,113 @@ document.addEventListener('DOMContentLoaded', () => {
     DashboardLoader.requireAuth() && DashboardLoader.loadRestaurant();
   }
 });
-</script><script src="js/api.js"></script><script src="js/dashboard.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
+</script>
+
+<!-- ── SEARCH OVERLAY ─────────────────────────────────────── -->
+<div id="dash-search-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(22,29,25,.6);backdrop-filter:blur(8px);" onclick="closeDashSearch()">
+  <div style="max-width:560px;margin:80px auto 0;padding:0 16px;" onclick="event.stopPropagation()">
+    <div style="background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(0,108,73,.25);">
+      <!-- Search input -->
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #e8f0e9;">
+        <span class="material-symbols-outlined" style="color:#006c49;font-size:22px;">search</span>
+        <input id="dash-search-input" data-no-nav="true" type="text" placeholder="Search pages, features..." oninput="filterDashResults()" onkeydown="dashSearchKey(event)"
+          style="flex:1;border:none;outline:none;font-size:16px;font-family:inherit;color:#161d19;background:transparent;">
+        <button data-no-nav="true" onclick="closeDashSearch()" style="background:none;border:none;cursor:pointer;color:#6c7a71;display:flex;">
+          <span class="material-symbols-outlined" style="font-size:20px;">close</span>
+        </button>
+      </div>
+      <!-- Results -->
+      <div id="dash-search-results" style="max-height:400px;overflow-y:auto;padding:8px;"></div>
+      <!-- Quick links shown when empty -->
+      <div id="dash-search-quick" style="padding:8px 12px 12px;">
+        <p style="font-size:11px;font-weight:600;color:#6c7a71;text-transform:uppercase;letter-spacing:.08em;margin:8px 4px 6px;">Quick Links</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <button data-no-nav="true" onclick="navTo('8_create_food_donation.html')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #006c49;background:transparent;color:#006c49;font-size:13px;font-weight:600;cursor:pointer;">➕ Donate Food</button>
+          <button data-no-nav="true" onclick="navTo('restaurant_donation_history.html')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #006c49;background:transparent;color:#006c49;font-size:13px;font-weight:600;cursor:pointer;">📋 History</button>
+          <button data-no-nav="true" onclick="navTo('13_impact_analytics.html')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #006c49;background:transparent;color:#006c49;font-size:13px;font-weight:600;cursor:pointer;">📊 Analytics</button>
+          <button data-no-nav="true" onclick="navTo('restaurant_track_pickup.html')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #006c49;background:transparent;color:#006c49;font-size:13px;font-weight:600;cursor:pointer;">🚚 Track Pickup</button>
+          <button data-no-nav="true" onclick="navTo('11_notifications.html')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #006c49;background:transparent;color:#006c49;font-size:13px;font-weight:600;cursor:pointer;">🔔 Notifications</button>
+          <button data-no-nav="true" onclick="navTo('12_profile.html')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #006c49;background:transparent;color:#006c49;font-size:13px;font-weight:600;cursor:pointer;">👤 Profile</button>
+          <button data-no-nav="true" onclick="navTo('restaurant_settings.html')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #006c49;background:transparent;color:#006c49;font-size:13px;font-weight:600;cursor:pointer;">⚙️ Settings</button>
+          <button data-no-nav="true" onclick="navTo('14_chat_and_coordination.html')" style="padding:6px 14px;border-radius:20px;border:1.5px solid #006c49;background:transparent;color:#006c49;font-size:13px;font-weight:600;cursor:pointer;">💬 Chat</button>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;color:rgba(255,255,255,.5);font-size:12px;margin-top:14px;">Press <kbd style="background:rgba(255,255,255,.15);padding:2px 8px;border-radius:4px;">ESC</kbd> to close</p>
+  </div>
+</div>
+
+<script data-no-nav="true">
+var SEARCH_PAGES = [
+  { name:'Dashboard', desc:'View overview & stats', icon:'grid_view', url:'7_restaurant_dashboard.html', tags:'home overview dashboard' },
+  { name:'Donate Food', desc:'Create a new food donation', icon:'add_circle', url:'8_create_food_donation.html', tags:'donate post listing food' },
+  { name:'Donation History', desc:'View all past donations', icon:'receipt_long', url:'restaurant_donation_history.html', tags:'history donations records past' },
+  { name:'Track Pickups', desc:'Monitor live pickup status', icon:'local_shipping', url:'restaurant_track_pickup.html', tags:'track pickup delivery volunteer' },
+  { name:'Impact Analytics', desc:'See your impact metrics', icon:'leaderboard', url:'13_impact_analytics.html', tags:'analytics impact stats charts' },
+  { name:'Chat & Coordination', desc:'Message NGOs & volunteers', icon:'chat', url:'14_chat_and_coordination.html', tags:'chat message coordination' },
+  { name:'Notifications', desc:'View alerts & updates', icon:'notifications', url:'11_notifications.html', tags:'notifications alerts updates' },
+  { name:'Profile', desc:'Manage your account', icon:'person', url:'12_profile.html', tags:'profile account edit password' },
+  { name:'Settings', desc:'App & account settings', icon:'settings', url:'restaurant_settings.html', tags:'settings preferences account' },
+  { name:'Help & Support', desc:'Get help and FAQs', icon:'help', url:'20_help_and_support.html', tags:'help support faq contact' },
+];
+
+function openDashSearch() {
+  document.getElementById('dash-search-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  setTimeout(function() { document.getElementById('dash-search-input').focus(); }, 100);
+  renderDashResults(SEARCH_PAGES);
+}
+
+function closeDashSearch() {
+  document.getElementById('dash-search-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  document.getElementById('dash-search-input').value = '';
+  document.getElementById('dash-search-results').innerHTML = '';
+  document.getElementById('dash-search-quick').style.display = 'block';
+}
+
+function filterDashResults() {
+  var q = document.getElementById('dash-search-input').value.toLowerCase().trim();
+  var quick = document.getElementById('dash-search-quick');
+  if (!q) { document.getElementById('dash-search-results').innerHTML = ''; quick.style.display = 'block'; return; }
+  quick.style.display = 'none';
+  var filtered = SEARCH_PAGES.filter(function(p) {
+    return p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.tags.includes(q);
+  });
+  renderDashResults(filtered);
+}
+
+function renderDashResults(pages) {
+  var el = document.getElementById('dash-search-results');
+  if (!pages.length) {
+    el.innerHTML = '<div style="text-align:center;padding:24px;color:#6c7a71;"><span class="material-symbols-outlined" style="font-size:36px;">search_off</span><p style="margin-top:8px;font-size:14px;">No results found</p></div>';
+    return;
+  }
+  el.innerHTML = pages.map(function(p, i) {
+    return '<button data-no-nav="true" onclick="navTo(\''+p.url+'\')" style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:none;background:'+(i===0?'rgba(0,108,73,.07)':'transparent')+';cursor:pointer;text-align:left;transition:background .15s;" onmouseover="this.style.background=\'rgba(0,108,73,.07)\'" onmouseout="this.style.background=\''+(i===0?'rgba(0,108,73,.07)':'transparent')+'\'">'
+      +'<div style="width:40px;height:40px;border-radius:12px;background:rgba(0,108,73,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span class="material-symbols-outlined" style="color:#006c49;font-size:20px;">'+p.icon+'</span></div>'
+      +'<div style="flex:1;"><p style="margin:0;font-size:14px;font-weight:600;color:#161d19;">'+p.name+'</p><p style="margin:0;font-size:12px;color:#6c7a71;">'+p.desc+'</p></div>'
+      +'<span class="material-symbols-outlined" style="color:#bbcabf;font-size:18px;">chevron_right</span>'
+      +'</button>';
+  }).join('');
+}
+
+function navTo(url) { closeDashSearch(); window.location.href = url; }
+
+function dashSearchKey(e) {
+  if (e.key === 'Escape') closeDashSearch();
+  if (e.key === 'Enter') {
+    var q = e.target.value.toLowerCase().trim();
+    var match = SEARCH_PAGES.find(function(p) { return p.name.toLowerCase().includes(q) || p.tags.includes(q); });
+    if (match) navTo(match.url);
+  }
+}
+
+// Keyboard shortcut: Ctrl+K / Cmd+K to open search
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openDashSearch(); }
+  if (e.key === 'Escape' && document.getElementById('dash-search-overlay').style.display !== 'none') closeDashSearch();
+});
+</script>
+<script src="js/api.js"></script><script src="js/dashboard.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
 <script src="js/ui.js"></script></body></html>
-
-
