@@ -3,10 +3,11 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Create Food Donation | FoodRescue</title>
+<title>Post Donation - FoodRescue</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Leaflet Map -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script id="tailwind-config">
@@ -293,62 +294,62 @@
 <div class="space-y-1">
 <div class="flex justify-between items-center">
 <label class="font-label-lg text-label-lg text-on-surface-variant">Pickup Address</label>
-<button class="text-primary font-label-md text-label-md flex items-center gap-1" type="button" onclick="document.getElementById('address-edit-rest').classList.remove('hidden'); document.getElementById('address-display-rest').classList.add('hidden')">
+<button data-no-nav="true" class="text-primary font-label-md text-label-md flex items-center gap-1" type="button" id="btn-edit-address">
 <span class="material-symbols-outlined text-sm">edit</span> Edit Address
-                        </button>
+</button>
 </div>
+<!-- Display View -->
 <div id="address-display-rest" class="bg-surface-container-low p-4 rounded-xl border border-outline-variant">
     <div class="flex items-start gap-3">
         <span class="material-symbols-outlined text-primary mt-1">location_on</span>
         <div>
             <p class="font-body-lg text-body-lg font-semibold">Green Table Bistro</p>
-            <p class="text-on-surface-variant text-sm">123 Culinary Lane, Downtown District, Metropolis, NY 10001</p>
+            <p class="text-on-surface-variant text-sm" id="addr-display-text">123 Culinary Lane, Downtown District, Metropolis, NY 10001</p>
         </div>
     </div>
 </div>
 
-<!-- Address Edit Options (Hidden by default) -->
-<div id="address-edit-rest" class="hidden bg-surface-container-low p-4 rounded-xl border border-outline-variant space-y-4 mt-2">
+<!-- Address Edit Panel (hidden by default via inline style) -->
+<div id="address-edit-rest" style="display:none;" class="bg-surface-container-low p-4 rounded-xl border border-outline-variant space-y-4 mt-2">
     <div class="flex justify-between items-center mb-2">
-        <h4 class="font-title-lg text-title-lg text-primary">Update Address</h4>
-        <button type="button" onclick="document.getElementById('address-edit-rest').classList.add('hidden'); document.getElementById('address-display-rest').classList.remove('hidden')" class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined">close</span></button>
+        <h4 class="font-title-lg text-on-surface font-semibold text-base">How would you like to set the address?</h4>
+        <button data-no-nav="true" type="button" id="btn-close-address" class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined">close</span></button>
     </div>
-    
-    <div id="address-mode-selection">
-        <div class="grid grid-cols-2 gap-3">
-            <button type="button" onclick="showManualAddressForm()" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
-                <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">edit_document</span>
-                <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Enter Manually</span>
-            </button>
-            <button type="button" onclick="showMapAddressForm()" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
-                <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">map</span>
-                <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Pick on Map</span>
-            </button>
-        </div>
+
+    <!-- Mode Selection Buttons -->
+    <div id="address-mode-selection" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <button data-no-nav="true" type="button" id="btn-manual-mode" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
+            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">edit_document</span>
+            <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Enter Manually</span>
+        </button>
+        <button data-no-nav="true" type="button" id="btn-map-mode" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
+            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">map</span>
+            <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Pick on Map</span>
+        </button>
     </div>
 
     <!-- Manual Address Form -->
-    <div id="manual-address-form" class="hidden space-y-3">
-        <input type="text" id="manual-street" placeholder="Street Address" class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
-        <input type="text" id="manual-city" placeholder="City" class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
+    <div id="manual-address-form" style="display:none;" class="space-y-3">
+        <input data-no-nav="true" type="text" id="manual-street" placeholder="Street Address" class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
+        <input data-no-nav="true" type="text" id="manual-city" placeholder="City" class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
         <div class="flex gap-3">
-            <input type="text" id="manual-state" placeholder="State" class="w-1/2 bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
-            <input type="text" id="manual-zip" placeholder="Zip Code" class="w-1/2 bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
+            <input data-no-nav="true" type="text" id="manual-state" placeholder="State" class="w-1/2 bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
+            <input data-no-nav="true" type="text" id="manual-zip" placeholder="Zip Code" class="w-1/2 bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
         </div>
         <div class="flex gap-2 justify-end mt-2">
-            <button type="button" onclick="showAddressModes()" class="px-4 py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 rounded-lg">Back</button>
-            <button type="button" onclick="saveManualAddress()" class="px-4 py-2 bg-primary text-white font-medium rounded-lg hover:bg-on-primary-fixed-variant">Save Address</button>
+            <button data-no-nav="true" type="button" id="btn-back-manual" class="px-4 py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 rounded-lg">← Back</button>
+            <button data-no-nav="true" type="button" id="btn-save-manual" class="px-4 py-2 bg-primary text-white font-medium rounded-lg hover:opacity-90">Save Address</button>
         </div>
     </div>
 
     <!-- Map Address Form -->
-    <div id="map-address-form" class="hidden space-y-3">
-        <p class="text-sm text-on-surface-variant">Click on the map to set your location.</p>
-        <div id="map-container" class="w-full h-48 rounded-lg border border-outline-variant z-10 relative"></div>
-        <input type="text" id="map-resolved-address" readonly placeholder="Address will appear here..." class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 text-sm rounded-t-lg text-on-surface-variant focus:outline-none">
+    <div id="map-address-form" style="display:none;" class="space-y-3">
+        <p class="text-sm text-on-surface-variant">Click on the map to pin your exact location.</p>
+        <div id="map-container" style="width:100%;height:220px;border-radius:12px;border:1px solid #bbcabf;position:relative;z-index:10;"></div>
+        <input data-no-nav="true" type="text" id="map-resolved-address" readonly placeholder="Address will appear after pinning..." class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 text-sm rounded-t-lg text-on-surface-variant focus:outline-none">
         <div class="flex gap-2 justify-end mt-2">
-            <button type="button" onclick="showAddressModes()" class="px-4 py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 rounded-lg">Back</button>
-            <button type="button" id="btn-save-map" onclick="saveMapAddress()" class="px-4 py-2 bg-primary text-white font-medium rounded-lg hover:bg-on-primary-fixed-variant disabled:opacity-50" disabled>Save Address</button>
+            <button data-no-nav="true" type="button" id="btn-back-map" class="px-4 py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 rounded-lg">← Back</button>
+            <button data-no-nav="true" type="button" id="btn-save-map" class="px-4 py-2 bg-primary text-white font-medium rounded-lg hover:opacity-90 disabled:opacity-40" disabled>Save Address</button>
         </div>
     </div>
 </div>
@@ -373,28 +374,79 @@
     let map = null;
     let marker = null;
 
+    // ── Address UI helpers using inline style (reliable, no CSS specificity issues) ──
+    function show(id) { document.getElementById(id).style.display = ''; }
+    function hide(id) { document.getElementById(id).style.display = 'none'; }
+    function showBlock(id) { document.getElementById(id).style.display = 'block'; }
+    function showGrid(id, cols) { 
+        var el = document.getElementById(id);
+        el.style.display = 'grid';
+        if (cols) el.style.gridTemplateColumns = cols;
+    }
+
+    // Open the edit panel
+    document.getElementById('btn-edit-address').addEventListener('click', function() {
+        hide('address-display-rest');
+        showBlock('address-edit-rest');
+        showAddressModes();
+    });
+
+    // Close the edit panel
+    document.getElementById('btn-close-address').addEventListener('click', function() {
+        showBlock('address-display-rest');
+        hide('address-edit-rest');
+        showAddressModes();
+    });
+
+    // Show the mode selection (two buttons)
     function showAddressModes() {
-        document.getElementById('address-mode-selection').classList.remove('hidden');
-        document.getElementById('manual-address-form').classList.add('hidden');
-        document.getElementById('map-address-form').classList.add('hidden');
+        showGrid('address-mode-selection', '1fr 1fr');
+        hide('manual-address-form');
+        hide('map-address-form');
     }
 
-    function showManualAddressForm() {
-        document.getElementById('address-mode-selection').classList.add('hidden');
-        document.getElementById('manual-address-form').classList.remove('hidden');
-    }
+    // Show manual form
+    document.getElementById('btn-manual-mode').addEventListener('click', function() {
+        hide('address-mode-selection');
+        showBlock('manual-address-form');
+    });
 
-    function showMapAddressForm() {
-        document.getElementById('address-mode-selection').classList.add('hidden');
-        document.getElementById('map-address-form').classList.remove('hidden');
-        
+    // Show map form
+    document.getElementById('btn-map-mode').addEventListener('click', function() {
+        hide('address-mode-selection');
+        showBlock('map-address-form');
+        initMap();
+    });
+
+    // Back from manual
+    document.getElementById('btn-back-manual').addEventListener('click', showAddressModes);
+    // Back from map
+    document.getElementById('btn-back-map').addEventListener('click', showAddressModes);
+
+    // Save manual address
+    document.getElementById('btn-save-manual').addEventListener('click', function() {
+        const street = document.getElementById('manual-street').value.trim();
+        const city   = document.getElementById('manual-city').value.trim();
+        const state  = document.getElementById('manual-state').value.trim();
+        const zip    = document.getElementById('manual-zip').value.trim();
+        if (!street || !city) { alert('Please enter at least Street and City.'); return; }
+        updateDisplayAddress('Manual Entry', [street, city, state, zip].filter(Boolean).join(', '));
+    });
+
+    // Save map address
+    document.getElementById('btn-save-map').addEventListener('click', function() {
+        const address = document.getElementById('map-resolved-address').value;
+        if (!address || address.includes('Fetching') || address.includes('not found') || address.includes('Error')) return;
+        updateDisplayAddress('Map Selection', address);
+    });
+
+    function initMap() {
         if (!map) {
-            setTimeout(() => {
-                map = L.map('map-container').setView([40.7128, -74.0060], 13); // Default NYC
+            setTimeout(function() {
+                map = L.map('map-container').setView([20.5937, 78.9629], 5); // Default India
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; OpenStreetMap'
+                    attribution: '© OpenStreetMap'
                 }).addTo(map);
-
                 map.on('click', function(e) {
                     if (marker) map.removeLayer(marker);
                     marker = L.marker(e.latlng).addTo(map);
@@ -402,16 +454,15 @@
                 });
             }, 100);
         } else {
-            setTimeout(() => map.invalidateSize(), 100);
+            setTimeout(function() { map.invalidateSize(); }, 100);
         }
     }
 
     async function reverseGeocode(lat, lng) {
         const input = document.getElementById('map-resolved-address');
         const btn = document.getElementById('btn-save-map');
-        input.value = "Fetching address...";
+        input.value = 'Fetching address...';
         btn.disabled = true;
-        
         try {
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
             const data = await res.json();
@@ -419,69 +470,40 @@
                 input.value = data.display_name;
                 btn.disabled = false;
             } else {
-                input.value = "Address not found.";
+                input.value = 'Address not found. Try another spot.';
             }
         } catch (err) {
-            input.value = "Error fetching address.";
-            console.error(err);
+            input.value = 'Error fetching address.';
         }
     }
 
-    function saveManualAddress() {
-        const street = document.getElementById('manual-street').value;
-        const city = document.getElementById('manual-city').value;
-        const state = document.getElementById('manual-state').value;
-        const zip = document.getElementById('manual-zip').value;
-        
-        if (!street || !city) return alert('Please enter at least Street and City.');
-        
-        updateDisplayAddress('Manual Entry', `${street}, ${city}, ${state} ${zip}`);
-    }
-
-    function saveMapAddress() {
-        const address = document.getElementById('map-resolved-address').value;
-        if (!address || address === "Fetching address..." || address.includes("not found") || address.includes("Error")) return;
-        
-        updateDisplayAddress('Map Selection', address);
-    }
-
     function updateDisplayAddress(title, addressLine) {
-        const display = document.getElementById('address-display-rest');
-        display.innerHTML = `
-            <div class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary mt-1">location_on</span>
-                <div>
-                    <p class="font-body-lg text-body-lg font-semibold">${title}</p>
-                    <p class="text-on-surface-variant text-sm">${addressLine}</p>
-                </div>
-            </div>
-        `;
-        document.getElementById('address-edit-rest').classList.add('hidden');
-        display.classList.remove('hidden');
+        document.getElementById('addr-display-text').textContent = addressLine;
+        var p = document.querySelector('#address-display-rest .font-semibold');
+        if (p) p.textContent = title;
+        showBlock('address-display-rest');
+        hide('address-edit-rest');
         showAddressModes();
     }
 
     function previewImage(event) {
         const files = event.target.files;
         const grid = document.getElementById('photo-grid');
-        
         if (files && files.length > 0) {
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imgContainer = document.createElement('div');
                     imgContainer.className = 'relative aspect-square rounded-xl overflow-hidden border border-outline-variant bg-surface-container group shadow-sm';
-                    
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.className = 'w-full h-full object-cover';
-                    
                     const delBtn = document.createElement('button');
                     delBtn.innerHTML = '<span class="material-symbols-outlined text-sm">close</span>';
                     delBtn.className = 'absolute top-1 right-1 bg-black/60 hover:bg-error text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center justify-center';
                     delBtn.type = 'button';
+                    delBtn.setAttribute('data-no-nav','true');
                     delBtn.onclick = function() { imgContainer.remove(); };
-                    
                     imgContainer.appendChild(img);
                     imgContainer.appendChild(delBtn);
                     grid.appendChild(imgContainer);
@@ -489,7 +511,6 @@
                 reader.readAsDataURL(file);
             });
         }
-        // Reset input so the same file can be selected again if needed
         event.target.value = '';
     }
 </script>

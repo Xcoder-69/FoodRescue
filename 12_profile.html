@@ -121,7 +121,14 @@
 </script>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
+    }
+    /* When a modal is open, prevent body scroll */
+    .modal-open { overflow: hidden !important; }
+    /* Ensure modals position correctly regardless of body min-height */
+    [id$="-modal"] {
+      position: fixed !important;
+      inset: 0 !important;
     }
   </style>
   </head>
@@ -467,7 +474,7 @@ Portland, OR 97201</textarea>
       <p id="fr-edit-msg" style="margin-top:12px;font-size:13px;text-align:center;min-height:18px;"></p>
     </div>
     <!-- Footer -->
-    <div style="padding:16px 24px;border-top:1px solid #e8f0e9;display:flex;gap:10px;justify-content:flex-end;">
+    <div style="padding:16px 24px;border-top:1px solid #e8f0e9;display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;">
       <button id="fr-edit-cancel" style="padding:11px 22px;border:1.5px solid #bbcabf;border-radius:12px;background:transparent;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;transition:background .18s;">Cancel</button>
       <button id="fr-edit-save" style="padding:11px 26px;border:none;border-radius:12px;background:#006c49;color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;display:flex;align-items:center;gap:7px;transition:opacity .18s;">
         <span class="material-symbols-outlined" style="font-size:17px;">check</span> Save Changes
@@ -537,7 +544,7 @@ Portland, OR 97201</textarea>
       <p id="fr-pwd-msg" style="margin-top:12px;font-size:13px;text-align:center;min-height:18px;"></p>
     </div>
     <!-- Footer -->
-    <div style="padding:16px 24px;border-top:1px solid #e8f0e9;display:flex;gap:10px;justify-content:flex-end;">
+    <div style="padding:16px 24px;border-top:1px solid #e8f0e9;display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;">
       <button id="fr-pwd-cancel" style="padding:11px 22px;border:1.5px solid #bbcabf;border-radius:12px;background:transparent;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;transition:background .18s;">Cancel</button>
       <button id="fr-pwd-save" style="padding:11px 26px;border:none;border-radius:12px;background:#006c49;color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;display:flex;align-items:center;gap:7px;transition:opacity .18s;">
         <span class="material-symbols-outlined" style="font-size:17px;">lock_reset</span> Update Password
@@ -565,7 +572,7 @@ Portland, OR 97201</textarea>
         cardEl.style.opacity   = '1';
       });
     });
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
   }
 
   function closeModal(modalEl, cardEl) {
@@ -573,7 +580,7 @@ Portland, OR 97201</textarea>
     cardEl.style.opacity   = '0';
     setTimeout(function() {
       modalEl.style.display = 'none';
-      document.body.style.overflow = '';
+      document.body.classList.remove('modal-open');
     }, 280);
   }
 
