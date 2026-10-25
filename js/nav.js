@@ -7,17 +7,18 @@
 const PAGES = {
   splash:              '1_splash_screen.html',
   roleSelection:       '2_role_selection.html',
-  restaurantReg:       '3_restaurant_registration.html',
+  restaurantReg:       '1_Restaurant_Registration_Step_1.html',
   login:               '4_login_and_verification.html',
-  ngoReg:              '5_ngo_registration.html',
+  ngoReg:              '1_NGO_Registration_Step_1.html',
   volunteerReg:        '6_volunteer_registration.html',
   restaurantDashboard: '7_restaurant_dashboard.html',
+  restaurantHistory:   'restaurant_donation_history.html',
   createDonation:      '8_create_food_donation.html',
   volunteerDashboard:  '9_volunteer_dashboard.html',
   ngoDashboard:        '10_ngo_dashboard.html',
   notifications:       '11_notifications.html',
   'verification management':  '15_verification_management.html',
-  profile:             '12_profile.html',
+  profile:             'restaurant_settings.html',
   analytics:           '13_impact_analytics.html',
   chat:                '14_chat_and_coordination.html',
   help:                '20_help_and_support.html',
@@ -50,8 +51,10 @@ function goToDashboard() {
   navigateTo(map[role] || PAGES.login);
 }
 
-// ─── Check if logged in ───────────────────────────────────────────────────────
+// ─── Check if logged in (test mode bypasses real auth) ───────────────────────
 function isLoggedIn() {
+  // Test mode: fake token counts as logged in
+  if (localStorage.getItem('fr_test_mode') === 'true') return true;
   return !!localStorage.getItem('foodRescueToken');
 }
 
@@ -69,9 +72,7 @@ function wireSplash() {
   // Removed auto-redirect to allow users to click manually.
   const autoTimer = null;
 
-
   // Login button
-  const loginBtn = document.querySelector('button:first-of-type, [data-action="login"]');
   const allBtns  = document.querySelectorAll('button');
 
   allBtns.forEach(btn => {
@@ -81,6 +82,10 @@ function wireSplash() {
     }
     if (text.includes('register') || text.includes('get started') || text.includes('join') || text.includes('begin')) {
       btn.addEventListener('click', () => { clearTimeout(autoTimer); navigateTo(PAGES.roleSelection); });
+    }
+    // Test Mode quick-access button on splash
+    if (text.includes('test mode') || text.includes('demo')) {
+      btn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); if (window.FRTestMode) window.FRTestMode.activate('restaurant'); });
     }
   });
 
@@ -97,10 +102,10 @@ function wireSplash() {
 // ─── Wire role selection ──────────────────────────────────────────────────────
 function wireRoleSelection() {
   const roleMap = {
-    'restaurant': PAGES.restaurantReg,
-    'hotel':      PAGES.restaurantReg,
-    'ngo':        PAGES.ngoReg,
-    'volunteer':  PAGES.volunteerReg,
+    'restaurant': '1_Restaurant_Registration_Step_1.html',
+    'hotel':      '1_Restaurant_Registration_Step_1.html',
+    'ngo':        '1_NGO_Registration_Step_1.html',
+    'volunteer':  '6_volunteer_registration.html',
   };
 
   // Find the continue/next button and role cards
@@ -175,7 +180,7 @@ function wireDashboardNav(role) {
       donate:       PAGES.createDonation,
       notifications: PAGES.notifications,
       profile:      PAGES.profile,
-      history:      PAGES.analytics,
+      history:      PAGES.restaurantHistory,
     },
     ngo: {
       home:         PAGES.ngoDashboard,
@@ -194,6 +199,9 @@ function wireDashboardNav(role) {
   const links = navLinks[role] || navLinks.restaurant;
 
   document.querySelectorAll('nav a, nav button').forEach(el => {
+    if (el.hasAttribute('data-no-nav') || el.closest('[data-no-nav]')) return;
+    const existingHref = el.getAttribute('href');
+    if (existingHref && existingHref !== '#' && !existingHref.startsWith('javascript:')) return;
     const icon = el.querySelector('.material-symbols-outlined')?.textContent?.trim() || '';
     const text = el.textContent.trim().toLowerCase();
 
@@ -277,6 +285,6 @@ function wireProfile() {
   else if (page.includes('9_volunteer'))      { requireAuth() && wireDashboardNav('volunteer'); }
   else if (page.includes('8_create'))         { requireAuth() && wireCreateDonation(); }
   else if (page.includes('11_notif'))         { requireAuth() && wireNotifications(); }
-  else if (page.includes('12_profile'))       { requireAuth() && wireProfile(); }
+  else if (page.includes('restaurant_settings')) { requireAuth() && wireProfile(); }
   else if (page.includes('31_mission'))       { requireAuth() && wireDashboardNav('admin'); }
 })();

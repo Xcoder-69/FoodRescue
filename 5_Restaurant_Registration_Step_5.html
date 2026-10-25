@@ -352,7 +352,7 @@
 <p class="font-body-md text-body-md opacity-90">Our team typically reviews applications within 24-48 hours.</p>
 </div>
 </div>
-<button class="w-full md:w-auto px-xl py-md bg-white text-primary font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 text-headline-md" id="submitBtn">
+<button data-no-nav="true" class="w-full md:w-auto px-xl py-md bg-white text-primary font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 text-headline-md disabled:opacity-50 disabled:cursor-not-allowed" id="submitBtn" disabled>
                 Submit for Verification
             </button>
 </div>
@@ -400,6 +400,15 @@
             if (addressParts.length > 0) {
                 document.getElementById('reviewAddress').innerText = addressParts.join(', ');
             }
+
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const submitBtn = document.getElementById('submitBtn');
+            checkboxes.forEach(c => {
+                c.addEventListener('change', () => {
+                    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                    submitBtn.disabled = !allChecked;
+                });
+            });
         });
 
         document.getElementById('submitBtn').addEventListener('click', async function() {
@@ -413,12 +422,17 @@
                     let regData = JSON.parse(localStorage.getItem('restaurant_reg_data') || '{}');
                     regData.status = 'PENDING';
 
-                    await ApiClient.post('/restaurant/profile', regData);
+                    const token = localStorage.getItem('foodRescueToken');
+                    if (!token) throw new Error('Session expired. Please go back to Step 1.');
+
+                    const data = await ApiClient.post('/restaurant/profile', regData);
                     
                     localStorage.removeItem('restaurant_reg_data');
-                    window.location.href = '6_Registration_Success_Status.html';
+                    document.body.style.opacity = '0';
+                    document.body.style.transition = 'opacity 0.3s';
+                    setTimeout(() => window.location.href = '6_Registration_Success_Status.html', 300);
                 } catch(error) {
-                    alert("Submission failed: " + error.message);
+                    alert('Submission failed: ' + error.message);
                     this.innerText = 'Submit for Verification';
                 }
             } else {
@@ -433,4 +447,4 @@
         });
     </script>
     <script src="js/api.js"></script>
-<script src="nav.js"></script></body></html>
+<script src="nav.js"></script><script src="js/ui.js"></script><script src="js/testmode.js"></script></body></html>

@@ -36,6 +36,7 @@
     // Bottom nav & sidebar – shared across dashboards
     'home':                     '_home_redirect',
     'dashboard':                '_home_redirect',
+    'donation history':         'restaurant_donation_history.html',
     'history':                  '_home_redirect',
     'donate':                   '8_create_food_donation.html',
     'alerts':                   '11_notifications.html',
@@ -47,11 +48,11 @@
     'contact':                  '20_help_and_support.html',
     'contact us':               '20_help_and_support.html',
     'support':                  '20_help_and_support.html',
-    'settings':                 '12_profile.html',
+    'settings':                 'restaurant_settings.html',
 
     // Admin links
     'verification management':  '15_verification_management.html',
-    'donation monitoring':      '16_donation_monitoring.html',
+    'donation monitoring':      'restaurant_track_pickup.html',
     'user management':          '17_user_management_admin.html',
     'csr':                      '18_csr_and_reporting.html',
     'fraud':                    '19_fraud_and_reports_admin.html',
@@ -61,6 +62,10 @@
     'terms':                    '24_terms_and_conditions.html',
     'privacy':                  '25_privacy_and_guidelines.html',
     'declarations':             '26_declarations_and_consent.html',
+
+    // NGO links
+    'available donations':      'ngo_browse_donations.html',
+    'pickup tracking':          'restaurant_track_pickup.html',
 
     // Logout → splash
     'logout':                   '1_splash_screen.html',
@@ -75,7 +80,7 @@
     restaurant: '7_restaurant_dashboard.html',
     ngo:        '10_ngo_dashboard.html',
     volunteer:  '9_volunteer_dashboard.html',
-    admin:      '17_user_management_admin.html',
+    admin:      '31_mission_control_dashboard.html',
   };
 
   // Detect current role from localStorage or current filename
@@ -118,61 +123,12 @@
   // ── Navigate with transition ────────────────────────────────────────────────
   function navigateTo(dest) {
     if (!dest) return;
-    // Fade out
-    document.body.style.transition = 'opacity 0.25s ease';
+    // Fade out — redirect after transition completes
+    document.body.style.transition = 'opacity 0.3s ease';
     document.body.style.opacity = '0';
-    setTimeout(() => { window.location.href = dest; }, 250);
+    setTimeout(() => { window.location.href = dest; }, 300);
   }
 
-  // ── Add back button to every page ──────────────────────────────────────────
-  function addBackButton() {
-    const currentFile = location.pathname.split('/').pop();
-    if (currentFile === '1_splash_screen.html' || currentFile === '' || currentFile === 'index.html') return;
-    
-    const btn = document.createElement('button');
-    btn.id = 'fr-back-btn';
-    btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:22px">arrow_back</span>`;
-    btn.style.cssText = `
-      position: fixed; top: 14px; left: 14px; z-index: 9999;
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(0,108,73,0.2);
-      color: #006c49; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-      transition: transform 0.15s, box-shadow 0.15s;
-    `;
-    btn.addEventListener('mouseenter', () => { btn.style.transform = 'scale(1.1)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = 'scale(1)'; });
-    btn.addEventListener('click', () => { window.history.back(); });
-    document.body.appendChild(btn);
-  }
-
-  // ── Add floating home button ───────────────────────────────────────────────
-  function addHomeButton() {
-    const currentFile = location.pathname.split('/').pop();
-    if (['1_splash_screen.html','2_role_selection.html','3_restaurant_registration.html',
-         '4_login_and_verification.html','5_ngo_registration.html','6_volunteer_registration.html',
-         'index.html',''].includes(currentFile)) return;
-
-    const btn = document.createElement('button');
-    btn.id = 'fr-home-btn';
-    btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1">home</span>`;
-    btn.style.cssText = `
-      position: fixed; top: 14px; right: 14px; z-index: 9999;
-      width: 40px; height: 40px; border-radius: 50%;
-      background: #006c49; color: #fff; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 12px rgba(0,108,73,0.35);
-      border: none;
-      transition: transform 0.15s;
-    `;
-    btn.addEventListener('mouseenter', () => { btn.style.transform = 'scale(1.1)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = 'scale(1)'; });
-    btn.addEventListener('click', () => navigateTo(ROLE_DASHBOARD[getRole()]));
-    document.body.appendChild(btn);
-  }
 
   // ── Wire all clickable elements ────────────────────────────────────────────
   function wireClicks() {
@@ -224,7 +180,7 @@
       if (dest === '_back') {
         e.preventDefault();
         e.stopPropagation();
-        window.history.back();
+        goBack();
       } else if (dest) {
         e.preventDefault();
         e.stopPropagation();
@@ -233,21 +189,233 @@
     }, true);
   }
 
+  // ── Deterministic Back Navigation ──────────────────────────────────────────
+  // Maps each page to its logical previous page so back always works,
+  // even when opened directly (no browser history).
+  const BACK_MAP = {
+    // Splash / Role
+    '2_role_selection.html':                    '1_splash_screen.html',
+
+    // Restaurant registration flow
+    '1_Restaurant_Registration_Step_1.html':    '2_role_selection.html',
+    '2_Restaurant_Registration_Step_2.html':    '1_Restaurant_Registration_Step_1.html',
+    '3_Restaurant_Registration_Step_3.html':    '2_Restaurant_Registration_Step_2.html',
+    '4_Restaurant_Registration_Step_4.html':    '3_Restaurant_Registration_Step_3.html',
+    '5_Restaurant_Registration_Step_5.html':    '4_Restaurant_Registration_Step_4.html',
+    '6_Registration_Success_Status.html':       '1_splash_screen.html',
+
+    // NGO registration flow
+    '1_NGO_Registration_Step_1.html':           '2_role_selection.html',
+    '2_NGO_Registration_Step_2.html':           '1_NGO_Registration_Step_1.html',
+    '3_NGO_Registration_Step_3.html':           '2_NGO_Registration_Step_2.html',
+    '4_NGO_Registration_Step_4.html':           '3_NGO_Registration_Step_3.html',
+    '5_NGO_Registration_Step_5.html':           '4_NGO_Registration_Step_4.html',
+    '6_NGO_Registration_Success.html':          '1_splash_screen.html',
+
+    // Volunteer registration
+    '6_volunteer_registration.html':            '2_role_selection.html',
+
+    // Auth
+    '4_login_and_verification.html':            '1_splash_screen.html',
+    '28_2fa_verification.html':                 '4_login_and_verification.html',
+    '29_secret_security_key.html':              '28_2fa_verification.html',
+
+    // Restaurant dashboard pages
+    '7_restaurant_dashboard.html':              '4_login_and_verification.html',
+    'restaurant_donation_history.html':         '7_restaurant_dashboard.html',
+    '8_create_food_donation.html':              '7_restaurant_dashboard.html',
+    '11_notifications.html':                   '7_restaurant_dashboard.html',
+    '12_profile.html':                          '7_restaurant_dashboard.html',
+    '14_chat_and_coordination.html':            '7_restaurant_dashboard.html',
+    'restaurant_track_pickup.html':             '7_restaurant_dashboard.html',
+    'restaurant_volunteers.html':               '7_restaurant_dashboard.html',
+
+    // NGO dashboard pages
+    '10_ngo_dashboard.html':                   '4_login_and_verification.html',
+    'ngo_browse_donations.html':               '10_ngo_dashboard.html',
+    'ngo_claim_success.html':                  '10_ngo_dashboard.html',
+
+    // Volunteer dashboard
+    '9_volunteer_dashboard.html':              '4_login_and_verification.html',
+    'volunteer_navigation.html':               '9_volunteer_dashboard.html',
+    'delivery_confirmation.html':              '9_volunteer_dashboard.html',
+
+    // Admin pages
+    '27_admin_login_command_center.html':       '4_login_and_verification.html',
+    '30_command_center_gateway.html':           '27_admin_login_command_center.html',
+    '31_mission_control_dashboard.html':        '30_command_center_gateway.html',
+    '32_security_operations_center.html':       '31_mission_control_dashboard.html',
+    '33_fraud_intelligence_center.html':        '31_mission_control_dashboard.html',
+    '34_immutable_audit_ledger.html':           '31_mission_control_dashboard.html',
+    '35_session_device_management.html':        '32_security_operations_center.html',
+    '36_account_recovery_system.html':          '31_mission_control_dashboard.html',
+    '37_security_vector_scan.html':             '32_security_operations_center.html',
+    '38_security_alert_access_blocked.html':    '31_mission_control_dashboard.html',
+    '15_verification_management.html':          '31_mission_control_dashboard.html',
+    '17_user_management_admin.html':            '31_mission_control_dashboard.html',
+    '18_csr_and_reporting.html':               '31_mission_control_dashboard.html',
+    '19_fraud_and_reports_admin.html':          '31_mission_control_dashboard.html',
+    '21_complaints_management.html':            '31_mission_control_dashboard.html',
+    '22_food_safety_and_compliance.html':       '31_mission_control_dashboard.html',
+
+    // Shared pages
+    '13_impact_analytics.html':                '7_restaurant_dashboard.html',
+    '20_help_and_support.html':                '7_restaurant_dashboard.html',
+    '23_dispute_and_policy_center.html':       '7_restaurant_dashboard.html',
+    '24_terms_and_conditions.html':            '7_restaurant_dashboard.html',
+    '25_privacy_and_guidelines.html':          '7_restaurant_dashboard.html',
+    '26_declarations_and_consent.html':        '7_restaurant_dashboard.html',
+  };
+
+  function goBack() {
+    const currentFile = location.pathname.split('/').pop() || 'index.html';
+    const prev = BACK_MAP[currentFile];
+    if (prev) {
+      navigateTo(prev);
+    } else if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      navigateTo('1_splash_screen.html'); // ultimate fallback
+    }
+  }
+
+
   // ── Fade in on load ────────────────────────────────────────────────────────
+  // Sets body invisible immediately (before first paint), then fades in once
+  // the DOM is ready. This prevents a double-blink when navigating between pages.
   function fadeIn() {
+    // Apply opacity:0 synchronously before any paint
+    document.documentElement.style.setProperty('--page-opacity', '0');
     document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.3s ease';
-    window.addEventListener('load', () => {
-      setTimeout(() => { document.body.style.opacity = '1'; }, 50);
+    document.body.style.transition = 'none'; // no transition during initial hide
+    document.addEventListener('DOMContentLoaded', () => {
+      // Use double rAF to ensure the browser has painted the hidden state first
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.body.style.transition = 'opacity 0.3s ease';
+          document.body.style.opacity = '1';
+        });
+      });
+    });
+  }
+
+  // ── Form Data Persistence ──────────────────────────────────────────────────
+  function initFormPersistence() {
+    const currentFile = location.pathname.split('/').pop() || 'index.html';
+    const lowerFile = currentFile.toLowerCase();
+    // Only apply to registration and login pages to avoid side effects on dashboard
+    if (!lowerFile.includes('registration') && !lowerFile.includes('login')) return;
+
+    const storageKey = 'fr_form_data_' + currentFile;
+    // Exclude passwords, OTPs, and hidden fields
+    const inputs = document.querySelectorAll('input[type="text"]:not(.otp-input):not(.otp-box), input[type="email"], input[type="tel"], textarea, select');
+    
+    // Restore values
+    const savedData = JSON.parse(sessionStorage.getItem(storageKey) || '{}');
+    inputs.forEach(input => {
+        if (input.id && savedData[input.id] !== undefined) {
+            input.value = savedData[input.id];
+            // Trigger input event to update any dynamic UI (like strength meters or validation)
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            if (input.tagName === 'SELECT') {
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+        
+        // Save on input/change
+        const saveEvent = input.tagName === 'SELECT' ? 'change' : 'input';
+        input.addEventListener(saveEvent, () => {
+            const currentData = JSON.parse(sessionStorage.getItem(storageKey) || '{}');
+            if (input.id) {
+                currentData[input.id] = input.value;
+                sessionStorage.setItem(storageKey, JSON.stringify(currentData));
+            }
+        });
+    });
+  }
+
+  // ── OTP Auto-advance & Auto-verify ────────────────────────────────────────
+  function initOTPInputs() {
+    const otpInputs = Array.from(document.querySelectorAll('.otp-input'));
+    if (!otpInputs.length) return;
+
+    otpInputs.forEach((input, idx) => {
+      // Allow only digits
+      input.setAttribute('inputmode', 'numeric');
+      input.setAttribute('pattern', '[0-9]*');
+
+      input.addEventListener('input', (e) => {
+        // Strip non-digits and keep only first char
+        input.value = input.value.replace(/\D/g, '').slice(0, 1);
+
+        if (input.value) {
+          // Move to next box
+          if (idx < otpInputs.length - 1) {
+            otpInputs[idx + 1].focus();
+          } else {
+            // Last box filled — auto-trigger verify
+            input.blur();
+            // Give the DOM a tick to update before calling verify
+            setTimeout(() => {
+              if (typeof verifyOTP === 'function') {
+                verifyOTP();
+              } else {
+                // Fallback: click the verify button if it exists
+                const verifyBtn = document.getElementById('verifyOtpBtn')
+                  || document.querySelector('button[onclick*="verifyOTP"]');
+                if (verifyBtn) verifyBtn.click();
+              }
+            }, 80);
+          }
+        }
+      });
+
+      // Backspace: clear & go to previous box
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && idx > 0) {
+          otpInputs[idx - 1].focus();
+          otpInputs[idx - 1].value = '';
+        }
+      });
+
+      // Handle paste: spread digits across boxes
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData)
+          .getData('text').replace(/\D/g, '').slice(0, otpInputs.length);
+        pasted.split('').forEach((ch, i) => {
+          if (otpInputs[idx + i]) otpInputs[idx + i].value = ch;
+        });
+        const nextEmpty = otpInputs.find(inp => !inp.value);
+        if (nextEmpty) {
+          nextEmpty.focus();
+        } else {
+          // All filled — auto verify
+          setTimeout(() => {
+            if (typeof verifyOTP === 'function') {
+              verifyOTP();
+            } else {
+              const verifyBtn = document.getElementById('verifyOtpBtn')
+                || document.querySelector('button[onclick*="verifyOTP"]');
+              if (verifyBtn) verifyBtn.click();
+            }
+          }, 80);
+        }
+      });
     });
   }
 
   // ── Init ───────────────────────────────────────────────────────────────────
   fadeIn();
   document.addEventListener('DOMContentLoaded', () => {
-    addBackButton();
-    addHomeButton();
     wireClicks();
+    initFormPersistence();
+    initOTPInputs();
   });
 
+  // Also run after dynamic sections (e.g. OTP section shown via JS)
+  // by exposing it globally so pages can call it after revealing the OTP UI
+  window.initOTPInputs = initOTPInputs;
+
 })();
+

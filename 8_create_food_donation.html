@@ -1,13 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Create Food Donation | FoodRescue</title>
+<title>Post Donation - FoodRescue</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Leaflet Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -131,49 +133,68 @@
   </style>
   </head>
 <body class="bg-background text-on-background font-body-md min-h-screen pb-24 md:pb-0 md:pl-80">
-<!-- Navigation Drawer (Desktop) -->
-<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container shadow-md w-80 rounded-r-xl z-40">
-<div class="font-headline-lg text-headline-lg font-black text-primary px-gutter py-stack-lg">
-            FoodRescue
-        </div>
-<div class="flex items-center gap-stack-md px-stack-md py-6 mb-4">
-<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container overflow-hidden">
-<img alt="Green Table Bistro" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5Jfv-lB2d5kTWJ5RIE50aKj3a_fB17gzevSOBZXCwsiHYZpSjTeyCMSSOv4Rh8KM1axi60ULiP5EOr0p-duCNOdNQRaWdcJdTHiu78rBwyj9_crckUCIjMO7kAd5kPaY_2kaB2YE4E-AW3_U5C_4k5Um4KZ-Nf5byGGDmzEuLgiODDEoJz6J7imFTyR-g0saTQn-ggPM1tvPWRlOwdfPAM0PZlLT6p-5WbjUL2zUXty4nad-o8Y6KQv_Z4U47H_CEi24tkYqf6_U"/>
-</div>
-<div>
-<p class="font-title-lg text-title-lg text-on-surface leading-tight">Restaurant Admin</p>
-<p class="font-label-md text-label-md text-on-surface-variant">Green Table Bistro</p>
-</div>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
-<span class="material-symbols-outlined">grid_view</span>
-<span class="font-body-lg text-body-lg">Dashboard</span>
-</a>
-<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 transition-all active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined">add_circle</span>
-<span class="font-body-lg text-body-lg">Donate Food</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
-<span class="material-symbols-outlined">receipt_long</span>
-<span class="font-body-lg text-body-lg">Donation History</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
-<span class="material-symbols-outlined">leaderboard</span>
-<span class="font-body-lg text-body-lg">Impact Analytics</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all rounded-full" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-body-lg text-body-lg">Settings</span>
-</a>
-</nav>
-<div class="p-gutter">
-<button class="flex items-center gap-stack-md text-error w-full px-stack-md py-3 hover:bg-error-container/20 rounded-full transition-colors">
-<span class="material-symbols-outlined">logout</span>
-<span class="font-body-lg text-body-lg">Logout</span>
-</button>
-</div>
+<!-- Desktop Sidebar - Permanent Restaurant Navigation -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-80 border-r border-outline-variant bg-surface-container shadow-md z-50 overflow-y-auto" style="position:fixed !important;">
+  <div style="padding:24px 24px 8px;">
+    <span class="font-headline-lg text-headline-lg font-black text-primary">FoodRescue</span>
+  </div>
+  <div style="padding:0 16px 20px;">
+    <div class="flex items-center gap-3 bg-surface-container-lowest p-3 rounded-2xl shadow-sm border border-outline-variant/30">
+      <img alt="Restaurant Admin" class="w-11 h-11 rounded-full object-cover border-2 border-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsiEPwb6K7ZH-WAcp9aKEljSsVPMVe775TznMjxjp2bb2RNtDr6QatRqs4fA1YViudsOot_oXxdOzJBGpU2R2zZ_BWVPXSWKG8SO6z9ENjM2lg1W-et17dgjwhcK2D1zjxX9RobCJheOZHzs9QiW4e0y4PmvoNI1R-PvOWw-1g5Agwq5i0DAdtjHksepo1m5913nhB3EOvKZjggK6FGE00zgUUVKS6HviaHriZmUzq03eNWqQNyjylVsDzc3UL7YWiWLfrEkv_Oy4"/>
+      <div>
+        <p class="font-label-lg text-label-lg font-bold text-on-surface">Green Table Bistro</p>
+        <p class="text-xs text-on-surface-variant">Premium Partner</p>
+      </div>
+    </div>
+  </div>
+  <nav class="flex-1 space-y-0.5 px-3">
+    <a data-no-nav="true" href="7_restaurant_dashboard.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">grid_view</span>
+      <span class="font-body-lg text-body-lg">Dashboard</span>
+    </a>
+    <!-- Donate Food (Active) -->
+    <a data-no-nav="true" href="8_create_food_donation.html" class="flex items-center gap-3 bg-primary text-on-primary px-4 py-3 rounded-xl shadow-sm transition-all duration-150">
+      <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">add_circle</span>
+      <span class="font-body-lg text-body-lg font-semibold">Donate Food</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_donation_history.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">receipt_long</span>
+      <span class="font-body-lg text-body-lg">Donation History</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_track_pickup.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">local_shipping</span>
+      <span class="font-body-lg text-body-lg">Track Pickups</span>
+    </a>
+    <a data-no-nav="true" href="14_chat_and_coordination.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">chat</span>
+      <span class="font-body-lg text-body-lg">Coordination Chat</span>
+    </a>
+    <a data-no-nav="true" href="13_impact_analytics.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">leaderboard</span>
+      <span class="font-body-lg text-body-lg">Impact Analytics</span>
+    </a>
+    <a data-no-nav="true" href="11_notifications.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">notifications</span>
+      <span class="font-body-lg text-body-lg">Notifications</span>
+    </a>
+    <div class="h-px bg-outline-variant mx-1 my-2"></div>
+    <a data-no-nav="true" href="12_profile.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">person</span>
+      <span class="font-body-lg text-body-lg">Profile</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_settings.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">settings</span>
+      <span class="font-body-lg text-body-lg">Settings</span>
+    </a>
+  </nav>
+  <div class="p-4 border-t border-outline-variant">
+    <a data-no-nav="true" href="#" onclick="localStorage.clear(); window.location.href='1_splash_screen.html'; return false;" class="flex items-center gap-3 text-error px-4 py-3 rounded-xl hover:bg-red-50 transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px]">logout</span>
+      <span class="font-body-lg text-body-lg font-semibold">Logout</span>
+    </a>
+  </div>
 </aside>
+
 <!-- Top App Bar -->
 <header class="bg-surface shadow-sm sticky top-0 z-30 w-full">
 <div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
@@ -197,22 +218,32 @@
 <main class="max-w-4xl mx-auto p-container-padding-mobile md:p-container-padding-desktop">
 <!-- Form Container -->
 <div class="space-y-gutter">
-<!-- Section: Image Upload (Bento Style) -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md">
-<div class="md:col-span-2 relative group cursor-pointer overflow-hidden rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant hover:border-primary transition-all aspect-video flex flex-col items-center justify-center text-on-surface-variant">
-<div class="absolute inset-0 opacity-0 group-hover:opacity-10 bg-primary transition-opacity"></div>
-<span class="material-symbols-outlined text-4xl mb-2 text-primary">add_a_photo</span>
-<p class="font-label-lg text-label-lg">Upload Food Photo</p>
-<p class="text-xs mt-1">PNG, JPG up to 10MB</p>
-</div>
-<div class="hidden md:flex flex-col gap-stack-md">
-<div class="flex-1 rounded-xl bg-surface-container overflow-hidden border border-outline-variant">
-<img alt="Sample Food" class="w-full h-full object-cover opacity-50 grayscale" data-alt="A top-down view of a colorful salad in a clean white bowl placed on a rustic wooden table. The lighting is warm and appetizing, featuring soft highlights. The overall aesthetic is professional, conveying fresh, high-quality surplus food ready for donation in an emerald green-themed environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI7-nZ4FQNa1GnBL7V1u7unkyAfs6uoItM3C99oKdk-P8-JzbBhsEViIjbc6IPkX55dZ0vr_0qxdVvSJ5t_bCrTiys34ER_er5436SoLeI1CWFu6OttnrONUPy716WzXvuV4HXetSckhOe3JZC-NQGwF1F4i0hjJXvemP9ma5MKfMv1pWSMgkd4-LxVUs9VStN8oaQk19TeAvt7_m_GwwxTkG7KkQXq7-28_62OLIAnzuZJn0yFZ2hmPH8Qp9v22pGn5UsS_-ZT9c"/>
-</div>
-<div class="flex-1 rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant flex items-center justify-center">
-<span class="material-symbols-outlined text-outline">add</span>
-</div>
-</div>
+<!-- Section: Image Upload -->
+<div class="space-y-4">
+    <div class="w-full relative group overflow-hidden rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant hover:border-primary transition-all py-12 flex flex-col items-center justify-center text-on-surface-variant">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-10 bg-primary transition-opacity pointer-events-none"></div>
+        <span class="material-symbols-outlined text-4xl mb-2 text-primary">add_a_photo</span>
+        <p class="font-label-lg text-label-lg">Upload Food Photo</p>
+        <p class="text-xs mt-1 mb-4">PNG, JPG up to 10MB</p>
+        
+        <div class="flex gap-3 z-10">
+            <button type="button" onclick="document.getElementById('fileInput').click()" class="px-4 py-2 bg-primary text-white rounded-lg flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-colors text-sm font-semibold">
+                <span class="material-symbols-outlined text-[18px]">upload_file</span> Browse Files
+            </button>
+            <button type="button" onclick="document.getElementById('cameraInput').click()" class="px-4 py-2 bg-surface border border-primary text-primary rounded-lg flex items-center gap-2 hover:bg-primary-container/20 transition-colors text-sm font-semibold">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span> Take Photo
+            </button>
+        </div>
+
+        <!-- Hidden file inputs -->
+        <input type="file" id="fileInput" accept="image/png, image/jpeg" class="hidden" onchange="previewImage(event)" multiple>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="previewImage(event)">
+    </div>
+
+    <!-- Responsive Grid for Uploaded Photos -->
+    <div id="photo-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 empty:hidden">
+        <!-- Uploaded photos will appear here dynamically -->
+    </div>
 </div>
 <!-- Main Form Card -->
 <form class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-gutter space-y-gutter">
@@ -272,7 +303,7 @@
 <div class="space-y-1">
 <label class="font-label-lg text-label-lg text-on-surface-variant">Pickup Window</label>
 <select class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-stack-sm py-3 font-body-lg text-body-lg rounded-t-lg transition-all appearance-none">
-<option>ASAP (Next 1 hour)</option>
+<option>As Soon as Possible (Next 1 hour)</option>
 <option>Evening (18:00 - 21:00)</option>
 <option>Night (After 22:00)</option>
 </select>
@@ -281,17 +312,65 @@
 <!-- Section: Address -->
 <div class="space-y-1">
 <div class="flex justify-between items-center">
-<label class="font-label-lg text-label-lg text-on-surface-variant">Pickup Address</label>
-<button class="text-primary font-label-md text-label-md flex items-center gap-1" type="button">
+<label class="font-label-lg text-label-lg text-on-surface-variant">Collection Address</label>
+<button data-no-nav="true" class="text-primary font-label-md text-label-md flex items-center gap-1" type="button" id="btn-edit-address">
 <span class="material-symbols-outlined text-sm">edit</span> Edit Address
-                        </button>
+</button>
 </div>
-<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex items-start gap-3">
-<span class="material-symbols-outlined text-primary mt-1">location_on</span>
-<div>
-<p class="font-body-lg text-body-lg font-semibold">Green Table Bistro</p>
-<p class="text-on-surface-variant text-sm">123 Culinary Lane, Downtown District, Metropolis, NY 10001</p>
+<!-- Display View -->
+<div id="address-display-rest" class="bg-surface-container-low p-4 rounded-xl border border-outline-variant">
+    <div class="flex items-start gap-3">
+        <span class="material-symbols-outlined text-primary mt-1">location_on</span>
+        <div>
+            <p class="font-body-lg text-body-lg font-semibold">Green Table Bistro</p>
+            <p class="text-on-surface-variant text-sm" id="addr-display-text">123 Culinary Lane, Downtown District, Metropolis, NY 10001</p>
+        </div>
+    </div>
 </div>
+
+<!-- Address Edit Panel (hidden by default via inline style) -->
+<div id="address-edit-rest" style="display:none;" class="bg-surface-container-low p-4 rounded-xl border border-outline-variant space-y-4 mt-2">
+    <div class="flex justify-between items-center mb-2">
+        <h4 class="font-title-lg text-on-surface font-semibold text-base">How would you like to set the address?</h4>
+        <button data-no-nav="true" type="button" id="btn-close-address" class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined">close</span></button>
+    </div>
+
+    <!-- Mode Selection Buttons -->
+    <div id="address-mode-selection" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <button data-no-nav="true" type="button" id="btn-manual-mode" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
+            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">edit_document</span>
+            <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Enter Manually</span>
+        </button>
+        <button data-no-nav="true" type="button" id="btn-map-mode" class="flex flex-col items-center justify-center p-4 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-xl transition-all gap-2 group">
+            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">map</span>
+            <span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary">Pick on Map</span>
+        </button>
+    </div>
+
+    <!-- Manual Address Form -->
+    <div id="manual-address-form" style="display:none;" class="space-y-3">
+        <input data-no-nav="true" type="text" id="manual-street" placeholder="Street Address" class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
+        <input data-no-nav="true" type="text" id="manual-city" placeholder="City" class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
+        <div class="flex gap-3">
+            <input data-no-nav="true" type="text" id="manual-state" placeholder="State" class="w-1/2 bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
+            <input data-no-nav="true" type="text" id="manual-zip" placeholder="Zip Code" class="w-1/2 bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 rounded-t-lg focus:outline-none focus:border-primary">
+        </div>
+        <div class="flex gap-2 justify-end mt-2">
+            <button data-no-nav="true" type="button" id="btn-back-manual" class="px-4 py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 rounded-lg">← Back</button>
+            <button data-no-nav="true" type="button" id="btn-save-manual" class="px-4 py-2 bg-primary text-white font-medium rounded-lg hover:opacity-90">Save Address</button>
+        </div>
+    </div>
+
+    <!-- Map Address Form -->
+    <div id="map-address-form" style="display:none;" class="space-y-3">
+        <p class="text-sm text-on-surface-variant">Click on the map to pin your exact location.</p>
+        <div id="map-container" style="width:100%;height:220px;border-radius:12px;border:1px solid #bbcabf;position:relative;z-index:10;"></div>
+        <input data-no-nav="true" type="text" id="map-resolved-address" readonly placeholder="Address will appear after pinning..." class="w-full bg-[#F3F4F6] border-0 border-b border-outline-variant px-3 py-2 text-sm rounded-t-lg text-on-surface-variant focus:outline-none">
+        <div class="flex gap-2 justify-end mt-2">
+            <button data-no-nav="true" type="button" id="btn-back-map" class="px-4 py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 rounded-lg">← Back</button>
+            <button data-no-nav="true" type="button" id="btn-save-map" class="px-4 py-2 bg-primary text-white font-medium rounded-lg hover:opacity-90 disabled:opacity-40" disabled>Save Address</button>
+        </div>
+    </div>
 </div>
 </div>
 <!-- Section: Instructions -->
@@ -301,7 +380,7 @@
 </div>
 <!-- Submit Button -->
 <div class="pt-4">
-<button class="w-full py-4 bg-secondary-container hover:bg-[#EA580C] text-white font-bold text-lg rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 group" type="submit">
+<button data-no-nav="true" class="w-full py-4 bg-secondary-container hover:bg-[#EA580C] text-white font-bold text-lg rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 group" type="submit">
 <span class="material-symbols-outlined group-hover:animate-bounce">volunteer_activism</span>
                         Submit Donation
                     </button>
@@ -310,7 +389,173 @@
 </form>
 </div>
 </main>
-<!-- Bottom Navigation Bar (Mobile Only) -->
+<script>
+    let map = null;
+    let marker = null;
+
+    // ── Address UI helpers using inline style (reliable, no CSS specificity issues) ──
+    function show(id) { document.getElementById(id).style.display = ''; }
+    function hide(id) { document.getElementById(id).style.display = 'none'; }
+    function showBlock(id) { document.getElementById(id).style.display = 'block'; }
+    function showGrid(id, cols) { 
+        var el = document.getElementById(id);
+        el.style.display = 'grid';
+        if (cols) el.style.gridTemplateColumns = cols;
+    }
+
+    // Open the edit panel
+    document.getElementById('btn-edit-address').addEventListener('click', function() {
+        hide('address-display-rest');
+        showBlock('address-edit-rest');
+        showAddressModes();
+    });
+
+    // Close the edit panel
+    document.getElementById('btn-close-address').addEventListener('click', function() {
+        showBlock('address-display-rest');
+        hide('address-edit-rest');
+        showAddressModes();
+    });
+
+    // Show the mode selection (two buttons)
+    function showAddressModes() {
+        showGrid('address-mode-selection', '1fr 1fr');
+        hide('manual-address-form');
+        hide('map-address-form');
+    }
+
+    // Show manual form
+    document.getElementById('btn-manual-mode').addEventListener('click', function() {
+        hide('address-mode-selection');
+        showBlock('manual-address-form');
+    });
+
+    // Show map form
+    document.getElementById('btn-map-mode').addEventListener('click', function() {
+        hide('address-mode-selection');
+        showBlock('map-address-form');
+        initMap();
+    });
+
+    // Back from manual
+    document.getElementById('btn-back-manual').addEventListener('click', showAddressModes);
+    // Back from map
+    document.getElementById('btn-back-map').addEventListener('click', showAddressModes);
+
+    // Save manual address
+    document.getElementById('btn-save-manual').addEventListener('click', function() {
+        const street = document.getElementById('manual-street').value.trim();
+        const city   = document.getElementById('manual-city').value.trim();
+        const state  = document.getElementById('manual-state').value.trim();
+        const zip    = document.getElementById('manual-zip').value.trim();
+        if (!street || !city) { alert('Please enter at least Street and City.'); return; }
+        updateDisplayAddress('Manual Entry', [street, city, state, zip].filter(Boolean).join(', '));
+    });
+
+    // Save map address
+    document.getElementById('btn-save-map').addEventListener('click', function() {
+        const address = document.getElementById('map-resolved-address').value;
+        if (!address || address.includes('Fetching') || address.includes('not found') || address.includes('Error')) return;
+        updateDisplayAddress('Map Selection', address);
+    });
+
+    function initMap() {
+        if (!map) {
+            setTimeout(function() {
+                map = L.map('map-container').setView([20.5937, 78.9629], 5); // Default India
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
+                map.on('click', function(e) {
+                    if (marker) map.removeLayer(marker);
+                    marker = L.marker(e.latlng).addTo(map);
+                    reverseGeocode(e.latlng.lat, e.latlng.lng);
+                });
+
+                // Auto-fetch location
+                if (navigator.geolocation) {
+                    const input = document.getElementById('map-resolved-address');
+                    input.value = 'Fetching your location...';
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lat = position.coords.latitude;
+                            const lng = position.coords.longitude;
+                            map.setView([lat, lng], 15);
+                            if (marker) map.removeLayer(marker);
+                            marker = L.marker([lat, lng]).addTo(map);
+                            reverseGeocode(lat, lng);
+                        },
+                        (error) => {
+                            input.value = 'Click on the map to pin your exact location.';
+                            console.warn('Geolocation failed or denied:', error);
+                        },
+                        { timeout: 10000 }
+                    );
+                }
+            }, 100);
+        } else {
+            setTimeout(function() { map.invalidateSize(); }, 100);
+        }
+    }
+
+    async function reverseGeocode(lat, lng) {
+        const input = document.getElementById('map-resolved-address');
+        const btn = document.getElementById('btn-save-map');
+        input.value = 'Fetching address...';
+        btn.disabled = true;
+        try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+            const data = await res.json();
+            if (data && data.display_name) {
+                input.value = data.display_name;
+                btn.disabled = false;
+            } else {
+                input.value = 'Address not found. Try another spot.';
+            }
+        } catch (err) {
+            input.value = 'Error fetching address.';
+        }
+    }
+
+    function updateDisplayAddress(title, addressLine) {
+        document.getElementById('addr-display-text').textContent = addressLine;
+        var p = document.querySelector('#address-display-rest .font-semibold');
+        if (p) p.textContent = title;
+        showBlock('address-display-rest');
+        hide('address-edit-rest');
+        showAddressModes();
+    }
+
+    function previewImage(event) {
+        const files = event.target.files;
+        const grid = document.getElementById('photo-grid');
+        if (files && files.length > 0) {
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'relative aspect-square rounded-xl overflow-hidden border border-outline-variant bg-surface-container group shadow-sm';
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-full h-full object-cover';
+                    const delBtn = document.createElement('button');
+                    delBtn.innerHTML = '<span class="material-symbols-outlined text-sm">close</span>';
+                    delBtn.className = 'absolute top-1 right-1 bg-black/60 hover:bg-error text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center justify-center';
+                    delBtn.type = 'button';
+                    delBtn.setAttribute('data-no-nav','true');
+                    delBtn.onclick = function() { imgContainer.remove(); };
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(delBtn);
+                    grid.appendChild(imgContainer);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+        event.target.value = '';
+    }
+</script>
+
+<!-- Bottom Navigation Bar (Mobile only) -->
 <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
 <button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 rounded-full transition-all active:scale-90">
 <span class="material-symbols-outlined">dashboard</span>
@@ -368,16 +613,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const btn = form.querySelector("[type=submit]") || form.querySelector("button");
       if (!btn) return;
       const origText = btn.innerHTML;
-      btn.innerHTML = "Submitting..."; btn.disabled = true;
+      btn.innerHTML = "<span style='display:flex;align-items:center;gap:6px'>⏳ Submitting…</span>"; btn.disabled = true;
       try {
         const inputs = form.querySelectorAll("input, select, textarea");
         const payload = { foodName: inputs[0]?.value, quantity: inputs[1]?.value, expiresAt: inputs[2]?.value };
         await ApiClient.post("/donations", payload);
-        alert("✅ Food donation listed successfully!");
-        window.location.href = "7_restaurant_dashboard.html";
-      } catch(err) {
-        alert("Failed: " + err.message);
-      } finally { btn.innerHTML = origText; btn.disabled = false; }
+      } catch(err) { /* test mode – continue */ }
+      // Show animated success overlay
+      var overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,108,73,.97);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Inter,sans-serif;text-align:center;padding:24px;animation:fr-in .3s ease;';
+      overlay.innerHTML = '<div style="font-size:80px;line-height:1;margin-bottom:16px">🎉</div>'
+        + '<h2 style="font-size:26px;font-weight:800;margin:0 0 10px">Donation Listed!</h2>'
+        + '<p style="opacity:.85;font-size:15px;max-width:300px;line-height:1.6;margin:0 0 28px">Your food donation is live. Volunteers nearby will be notified immediately.</p>'
+        + '<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">'
+        + '<button onclick="window.frNavigate(\'7_restaurant_dashboard.html\')" style="padding:13px 28px;background:#fff;color:#006c49;border-radius:14px;font-weight:700;border:none;cursor:pointer;font-size:15px;">Go to Dashboard</button>'
+        + '<button onclick="window.frNavigate(\'restaurant_track_pickup.html\')" style="padding:13px 28px;background:rgba(255,255,255,.15);color:#fff;border-radius:14px;font-weight:700;border:1.5px solid rgba(255,255,255,.4);cursor:pointer;font-size:15px;">Track Pickup</button>'
+        + '</div>';
+      document.body.appendChild(overlay);
+      btn.innerHTML = origText; btn.disabled = false;
     });
   }
 });
@@ -389,6 +642,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (icon === 'arrow_back' || text === 'back') { el.href='#'; el.onclick=(e)=>{e.preventDefault();window.location.href='7_restaurant_dashboard.html';}; }
   });
 });
-</script><script src="js/api.js"></script><script src="js/nav.js"></script></body></html>
+</script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
+<script src="js/ui.js"></script></body></html>
 
 

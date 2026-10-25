@@ -1,5 +1,6 @@
 const AuthService = require('./auth.service');
 const { successResponse, errorResponse } = require('../../utils/apiResponse');
+const { uploadToCloudinary, uploadRestaurantImage, uploadNgoDocument, uploadProfilePhoto } = require('../../config/cloudinary');
 
 class AuthController {
   
@@ -109,6 +110,52 @@ class AuthController {
       } catch (error) {
           return errorResponse(res, 400, error.message);
       }
+  }
+  /**
+   * Public file upload for registration docs (no auth required)
+   * Accepts: multipart/form-data with fields: file, type
+   * type: 'front' | 'fssai' | 'profile' | 'biz' | 'ngo_doc' | 'vol_doc'
+   */
+  static async uploadFile(req, res) {
+    try {
+      if (!req.file) {
+        return errorResponse(res, 400, 'No file provided');
+      }
+      const type = req.body.type || 'general';
+      let result;
+
+      if (type === 'profile') {
+        result = await uploadProfilePhoto(req.file.buffer);
+      } else if (type === 'fssai' || type === 'ngo_doc' || type === 'vol_doc') {
+        result = await uploadNgoDocument(req.file.buffer, req.file.mimetype === 'application/pdf' ? 'auto' : 'image');
+      } else {
+        // front, biz, general — use restaurant image uploader
+        result = await uploadRestaurantImage(req.file.buffer);
+      }
+
+      return successResponse(res, 200, 'File uploaded successfully', {
+        url: result.secure_url,
+        public_id: result.public_id,
+      });
+    } catch (error) {
+      return errorResponse(res, 500, 'Upload failed: ' + error.message);
+    }
+  }
+
+  static async changePassword(req, res) {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const uid = req.user.uid; // From requireAuth middleware
+
+      if (!currentPassword || !newPassword) {
+        return errorResponse(res, 400, 'Current and new password are required');
+      }
+
+      await AuthService.changePassword(uid, currentPassword, newPassword);
+      return successResponse(res, 200, 'Password changed successfully');
+    } catch (error) {
+      return errorResponse(res, 400, error.message);
+    }
   }
 }
 

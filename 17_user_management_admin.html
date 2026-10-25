@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
@@ -143,41 +143,64 @@
 </div>
 </header>
 <div class="flex flex-1 overflow-hidden">
-<!-- NavigationDrawer from JSON (Desktop Only) -->
-<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 w-80 bg-surface-container dark:bg-surface-container-high shadow-xl border-r border-outline-variant z-50">
+<!-- NavigationDrawer (Desktop Only) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 w-80 bg-surface-container dark:bg-surface-container-high shadow-xl border-r border-outline-variant z-50 overflow-y-auto">
 <div class="px-gutter py-stack-lg">
-<h2 class="font-headline-lg text-headline-lg font-black text-primary">FoodRescue</h2>
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center border border-secondary-container/50">
+      <span class="material-symbols-outlined text-secondary-container">shield</span>
+    </div>
+    <div>
+      <h2 class="font-headline-lg text-headline-lg font-black text-primary leading-tight">FoodRescue</h2>
+      <p class="text-[11px] font-semibold text-secondary-container tracking-wider uppercase">Command Center Admin</p>
+    </div>
+  </div>
 </div>
-<div class="flex items-center gap-stack-md px-gutter py-stack-md mb-stack-lg">
-<div class="w-12 h-12 rounded-full bg-primary-container overflow-hidden">
-<img alt="Restaurant Admin" data-alt="A sophisticated circular avatar representing a restaurant manager, featuring a clean and professional aesthetic. The manager is smiling warmly in a bright, modern bistro setting with soft wooden textures and lush green plants in the background. The color scheme is centered around warm emerald and earthy tones to match the FoodRescue brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqVJ02x0R1V4mu3VOYHRw_lWeqL3MM9RDhPCxHwshAbn4Z-xaRdvucKmpOFKgE0GOmmhKNVfD6m8XI9Vay89l3chMNB8C34Q3HnNVUXqVB8Hno1w4JuX8ElOb6_IsAnxxvG48-WnRJ49wSbzEDflD68d-U6HdM3CLB4NcANKNL6hhXyskZpbPVb0UT7is4h_m6ESY9oNsyakyVq_-6pajfZ3_MLyujV6lHWywswmmGiKuGorPuiCYVRq4kA4zZKSdhLLhz1qvEC58"/>
+<div class="flex items-center gap-stack-md px-gutter py-stack-md mb-stack-md mx-3 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+  <div class="w-11 h-11 rounded-full bg-secondary-container/20 flex items-center justify-center border border-secondary-container/50 text-secondary-container font-bold text-lg">
+    OP
+  </div>
+  <div class="flex flex-col">
+    <span class="font-bold text-on-surface">Global Ops Admin</span>
+    <span class="text-xs text-on-surface-variant">Security Level 4</span>
+  </div>
 </div>
-<div class="flex flex-col">
-<span class="font-bold text-on-surface">Restaurant Admin</span>
-<span class="text-sm text-on-surface-variant">Green Table Bistro</span>
-<span class="text-xs font-bold text-primary">Premium Partner</span>
+<nav class="flex-1 space-y-1 px-3">
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="31_mission_control_dashboard.html">
+    <span class="material-symbols-outlined">dashboard</span>
+    <span class="font-body-lg text-body-lg">Mission Control</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="15_verification_management.html">
+    <span class="material-symbols-outlined">verified_user</span>
+    <span class="font-body-lg text-body-lg">Approvals Queue</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md bg-primary text-on-primary rounded-xl px-stack-md py-3 shadow-sm font-semibold" href="17_user_management_admin.html">
+    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">manage_accounts</span>
+    <span class="font-body-lg text-body-lg">User Directory</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="19_fraud_and_reports_admin.html">
+    <span class="material-symbols-outlined">gpp_maybe</span>
+    <span class="font-body-lg text-body-lg">Fraud & Reports</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="restaurant_track_pickup.html">
+    <span class="material-symbols-outlined">local_shipping</span>
+    <span class="font-body-lg text-body-lg">Deliveries</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="18_csr_and_reporting.html">
+    <span class="material-symbols-outlined">analytics</span>
+    <span class="font-body-lg text-body-lg">CSR & Analytics</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="35_session_device_management.html">
+    <span class="material-symbols-outlined">settings</span>
+    <span class="font-body-lg text-body-lg">Security & Sessions</span>
+  </a>
+</nav>
+<div class="p-4 border-t border-outline-variant/30">
+  <button onclick="localStorage.clear(); window.location.href='1_splash_screen.html';" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-outline-variant/40 hover:bg-error/10 hover:text-error hover:border-error/40 text-on-surface-variant text-sm font-semibold transition-all">
+    <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+  </button>
 </div>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined">grid_view</span>
-<span class="font-body-lg text-body-lg">Dashboard</span>
-</a>
-<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined">group</span>
-<span class="font-body-lg text-body-lg">Volunteers</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined">receipt_long</span>
-<span class="font-body-lg text-body-lg">Donation History</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined">leaderboard</span>
-<span class="font-body-lg text-body-lg">Impact Analytics</span>
-</a>
-<div class="mt-auto pb-stack-lg">
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
-<span class="material-symbols-outlined">settings</span>
+</aside>
 <span class="font-body-lg text-body-lg">Settings</span>
 </a>
 <a class="flex items-center gap-stack-md text-error mx-stack-md px-stack-md py-3 hover:bg-error-container transition-all" href="#">
@@ -198,123 +221,234 @@
 </div>
 <div class="relative w-full md:w-96">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-on-surface transition-all placeholder:text-outline" placeholder="Search by name or location..." type="text"/>
+<input id="user-search-input" oninput="filterUsers()" class="w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-on-surface transition-all placeholder:text-outline" placeholder="Search by name or location..." type="text"/>
 </div>
 </div>
 <!-- Tabs -->
 <div class="flex p-1 bg-surface-container-high rounded-full w-fit mb-stack-lg overflow-x-auto">
-<button class="tab-btn px-6 py-2 rounded-full font-label-lg text-label-lg transition-all bg-primary text-on-primary shadow-sm" id="tab-restaurants" onclick="switchTab('restaurants')">Restaurants</button>
-<button class="tab-btn px-6 py-2 rounded-full font-label-lg text-label-lg transition-all text-on-surface-variant hover:bg-surface-container-highest" id="tab-ngos" onclick="switchTab('ngos')">NGOs</button>
-<button class="tab-btn px-6 py-2 rounded-full font-label-lg text-label-lg transition-all text-on-surface-variant hover:bg-surface-container-highest" id="tab-volunteers" onclick="switchTab('volunteers')">Volunteers</button>
+<button class="tab-btn px-6 py-2 rounded-full font-label-lg text-label-lg transition-all bg-primary text-on-primary shadow-sm cursor-pointer" id="tab-restaurants" onclick="switchTab('restaurants')">Restaurants</button>
+<button class="tab-btn px-6 py-2 rounded-full font-label-lg text-label-lg transition-all text-on-surface-variant hover:bg-surface-container-highest cursor-pointer" id="tab-ngos" onclick="switchTab('ngos')">NGOs</button>
+<button class="tab-btn px-6 py-2 rounded-full font-label-lg text-label-lg transition-all text-on-surface-variant hover:bg-surface-container-highest cursor-pointer" id="tab-volunteers" onclick="switchTab('volunteers')">Volunteers</button>
 </div>
 <!-- User Grid / List -->
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter" id="user-list">
-<!-- Cards will be injected here by JS for demo purposes -->
+<!-- Cards injected by JS -->
 </div>
 </div>
 </main>
 </div>
-<!-- BottomNavBar from JSON (Mobile Only) -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface dark:bg-surface-container-lowest shadow-lg flex justify-around items-center px-2 py-3 rounded-t-xl">
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all active:scale-90 duration-200" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-label-md text-label-md">Home</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all active:scale-90 duration-200" href="#">
-<span class="material-symbols-outlined">history</span>
-<span class="font-label-md text-label-md">History</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all active:scale-90 duration-200" href="#">
-<span class="material-symbols-outlined">add_circle</span>
-<span class="font-label-md text-label-md">Donate</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 transition-all active:scale-90 duration-200" href="#">
-<span class="material-symbols-outlined">notifications</span>
-<span class="font-label-md text-label-md">Alerts</span>
-</a>
-<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
-<span class="material-symbols-outlined">person</span>
-<span class="font-label-md text-label-md">Profile</span>
-</a>
-</nav>
+
+<!-- Admin Dossier Modal -->
+<div id="dossierModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+  <div class="bg-surface rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-outline-variant/30 space-y-4 animate-scale-up">
+    <div class="flex items-start justify-between border-b border-surface-container pb-4">
+      <div>
+        <h3 id="dossierName" class="text-xl font-bold text-on-surface">User Dossier</h3>
+        <p id="dossierRole" class="text-xs text-primary font-semibold">Verified Partner</p>
+      </div>
+      <button onclick="closeDossier()" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container text-on-surface-variant">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+    <div class="space-y-3 text-sm text-on-surface-variant" id="dossierBody">
+      <!-- Populated dynamically -->
+    </div>
+    <div class="pt-4 border-t border-surface-container flex justify-end gap-2">
+      <button onclick="closeDossier()" class="px-4 py-2 rounded-lg bg-surface-container text-on-surface font-semibold text-xs hover:bg-surface-variant">Close</button>
+      <button id="dossierActionBtn" class="px-4 py-2 rounded-lg bg-primary text-on-primary font-semibold text-xs hover:brightness-110">Confirm Status</button>
+    </div>
+  </div>
+</div>
+
 <script>
+        let currentCategory = 'restaurants';
         const usersData = {
             restaurants: [
-                { id: 1, name: "Sunset Grill & Bar", verified: true, location: "Downtown District", type: "Restaurant", img: "https://openui.fly.dev/openui/100x100.svg?text=SG" },
-                { id: 2, name: "Urban Harvest Kitchen", verified: false, location: "Westside Park", type: "Bistro", img: "https://openui.fly.dev/openui/100x100.svg?text=UH" },
-                { id: 3, name: "Oceanic Seafood", verified: true, location: "Bay Area", type: "Fine Dining", img: "https://openui.fly.dev/openui/100x100.svg?text=OS" }
+                { id: 1, name: "Sunset Grill & Bar", verified: true, suspended: false, location: "Downtown District, Sector 4", type: "Restaurant & Bakery", fssai: "FSSAI-88392019", contact: "manager@sunsetgrill.com", phone: "+1 (555) 234-5678", img: "https://openui.fly.dev/openui/100x100.svg?text=SG" },
+                { id: 2, name: "Urban Harvest Kitchen", verified: false, suspended: false, location: "Westside Park, 12th Ave", type: "Farm-to-Table Bistro", fssai: "FSSAI-Pending", contact: "ops@urbanharvest.org", phone: "+1 (555) 876-5432", img: "https://openui.fly.dev/openui/100x100.svg?text=UH" },
+                { id: 3, name: "Oceanic Seafood", verified: true, suspended: false, location: "Bay Area Pier 7", type: "Sustainable Seafood", fssai: "FSSAI-90219482", contact: "chef@oceanicsea.com", phone: "+1 (555) 345-6789", img: "https://openui.fly.dev/openui/100x100.svg?text=OS" }
             ],
             ngos: [
-                { id: 4, name: "Community Breadline", verified: true, location: "East End", type: "NGO", img: "https://openui.fly.dev/openui/100x100.svg?text=CB" },
-                { id: 5, name: "Hope Foundation", verified: true, location: "South Hills", type: "NGO", img: "https://openui.fly.dev/openui/100x100.svg?text=HF" }
+                { id: 4, name: "Community Breadline", verified: true, suspended: false, location: "East End Community Hub", type: "Food Bank & Shelter", fssai: "501(c)(3) NGO", contact: "director@breadline.org", phone: "+1 (555) 432-1098", img: "https://openui.fly.dev/openui/100x100.svg?text=CB" },
+                { id: 5, name: "Hope Foundation", verified: true, suspended: false, location: "South Hills Outreach", type: "Youth & Elderly Relief", fssai: "NGO-Reg-44210", contact: "care@hopefoundation.org", phone: "+1 (555) 987-6543", img: "https://openui.fly.dev/openui/100x100.svg?text=HF" }
             ],
             volunteers: [
-                { id: 6, name: "Sarah Mitchell", verified: true, location: "Midtown", type: "Premium Driver", img: "https://openui.fly.dev/openui/100x100.svg?text=SM" },
-                { id: 7, name: "James Wilson", verified: false, location: "North Side", type: "Courier", img: "https://openui.fly.dev/openui/100x100.svg?text=JW" },
-                { id: 8, name: "Elena Rodriguez", verified: true, location: "Central City", type: "Coordinator", img: "https://openui.fly.dev/openui/100x100.svg?text=ER" }
+                { id: 6, name: "Sarah Mitchell", verified: true, suspended: false, location: "Midtown Metro Hub", type: "Premium EV Courier", fssai: "Background Verified", contact: "sarah.m@gmail.com", phone: "+1 (555) 654-3210", img: "https://openui.fly.dev/openui/100x100.svg?text=SM" },
+                { id: 7, name: "James Wilson", verified: false, suspended: false, location: "North Side Station", type: "Bicycle Courier", fssai: "Verification Pending", contact: "jwilson@couriers.net", phone: "+1 (555) 321-7654", img: "https://openui.fly.dev/openui/100x100.svg?text=JW" },
+                { id: 8, name: "Elena Rodriguez", verified: true, suspended: false, location: "Central City Sector 1", type: "Lead Dispatcher", fssai: "Background Verified", contact: "elena.r@gmail.com", phone: "+1 (555) 789-0123", img: "https://openui.fly.dev/openui/100x100.svg?text=ER" }
             ]
         };
 
-        function renderUsers(category) {
+        function renderUsers(category, query = '') {
             const container = document.getElementById('user-list');
             container.innerHTML = '';
             
-            usersData[category].forEach(user => {
+            let list = usersData[category] || [];
+            if (query) {
+                const q = query.toLowerCase().trim();
+                list = list.filter(u => u.name.toLowerCase().includes(q) || u.location.toLowerCase().includes(q) || u.type.toLowerCase().includes(q));
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-on-surface-variant bg-surface-container-low rounded-2xl border border-dashed border-outline-variant">
+                        <span class="material-symbols-outlined text-4xl mb-2 text-outline">search_off</span>
+                        <p class="font-bold">No partners found</p>
+                        <p class="text-xs">Try adjusting your search criteria or switch tabs</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.forEach(user => {
                 const card = document.createElement('div');
                 card.className = "bg-white p-6 rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-surface-container-high hover:shadow-lg transition-all group flex flex-col justify-between";
                 
-                const verifiedBadge = user.verified 
-                    ? `<span class="flex items-center gap-1 bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                let verifiedBadge;
+                if (user.suspended) {
+                    verifiedBadge = `<span class="flex items-center gap-1 bg-error-container text-error px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                        <span class="material-symbols-outlined text-sm">block</span> Suspended
+                    </span>`;
+                } else if (user.verified) {
+                    verifiedBadge = `<span class="flex items-center gap-1 bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
-                       </span>`
-                    : `<span class="flex items-center gap-1 bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                       </span>`;
+                } else {
+                    verifiedBadge = `<span class="flex items-center gap-1 bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                          <span class="material-symbols-outlined text-sm">hourglass_empty</span> Pending
                        </span>`;
+                }
 
                 card.innerHTML = `
                     <div class="flex items-start justify-between mb-stack-md">
                         <div class="flex items-center gap-stack-md">
                             <div class="w-16 h-16 rounded-xl bg-surface-container overflow-hidden">
-                                <img src="${user.img}" alt="${user.name}" data-alt="A detailed professional profile portrait of ${user.name}, who is a ${user.type} in the food logistics industry. The photo features natural lighting, a minimalist blurred background of a modern food distribution center, and a clean, high-end editorial look. The color palette follows the Emerald Green and light sand aesthetic of the brand.">
+                                <img src="${user.img}" alt="${user.name}" class="w-full h-full object-cover">
                             </div>
                             <div class="flex flex-col">
                                 <h3 class="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors">${user.name}</h3>
-                                <span class="text-on-surface-variant flex items-center gap-1">
+                                <span class="text-on-surface-variant flex items-center gap-1 text-xs">
                                     <span class="material-symbols-outlined text-sm">location_on</span>
                                     ${user.location}
                                 </span>
+                                <span class="text-[11px] text-outline font-medium mt-0.5">${user.type}</span>
                             </div>
                         </div>
                         ${verifiedBadge}
                     </div>
                     
                     <div class="mt-4 pt-4 border-t border-surface-container flex flex-wrap gap-2">
-                        <button class="flex-1 min-w-[100px] py-2 px-3 bg-primary text-on-primary rounded-lg font-label-lg text-label-lg hover:shadow-md active:scale-95 transition-all">View Dossier</button>
-                        ${!user.verified ? `<button class="flex-1 min-w-[100px] py-2 px-3 bg-primary-container text-on-primary-container rounded-lg font-label-lg text-label-lg hover:opacity-90 active:scale-95 transition-all">Approve</button>` : ''}
-                        <button class="flex-1 min-w-[100px] py-2 px-3 bg-error-container text-error rounded-lg font-label-lg text-label-lg hover:bg-error hover:text-on-error active:scale-95 transition-all">Suspend</button>
+                        <button onclick="viewDossier(${user.id})" class="flex-1 min-w-[90px] py-2 px-3 bg-surface-container hover:bg-surface-variant text-on-surface rounded-lg font-label-md text-label-md transition-all">View Dossier</button>
+                        ${!user.verified && !user.suspended ? `<button onclick="approveUser(${user.id})" class="flex-1 min-w-[90px] py-2 px-3 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:brightness-110 active:scale-95 transition-all">Approve</button>` : ''}
+                        <button onclick="toggleSuspendUser(${user.id})" class="flex-1 min-w-[90px] py-2 px-3 ${user.suspended ? 'bg-primary/10 text-primary border border-primary/30' : 'bg-error-container text-error hover:bg-error hover:text-on-error'} rounded-lg font-label-md text-label-md active:scale-95 transition-all">${user.suspended ? 'Reactivate' : 'Suspend'}</button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
+        function filterUsers() {
+            const query = document.getElementById('user-search-input')?.value || '';
+            renderUsers(currentCategory, query);
+        }
+
         function switchTab(category) {
-            // Update UI buttons
+            currentCategory = category;
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
                 btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container-highest');
             });
             
             const activeBtn = document.getElementById(`tab-${category}`);
-            activeBtn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
-            activeBtn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-highest');
+            if (activeBtn) {
+                activeBtn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+                activeBtn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-highest');
+            }
 
-            // Render content
-            renderUsers(category);
+            const query = document.getElementById('user-search-input')?.value || '';
+            renderUsers(category, query);
         }
 
-        // Initialize
-        switchTab('restaurants');
+        function findUser(id) {
+            for (const cat of Object.keys(usersData)) {
+                const u = usersData[cat].find(x => x.id === id);
+                if (u) return { user: u, cat };
+            }
+            return null;
+        }
+
+        function approveUser(id) {
+            const found = findUser(id);
+            if (found) {
+                found.user.verified = true;
+                found.user.suspended = false;
+                filterUsers();
+            }
+        }
+
+        function toggleSuspendUser(id) {
+            const found = findUser(id);
+            if (found) {
+                found.user.suspended = !found.user.suspended;
+                filterUsers();
+            }
+        }
+
+        function viewDossier(id) {
+            const found = findUser(id);
+            if (!found) return;
+            const u = found.user;
+            document.getElementById('dossierName').textContent = u.name;
+            document.getElementById('dossierRole').textContent = `${u.type} · ${found.cat.toUpperCase()}`;
+            document.getElementById('dossierBody').innerHTML = `
+                <div class="grid grid-cols-2 gap-3 bg-surface-container-low p-4 rounded-xl border border-outline-variant/30">
+                    <div>
+                        <p class="text-xs text-outline">Operating Address</p>
+                        <p class="font-medium text-on-surface">${u.location}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-outline">Registration / License</p>
+                        <p class="font-medium text-primary">${u.fssai}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-outline">Direct Contact Email</p>
+                        <p class="font-medium text-on-surface">${u.contact}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-outline">Verified Phone Number</p>
+                        <p class="font-medium text-on-surface">${u.phone}</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-on-surface-variant">
+                    <span class="material-symbols-outlined text-sm text-primary">security</span>
+                    <span>All credentials cross-referenced against the Ministry of Food Processing regulatory database.</span>
+                </div>
+            `;
+            const actionBtn = document.getElementById('dossierActionBtn');
+            if (!u.verified) {
+                actionBtn.textContent = 'Approve Partner';
+                actionBtn.onclick = () => { approveUser(id); closeDossier(); };
+            } else if (u.suspended) {
+                actionBtn.textContent = 'Reactivate Partner';
+                actionBtn.onclick = () => { toggleSuspendUser(id); closeDossier(); };
+            } else {
+                actionBtn.textContent = 'Suspend Partner';
+                actionBtn.onclick = () => { toggleSuspendUser(id); closeDossier(); };
+            }
+            document.getElementById('dossierModal').classList.remove('hidden');
+        }
+
+        function closeDossier() {
+            document.getElementById('dossierModal').classList.add('hidden');
+        }
+
+        // Initialize from URL params or default
+        const urlParams = new URLSearchParams(window.location.search);
+        const reqRole = urlParams.get('role');
+        if (reqRole && (reqRole.includes('ngo') || reqRole === 'ngos')) switchTab('ngos');
+        else if (reqRole && (reqRole.includes('volunteer') || reqRole === 'volunteers')) switchTab('volunteers');
+        else switchTab('restaurants');
     </script>
-<script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/approvals/restaurant").then(d=>console.log("User Management loaded:",d?.data)).catch(e=>console.warn("User Management",e.message));});</script><script src="nav.js"></script><script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/approvals/restaurant").then(d=>console.log("User Management loaded:",d?.data)).catch(e=>console.warn("User Management",e.message));});</script><script src="js/api.js"></script><script src="js/nav.js"></script></body></html>
+<script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/approvals/restaurant").then(d=>console.log("User Management loaded:",d?.data)).catch(e=>console.warn("User Management",e.message));});</script><script src="nav.js"></script><script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/approvals/restaurant").then(d=>console.log("User Management loaded:",d?.data)).catch(e=>console.warn("User Management",e.message));});</script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
+<script src="js/ui.js"></script></body></html>
 

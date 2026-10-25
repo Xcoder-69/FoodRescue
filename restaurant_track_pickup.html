@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Track Pickup | FoodRescue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(.33); opacity: 1; }
+            80%, 100% { transform: scale(1.5); opacity: 0; }
+        }
+        .pulse-dot {
+            position: relative;
+        }
+        .pulse-dot::before {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 300%;
+            height: 300%;
+            box-sizing: border-box;
+            margin-left: -100%;
+            margin-top: -100%;
+            border-radius: 45px;
+            background-color: #006c49;
+            animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-secondary-fixed-variant": "#783200",
+                "on-primary": "#ffffff",
+                "surface-variant": "#dde4dd",
+                "tertiary": "#0053db",
+                "surface-container-high": "#e3eae3",
+                "surface": "#f4fbf4",
+                "on-tertiary-fixed-variant": "#003ea8",
+                "background": "#f4fbf4",
+                "primary-fixed": "#6ffbbe",
+                "primary-container": "#10b981",
+                "secondary-fixed": "#ffdbca",
+                "on-tertiary-container": "#00328b",
+                "surface-bright": "#f4fbf4",
+                "surface-container": "#e8f0e9",
+                "on-secondary": "#ffffff",
+                "secondary": "#9d4300",
+                "on-primary-fixed": "#002113",
+                "tertiary-fixed": "#dbe1ff",
+                "primary-fixed-dim": "#4edea3",
+                "on-background": "#161d19",
+                "error": "#ba1a1a",
+                "error-container": "#ffdad6",
+                "on-secondary-container": "#5c2400",
+                "on-primary-container": "#00422b",
+                "on-primary-fixed-variant": "#005236",
+                "surface-container-lowest": "#ffffff",
+                "secondary-container": "#fd761a",
+                "on-surface-variant": "#3c4a42",
+                "inverse-surface": "#2b322d",
+                "surface-container-low": "#eef6ee",
+                "inverse-on-surface": "#ebf3eb",
+                "on-tertiary-fixed": "#00174b",
+                "tertiary-fixed-dim": "#b4c5ff",
+                "on-tertiary": "#ffffff",
+                "secondary-fixed-dim": "#ffb690",
+                "surface-tint": "#006c49",
+                "outline": "#6c7a71",
+                "surface-dim": "#d4dcd5",
+                "on-secondary-fixed": "#341100",
+                "tertiary-container": "#7f9fff",
+                "on-error": "#ffffff",
+                "inverse-primary": "#4edea3",
+                "on-error-container": "#93000a",
+                "outline-variant": "#bbcabf",
+                "on-surface": "#161d19",
+                "primary": "#006c49",
+                "surface-container-highest": "#dde4dd"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "stack-md": "16px",
+                "stack-lg": "32px",
+                "container-padding-mobile": "16px",
+                "stack-sm": "8px",
+                "gutter": "24px",
+                "container-padding-desktop": "32px",
+                "unit": "4px"
+              },
+              "fontFamily": {
+                "label-lg": ["Inter"],
+                "headline-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-lg-mobile": ["Inter"],
+                "body-lg": ["Inter"],
+                "label-md": ["Inter"],
+                "display-lg": ["Inter"],
+                "title-lg": ["Inter"]
+              },
+              "fontSize": {
+                "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-lg min-h-screen lg:pl-80">
+<!-- Desktop Sidebar - Permanent Restaurant Navigation -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-80 border-r border-outline-variant bg-surface-container shadow-md z-50 overflow-y-auto">
+  <div style="padding:24px 24px 8px;">
+    <h1 class="font-headline-lg text-headline-lg font-black text-primary">FoodRescue</h1>
+  </div>
+  <div style="padding:0 16px 20px;">
+    <div class="flex items-center gap-3 bg-surface-container-lowest p-3 rounded-2xl shadow-sm border border-outline-variant/30">
+      <img alt="Restaurant Admin" class="w-11 h-11 rounded-full object-cover border-2 border-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsiEPwb6K7ZH-WAcp9aKEljSsVPMVe775TznMjxjp2bb2RNtDr6QatRqs4fA1YViudsOot_oXxdOzJBGpU2R2zZ_BWVPXSWKG8SO6z9ENjM2lg1W-et17dgjwhcK2D1zjxX9RobCJheOZHzs9QiW4e0y4PmvoNI1R-PvOWw-1g5Agwq5i0DAdtjHksepo1m5913nhB3EOvKZjggK6FGE00zgUUVKS6HviaHriZmUzq03eNWqQNyjylVsDzc3UL7YWiWLfrEkv_Oy4"/>
+      <div>
+        <p class="font-label-lg text-label-lg font-bold text-on-surface">Green Table Bistro</p>
+        <p class="text-xs text-on-surface-variant">Premium Partner</p>
+      </div>
+    </div>
+  </div>
+  <nav class="flex-1 space-y-0.5 px-3">
+    <a data-no-nav="true" href="7_restaurant_dashboard.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">grid_view</span>
+      <span class="font-body-lg text-body-lg">Dashboard</span>
+    </a>
+    <a data-no-nav="true" href="8_create_food_donation.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">add_circle</span>
+      <span class="font-body-lg text-body-lg">Donate Food</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_donation_history.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">receipt_long</span>
+      <span class="font-body-lg text-body-lg">Donation History</span>
+    </a>
+    <!-- Track Pickups (Active) -->
+    <a data-no-nav="true" href="restaurant_track_pickup.html" class="flex items-center gap-3 bg-primary text-on-primary px-4 py-3 rounded-xl shadow-sm transition-all duration-150">
+      <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">local_shipping</span>
+      <span class="font-body-lg text-body-lg font-semibold">Track Pickups</span>
+    </a>
+    <a data-no-nav="true" href="14_chat_and_coordination.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">chat</span>
+      <span class="font-body-lg text-body-lg">Coordination Chat</span>
+    </a>
+    <a data-no-nav="true" href="13_impact_analytics.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">leaderboard</span>
+      <span class="font-body-lg text-body-lg">Impact Analytics</span>
+    </a>
+    <a data-no-nav="true" href="11_notifications.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">notifications</span>
+      <span class="font-body-lg text-body-lg">Notifications</span>
+    </a>
+    <div class="h-px bg-outline-variant mx-1 my-2"></div>
+    <a data-no-nav="true" href="12_profile.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">person</span>
+      <span class="font-body-lg text-body-lg">Profile</span>
+    </a>
+    <a data-no-nav="true" href="restaurant_settings.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">settings</span>
+      <span class="font-body-lg text-body-lg">Settings</span>
+    </a>
+  </nav>
+  <div class="p-4 border-t border-outline-variant">
+    <a data-no-nav="true" href="#" onclick="localStorage.clear(); window.location.href='1_splash_screen.html'; return false;" class="flex items-center gap-3 text-error px-4 py-3 rounded-xl hover:bg-red-50 transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px]">logout</span>
+      <span class="font-body-lg text-body-lg font-semibold">Logout</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Main Content Area -->
+<main class="pb-24 lg:pb-12">
+<!-- Sticky Top Bar -->
+<header class="sticky top-0 z-30 bg-surface/80 backdrop-blur-md shadow-sm w-full">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-stack-sm w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<button class="lg:hidden p-2 text-primary hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary">Track Pickup</h1>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 text-primary hover:bg-surface-container-low rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary-container rounded-full border-2 border-surface"></span>
+</button>
+</div>
+</div>
+</header>
+<div class="max-w-5xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-stack-md space-y-stack-lg">
+<!-- Active Pickup Card -->
+<div id="no-pickup-message" class="hidden text-center p-8 bg-surface-container-low rounded-2xl text-on-surface-variant">
+    <span class="material-symbols-outlined text-4xl mb-2">local_shipping</span>
+    <p>You have no active collections to track.</p>
+</div>
+<section id="active-pickup-card" class="relative bg-white/60 backdrop-blur-xl border border-white/40 shadow-xl rounded-[2rem] overflow-hidden p-stack-lg">
+<div class="flex flex-col md:flex-row gap-stack-lg justify-between mb-8">
+<div class="space-y-stack-sm">
+<span id="track-status" class="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full font-label-lg text-label-lg uppercase tracking-wider">Active Collection</span>
+<h2 class="font-display-lg text-[40px] md:text-display-lg leading-tight text-primary">Live</h2>
+<p id="track-volunteer-title" class="font-title-lg text-title-lg text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-primary filled-icon">near_me</span>
+                            Volunteer is En Route
+                        </p>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-2xl self-start">
+<div class="w-14 h-14 rounded-full overflow-hidden shadow-md">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a friendly volunteer driver named Mike. He is wearing a green FoodRescue branded polo shirt and has a warm, helpful expression. Soft outdoor daylight illuminates his face. The photo is high-quality with a slight blur in the background showing a clean white delivery van." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjG4pKjq42GDgkfKin9bVcRy1SArL1a41dR5PML7vWbAwnrJIHMcnXftglPj_RUv4Xxm5ls8rkSvHyYsDcVdRKO-E4ov2z1nBy0g7DcJ_O_EGXT1l3d4ZSJ1WQhj5qfbkJbrr-AzuugSbOAp3v-lKsnNC7Cx5b6rcA4Q0mcxPiKbmm4iZLFUJlA3XIZe3BITXSiAl3pElyj8sVIfbSHqU4jFvlfenyCbm9O22e6VIK3xm_XU029AVeSPLsGw1JCBj-7JgnmIJRG4E"/>
+</div>
+<div>
+<p id="track-volunteer-name" class="font-label-lg text-label-lg font-bold">Unassigned</p>
+<div class="flex items-center text-secondary">
+<span class="material-symbols-outlined text-sm filled-icon">star</span>
+<span class="font-label-md text-label-md ml-1">4.9 Volunteer Rating</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Horizontal Stepper -->
+<div class="relative py-8">
+<div class="absolute top-1/2 left-0 w-full h-1 bg-surface-variant -translate-y-1/2"></div>
+<div class="absolute top-1/2 left-0 w-2/3 h-1 bg-primary -translate-y-1/2 transition-all duration-1000 ease-in-out"></div>
+<div class="relative flex justify-between">
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-md z-10">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Donated</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-md z-10">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Assigned</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-10 h-10 -mt-1 rounded-full bg-primary-container border-4 border-white text-on-primary-container flex items-center justify-center shadow-lg z-10 animate-pulse">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<span class="font-label-lg text-label-lg text-primary font-bold">En Route</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center z-10"></div>
+<span class="font-label-md text-label-md text-on-surface-variant opacity-50">Delivered</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md mt-6 pt-6 border-t border-outline-variant/30">
+<div class="space-y-1">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wide">Food Details</p>
+<p id="track-food-details" class="font-title-lg text-title-lg text-on-surface">...</p>
+</div>
+<div class="space-y-1">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wide">Destination</p>
+<p id="track-destination" class="font-title-lg text-title-lg text-on-surface">...</p>
+</div>
+</div>
+</section>
+<!-- Map Placeholder -->
+<section id="map-placeholder" class="relative h-80 rounded-[2rem] overflow-hidden shadow-lg border border-outline-variant/20 z-0">
+<div id="map-container" class="w-full h-full relative z-0"></div>
+</section>
+<!-- Contact Actions -->
+<div class="grid grid-cols-2 gap-stack-md">
+<button class="flex items-center justify-center gap-2 py-4 px-6 bg-secondary-container text-white rounded-2xl font-label-lg text-label-lg hover:brightness-110 active:scale-95 transition-all shadow-md">
+<span class="material-symbols-outlined">call</span>
+                    Call Volunteer
+                </button>
+<button class="flex items-center justify-center gap-2 py-4 px-6 border-2 border-primary text-primary rounded-2xl font-label-lg text-label-lg hover:bg-primary/5 active:scale-95 transition-all">
+<span class="material-symbols-outlined">chat_bubble</span>
+                    Send Message
+                </button>
+</div>
+<!-- Past Collections -->
+<section class="space-y-stack-md pt-stack-lg">
+<div class="flex justify-between items-end">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Past Collections</h3>
+<a class="font-label-lg text-label-lg text-primary hover:underline" href="#">View All</a>
+</div>
+<div class="bg-surface-container-lowest rounded-3xl border border-outline-variant/30 overflow-hidden shadow-sm">
+<!-- Row 1 -->
+<div class="flex items-center justify-between p-stack-md hover:bg-surface-container-low transition-colors border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">lunch_dining</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-bold">Assorted Pastries</p>
+<p class="font-label-md text-label-md text-on-surface-variant">with Sarah Jenkins</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-lg text-label-lg text-primary-container font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                Delivered
+                            </p>
+<p class="font-label-md text-label-md text-on-surface-variant">Oct 24, 2023</p>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center justify-between p-stack-md hover:bg-surface-container-low transition-colors border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">bakery_dining</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-bold">Sourdough Loaves (20)</p>
+<p class="font-label-md text-label-md text-on-surface-variant">with Leo Martinez</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-lg text-label-lg text-primary-container font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                Delivered
+                            </p>
+<p class="font-label-md text-label-md text-on-surface-variant">Oct 22, 2023</p>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="flex items-center justify-between p-stack-md hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">soup_kitchen</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-bold">Fresh Salad Trays</p>
+<p class="font-label-md text-label-md text-on-surface-variant">with Emily Blunt</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-lg text-label-lg text-primary-container font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                Delivered
+                            </p>
+<p class="font-label-md text-label-md text-on-surface-variant">Oct 20, 2023</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Mobile Bottom Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface dark:bg-surface-container-lowest shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined filled-icon">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 transition-all" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-md text-label-md">Donate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 transition-all" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-primary-fixed-dim/20 px-4 py-1 transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and simple state handling
+        // Micro-interactions and simple state handling
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('FoodRescue Tracking Initialized');
+            
+            // Initialize Map
+            const map = L.map('map-container', { zoomControl: false }).setView([20.5937, 78.9629], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        map.setView([lat, lng], 15);
+                        
+                        const customIcon = L.divIcon({
+                            className: 'custom-div-icon',
+                            html: '<div class="pulse-dot w-6 h-6 bg-primary rounded-full border-2 border-white shadow-xl"></div><div style="white-space:nowrap;transform:translate(-30px,-50px);" class="absolute bg-white px-3 py-1 rounded-xl shadow-lg border border-outline-variant/20 font-bold text-on-surface">Volunteer</div>',
+                            iconSize: [24, 24],
+                            iconAnchor: [12, 12]
+                        });
+                        L.marker([lat, lng], {icon: customIcon}).addTo(map);
+                    },
+                    (error) => {
+                        console.warn('Geolocation failed or denied:', error);
+                    },
+                    { timeout: 10000 }
+                );
+            }
+
+            // Fetch live data
+            if (window.ApiClient) {
+                try {
+                    const res = await ApiClient.get('/donations');
+                    // Find first donation that is ASSIGNED or CLAIMED (in progress)
+                    const activeDonation = (res.data || []).find(d => ['CLAIMED', 'ASSIGNED'].includes(d.status));
+                    
+                    if (!activeDonation) {
+                        document.getElementById('active-pickup-card').classList.add('hidden');
+                        document.getElementById('map-placeholder').classList.add('hidden');
+                        document.getElementById('no-pickup-message').classList.remove('hidden');
+                    } else {
+                        const foodTitle = activeDonation.foodDetails?.title || activeDonation.title || 'Food Donation';
+                        const qty = activeDonation.foodDetails?.quantity || activeDonation.weight || '0';
+                        document.getElementById('track-food-details').textContent = `${foodTitle} - ${qty} kg`;
+                        document.getElementById('track-status').textContent = activeDonation.status;
+                        
+                        if (activeDonation.ngoName) {
+                            document.getElementById('track-destination').textContent = activeDonation.ngoName;
+                        }
+                        if (activeDonation.volunteerName) {
+                            document.getElementById('track-volunteer-name').textContent = activeDonation.volunteerName;
+                            document.getElementById('track-volunteer-title').innerHTML = `<span class="material-symbols-outlined text-primary filled-icon">near_me</span> ${activeDonation.volunteerName} is En Route`;
+                        }
+                    }
+                } catch(e) {
+                    console.error('Failed to load tracking data', e);
+                }
+            }
+
+            // Notification dot toggle simulation
+            const notifyBtn = document.querySelector('header button .material-symbols-outlined');
+            if (notifyBtn) {
+                notifyBtn.addEventListener('click', () => {
+                    const dot = document.querySelector('header button span.absolute');
+                    if(dot) dot.classList.toggle('hidden');
+                });
+            }
+
+            // Smooth entrance for history rows
+            const rows = document.querySelectorAll('section div.hover\\:bg-surface-container-low');
+            rows.forEach((row, index) => {
+                row.style.opacity = '0';
+                row.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    row.style.transition = 'all 0.4s ease-out';
+                    row.style.opacity = '1';
+                    row.style.transform = 'translateY(0)';
+                }, 400 + (index * 100));
+            });
+        });
+    </script>
+<script src="js/ui.js"></script><script src="js/testmode.js"></script><script src="js/wire_new_pages.js"></script></body></html>

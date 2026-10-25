@@ -15,7 +15,7 @@ const generateTokens = async (uid, role, sessionId, is2FAVerified = false) => {
   const accessToken = jwt.sign(
     { uid, role, sessionId, is2FAVerified },
     process.env.JWT_ACCESS_SECRET,
-    { expiresIn: '15m' } // Short-lived
+    { expiresIn: '1h' } // Extended to 1h for multi-step registration flow
   );
 
   const refreshToken = jwt.sign(
@@ -82,9 +82,9 @@ class AuthService {
       const OTPService = require('./otp.service');
       await OTPService.sendVerifyOTP(normEmail);
       
-      // Send Welcome Email
+      // Send role-specific Welcome Email after OTP
       const EmailService = require('../email/email.service');
-      await EmailService.sendWelcomeEmail(normEmail, normEmail.split('@')[0], role || 'volunteer', user.uid);
+      await EmailService.sendWelcomeEmail(normEmail, normEmail.split('@')[0], role || 'volunteer', uid);
     } catch (e) {
       console.warn('Verification/Welcome email failed (non-fatal):', e.message);
     }
@@ -102,7 +102,7 @@ class AuthService {
     const snapshot = await usersRef.where('email', '==', email.toLowerCase()).limit(1).get();
     
     if (snapshot.empty) {
-      throw new Error('Invalid credentials');
+      throw new Error('No account found with this email. Please register first.');
     }
 
     const userDoc = snapshot.docs[0];
@@ -112,7 +112,7 @@ class AuthService {
     if (user.authProvider !== 'email') throw new Error('Use Google Login');
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!isMatch) throw new Error('Invalid credentials');
+    if (!isMatch) throw new Error('Incorrect password. Please try again.');
 
     const sessionId = await createSession(user.uid, ipAddress, deviceId);
     
@@ -254,6 +254,30 @@ class AuthService {
       }
       
       await sessionRef.delete();
+      return { success: true };
+  }
+
+  static async changePassword(uid, currentPassword, newPassword) {
+      const userRef = db.collection('users').doc(uid);
+      const doc = await userRef.get();
+
+      if (!doc.exists) {
+          throw new Error("User not found");
+      }
+
+      const userData = doc.data();
+
+      // Verify current password
+      const isMatch = await bcrypt.compare(currentPassword, userData.password);
+      if (!isMatch) {
+          throw new Error("Invalid current password");
+      }
+
+      // Hash and update new password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+      await userRef.update({ password: hashedPassword });
       return { success: true };
   }
 }

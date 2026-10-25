@@ -89,8 +89,8 @@ test.describe('NGO Registration QA - End to End', () => {
     await expect(page.locator('#otpSection')).toBeVisible();
 
     const otpInputs = page.locator('.otp-input');
-    for(let i=0; i<6; i++) {
-        await otpInputs.nth(i).fill('0');
+    for (let i = 0; i < 6; i++) {
+      await otpInputs.nth(i).fill('0');
     }
     await page.evaluate(() => document.getElementById('verifyOtpBtn').click());
     

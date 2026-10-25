@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>FoodRescue | Impact Analytics</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -104,7 +106,32 @@
         body { font-family: 'Inter', sans-serif; background-color: #f4fbf4; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .chart-bar { transition: height 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* ── Fixed-height chart bars ── */
+        .ia-chart-wrap { position:relative; width:100%; height:260px; }
+        .ia-chart-inner { display:flex; align-items:flex-end; justify-content:space-between; gap:8px; height:100%; padding-bottom:28px; }
+        .ia-group { display:flex; align-items:flex-end; gap:3px; flex:1; height:100%; }
+        .ia-bar {
+            flex:1; border-radius:6px 6px 0 0;
+            height: 0px;
+            position: relative;
+        }
+        .ia-bar::after {
+            content: attr(data-val);
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-weight: 600;
+            color: #6c7a71;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.5s;
+        }
+        .ia-bar.visible::after { opacity: 1; }
+        .ia-label { position:absolute; bottom:0; font-size:11px; font-weight:600; color:#6c7a71; text-align:center; width:100%; }
+        .ia-group-wrap { display:flex; flex-direction:column; align-items:center; flex:1; height:100%; }
+        .ia-group-wrap .ia-label-b { margin-top:6px; font-size:11px; font-weight:600; color:#6c7a71; }
+        /* ── Gauge ── */
         .gauge-svg { transform: rotate(-90deg); }
     </style>
 <style>
@@ -134,13 +161,10 @@
 <h2 class="font-headline-lg text-headline-lg text-on-surface">Impact Analytics</h2>
 <p class="font-body-md text-on-surface-variant">Real-time visualization of community nourishment and waste reduction.</p>
 </div>
-<div class="flex items-center gap-stack-sm bg-surface-container-lowest p-unit rounded-xl shadow-sm border border-outline-variant">
-<button class="px-4 py-2 font-label-lg text-label-lg text-primary bg-primary-container/20 rounded-lg">Last 30 Days</button>
-<button class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors">Quarterly</button>
-<button class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors flex items-center gap-2">
-<span class="material-symbols-outlined text-[18px]">calendar_today</span>
-                    Custom
-                </button>
+<div class="flex items-center gap-stack-sm bg-surface-container-lowest p-unit rounded-xl shadow-sm border border-outline-variant flex-wrap relative">
+<button data-no-nav="true" id="btn-monthly" onclick="setPeriod('monthly')" class="period-btn px-4 py-2 font-label-lg text-label-lg text-primary bg-primary-container/20 rounded-lg transition-colors">Last 30 Days</button>
+<button data-no-nav="true" id="btn-weekly" onclick="setPeriod('weekly')" class="period-btn px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-variant/30 rounded-lg transition-colors">Weekly</button>
+
 </div>
 </div>
 <!-- Summary Cards Grid -->
@@ -155,7 +179,7 @@
 </div>
 <h3 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Meals Rescued</h3>
 <div class="flex items-baseline gap-2 mt-unit">
-<span class="font-display-lg text-display-lg text-primary">12,482</span>
+<span class="font-display-lg text-display-lg text-primary" id="stat-meals">12,482</span>
 <span class="font-body-md text-body-md text-on-surface-variant">plates</span>
 </div>
 <div class="mt-stack-md h-12 w-full flex items-end gap-1">
@@ -174,7 +198,7 @@
 </div>
 <h3 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Carbon Saved</h3>
 <div class="flex items-baseline gap-2 mt-unit">
-<span class="font-display-lg text-display-lg text-[#FACC15]">4.2</span>
+<span class="font-display-lg text-display-lg text-[#FACC15]" id="stat-carbon">4.2</span>
 <span class="font-body-md text-body-md text-on-surface-variant">Metric Tons CO2</span>
 </div>
 <p class="mt-stack-md font-body-md text-body-md text-on-surface-variant italic">Equivalent to planting 192 trees this month.</p>
@@ -187,7 +211,7 @@
 </div>
 <h3 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Lives Touched</h3>
 <div class="flex items-baseline gap-2 mt-unit">
-<span class="font-display-lg text-display-lg text-[#10B981]">3,150</span>
+<span class="font-display-lg text-display-lg text-[#10B981]" id="stat-lives">3,150</span>
 <span class="font-body-md text-body-md text-on-surface-variant">Individuals</span>
 </div>
 <div class="flex -space-x-2 mt-stack-md">
@@ -200,79 +224,89 @@
 </div>
 <!-- Main Content Area: Bento Style -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-<!-- Weekly Donation Trends Bar Chart -->
-<div class="lg:col-span-8 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 h-[400px] flex flex-col">
-<div class="flex justify-between items-center mb-stack-lg">
-<h3 class="font-title-lg text-title-lg text-on-surface">Weekly Donation Trends</h3>
-<div class="flex items-center gap-4">
-<div class="flex items-center gap-2">
-<div class="w-3 h-3 rounded-full bg-primary"></div>
-<span class="font-label-md text-label-md text-on-surface-variant">Rescued</span>
-</div>
-<div class="flex items-center gap-2">
-<div class="w-3 h-3 rounded-full bg-secondary-container"></div>
-<span class="font-label-md text-label-md text-on-surface-variant">Donated</span>
-</div>
-</div>
-</div>
-<div class="flex-grow flex items-end justify-between px-stack-md gap-4">
-<!-- Monday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 45%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 30%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Mon</span>
-</div>
-<!-- Tuesday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 65%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 55%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Tue</span>
-</div>
-<!-- Wednesday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 85%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 70%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Wed</span>
-</div>
-<!-- Thursday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 55%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 40%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Thu</span>
-</div>
-<!-- Friday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 95%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 80%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Fri</span>
-</div>
-<!-- Saturday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 40%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 35%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Sat</span>
-</div>
-<!-- Sunday -->
-<div class="flex-grow flex flex-col items-center gap-2">
-<div class="w-full flex gap-1 items-end h-full">
-<div class="chart-bar w-1/2 bg-primary rounded-t-lg" style="height: 30%;"></div>
-<div class="chart-bar w-1/2 bg-secondary-container rounded-t-lg" style="height: 25%;"></div>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Sun</span>
-</div>
-</div>
+<!-- Weekly Donation Trends Bar Chart (fixed-height CSS chart) -->
+<div class="lg:col-span-8 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 flex flex-col">
+  <div class="flex justify-between items-center mb-stack-lg">
+    <h3 class="font-title-lg text-title-lg text-on-surface">Weekly Donation Trends</h3>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-primary"></div>
+        <span class="font-label-md text-label-md text-on-surface-variant">Rescued</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-secondary-container"></div>
+        <span class="font-label-md text-label-md text-on-surface-variant">Donated</span>
+      </div>
+    </div>
+  </div>
+  <!-- ── Chart area: fixed pixel height so % heights work ── -->
+  <div style="position:relative;width:100%;height:260px;">
+    <div style="display:flex;align-items:flex-end;gap:10px;height:232px;padding:0 4px;">
+      <!-- Mon -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="45" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="30" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Mon</span>
+      </div>
+      <!-- Tue -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="65" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .05s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="55" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .05s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Tue</span>
+      </div>
+      <!-- Wed -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="85" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .10s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="70" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .10s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Wed</span>
+      </div>
+      <!-- Thu -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="55" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .15s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="40" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .15s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Thu</span>
+      </div>
+      <!-- Fri (peak) -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="95" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .20s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="80" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .20s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Fri</span>
+      </div>
+      <!-- Sat -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="40" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .25s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="35" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .25s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Sat</span>
+      </div>
+      <!-- Sun -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:200px;width:100%;">
+          <div class="ia-bar" data-h="30" style="flex:1;background:#006c49;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s .30s cubic-bezier(.22,1,.36,1);"></div>
+          <div class="ia-bar" data-h="25" style="flex:1;background:#fd761a;border-radius:6px 6px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .75s .30s cubic-bezier(.22,1,.36,1);"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#6c7a71;margin-top:8px;">Sun</span>
+      </div>
+    </div>
+    <!-- Gridlines -->
+    <div style="position:absolute;top:0;left:0;right:0;height:200px;pointer-events:none;">
+      <div style="position:absolute;bottom:0;left:0;right:0;border-top:1px dashed rgba(187,202,191,.5);"></div>
+      <div style="position:absolute;bottom:25%;left:0;right:0;border-top:1px dashed rgba(187,202,191,.35);"></div>
+      <div style="position:absolute;bottom:50%;left:0;right:0;border-top:1px dashed rgba(187,202,191,.35);"></div>
+      <div style="position:absolute;bottom:75%;left:0;right:0;border-top:1px dashed rgba(187,202,191,.35);"></div>
+    </div>
+  </div>
 </div>
 <!-- Monthly Goal Gauge -->
 <div class="lg:col-span-4 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 flex flex-col items-center justify-center text-center">
@@ -283,12 +317,11 @@
 <circle cx="50" cy="50" fill="transparent" r="40" stroke="#006c49" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round" stroke-width="8"></circle>
 </svg>
 <div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="font-display-lg text-[32px] font-bold text-on-surface">75%</span>
+<span class="font-display-lg text-[32px] font-bold text-on-surface" id="stat-goal-pct">75%</span>
 <span class="font-label-md text-label-md text-on-surface-variant">Achieved</span>
 </div>
 </div>
-<p class="font-body-md text-body-md text-on-surface-variant">9,375 / 12,500 meals target reached for September.</p>
-<button class="mt-stack-md w-full bg-primary hover:bg-on-primary-fixed-variant text-white font-label-lg py-3 rounded-xl shadow-md transition-all active:scale-95 duration-200">Boost Outreach</button>
+<p class="font-body-md text-body-md text-on-surface-variant" id="stat-goal-text">9,375 / 12,500 meals target reached for September.</p>
 </div>
 <!-- Top Partners -->
 <div class="lg:col-span-7 bg-surface-container-lowest p-stack-lg rounded-2xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30">
@@ -305,7 +338,7 @@
 </div>
 <div>
 <h4 class="font-label-lg text-label-lg text-on-surface">Green Garden Bistro</h4>
-<p class="font-label-md text-label-md text-on-surface-variant">Restaurant • 5km away</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Restaurant  5km away</p>
 </div>
 </div>
 <div class="text-right">
@@ -321,7 +354,7 @@
 </div>
 <div>
 <h4 class="font-label-lg text-label-lg text-on-surface">St. Jude Community Kitchen</h4>
-<p class="font-label-md text-label-md text-on-surface-variant">NGO • Local Hub</p>
+<p class="font-label-md text-label-md text-on-surface-variant">NGO  Local Hub</p>
 </div>
 </div>
 <div class="text-right">
@@ -337,7 +370,7 @@
 </div>
 <div>
 <h4 class="font-label-lg text-label-lg text-on-surface">Organic Mart &amp; Co.</h4>
-<p class="font-label-md text-label-md text-on-surface-variant">Retail • 12 locations</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Retail  12 locations</p>
 </div>
 </div>
 <div class="text-right">
@@ -355,13 +388,13 @@
 </div>
 <div class="relative z-10 mt-stack-lg flex flex-col gap-stack-sm">
 <div class="flex items-center gap-3 bg-white/10 p-stack-sm rounded-xl border border-white/20">
-<span class="material-symbols-outlined text-white">description</span>
+<span class="material-symbols-outlined text-white">table_view</span>
 <div class="flex flex-col">
-<span class="font-label-md text-label-md">impact_report_q3_2024.pdf</span>
-<span class="text-[10px] opacity-70">Ready to download • 4.2 MB</span>
+<span class="font-label-md text-label-md">impact_report_2024.xlsx</span>
+<span class="text-[10px] opacity-70">Ready to download  4.2 MB</span>
 </div>
 </div>
-<button class="w-full bg-white text-primary font-bold font-label-lg py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-primary-fixed transition-colors active:scale-95">
+<button onclick="downloadExcel(event)" class="w-full bg-white text-primary font-bold font-label-lg py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-primary-fixed transition-colors active:scale-95">
 <span class="material-symbols-outlined">download</span>
                         Download Full Report
                     </button>
@@ -396,16 +429,439 @@
 </button>
 </nav>
 <script>
-        // Micro-interactions and Chart animations
-        window.addEventListener('DOMContentLoaded', () => {
-            const bars = document.querySelectorAll('.chart-bar');
-            bars.forEach((bar, index) => {
-                const finalHeight = bar.style.height;
-                bar.style.height = '0%';
-                setTimeout(() => {
-                    bar.style.height = finalHeight;
-                }, 200 + (index * 50));
+        // ── Bar chart: animate height and show numbers ──
+        (function animateBars() {
+          var bars = document.querySelectorAll('.ia-bar');
+          if (!bars.length) return;
+          
+          bars.forEach(function(bar) {
+            // Strip inline transform styles
+            bar.style.transform = 'none';
+            bar.style.transition = 'height 0.7s cubic-bezier(.22,1,.36,1)';
+            
+            // Calculate a dummy number based on percentage height
+            var val = Math.round(parseFloat(bar.dataset.h) * 12.5);
+            bar.setAttribute('data-val', val);
+            
+            bar.style.height = '0px'; 
+          });
+          
+          function trigger() {
+            bars.forEach(function(bar) { 
+              var pct = parseFloat(bar.dataset.h) / 100;
+              bar.style.height = (200 * pct) + 'px'; 
+              bar.classList.add('visible');
             });
-        });
-    </script>
-<script src="nav.js"></script><script src="js/api.js"></script><script src="js/nav.js"></script></body></html>
+          }
+          
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() { requestAnimationFrame(function(){ requestAnimationFrame(trigger); }); });
+          } else {
+            requestAnimationFrame(function(){ requestAnimationFrame(trigger); });
+          }
+          
+          if ('IntersectionObserver' in window) {
+            var firstBar = bars[0];
+            var obs = new IntersectionObserver(function(entries) {
+              if (entries[0].isIntersecting) {
+                bars.forEach(function(b){ 
+                  b.style.height = '0px'; 
+                  b.classList.remove('visible'); 
+                });
+                requestAnimationFrame(function(){ requestAnimationFrame(function(){
+                  bars.forEach(function(b){ 
+                    var pct = parseFloat(b.dataset.h) / 100;
+                    b.style.height = (200 * pct) + 'px';
+                    b.classList.add('visible');
+                  });
+                }); });
+                obs.disconnect();
+              }
+            }, { threshold: 0.2 });
+            obs.observe(firstBar);
+          }
+        })();
+</script>
+<!-- ── Sidebar drawer for hamburger ── -->
+<aside id="ia-sidebar" style="display:none;position:fixed;top:0;left:0;height:100dvh;width:280px;background:#f4fbf4;box-shadow:4px 0 24px rgba(0,0,0,.12);z-index:999;flex-direction:column;font-family:'Inter',sans-serif;transform:translateX(-100%);transition:transform .28s cubic-bezier(.22,1,.36,1);overflow-y:auto;">
+  <div style="padding:24px 20px 16px;background:#006c49;color:#fff;">
+    <p style="font-weight:800;font-size:20px;margin:0 0 4px;">FoodRescue</p>
+    <p style="font-size:13px;opacity:.8;margin:0;">Impact Analytics</p>
+  </div>
+  <nav style="padding:16px 12px;display:flex;flex-direction:column;gap:4px;">
+    <button onclick="window.frNavigate('7_restaurant_dashboard.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='rgba(0,108,73,.08)'" onmouseout="this.style.background='none'">
+      <span class="material-symbols-outlined" style="font-size:20px;color:#006c49;">dashboard</span> Dashboard
+    </button>
+    <button onclick="window.frNavigate('8_create_food_donation.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='rgba(0,108,73,.08)'" onmouseout="this.style.background='none'">
+      <span class="material-symbols-outlined" style="font-size:20px;color:#006c49;">volunteer_activism</span> Create Donation
+    </button>
+    <button style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:rgba(0,108,73,.10);border-radius:12px;cursor:pointer;font-size:14px;font-weight:700;color:#006c49;font-family:inherit;text-align:left;">
+      <span class="material-symbols-outlined" style="font-size:20px;">analytics</span> Impact Analytics
+    </button>
+    <button onclick="window.frNavigate('12_profile.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='rgba(0,108,73,.08)'" onmouseout="this.style.background='none'">
+      <span class="material-symbols-outlined" style="font-size:20px;color:#006c49;">person</span> Profile
+    </button>
+    <button onclick="window.frNavigate('restaurant_settings.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#3c4a42;font-family:inherit;text-align:left;transition:background .15s;" onmouseover="this.style.background='rgba(0,108,73,.08)'" onmouseout="this.style.background='none'">
+      <span class="material-symbols-outlined" style="font-size:20px;color:#006c49;">settings</span> Settings
+    </button>
+    <div style="height:1px;background:#e8f0e9;margin:8px 0;"></div>
+    <button onclick="localStorage.clear();window.frNavigate('1_splash_screen.html')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#ba1a1a;font-family:inherit;text-align:left;">
+      <span class="material-symbols-outlined" style="font-size:20px;">logout</span> Logout
+    </button>
+  </nav>
+</aside>
+<div id="ia-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:998;backdrop-filter:blur(2px);"></div>
+<script>
+(function(){
+  var sidebar  = document.getElementById('ia-sidebar');
+  var overlay  = document.getElementById('ia-overlay');
+  var hamburger = document.querySelector('button[data-icon="menu"], button.material-symbols-outlined');
+  // Also try finding by text content
+  if (!hamburger) {
+    document.querySelectorAll('button').forEach(function(b){
+      if (b.textContent.trim() === 'menu') hamburger = b;
+    });
+  }
+  function openSidebar()  { sidebar.style.display='flex';  overlay.style.display='block'; document.body.style.overflow='hidden'; requestAnimationFrame(function(){ requestAnimationFrame(function(){ sidebar.style.transform='translateX(0)'; }); }); }
+  function closeSidebar() { sidebar.style.transform='translateX(-100%)'; overlay.style.display='none'; document.body.style.overflow=''; setTimeout(function(){ sidebar.style.display='none'; },280); }
+  if (hamburger) hamburger.addEventListener('click', function(e){ e.stopPropagation(); openSidebar(); });
+  overlay.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSidebar(); });
+})();
+
+        // ── Period Selection Logic ──
+        const dataMap = {
+            monthly: { meals: '12,482', carbon: '4.2', lives: '3,150', pct: '75%', text: '9,375 / 12,500 meals target reached for September.', offset: '62.8' },
+            weekly: { meals: '3,210', carbon: '1.1', lives: '840', pct: '26%', text: '3,210 / 12,500 meals target reached this week.', offset: '185.8' },
+            custom: { meals: '8,105', carbon: '2.8', lives: '1,920', pct: '50%', text: '8,105 / 12,500 meals target reached in custom range.', offset: '125.6' }
+        };
+
+        function updateData(period) {
+            const data = dataMap[period];
+            if(!data) return;
+
+            // Animate numbers (simple fade out/in effect using opacity transition)
+            const ids = ['stat-meals', 'stat-carbon', 'stat-lives', 'stat-goal-pct', 'stat-goal-text'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.style.transition = 'opacity 0.2s';
+                    el.style.opacity = '0';
+                }
+            });
+
+            setTimeout(() => {
+                const mealsEl = document.getElementById('stat-meals');
+                if(mealsEl) mealsEl.innerText = data.meals;
+                const carbonEl = document.getElementById('stat-carbon');
+                if(carbonEl) carbonEl.innerText = data.carbon;
+                const livesEl = document.getElementById('stat-lives');
+                if(livesEl) livesEl.innerText = data.lives;
+                const pctEl = document.getElementById('stat-goal-pct');
+                if(pctEl) pctEl.innerText = data.pct;
+                const textEl = document.getElementById('stat-goal-text');
+                if(textEl) textEl.innerText = data.text;
+                
+                // Update SVG Gauge
+                const circle = document.querySelector('.gauge-svg circle:nth-child(2)');
+                if(circle) circle.style.strokeDashoffset = data.offset;
+
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.opacity = '1';
+                });
+            }, 200);
+        }
+
+        function setPeriod(period) {
+            // Update button styles using classList for robust toggling
+            const buttons = document.querySelectorAll('.period-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('text-primary', 'bg-primary-container/20');
+                btn.classList.add('text-on-surface-variant', 'hover:bg-surface-variant/30');
+            });
+            const activeBtn = document.getElementById('btn-' + period);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-on-surface-variant', 'hover:bg-surface-variant/30');
+                activeBtn.classList.add('text-primary', 'bg-primary-container/20');
+            }
+            
+            // Hide custom date picker if switching away
+            if(period !== 'custom') {
+                const datePicker = document.getElementById('custom-date-picker');
+                if (datePicker) {
+                    datePicker.classList.add('hidden');
+                }
+            }
+            
+            updateData(period);
+        }
+
+        function toggleCustomDates() {
+            const picker = document.getElementById('custom-date-picker');
+            // Toggle using inline display (avoids hidden+flex Tailwind conflict)
+            picker.style.display = (picker.style.display === 'none' || !picker.style.display) ? 'block' : 'none';
+        }
+
+        function applyCustomDate() {
+            const startEl = document.getElementById('start-date');
+            const endEl   = document.getElementById('end-date');
+            if (!startEl.value || !endEl.value) {
+                alert('Please select both a start and end date.');
+                return;
+            }
+            if (new Date(startEl.value) > new Date(endEl.value)) {
+                alert('Start date must be before end date.');
+                return;
+            }
+            document.getElementById('custom-date-picker').style.display = 'none';
+            setPeriod('custom');
+        }
+
+        async function downloadExcel(event) {
+            const btn = event.currentTarget;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined" style="animation:spin 1s linear infinite;">refresh</span> Generating...`;
+            btn.disabled = true;
+
+            try {
+                const workbook = new ExcelJS.Workbook();
+                workbook.creator = 'FoodRescue Platform';
+                workbook.created = new Date();
+
+                // ═══════════════════════════════════════════════
+                // SHEET 1: Executive Summary
+                // ═══════════════════════════════════════════════
+                const summary = workbook.addWorksheet('Executive Summary');
+
+                // Title Banner
+                summary.mergeCells('A1:H1');
+                const titleCell = summary.getCell('A1');
+                titleCell.value = '🌱 FoodRescue — Impact Analytics Report';
+                titleCell.font = { size: 18, bold: true, color: { argb: 'FFFFFFFF' }, name: 'Calibri' };
+                titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
+                titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+                summary.getRow(1).height = 40;
+
+                // Sub-title
+                summary.mergeCells('A2:H2');
+                const subCell = summary.getCell('A2');
+                subCell.value = `Generated on: ${new Date().toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}`;
+                subCell.font = { size: 11, italic: true, color: { argb: 'FF3C4A42' } };
+                subCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE8F5E9' } };
+                subCell.alignment = { horizontal: 'center' };
+                summary.getRow(2).height = 22;
+
+                summary.addRow([]);
+
+                // KPI Header
+                const kpiHeader = summary.addRow(['📊 Key Performance Indicator', 'Current Value', 'Unit', 'Period', 'vs Last Period', 'Trend', 'Target', 'Achievement %']);
+                kpiHeader.font = { bold: true, size: 11, color: { argb: 'FFFFFFFF' } };
+                kpiHeader.height = 28;
+                kpiHeader.eachCell((cell) => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+                    cell.border = { bottom: { style: 'thin', color: { argb: 'FF4EDEA3' } } };
+                });
+
+                const meals  = document.getElementById('stat-meals').innerText  || '12,482';
+                const carbon = document.getElementById('stat-carbon').innerText || '4.2';
+                const lives  = document.getElementById('stat-lives').innerText  || '3,150';
+
+                const kpiData = [
+                    ['🍽️ Meals Rescued',       meals,   'Plates',      'Last 30 Days', '+12%', '↑ Up',  '11,000', '113%'],
+                    ['🌿 Carbon Saved',         carbon,  'Metric Tons CO₂', 'Last 30 Days', '+8%',  '↑ Up',  '4.0',    '105%'],
+                    ['❤️ Lives Touched',        lives,   'Individuals', 'Last 30 Days', '+5%',  '↑ Up',  '3,000',  '105%'],
+                    ['🏪 Active Restaurants',  '48',    'Partners',    'Last 30 Days', '+3',   '↑ Up',  '45',     '107%'],
+                    ['🚴 Active Volunteers',   '126',   'Volunteers',  'Last 30 Days', '+14',  '↑ Up',  '100',    '126%'],
+                    ['🤝 NGO Partners',        '12',    'Organisations','Last 30 Days', '+2',  '↑ Up',  '10',     '120%'],
+                    ['♻️ Waste Diverted',      '2,840', 'kg',          'Last 30 Days', '+9%',  '↑ Up',  '2,500',  '114%'],
+                    ['⭐ Avg Donor Rating',    '4.8',   '/ 5.0',       'Last 30 Days', '+0.1','↑ Up',  '4.5',    '107%'],
+                ];
+
+                const kpiColors = ['FFE8F5E9','FFF3F9F3','FFE8F5E9','FFF3F9F3','FFE8F5E9','FFF3F9F3','FFE8F5E9','FFF3F9F3'];
+
+                kpiData.forEach((data, i) => {
+                    const row = summary.addRow(data);
+                    row.height = 22;
+                    row.eachCell((cell, colNum) => {
+                        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: kpiColors[i] } };
+                        cell.alignment = { horizontal: colNum === 1 ? 'left' : 'center', vertical: 'middle' };
+                        cell.font = { size: 11 };
+                        if (colNum === 5) { // vs last period
+                            cell.font = { size: 11, color: { argb: 'FF006C49' }, bold: true };
+                        }
+                        if (colNum === 8) { // achievement
+                            cell.font = { size: 11, bold: true, color: { argb: 'FF006C49' } };
+                        }
+                    });
+                });
+
+                summary.columns = [
+                    { width: 28 }, { width: 16 }, { width: 18 }, { width: 16 },
+                    { width: 14 }, { width: 10 }, { width: 12 }, { width: 16 },
+                ];
+
+                // ═══════════════════════════════════════════════
+                // SHEET 2: Weekly Donation Trends
+                // ═══════════════════════════════════════════════
+                const trends = workbook.addWorksheet('Weekly Trends');
+
+                trends.mergeCells('A1:G1');
+                const t1 = trends.getCell('A1');
+                t1.value = '📈 Weekly Donation Trends — Detailed Breakdown';
+                t1.font = { size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
+                t1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF10B981' } };
+                t1.alignment = { horizontal: 'center', vertical: 'middle' };
+                trends.getRow(1).height = 36;
+
+                trends.addRow([]);
+
+                const tHead = trends.addRow(['📅 Day', 'Meals Rescued', 'Meals Donated', 'Waste Saved (kg)', 'Active Volunteers', 'Pickups Completed', 'Status']);
+                tHead.font = { bold: true, size: 11, color: { argb: 'FFFFFFFF' } };
+                tHead.height = 26;
+                tHead.eachCell(cell => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                    cell.border = {
+                        bottom: { style: 'medium', color: { argb: 'FF4EDEA3' } },
+                    };
+                });
+
+                const weekData = [
+                    ['Monday',    813,  688,  95,  18, 14, '✅ Completed'],
+                    ['Tuesday',  1063,  875, 124,  22, 19, '✅ Completed'],
+                    ['Wednesday',1188, 1000, 140,  25, 22, '✅ Completed'],
+                    ['Thursday',  940,  780, 108,  20, 17, '✅ Completed'],
+                    ['Friday',   1320, 1100, 155,  28, 24, '✅ Completed'],
+                    ['Saturday',  688,  560,  78,  14, 11, '✅ Completed'],
+                    ['Sunday',    478,  380,  55,  10,  8, '✅ Completed'],
+                ];
+
+                const rowBgs = ['FFE8F5E9','FFFFF8E1','FFE3F2FD','FFE8F5E9','FFFFF8E1','FFE3F2FD','FFE8F5E9'];
+
+                weekData.forEach((data, i) => {
+                    const row = trends.addRow(data);
+                    row.height = 22;
+                    row.eachCell((cell, colNum) => {
+                        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: rowBgs[i] } };
+                        cell.alignment = { horizontal: colNum === 1 ? 'left' : 'center', vertical: 'middle' };
+                        if (colNum === 2) cell.font = { color: { argb: 'FF006C49' }, bold: true, size: 11 };
+                        if (colNum === 3) cell.font = { color: { argb: 'FFFD761A' }, bold: true, size: 11 };
+                        if (colNum === 7) cell.font = { color: { argb: 'FF006C49' }, size: 11 };
+                    });
+                });
+
+                // Totals row
+                const totals = trends.addRow(['📊 TOTAL',
+                    weekData.reduce((s,r)=>s+r[1],0),
+                    weekData.reduce((s,r)=>s+r[2],0),
+                    weekData.reduce((s,r)=>s+r[3],0),
+                    weekData.reduce((s,r)=>s+r[4],0),
+                    weekData.reduce((s,r)=>s+r[5],0),
+                    '7 Days'
+                ]);
+                totals.height = 26;
+                totals.font = { bold: true, size: 12 };
+                totals.eachCell(cell => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF006C49' } };
+                    cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                });
+
+                trends.columns = [
+                    { width: 16 }, { width: 16 }, { width: 16 }, { width: 18 },
+                    { width: 18 }, { width: 20 }, { width: 18 },
+                ];
+
+                // ═══════════════════════════════════════════════
+                // SHEET 3: Top Partners
+                // ═══════════════════════════════════════════════
+                const partners = workbook.addWorksheet('Top Partners');
+
+                partners.mergeCells('A1:G1');
+                const p1 = partners.getCell('A1');
+                p1.value = '🏆 Top Contributing Partners — This Month';
+                p1.font = { size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
+                p1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFD761A' } };
+                p1.alignment = { horizontal: 'center', vertical: 'middle' };
+                partners.getRow(1).height = 36;
+
+                partners.addRow([]);
+
+                const pHead = partners.addRow(['🏅 Rank', 'Partner Name', 'Type', 'Meals Contributed', 'Waste Saved (kg)', 'Tier Status', 'Join Date']);
+                pHead.font = { bold: true, size: 11, color: { argb: 'FFFFFFFF' } };
+                pHead.height = 26;
+                pHead.eachCell(cell => {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFD761A' } };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                });
+
+                const partnerData = [
+                    ['🥇 #1', 'Green Garden Bistro',         'Restaurant', '1,240',  '148 kg', '🏆 Platinum Hero',  'Jan 2023'],
+                    ['🥈 #2', 'St. Jude Community Kitchen',  'NGO',        '980',    '117 kg', '🥇 Gold Member',    'Mar 2023'],
+                    ['🥉 #3', 'Organic Mart & Co.',          'Retail',     '750',    ' 90 kg', '🥈 Silver Partner', 'Jun 2023'],
+                    ['#4',    'The Blue Plate Diner',        'Restaurant', '620',    ' 74 kg', '🥈 Silver Partner', 'Aug 2023'],
+                    ['#5',    'Hope Foundation NGO',         'NGO',        '480',    ' 57 kg', '🟢 Active Member',  'Oct 2023'],
+                    ['#6',    'Fresh Harvest Farms',         'Farm',       '390',    ' 46 kg', '🟢 Active Member',  'Nov 2023'],
+                    ['#7',    'City Central Bakery',         'Restaurant', '320',    ' 38 kg', '🟢 Active Member',  'Dec 2023'],
+                    ['#8',    'Golden Spoon Restaurant',     'Restaurant', '280',    ' 33 kg', '🟢 Active Partner', 'Jan 2024'],
+                ];
+
+                const tierColors = [
+                    'FFFFF8E1','FFF3F9F3','FFE8EAF6','FFF3F9F3','FFE8F5E9',
+                    'FFF3F9F3','FFE8F5E9','FFF3F9F3'
+                ];
+
+                partnerData.forEach((data, i) => {
+                    const row = partners.addRow(data);
+                    row.height = 22;
+                    row.eachCell((cell, colNum) => {
+                        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: tierColors[i] } };
+                        cell.alignment = { horizontal: colNum === 2 ? 'left' : 'center', vertical: 'middle' };
+                        cell.font = { size: 11 };
+                        if (i === 0) cell.font = { size: 11, bold: true };
+                    });
+                });
+
+                partners.columns = [
+                    { width: 10 }, { width: 26 }, { width: 14 }, { width: 18 },
+                    { width: 16 }, { width: 20 }, { width: 12 },
+                ];
+
+                // ═══════════════════════════════════════════════
+                // Generate & Download
+                // ═══════════════════════════════════════════════
+                const buffer = await workbook.xlsx.writeBuffer();
+                const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                const fileName = `FoodRescue_Impact_Report_${new Date().toISOString().slice(0,10)}.xlsx`;
+                saveAs(blob, fileName);
+
+            } catch (err) {
+                console.error('Excel generation error:', err);
+                alert('❌ Error generating report: ' + err.message);
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        }
+</script>
+<script src="nav.js"></script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    if (window.ApiClient) {
+      try {
+        const userToken = localStorage.getItem("foodRescueToken");
+        if (userToken) {
+          const data = await ApiClient.get("/analytics/global");
+          console.log("Analytics data:", data?.data);
+          // Note: UI binding requires updating the chart data logic
+        }
+      } catch (e) {
+        console.error("Failed to load analytics:", e);
+      }
+    }
+  });
+</script>
+</body></html>

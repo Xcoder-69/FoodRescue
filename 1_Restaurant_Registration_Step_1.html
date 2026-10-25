@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<!DOCTYPE html><html class="light" lang="en"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>Food Rescue Hero - Account Creation</title>
@@ -196,6 +196,10 @@
 </div>
 </div>
 </section>
+<div id="reg-error" class="hidden w-full bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm flex items-start gap-2 mb-2">
+  <span class="material-symbols-outlined text-red-500" style="font-size:18px;flex-shrink:0;margin-top:1px">error</span>
+  <span id="reg-error-msg"></span>
+</div>
 <button class="w-full bg-primary text-on-primary font-label-md py-4 rounded-xl shadow-lg opacity-50 cursor-not-allowed transform active:scale-95 transition-all" disabled="" id="mainContinueBtn" onclick="submitStep1()">
                     Continue to Restaurant Details
                 </button>
@@ -248,19 +252,34 @@
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
-        function sendOTP() {
+
+
+        async function sendOTP() {
             const email = document.getElementById('emailInput').value;
-            if(!email) return alert('Please enter an email first');
+            if(!email) return showRegError('Please enter your email address first.');
             
             const btn = document.getElementById('verifyBtn');
             btn.disabled = true;
             btn.innerHTML = 'Sending...';
-            
-            setTimeout(() => {
+
+            try {
+                await ApiClient.rawFetch('/auth/verify/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                }, {
+                    onRetry: () => { btn.innerHTML = 'Server starting, retrying...'; }
+                });
                 document.getElementById('otpSection').classList.remove('hidden');
                 btn.classList.add('hidden');
                 startCountdown();
-            }, 800);
+                // Re-init OTP inputs now that the section is visible
+                if (typeof window.initOTPInputs === 'function') window.initOTPInputs();
+            } catch (error) {
+                showRegError(error.message || 'Failed to send OTP. Please check your connection.');
+                btn.disabled = false;
+                btn.innerHTML = 'Verify Email';
+            }
         }
 
         function startCountdown() {
@@ -277,15 +296,36 @@
             }, 1000);
         }
 
-        function verifyOTP() {
-            // Mock verification
-            document.getElementById('otpSection').classList.add('hidden');
-            document.getElementById('successBadge').classList.remove('hidden');
-            
-            const mainBtn = document.getElementById('mainContinueBtn');
-            mainBtn.disabled = false;
-            mainBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            mainBtn.classList.add('hover:opacity-90', 'active:scale-95');
+        async function verifyOTP() {
+            const email = document.getElementById('emailInput').value;
+            const otpInputs = document.querySelectorAll('.otp-input');
+            let otp = '';
+            otpInputs.forEach(input => otp += input.value);
+
+            if (otp.length !== 6) return showRegError('Please enter the full 6-digit OTP.');
+
+            try {
+                await ApiClient.rawFetch('/auth/verify/confirm', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, otp })
+                });
+                
+                document.getElementById('otpSection').classList.add('hidden');
+                document.getElementById('successBadge').classList.remove('hidden');
+                
+                const mainBtn = document.getElementById('mainContinueBtn');
+                mainBtn.disabled = false;
+                mainBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                mainBtn.classList.add('hover:opacity-90', 'active:scale-95');
+                
+                // Disable email input so it cannot be changed after verification
+                document.getElementById('emailInput').disabled = true;
+            } catch (error) {
+                showRegError(error.message || 'Invalid OTP. Please try again.');
+                otpInputs.forEach(input => input.value = '');
+                otpInputs[0].focus();
+            }
         }
 
         function checkStrength(val) {
@@ -331,6 +371,8 @@
             };
         });
 
+
+
         async function submitStep1() {
             const btn = document.getElementById('mainContinueBtn');
             const ownerName = document.getElementById('ownerNameInput').value;
@@ -367,15 +409,31 @@
                 regData.ownerName = ownerName;
                 localStorage.setItem('restaurant_reg_data', JSON.stringify(regData));
 
-                window.location.href = '2_Restaurant_Registration_Step_2.html';
+                // Smooth fade-out before redirect (nav.js will fade-in the next page)
+                document.body.style.transition = 'opacity 0.3s ease';
+                document.body.style.opacity = '0';
+                setTimeout(() => { window.location.href = '2_Restaurant_Registration_Step_2.html'; }, 300);
             } catch(error) {
-                alert(error.message || "Failed to create account.");
+                const msg = error.message || 'Failed to create account.';
+                showRegError(
+                  msg.toLowerCase().includes('already registered')
+                    ? '⚠ This email is already registered. Please <a href="4_login_and_verification.html" class="underline font-semibold">login instead</a>.'
+                    : msg
+                );
                 btn.innerHTML = 'Continue to Restaurant Details';
                 btn.disabled = false;
             }
+        }
+
+        function showRegError(msg) {
+            const el = document.getElementById('reg-error');
+            const msgEl = document.getElementById('reg-error-msg');
+            msgEl.innerHTML = msg;
+            el.classList.remove('hidden');
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     </script>
     <script src="js/api.js"></script>
 
 
-<script src="nav.js"></script></body></html>
+<script src="nav.js"></script><script src="js/ui.js"></script><script src="js/testmode.js"></script></body></html>
