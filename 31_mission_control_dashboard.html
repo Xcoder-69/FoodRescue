@@ -151,39 +151,39 @@
 </div>
 <div class="flex-1 space-y-1">
 <!-- Active State: Dashboard -->
-<a class="text-secondary-container font-bold border-l-4 border-secondary-container bg-secondary-container/10 shadow-[0_0_15px_rgba(0,227,253,0.2)] flex items-center gap-4 px-6 py-3 transition-colors" href="#">
+<a class="text-secondary-container font-bold border-l-4 border-secondary-container bg-secondary-container/10 shadow-[0_0_15px_rgba(0,227,253,0.2)] flex items-center gap-4 px-6 py-3 transition-colors" href="31_mission_control_dashboard.html">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
 <span class="font-label-lg text-label-lg">Dashboard</span>
 </a>
-<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="15_verification_management.html">
 <span class="material-symbols-outlined">verified_user</span>
 <span class="font-label-lg text-label-lg">Approvals</span>
 </a>
-<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="17_user_management_admin.html?role=restaurants">
 <span class="material-symbols-outlined">restaurant</span>
 <span class="font-label-lg text-label-lg">Restaurants</span>
 </a>
-<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="17_user_management_admin.html?role=ngos">
 <span class="material-symbols-outlined">domain</span>
 <span class="font-label-lg text-label-lg">NGOs</span>
 </a>
-<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="17_user_management_admin.html?role=volunteers">
 <span class="material-symbols-outlined">group</span>
 <span class="font-label-lg text-label-lg">Volunteers</span>
 </a>
-<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="restaurant_track_pickup.html">
 <span class="material-symbols-outlined">local_shipping</span>
 <span class="font-label-lg text-label-lg">Deliveries</span>
 </a>
-<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="19_fraud_and_reports_admin.html">
 <span class="material-symbols-outlined">gpp_maybe</span>
 <span class="font-label-lg text-label-lg">Fraud Center</span>
 </a>
-<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="18_csr_and_reporting.html">
 <span class="material-symbols-outlined">analytics</span>
 <span class="font-label-lg text-label-lg">Analytics</span>
 </a>
-<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="#">
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all duration-300" href="35_session_device_management.html">
 <span class="material-symbols-outlined">settings</span>
 <span class="font-label-lg text-label-lg">Settings</span>
 </a>
@@ -195,7 +195,7 @@
 </div>
 <div>
 <p class="text-label-lg font-label-lg text-on-surface">Admin_042</p>
-<p class="text-[10px] text-secondary-container tracking-widest font-bold">SYSTEM ACTIVE</p>
+<button onclick="localStorage.clear(); window.location.href='1_splash_screen.html';" class="text-[10px] text-error hover:underline tracking-widest font-bold">LOG OUT</button>
 </div>
 </div>
 </div>
@@ -287,7 +287,7 @@
 <span class="text-display-lg font-display-lg text-error tracking-tighter">18</span>
 <span class="text-headline-sm font-headline-sm text-error/70">CRITICAL</span>
 </div>
-<button class="mt-4 w-full py-2 bg-error/10 hover:bg-error/20 border border-error/30 text-error font-label-lg text-label-lg rounded-lg transition-all">
+<button onclick="window.location.href='15_verification_management.html'" class="mt-4 w-full py-2 bg-error/10 hover:bg-error/20 border border-error/30 text-error font-label-lg text-label-lg rounded-lg transition-all cursor-pointer">
                     Process Queue
                 </button>
 </div>

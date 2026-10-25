@@ -134,39 +134,81 @@
 <div class="w-10 h-10 rounded-full bg-cover bg-center border-2 border-primary-container" data-alt="A professional headshot of a diverse male volunteer in his early 30s, smiling warmly at the camera. He is wearing a clean green polo shirt with a subtle NGO logo. The background is a brightly lit, modern office space with soft natural light and greenery. High-end portrait photography style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDkG1EJaXAMkJYI_zWE9zGbKuw6hS1m5yu3FgYTb1DJiRCmnViAQZabwtmrvt8evetmmG4U3pQ0TIlHG6sQ5CL_ABlKjoanjMyejN0N98Hs36dz5ZzAnUTkd5sg0tKHzKeN0uLuMp4LMJyARAu1_PVyrpMO1r923Dtvj4gjv9pwa5anH8jJM0nXHnZzhBqKy_qOV3o2_0cOL4HX4C7Og0Jxp0ooKcQ-eK-ZeJJ7qpd3hXD6aw3whoqbIS0TOjXCT4u_eHVhqhh9_aE')"></div>
 </div>
 </header>
-<!-- Sidebar (Desktop Only) -->
-<aside class="hidden lg:flex fixed left-0 top-0 h-full w-80 bg-surface-container dark:bg-surface-container-high shadow-xl flex-col py-stack-lg gap-stack-sm z-50">
-<div class="px-6 mb-8">
-<div class="flex items-center gap-4 mb-8">
-<div class="w-12 h-12 rounded-full bg-cover bg-center" data-alt="A professional headshot of Alex, a male volunteer, against a minimalist background. He is wearing a modern green uniform. Soft high-key lighting creates a warm and trustworthy atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDC_Pxhpvx8PXG70TQ8VZijI9tMtTr06nMppelznbfIU1BmI9wEMbv5M4rbCP3MpqCWFG2CoYaf_lA94vBBv3ZE-4DnnNEMjrep_Ht5aDItsFbsqr2bkGqDln68owqyFjqrXDcMLsU9XF4G9nB96Dpe9PSX4VS4A1CL5NXOpdnY7by9AS71xcHlpUhSJav8ruGJcRJ09EN3H1nzbbAqXzc1yRid_UDRXaSMvmCsBKMxPtz7ZZsV6IEAlt_uai_WAFcKrKjsdJseRtg')"></div>
-<div>
-<p class="font-label-lg text-label-lg text-on-surface">Alex Volunteer</p>
-<p class="text-xs text-on-surface-variant">Verified Rescuer • Level 4</p>
-</div>
-</div>
-<nav class="space-y-2">
-<a class="flex items-center gap-4 py-3 px-4 bg-secondary-container text-on-secondary-container font-bold rounded-full transition-colors" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-label-lg text-label-lg">Dashboard</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors" href="#">
-<span class="material-symbols-outlined">volunteer_activism</span>
-<span class="font-label-lg text-label-lg">My Donations</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors" href="#">
-<span class="material-symbols-outlined">schedule</span>
-<span class="font-label-lg text-label-lg">Pickup Schedule</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors" href="#">
-<span class="material-symbols-outlined">assessment</span>
-<span class="font-label-lg text-label-lg">Impact Report</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-label-lg text-label-lg">Settings</span>
-</a>
-</nav>
-</div>
+<!-- Navigation Drawer (Desktop Only) - Permanent Sidebar -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container shadow-md w-80 z-50 overflow-y-auto" id="nav-drawer">
+  <!-- Brand -->
+  <div class="px-6 pt-6 pb-2">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm">
+        <span class="material-symbols-outlined fill-icon">volunteer_activism</span>
+      </div>
+      <div>
+        <h1 class="font-headline-lg text-headline-lg font-black text-primary leading-tight">FoodRescue</h1>
+        <p class="text-[11px] font-semibold text-primary/70 tracking-wider uppercase">NGO Partner Portal</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NGO Organization Profile Card -->
+  <div class="px-4 py-4">
+    <div class="flex items-center gap-3 bg-surface-container-lowest p-3 rounded-2xl shadow-sm border border-outline-variant/30">
+      <img alt="NGO Coordinator" class="w-11 h-11 rounded-full object-cover border-2 border-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwxc5Mw7hwMUlSQ4hMbWeaBohO07CGz3uZwZeAnlb_0BH9xKY37IxQoowSOg-B18lfNVKpnx6X8vHKGpObwfHyeiOR5YFOPl5okmtpbtrZmVmitGeXBx73qPGKIu9qyWHtIpj42GhqIrk-3l_T22l02ItqzytJnrT3RAbdBvb1aC5oHvxrMA20vTT0xSgzUdtlRzyPkHsKW4JiaeyJc7Xswm_1d0jHTEcn2Lft5m209XQ00LMvhrlic3SNQZcANZGS9aSiMVMwXfM"/>
+      <div class="min-w-0 flex-1">
+        <p class="font-label-lg text-label-lg font-bold text-on-surface truncate" id="ngo-name-display">City Hope Food Relief</p>
+        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-primary">
+          <span class="material-symbols-outlined text-[13px]">verified</span> Verified NGO Partner
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="flex-1 space-y-1 px-3">
+    <!-- Dashboard -->
+    <a data-no-nav="true" href="10_ngo_dashboard.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">grid_view</span>
+      <span class="font-body-lg text-body-lg">Dashboard</span>
+    </a>
+    <!-- Available Donations (Active) -->
+    <a data-no-nav="true" href="ngo_browse_donations.html" class="flex items-center gap-3 bg-primary text-on-primary font-semibold px-4 py-3 rounded-xl shadow-sm transition-all duration-150">
+      <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">shopping_bag</span>
+      <span class="font-body-lg text-body-lg">Available Donations</span>
+      <span class="ml-auto bg-secondary-container text-on-secondary-container text-[11px] font-bold px-2 py-0.5 rounded-full">4 Urgent</span>
+    </a>
+    <!-- Track Pickups & Collections -->
+    <a data-no-nav="true" href="restaurant_track_pickup.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">local_shipping</span>
+      <span class="font-body-lg text-body-lg">Pickup Tracking</span>
+      <span class="ml-auto w-2 h-2 rounded-full bg-secondary"></span>
+    </a>
+    <!-- Volunteer Coordination -->
+    <a data-no-nav="true" href="restaurant_volunteers.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">group</span>
+      <span class="font-body-lg text-body-lg">Volunteers</span>
+    </a>
+    <!-- Impact & History -->
+    <a data-no-nav="true" href="13_impact_analytics.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">leaderboard</span>
+      <span class="font-body-lg text-body-lg">Impact Analytics</span>
+    </a>
+    <!-- Notifications -->
+    <a data-no-nav="true" href="11_notifications.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">notifications</span>
+      <span class="font-body-lg text-body-lg">Notifications</span>
+    </a>
+    <!-- NGO Profile -->
+    <a data-no-nav="true" href="12_profile.html" class="flex items-center gap-3 text-on-surface-variant px-4 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-all duration-150 group">
+      <span class="material-symbols-outlined text-[22px] group-hover:text-primary">person</span>
+      <span class="font-body-lg text-body-lg">Profile & Safety</span>
+    </a>
+  </nav>
+
+  <!-- Sidebar Footer: Sign Out -->
+  <div class="p-4 border-t border-outline-variant/30">
+    <button onclick="localStorage.clear(); window.location.href='1_splash_screen.html';" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-outline-variant/40 hover:bg-error/10 hover:text-error hover:border-error/40 text-on-surface-variant text-sm font-semibold transition-all">
+      <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+    </button>
+  </div>
 </aside>
 <main class="p-container-padding-mobile md:p-container-padding-desktop max-w-7xl mx-auto">
 <!-- Title Section -->
@@ -273,7 +315,7 @@
         </div>
         <div class="mt-auto pt-4 flex gap-3 items-center">
             <a href="ngo_claim_donation.html?id=${don.id}" class="w-full bg-primary text-on-primary py-3 rounded-xl font-label-lg text-label-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2">
-                Claim Now <span class="material-symbols-outlined text-lg">shopping_cart</span>
+                Reserve Donation <span class="material-symbols-outlined text-lg">shopping_cart</span>
             </a>
         </div>
     </div>

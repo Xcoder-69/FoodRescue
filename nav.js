@@ -52,7 +52,7 @@
 
     // Admin links
     'verification management':  '15_verification_management.html',
-    'donation monitoring':      '16_donation_monitoring.html',
+    'donation monitoring':      'restaurant_track_pickup.html',
     'user management':          '17_user_management_admin.html',
     'csr':                      '18_csr_and_reporting.html',
     'fraud':                    '19_fraud_and_reports_admin.html',
@@ -62,6 +62,10 @@
     'terms':                    '24_terms_and_conditions.html',
     'privacy':                  '25_privacy_and_guidelines.html',
     'declarations':             '26_declarations_and_consent.html',
+
+    // NGO links
+    'available donations':      'ngo_browse_donations.html',
+    'pickup tracking':          'restaurant_track_pickup.html',
 
     // Logout → splash
     'logout':                   '1_splash_screen.html',
@@ -76,7 +80,7 @@
     restaurant: '7_restaurant_dashboard.html',
     ngo:        '10_ngo_dashboard.html',
     volunteer:  '9_volunteer_dashboard.html',
-    admin:      '17_user_management_admin.html',
+    admin:      '31_mission_control_dashboard.html',
   };
 
   // Detect current role from localStorage or current filename
@@ -223,12 +227,18 @@
     '11_notifications.html':                   '7_restaurant_dashboard.html',
     '12_profile.html':                          '7_restaurant_dashboard.html',
     '14_chat_and_coordination.html':            '7_restaurant_dashboard.html',
+    'restaurant_track_pickup.html':             '7_restaurant_dashboard.html',
+    'restaurant_volunteers.html':               '7_restaurant_dashboard.html',
 
     // NGO dashboard pages
     '10_ngo_dashboard.html':                   '4_login_and_verification.html',
+    'ngo_browse_donations.html':               '10_ngo_dashboard.html',
+    'ngo_claim_success.html':                  '10_ngo_dashboard.html',
 
     // Volunteer dashboard
     '9_volunteer_dashboard.html':              '4_login_and_verification.html',
+    'volunteer_navigation.html':               '9_volunteer_dashboard.html',
+    'delivery_confirmation.html':              '9_volunteer_dashboard.html',
 
     // Admin pages
     '27_admin_login_command_center.html':       '4_login_and_verification.html',
@@ -242,7 +252,6 @@
     '37_security_vector_scan.html':             '32_security_operations_center.html',
     '38_security_alert_access_blocked.html':    '31_mission_control_dashboard.html',
     '15_verification_management.html':          '31_mission_control_dashboard.html',
-    '16_donation_monitoring.html':              '31_mission_control_dashboard.html',
     '17_user_management_admin.html':            '31_mission_control_dashboard.html',
     '18_csr_and_reporting.html':               '31_mission_control_dashboard.html',
     '19_fraud_and_reports_admin.html':          '31_mission_control_dashboard.html',

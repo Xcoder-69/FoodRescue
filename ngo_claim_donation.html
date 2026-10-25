@@ -3,7 +3,7 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Claim Donation | Food Rescue Hero</title>
+<title>Reserve a Donation | FoodRescue</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -147,7 +147,7 @@
 <button class="p-2 hover:bg-surface-container rounded-full transition-colors active:scale-95 duration-200" onclick="window.history.back()">
 <span class="material-symbols-outlined text-primary">arrow_back</span>
 </button>
-<h1 class="text-headline-md font-headline-md text-primary text-center flex-1">Claim Donation</h1>
+<h1 class="text-headline-md font-headline-md text-primary text-center flex-1">Reserve a Donation</h1>
 <div class="w-10"></div> <!-- Spacer for centering -->
 </header>
 <main class="max-w-3xl mx-auto px-margin-mobile mt-stack-md space-y-gutter">
@@ -176,16 +176,16 @@
 </div>
 </div>
 </section>
-<!-- Claim Details Form -->
+<!-- Reservation Details Form -->
 <section class="space-y-gutter bg-surface-container-lowest p-base rounded-2xl">
-<h3 class="text-title-lg font-title-lg text-primary">Claim Details</h3>
+<h3 class="text-title-lg font-title-lg text-primary">Reservation Details</h3>
 <div class="space-y-stack-md">
-<!-- Pickup Time -->
+<!-- Preferred Pickup Time -->
 <div class="space-y-1">
-<label class="block text-label-md font-label-md text-outline">Pickup Time</label>
+<label class="block text-label-md font-label-md text-outline">Preferred Pickup Time</label>
 <div class="relative">
 <select class="w-full bg-surface-container-low border-none border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg font-body-lg text-body-lg py-3 px-4 appearance-none transition-colors">
-<option>ASAP</option>
+<option>As Soon as Possible</option>
 <option>In 30 mins</option>
 <option>In 1 hour</option>
 <option>Custom</option>
@@ -193,19 +193,19 @@
 <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
 </div>
 </div>
-<!-- Number of Beneficiaries -->
+<!-- Number of Intended Beneficiaries -->
 <div class="space-y-1">
-<label class="block text-label-md font-label-md text-outline">Number of Beneficiaries</label>
+<label class="block text-label-md font-label-md text-outline">Number of Intended Beneficiaries</label>
 <input class="w-full bg-surface-container-low border-none border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg font-body-lg text-body-lg py-3 px-4 transition-colors" placeholder="e.g. 50" type="number"/>
 </div>
-<!-- Special Notes -->
+<!-- Additional Requirements -->
 <div class="space-y-1">
-<label class="block text-label-md font-label-md text-outline">Special Notes (Optional)</label>
+<label class="block text-label-md font-label-md text-outline">Additional Requirements (Optional)</label>
 <textarea class="w-full bg-surface-container-low border-none border-b-2 border-outline-variant focus:border-primary focus:ring-0 rounded-t-lg font-body-lg text-body-lg py-3 px-4 transition-colors resize-none" placeholder="Any specific requirements or notes..." rows="3"></textarea>
 </div>
-<!-- Pickup Address -->
+<!-- Collection Address -->
 <div class="space-y-1">
-<label class="block text-label-md font-label-md text-outline">Pickup Address</label>
+<label class="block text-label-md font-label-md text-outline">Collection Address</label>
 <div id="address-display-ngo" class="flex items-start gap-3 bg-surface-container-low p-4 rounded-xl">
 <span class="material-symbols-outlined text-primary mt-1">location_on</span>
 <div class="flex-1">
@@ -242,7 +242,7 @@
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person_pin_circle</span>
-<h3 class="text-title-lg font-title-lg text-on-surface">Assign a Volunteer</h3>
+<h3 class="text-title-lg font-title-lg text-on-surface">Arrange Volunteer Pickup</h3>
 </div>
 <label class="relative inline-flex items-center cursor-pointer">
 <input class="sr-only peer" id="volunteerToggle" type="checkbox"/>
@@ -292,7 +292,7 @@
 <!-- Confirm Button -->
 <div class="pt-4 pb-12">
 <button class="w-full bg-primary text-on-primary font-title-lg py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all" id="confirmBtn">
-            Confirm Claim 🛒
+            Confirm Reservation 🛒
         </button>
 </div>
 </main>
@@ -338,7 +338,7 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const donationId = urlParams.get('id') || 'dummy_donation_id'; // Fallback for local testing
                 
-                confirmBtn.innerHTML = 'Claiming...';
+                confirmBtn.innerHTML = 'Reserving...';
                 confirmBtn.disabled = true;
 
                 try {
@@ -347,13 +347,13 @@
                     }
                     window.frNavigate('ngo_claim_success.html');
                 } catch (err) {
-                    console.error('Claim failed', err);
+                    console.error('Reservation failed', err);
                     // In test mode, still navigate
                     if (localStorage.getItem('fr_test_mode') === 'true' || !window.ApiClient) {
                         window.frNavigate('ngo_claim_success.html');
                     } else {
-                        alert('Failed to claim donation: ' + err.message);
-                        confirmBtn.innerHTML = 'Confirm Claim 🛒';
+                        alert('Failed to reserve donation: ' + err.message);
+                        confirmBtn.innerHTML = 'Confirm Reservation 🛒';
                         confirmBtn.disabled = false;
                     }
                 }

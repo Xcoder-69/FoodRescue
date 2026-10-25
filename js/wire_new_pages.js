@@ -60,7 +60,7 @@
       wireNav('10_ngo_dashboard.html');
       document.querySelectorAll('button').forEach(function (btn) {
         var txt = btn.textContent.trim().toLowerCase();
-        if (txt.includes('claim') || txt.includes('claim now')) {
+        if (txt.includes('claim') || txt.includes('claim now') || txt.includes('reserve') || txt.includes('reserve donation')) {
           btn.addEventListener('click', function () { window.frNavigate('ngo_claim_donation.html'); });
         }
         if (txt.includes('filter')) {
@@ -83,9 +83,9 @@
         if (txt === 'arrow_back' || icon.trim() === 'arrow_back') {
           btn.addEventListener('click', function () { window.frNavigate('ngo_browse_donations.html'); });
         }
-        if (txt.includes('confirm') || txt.includes('claim')) {
+        if (txt.includes('confirm') || txt.includes('claim') || txt.includes('reserve')) {
           btn.addEventListener('click', function () {
-            showSuccess('✅', 'Donation Claimed!', 'A volunteer will be assigned shortly. You will receive a notification.', '← Back to Dashboard', '10_ngo_dashboard.html');
+            showSuccess('✅', 'Reservation Confirmed!', 'A volunteer will be assigned shortly. You will receive a notification.', '← Back to Dashboard', '10_ngo_dashboard.html');
           });
         }
       });
