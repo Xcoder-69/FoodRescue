@@ -167,7 +167,7 @@ aside::-webkit-scrollbar { width:0; }
               <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-green-600" style="font-variation-settings:'FILL' 1;">restaurant</span></div>
               <div>
                 <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Mixed Vegetables Biryani</h3><span class="badge-completed text-xs font-semibold px-2.5 py-0.5 rounded-full">Completed</span></div>
-                <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">St. Jude Community Kitchen</span></p>
+                <p class="text-sm text-on-surface-variant mt-0.5">Reserved by: <span class="font-medium text-primary">St. Jude Community Kitchen</span></p>
                 <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>45 kg</span>
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">restaurant_menu</span>~225 meals</span>
@@ -196,7 +196,7 @@ aside::-webkit-scrollbar { width:0; }
               <div class="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-yellow-600" style="font-variation-settings:'FILL' 1;">bakery_dining</span></div>
               <div>
                 <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Bread Rolls &amp; Pastries</h3><span class="badge-pickup text-xs font-semibold px-2.5 py-0.5 rounded-full">Awaiting Pickup</span></div>
-                <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">Hope Foundation NGO</span></p>
+                <p class="text-sm text-on-surface-variant mt-0.5">Reserved by: <span class="font-medium text-primary">Hope Foundation NGO</span></p>
                 <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>18 kg</span>
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span>Pickup: 2:30 PM</span>
@@ -224,7 +224,7 @@ aside::-webkit-scrollbar { width:0; }
             <div class="flex items-start gap-3">
               <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-blue-600" style="font-variation-settings:'FILL' 1;">dining</span></div>
               <div>
-                <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Paneer Curry &amp; Rice</h3><span class="badge-pending text-xs font-semibold px-2.5 py-0.5 rounded-full">Pending Claim</span></div>
+                <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Paneer Curry &amp; Rice</h3><span class="badge-pending text-xs font-semibold px-2.5 py-0.5 rounded-full">Pending Reservation</span></div>
                 <p class="text-sm text-on-surface-variant mt-0.5">Awaiting NGO assignment</p>
                 <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>32 kg</span>
@@ -254,7 +254,7 @@ aside::-webkit-scrollbar { width:0; }
               <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-green-600" style="font-variation-settings:'FILL' 1;">soup_kitchen</span></div>
               <div>
                 <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Dal Makhani &amp; Naan</h3><span class="badge-completed text-xs font-semibold px-2.5 py-0.5 rounded-full">Completed</span></div>
-                <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">City Shelter &amp; Relief</span></p>
+                <p class="text-sm text-on-surface-variant mt-0.5">Reserved by: <span class="font-medium text-primary">City Shelter &amp; Relief</span></p>
                 <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>60 kg</span>
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">restaurant_menu</span>~300 meals</span>
@@ -310,7 +310,7 @@ aside::-webkit-scrollbar { width:0; }
               <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-green-600" style="font-variation-settings:'FILL' 1;">restaurant</span></div>
               <div>
                 <div class="flex items-center gap-2 flex-wrap"><h3 class="font-bold text-base">Chicken Tikka Masala</h3><span class="badge-completed text-xs font-semibold px-2.5 py-0.5 rounded-full">Completed</span></div>
-                <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">Green Shield NGO</span></p>
+                <p class="text-sm text-on-surface-variant mt-0.5">Reserved by: <span class="font-medium text-primary">Green Shield NGO</span></p>
                 <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>55 kg</span>
                   <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">restaurant_menu</span>~275 meals</span>
@@ -463,7 +463,7 @@ function renderDonations(donations) {
   
   // Status mapping to UI styles
   const statusMap = {
-    'AVAILABLE': { label: 'Pending Claim', icon: 'dining', color: 'blue-600', bgClass: 'bg-blue-400', badgeClass: 'bg-blue-50 text-blue-600', titleClass: 'badge-pending' },
+    'AVAILABLE': { label: 'Pending Reservation', icon: 'dining', color: 'blue-600', bgClass: 'bg-blue-400', badgeClass: 'bg-blue-50 text-blue-600', titleClass: 'badge-pending' },
     'CLAIMED': { label: 'Awaiting Pickup', icon: 'bakery_dining', color: 'yellow-600', bgClass: 'bg-yellow-400', badgeClass: 'bg-yellow-50 text-yellow-600', titleClass: 'badge-pickup' },
     'COMPLETED': { label: 'Completed', icon: 'done_all', color: 'green-600', bgClass: 'bg-green-500', badgeClass: 'bg-green-50 text-green-600', titleClass: 'badge-completed' },
     'CANCELLED': { label: 'Cancelled', icon: 'cancel', color: 'red-500', bgClass: 'bg-red-500', badgeClass: 'bg-red-50 text-red-600', titleClass: 'badge-cancelled' }
@@ -494,7 +494,7 @@ function renderDonations(donations) {
                     <h3 class="font-bold text-base">${title}</h3>
                     <span class="${statusInfo.titleClass} text-xs font-semibold px-2.5 py-0.5 rounded-full">${statusInfo.label}</span>
                   </div>
-                  <p class="text-sm text-on-surface-variant mt-0.5">Claimed by: <span class="font-medium text-primary">${claimer}</span></p>
+                  <p class="text-sm text-on-surface-variant mt-0.5">Reserved by: <span class="font-medium text-primary">${claimer}</span></p>
                   <div class="flex flex-wrap gap-3 mt-2 text-xs text-on-surface-variant">
                     <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span>${weight} kg</span>
                     <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">restaurant_menu</span>~${meals} meals</span>
@@ -519,5 +519,5 @@ function renderDonations(donations) {
   document.getElementById('results-count').textContent = donations.length;
 }
 </script>
-</body>
+<script src="js/testmode.js"></script></body>
 </html>

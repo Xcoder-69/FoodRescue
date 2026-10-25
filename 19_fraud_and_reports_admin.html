@@ -142,47 +142,62 @@
 </div>
 </header>
 <!-- Navigation Drawer (Desktop) -->
-<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container dark:bg-surface-container-high w-80 z-30">
-<div class="font-headline-lg text-headline-lg font-black text-primary px-gutter py-stack-lg">FoodRescue</div>
-<div class="px-gutter mb-stack-lg">
-<div class="flex items-center gap-stack-md p-stack-sm">
-<div class="w-12 h-12 rounded-xl bg-primary-fixed-dim overflow-hidden">
-<img alt="Admin" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlz5huGl2RPJHHHq_gne3shbm_uvrc4YRZyagpOrQ32VSQ7KjXW5ieT7-qE5prXyScjn2KWBO-lBjK8nzE3wW8pCsujEttVnOmn3T58L_cEft3Zoombq0WB-LoJG9G30NJ1GOaEYplayLhG-lMqEVqEk3G8-7x5bdRJ-YxS2DnuEYOH6irBKE_3Iuxg3OqSJLucqAFZ-6LFf9arsXU30psVJqSIOAmFnxDljhZ8bT5EDzyaBcTzW062sjEYtQz-Q-aM0E1utyc0To"/>
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant bg-surface-container dark:bg-surface-container-high w-80 z-50 overflow-y-auto">
+<div class="px-gutter py-stack-lg">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center border border-secondary-container/50">
+      <span class="material-symbols-outlined text-secondary-container">shield</span>
+    </div>
+    <div>
+      <h2 class="font-headline-lg text-headline-lg font-black text-primary leading-tight">FoodRescue</h2>
+      <p class="text-[11px] font-semibold text-secondary-container tracking-wider uppercase">Command Center Admin</p>
+    </div>
+  </div>
 </div>
-<div>
-<p class="font-label-lg text-label-lg text-on-surface">Restaurant Admin</p>
-<p class="text-xs text-on-surface-variant">Green Table Bistro</p>
+<div class="flex items-center gap-stack-md px-gutter py-stack-md mb-stack-md mx-3 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+  <div class="w-11 h-11 rounded-full bg-secondary-container/20 flex items-center justify-center border border-secondary-container/50 text-secondary-container font-bold text-lg">
+    OP
+  </div>
+  <div class="flex flex-col">
+    <span class="font-bold text-on-surface">Global Ops Admin</span>
+    <span class="text-xs text-on-surface-variant">Security Level 4</span>
+  </div>
 </div>
-</div>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
-<span class="material-symbols-outlined">grid_view</span>
-<span class="font-body-lg text-body-lg">Dashboard</span>
-</a>
-<a class="flex items-center gap-stack-md bg-primary text-on-primary rounded-full mx-stack-md px-stack-md py-3 shadow-md" href="#">
-<span class="material-symbols-outlined">report</span>
-<span class="font-body-lg text-body-lg">Fraud Reports</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
-<span class="material-symbols-outlined">receipt_long</span>
-<span class="font-body-lg text-body-lg">Donation History</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
-<span class="material-symbols-outlined">leaderboard</span>
-<span class="font-body-lg text-body-lg">Impact Analytics</span>
-</a>
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
-<span class="material-symbols-outlined">group</span>
-<span class="font-body-lg text-body-lg">Volunteers</span>
-</a>
-<div class="mt-auto border-t border-outline-variant pt-4 mb-4">
-<a class="flex items-center gap-stack-md text-on-surface-variant mx-stack-md px-stack-md py-3 hover:bg-primary-container hover:text-on-primary-container rounded-full transition-all" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-body-lg text-body-lg">Settings</span>
-</a>
-</div>
+<nav class="flex-1 space-y-1 px-3">
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="31_mission_control_dashboard.html">
+    <span class="material-symbols-outlined">dashboard</span>
+    <span class="font-body-lg text-body-lg">Mission Control</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="15_verification_management.html">
+    <span class="material-symbols-outlined">verified_user</span>
+    <span class="font-body-lg text-body-lg">Approvals Queue</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="17_user_management_admin.html">
+    <span class="material-symbols-outlined">manage_accounts</span>
+    <span class="font-body-lg text-body-lg">User Directory</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md bg-primary text-on-primary rounded-xl px-stack-md py-3 shadow-sm font-semibold" href="19_fraud_and_reports_admin.html">
+    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">gpp_maybe</span>
+    <span class="font-body-lg text-body-lg">Fraud & Reports</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="restaurant_track_pickup.html">
+    <span class="material-symbols-outlined">local_shipping</span>
+    <span class="font-body-lg text-body-lg">Deliveries</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="18_csr_and_reporting.html">
+    <span class="material-symbols-outlined">analytics</span>
+    <span class="font-body-lg text-body-lg">CSR & Analytics</span>
+  </a>
+  <a data-no-nav="true" class="flex items-center gap-stack-md text-on-surface-variant px-stack-md py-3 hover:bg-primary/10 hover:text-primary rounded-xl transition-all" href="35_session_device_management.html">
+    <span class="material-symbols-outlined">settings</span>
+    <span class="font-body-lg text-body-lg">Security & Sessions</span>
+  </a>
 </nav>
+<div class="p-4 border-t border-outline-variant/30">
+  <button onclick="localStorage.clear(); window.location.href='1_splash_screen.html';" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-outline-variant/40 hover:bg-error/10 hover:text-error hover:border-error/40 text-on-surface-variant text-sm font-semibold transition-all">
+    <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+  </button>
+</div>
 </aside>
 <!-- Main Content Canvas -->
 <main class="lg:ml-80 pt-24 pb-24 px-container-padding-mobile md:px-container-padding-desktop">
@@ -236,7 +251,7 @@
 </div>
 <h3 class="font-title-lg text-title-lg text-on-surface mb-2">Suspicious Pickup Pattern</h3>
 <p class="font-body-lg text-body-lg text-on-surface-variant mb-4">
-                                User <span class="font-bold text-on-surface">@v_marcus92</span> has attempted to claim 8 "Emergency Perishable" packages across 4 different districts within 35 minutes. Travel distance logic indicates high probability of proxy-collection or automation scripts.
+                                User <span class="font-bold text-on-surface">@v_marcus92</span> has attempted to reserve 8 "Emergency Perishable" packages across 4 different districts within 35 minutes. Travel distance logic indicates high probability of proxy-collection or automation scripts.
                             </p>
 <div class="flex flex-wrap gap-2">
 <span class="bg-surface-container-low px-3 py-1 rounded-full text-xs text-on-surface-variant border border-outline-variant">Location: Bronx Cluster</span>

@@ -125,10 +125,18 @@
 <!-- TopAppBar -->
 <header class="w-full top-0 sticky bg-surface-container-low dark:bg-surface-container-high shadow-sm flex items-center justify-between px-container-padding-mobile md:px-container-padding-desktop h-16 w-full z-50">
 <div class="flex items-center gap-4">
-<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 transition-colors active:scale-95 duration-100" data-icon="menu">menu</button>
+<a href="31_mission_control_dashboard.html" class="flex items-center gap-1 text-primary hover:bg-surface-variant/50 p-2 rounded-xl transition-all" title="Back to Command Center">
+  <span class="material-symbols-outlined">arrow_back</span>
+  <span class="hidden sm:inline text-xs font-bold uppercase tracking-wider">Mission Control</span>
+</a>
 <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">FoodRescue</h1>
 </div>
-<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 transition-colors active:scale-95 duration-100" data-icon="notifications">notifications</button>
+<div class="flex items-center gap-3">
+  <a href="17_user_management_admin.html" class="hidden sm:inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface">
+    <span class="material-symbols-outlined text-sm">manage_accounts</span> Directory
+  </a>
+  <button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 transition-colors active:scale-95 duration-100" data-icon="notifications" onclick="window.location.href='11_notifications.html'">notifications</button>
+</div>
 </header>
 <!-- Main Content Area -->
 <main class="px-container-padding-mobile pt-stack-md">
@@ -262,17 +270,76 @@
 <span class="font-label-md text-label-md">Profile</span>
 </button>
 </nav>
+<!-- Verification Dossier Modal -->
+<div id="verifModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+  <div class="bg-surface rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-outline-variant/30 space-y-4">
+    <div class="flex items-start justify-between border-b border-surface-container pb-4">
+      <div>
+        <h3 id="verifTitle" class="text-xl font-bold text-on-surface">Verification Dossier</h3>
+        <p class="text-xs text-primary font-semibold">Regulatory Review Package</p>
+      </div>
+      <button onclick="document.getElementById('verifModal').classList.add('hidden')" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container text-on-surface-variant">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+    <div class="space-y-3 text-sm text-on-surface-variant">
+      <div class="bg-surface-container-low p-4 rounded-xl space-y-2 border border-outline-variant/30">
+        <div class="flex justify-between">
+          <span class="text-xs text-outline">Application Type:</span>
+          <span class="font-semibold text-on-surface">Commercial Restaurant Partner</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-xs text-outline">FSSAI / Food License:</span>
+          <span class="font-semibold text-primary">FSSAI-REG-2023-88392</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-xs text-outline">Safety Audit Score:</span>
+          <span class="font-semibold text-primary">98.5% (Exceeds Standards)</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-xs text-outline">Submission Date:</span>
+          <span class="font-semibold text-on-surface">Oct 24, 2023 · 14:15 UTC</span>
+        </div>
+      </div>
+      <p class="text-xs text-on-surface-variant flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-sm text-primary">verified_user</span>
+        <span>All uploaded documents and commercial registration IDs verified authentic against municipal registry.</span>
+      </p>
+    </div>
+    <div class="pt-4 border-t border-surface-container flex justify-end gap-2">
+      <button onclick="document.getElementById('verifModal').classList.add('hidden')" class="px-4 py-2 rounded-lg bg-surface-container text-on-surface font-semibold text-xs hover:bg-surface-variant">Close</button>
+      <button onclick="document.getElementById('verifModal').classList.add('hidden'); document.querySelector('.bg-surface-container-lowest')?.remove();" class="px-4 py-2 rounded-lg bg-primary text-on-primary font-semibold text-xs hover:brightness-110">Approve Application</button>
+    </div>
+  </div>
+</div>
+
 <script>
         // Simple Micro-interactions
         document.querySelectorAll('button').forEach(btn => {
             btn.addEventListener('click', function() {
                 if (this.innerText.includes('Approve')) {
                     const card = this.closest('.bg-surface-container-lowest');
-                    card.style.transform = 'translateX(100px)';
-                    card.style.opacity = '0';
-                    setTimeout(() => {
-                        card.remove();
-                    }, 300);
+                    if (card) {
+                        card.style.transform = 'translateX(100px)';
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            card.remove();
+                        }, 300);
+                    }
+                } else if (this.innerText.includes('Reject')) {
+                    const card = this.closest('.bg-surface-container-lowest');
+                    if (card) {
+                        card.style.transform = 'translateX(-100px)';
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            card.remove();
+                        }, 300);
+                    }
+                } else if (this.innerText.includes('View Full Dossier')) {
+                    const card = this.closest('.bg-surface-container-lowest');
+                    const title = card?.querySelector('h3')?.textContent || 'Entity Dossier';
+                    document.getElementById('verifTitle').textContent = title + ' Dossier';
+                    document.getElementById('verifModal').classList.remove('hidden');
                 }
             });
         });
@@ -293,6 +360,18 @@
             });
         }
     </script>
-<script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/approvals/restaurant").then(d=>console.log("Verification loaded:",d?.data)).catch(e=>console.warn("Verification",e.message));});</script><script src="nav.js"></script><script src="js/api.js"></script><script>document.addEventListener("DOMContentLoaded",()=>{if(!localStorage.getItem("foodRescueToken")){window.location.href="27_admin_login_command_center.html";return;}ApiClient.get("/admin/approvals/restaurant").then(d=>console.log("Verification loaded:",d?.data)).catch(e=>console.warn("Verification",e.message));});</script><script src="js/api.js"></script><script src="js/nav.js"></script><script src="js/testmode.js"></script>
+<script src="js/api.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  if (!localStorage.getItem("foodRescueToken") && localStorage.getItem("fr_test_mode") !== "true") {
+    window.location.href = "27_admin_login_command_center.html";
+    return;
+  }
+  ApiClient.get("/admin/approvals/restaurant").then(d => console.log("Verification loaded:", d?.data)).catch(e => console.warn("Verification", e.message));
+});
+</script>
+<script src="nav.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/testmode.js"></script>
 <script src="js/ui.js"></script></body></html>
 

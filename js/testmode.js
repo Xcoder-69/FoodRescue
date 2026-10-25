@@ -98,6 +98,7 @@
 
   // ── Build the floating Test Mode Panel (NO top banner) ─────────────────────
   function buildPanel() {
+    if (document.getElementById('fr-testmode-panel')) return;
     const style = document.createElement('style');
     style.textContent = `
       #fr-testmode-panel {
@@ -106,6 +107,13 @@
         right: 20px;
         z-index: 99999;
         font-family: 'Inter', 'Segoe UI', sans-serif;
+      }
+
+      @media (max-width: 768px) {
+        body:has(nav.fixed.bottom-0) #fr-testmode-panel,
+        body:has(.fixed.bottom-0) #fr-testmode-panel {
+          bottom: 84px;
+        }
       }
 
       /* Toggle FAB */

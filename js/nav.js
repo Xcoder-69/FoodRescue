@@ -199,6 +199,9 @@ function wireDashboardNav(role) {
   const links = navLinks[role] || navLinks.restaurant;
 
   document.querySelectorAll('nav a, nav button').forEach(el => {
+    if (el.hasAttribute('data-no-nav') || el.closest('[data-no-nav]')) return;
+    const existingHref = el.getAttribute('href');
+    if (existingHref && existingHref !== '#' && !existingHref.startsWith('javascript:')) return;
     const icon = el.querySelector('.material-symbols-outlined')?.textContent?.trim() || '';
     const text = el.textContent.trim().toLowerCase();
 

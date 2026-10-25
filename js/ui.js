@@ -555,7 +555,7 @@
         icon = icon.trim();
         if (txt.includes('view all') || icon === 'arrow_forward') {
           btn.onclick = function(){ window.frNavigate('ngo_browse_donations.html'); };
-        } else if (txt.includes('claim now') || icon === 'shopping_cart_checkout') {
+        } else if (txt.includes('claim now') || txt.includes('reserve donation') || icon === 'shopping_cart_checkout') {
           btn.onclick = function(){ window.frNavigate('ngo_claim_donation.html'); };
         } else if (icon === 'filter_list' || txt.includes('filter')) {
           btn.onclick = function(){ toast('Filters coming soon!', 'tune'); };
@@ -725,7 +725,7 @@
         if ((btn.querySelector('.material-symbols-outlined')||{}).textContent?.trim() === 'filter_list') {
           btn.onclick = function(){ toast('More filters coming soon!', 'tune'); };
         }
-        if (txt.toLowerCase().includes('claim') && !btn._wired) {
+        if ((txt.toLowerCase().includes('claim') || txt.toLowerCase().includes('reserve')) && !btn._wired) {
           btn._wired = true;
           btn.onclick = function(){ window.frNavigate('ngo_claim_donation.html'); };
         }
@@ -737,20 +737,20 @@
       document.querySelectorAll('button, a').forEach(function(el) {
         var txt = el.textContent.trim().toLowerCase();
         var icon = (el.querySelector('.material-symbols-outlined')||{}).textContent||'';
-        if (txt.includes('confirm claim')) {
+        if (txt.includes('confirm claim') || txt.includes('confirm reservation')) {
           el.onclick = function(){
             el.style.opacity = '0.7'; el.disabled = true;
             setTimeout(function(){
               var overlay = document.createElement('div');
               overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,108,73,.97);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Inter,sans-serif;text-align:center;padding:24px;';
               overlay.innerHTML = '<div style="font-size:80px;margin-bottom:16px">🎉</div>'
-                + '<h2 style="font-size:26px;font-weight:800;margin:0 0 10px">Donation Claimed!</h2>'
-                + '<p style="opacity:.85;font-size:15px;max-width:300px;line-height:1.6;margin:0 0 28px">A volunteer will be assigned shortly to pick up this donation.</p>'
+                + '<h2 style="font-size:26px;font-weight:800;margin:0 0 10px">Reservation Confirmed!</h2>'
+                + '<p style="opacity:.85;font-size:15px;max-width:300px;line-height:1.6;margin:0 0 28px">A volunteer will be assigned shortly to collect this donation.</p>'
                 + '<button onclick="window.frNavigate(\'10_ngo_dashboard.html\')" style="padding:13px 28px;background:#fff;color:#006c49;border-radius:14px;font-weight:700;border:none;cursor:pointer;font-size:15px;">Go to Dashboard</button>';
               document.body.appendChild(overlay);
             }, 600);
           };
-        } else if (txt.includes('view my claims')) {
+        } else if (txt.includes('view my claims') || txt.includes('view my reservations') || txt.includes('my reservations')) {
           el.onclick = function(e){ e.preventDefault(); window.frNavigate('ngo_browse_donations.html'); };
         } else if (txt.includes('back to home') || icon.trim() === 'arrow_back') {
           el.onclick = function(e){ e.preventDefault(); window.frNavigate('10_ngo_dashboard.html'); };
@@ -879,5 +879,12 @@
         el.onclick = function(e){ e.preventDefault(); window.frNavigate(dest); };
       }
     });
+  }
+
+  // Ensure Demo / TestMode shortcut is loaded on every page
+  if (typeof window !== 'undefined' && !window.FRTestMode && !document.querySelector('script[src*="testmode.js"]')) {
+    var tmScript = document.createElement('script');
+    tmScript.src = 'js/testmode.js';
+    (document.body || document.head || document.documentElement).appendChild(tmScript);
   }
 })();
